@@ -1,0 +1,535 @@
+\hypertarget{classCore_1_1__Particles}{}\doxysection{Core\+::\+\_\+\+Particles Class Reference}
+\label{classCore_1_1__Particles}\index{Core::\_Particles@{Core::\_Particles}}
+
+
+{\ttfamily \#include $<$Particles.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classCore_1_1__Particles_ad9c566d2731b58e0a753e1170421e036}{\+\_\+\+Particles}} (\mbox{\hyperlink{classCore_1_1GameSys_1_1Atmosphere}{Game\+Sys\+::\+Atmosphere}} \&\mbox{\hyperlink{gl4__5_2glcorearb_8h_a691492ec0bd6383f91200e49f6ae40ed}{f}}, float f\+Scale)
+\item 
+\mbox{\hyperlink{classCore_1_1__Particles_adcf18d7b0f02bc5ba6b6caa93cdedc22}{$\sim$\+\_\+\+Particles}} ()
+\item 
+bool \mbox{\hyperlink{classCore_1_1__Particles_a8764305566f18071edadee4df7841db2}{add}} (\mbox{\hyperlink{structCore_1_1__ParticleDataOld}{\+\_\+\+Particle\+Data\+Old}} \mbox{\hyperlink{gl4__5_2glcorearb_8h_a41a8247b39e9cdb744299c3331ca3453}{data}})
+\item 
+bool \mbox{\hyperlink{classCore_1_1__Particles_ad3800cb2d0d3a8eb79e6dd083bb520d1}{calc}} (bool b\+Update=false)
+\item 
+bool \mbox{\hyperlink{classCore_1_1__Particles_aa66a907d1fde2cdf6a0e81752b30b2ca}{calc}} (\mbox{\hyperlink{gl4__old_2glext_8h_ab4ccfaa8ab0e1afaae94dc96ef52dde1}{std\+::string}} \mbox{\hyperlink{gl4__5_2glcorearb_8h_ad977737dfc9a274a62741b9500c49a32}{name}}, bool b\+Update=false)
+\item 
+bool \mbox{\hyperlink{classCore_1_1__Particles_ae4141cb45a031abba97bbcd5716eb0f9}{calc}} (uint \mbox{\hyperlink{gl4__5_2glcorearb_8h_ae52362b10d585638f5b96140e90f1b7a}{id}}, bool b\+Update=false)
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classCore_1_1__Particles_a612b16c5897d6a2772a4b2817e251e9f}{update}} (bool b\+Create\+Vao=false)
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classCore_1_1__Particles_ae796a6a41c8e31f1a9312437df21572c}{update}} (\mbox{\hyperlink{gl4__old_2glext_8h_ab4ccfaa8ab0e1afaae94dc96ef52dde1}{std\+::string}} \mbox{\hyperlink{gl4__5_2glcorearb_8h_ad977737dfc9a274a62741b9500c49a32}{name}}, bool b\+Create\+Vao=false)
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classCore_1_1__Particles_aedc52aa0c44b632e22256715a3f66e48}{update}} (int \mbox{\hyperlink{gl4__5_2glcorearb_8h_ae52362b10d585638f5b96140e90f1b7a}{id}}, bool b\+Create\+Vao=false)
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classCore_1_1__Particles_af91e7dd625d8e281110721d8f80ce7e8}{draw}} ()
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classCore_1_1__Particles_a5803a35cc8128d1c0fa1ecd3219780e5}{draw}} (\mbox{\hyperlink{gl4__old_2glext_8h_ab4ccfaa8ab0e1afaae94dc96ef52dde1}{std\+::string}} \mbox{\hyperlink{gl4__5_2glcorearb_8h_ad977737dfc9a274a62741b9500c49a32}{name}})
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classCore_1_1__Particles_ae0143837acf50754d08c615a7b7f223f}{draw}} (int \mbox{\hyperlink{gl4__5_2glcorearb_8h_ae52362b10d585638f5b96140e90f1b7a}{id}})
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structCore_1_1__ParticleDataOld}{\+\_\+\+Particle\+Data\+Old}} $\ast$ \mbox{\hyperlink{classCore_1_1__Particles_a15640dd9f109625a85232d4e1620827a}{data}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{classCore_1_1__Particles_af3dae9c5c791088a818fe0171e671e74}{init}} ()
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classCore_1_1__Particles_af080fd2c43bd4eaef87ae69ff181cc7f}{update\+Quad}} (int \mbox{\hyperlink{gl4__5_2glcorearb_8h_ae52362b10d585638f5b96140e90f1b7a}{id}}, bool b\+Create\+Vao=false)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classCore_1_1GameSys_1_1Atmosphere}{Game\+Sys\+::\+Atmosphere}} \& \mbox{\hyperlink{classCore_1_1__Particles_a1ace827ed42230496b367473249e0832}{parent}}
+\item 
+float \mbox{\hyperlink{classCore_1_1__Particles_ae0e9a9b0fac90624e966191be84bd5be}{f\+World\+Scale}}
+\item 
+\mbox{\hyperlink{namespaceCore_ad1c469c7590fab5581312fe0cf249ac2}{Core\+::\+Map\+\_\+si}} \mbox{\hyperlink{classCore_1_1__Particles_a01713df7fed7a15e2612ddb583af3248}{map}}
+\item 
+\mbox{\hyperlink{namespaceCore_a79d46fb977b783e78595737fad0b78c0}{Core\+::\+Map\+\_\+is}} \mbox{\hyperlink{classCore_1_1__Particles_a9c96c04c34385e6a9e404d8fb7edec6f}{rmap}}
+\item 
+bool \mbox{\hyperlink{classCore_1_1__Particles_aa2a6302a1d811c064bfbf87a50fedf68}{b\+Error\+O\+NS}} \mbox{[}32\mbox{]}
+\item 
+int \mbox{\hyperlink{classCore_1_1__Particles_af8e2fcc628900f6b1b5ea5260267bc1e}{i\+Num\+Objects}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static bool \mbox{\hyperlink{classCore_1_1__Particles_a1a00aa7a452eaff1727bab0cd7c8f782}{b\+Tex\+Loaded}} = false
+\item 
+static \mbox{\hyperlink{classCore_1_1Texture}{Texture}} \mbox{\hyperlink{classCore_1_1__Particles_a7eed75696ff887ffe59e2eceb2a1cf66}{tex}} = \mbox{\hyperlink{classCore_1_1Texture}{Texture}}()
+\item 
+static const uint \mbox{\hyperlink{classCore_1_1__Particles_a46fdf4f90d13d9a06a0e0dab7a1443e5}{M\+A\+X\+\_\+\+T\+E\+X\+T\+U\+R\+ES}} = 32
+\item 
+static const int \mbox{\hyperlink{classCore_1_1__Particles_a64d2a80046a09b7018ebc74db89c5a97}{M\+A\+X\+\_\+\+O\+B\+J\+E\+C\+TS}} = 16
+\item 
+static const uint \mbox{\hyperlink{classCore_1_1__Particles_abbe0d0e985426c44e2797e4ae77b7830}{R\+E\+C\+O\+R\+D\+\_\+\+S\+I\+ZE}} = 32
+\item 
+static const \mbox{\hyperlink{gl4__old_2glext_8h_ab4ccfaa8ab0e1afaae94dc96ef52dde1}{std\+::string}} \mbox{\hyperlink{classCore_1_1__Particles_a11271319922ebbb7bda312206d9595c5}{D\+IR}} = \char`\"{}./system/\char`\"{}
+\item 
+static const \mbox{\hyperlink{gl4__old_2glext_8h_ab4ccfaa8ab0e1afaae94dc96ef52dde1}{std\+::string}} \mbox{\hyperlink{classCore_1_1__Particles_abf43bb765b898b398e3760a4d6f6d642}{F\+I\+L\+E\+N\+A\+ME}} = \char`\"{}particles.\+bin\char`\"{}
+\item 
+static const \mbox{\hyperlink{gl4__old_2glext_8h_ab4ccfaa8ab0e1afaae94dc96ef52dde1}{std\+::string}} \mbox{\hyperlink{classCore_1_1__Particles_a887b2e106555ee23756f7d510219369c}{T\+E\+X\+D\+IR}} = \char`\"{}./texture/\mbox{\hyperlink{namespaceCore_a3450c9d8116d034e7b1c26094b2d0d2c}{particles}}/\char`\"{}
+\item 
+static const bool \mbox{\hyperlink{classCore_1_1__Particles_aa38f13a3e705ed6c5f36a1ea5524b5f2}{b\+Debug}} = false
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+
+
+Definition at line 142 of file Particles.\+h.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classCore_1_1__Particles_ad9c566d2731b58e0a753e1170421e036}\label{classCore_1_1__Particles_ad9c566d2731b58e0a753e1170421e036}} 
+\index{Core::\_Particles@{Core::\_Particles}!\_Particles@{\_Particles}}
+\index{\_Particles@{\_Particles}!Core::\_Particles@{Core::\_Particles}}
+\doxysubsubsection{\texorpdfstring{\_Particles()}{\_Particles()}}
+{\footnotesize\ttfamily Core\+::\+\_\+\+Particles\+::\+\_\+\+Particles (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classCore_1_1GameSys_1_1Atmosphere}{Game\+Sys\+::\+Atmosphere}} \&}]{f,  }\item[{float}]{f\+Scale }\end{DoxyParamCaption})}
+
+
+
+Definition at line 23 of file Particles.\+cpp.
+
+
+
+References b\+Error\+O\+NS, i\+Num\+Objects, and M\+A\+X\+\_\+\+O\+B\+J\+E\+C\+TS.
+
+\mbox{\Hypertarget{classCore_1_1__Particles_adcf18d7b0f02bc5ba6b6caa93cdedc22}\label{classCore_1_1__Particles_adcf18d7b0f02bc5ba6b6caa93cdedc22}} 
+\index{Core::\_Particles@{Core::\_Particles}!````~\_Particles@{$\sim$\_Particles}}
+\index{````~\_Particles@{$\sim$\_Particles}!Core::\_Particles@{Core::\_Particles}}
+\doxysubsubsection{\texorpdfstring{$\sim$\_Particles()}{~\_Particles()}}
+{\footnotesize\ttfamily Core\+::\+\_\+\+Particles\+::$\sim$\+\_\+\+Particles (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 31 of file Particles.\+cpp.
+
+
+
+References data.
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classCore_1_1__Particles_a8764305566f18071edadee4df7841db2}\label{classCore_1_1__Particles_a8764305566f18071edadee4df7841db2}} 
+\index{Core::\_Particles@{Core::\_Particles}!add@{add}}
+\index{add@{add}!Core::\_Particles@{Core::\_Particles}}
+\doxysubsubsection{\texorpdfstring{add()}{add()}}
+{\footnotesize\ttfamily bool Core\+::\+\_\+\+Particles\+::add (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structCore_1_1__ParticleDataOld}{\+\_\+\+Particle\+Data\+Old}}}]{data }\end{DoxyParamCaption})}
+
+
+
+Definition at line 84 of file Particles.\+cpp.
+
+
+
+References cout, i\+Num\+Objects, map, M\+A\+X\+\_\+\+O\+B\+J\+E\+C\+TS, rmap, Core\+::\+\_\+\+Particle\+Data\+Old\+::s\+Name, and Core\+::s\+Offset.
+
+
+
+Referenced by Core\+::\+Game\+Sys\+::\+Atmosphere\+::load().
+
+\mbox{\Hypertarget{classCore_1_1__Particles_ad3800cb2d0d3a8eb79e6dd083bb520d1}\label{classCore_1_1__Particles_ad3800cb2d0d3a8eb79e6dd083bb520d1}} 
+\index{Core::\_Particles@{Core::\_Particles}!calc@{calc}}
+\index{calc@{calc}!Core::\_Particles@{Core::\_Particles}}
+\doxysubsubsection{\texorpdfstring{calc()}{calc()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily bool Core\+::\+\_\+\+Particles\+::calc (\begin{DoxyParamCaption}\item[{bool}]{b\+Update = {\ttfamily false} }\end{DoxyParamCaption})}
+
+
+
+Definition at line 96 of file Particles.\+cpp.
+
+
+
+References cout, and i\+Num\+Objects.
+
+
+
+Referenced by Core\+::\+Game\+Sys\+::\+Atmosphere\+::calc(), and calc().
+
+\mbox{\Hypertarget{classCore_1_1__Particles_aa66a907d1fde2cdf6a0e81752b30b2ca}\label{classCore_1_1__Particles_aa66a907d1fde2cdf6a0e81752b30b2ca}} 
+\index{Core::\_Particles@{Core::\_Particles}!calc@{calc}}
+\index{calc@{calc}!Core::\_Particles@{Core::\_Particles}}
+\doxysubsubsection{\texorpdfstring{calc()}{calc()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily bool Core\+::\+\_\+\+Particles\+::calc (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{gl4__old_2glext_8h_ab4ccfaa8ab0e1afaae94dc96ef52dde1}{std\+::string}}}]{name,  }\item[{bool}]{b\+Update = {\ttfamily false} }\end{DoxyParamCaption})}
+
+
+
+Definition at line 109 of file Particles.\+cpp.
+
+
+
+References calc(), and map.
+
+\mbox{\Hypertarget{classCore_1_1__Particles_ae4141cb45a031abba97bbcd5716eb0f9}\label{classCore_1_1__Particles_ae4141cb45a031abba97bbcd5716eb0f9}} 
+\index{Core::\_Particles@{Core::\_Particles}!calc@{calc}}
+\index{calc@{calc}!Core::\_Particles@{Core::\_Particles}}
+\doxysubsubsection{\texorpdfstring{calc()}{calc()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily bool Core\+::\+\_\+\+Particles\+::calc (\begin{DoxyParamCaption}\item[{uint}]{id,  }\item[{bool}]{b\+Update = {\ttfamily false} }\end{DoxyParamCaption})}
+
+
+
+Definition at line 113 of file Particles.\+cpp.
+
+
+
+References cout, id, Core\+::\+Texture\+::i\+Loaded, Core\+::\+P\+A\+R\+T\+I\+C\+L\+E\+\_\+\+Q\+U\+AD, rmap, Core\+::s\+Offset, tex, and update().
+
+\mbox{\Hypertarget{classCore_1_1__Particles_af91e7dd625d8e281110721d8f80ce7e8}\label{classCore_1_1__Particles_af91e7dd625d8e281110721d8f80ce7e8}} 
+\index{Core::\_Particles@{Core::\_Particles}!draw@{draw}}
+\index{draw@{draw}!Core::\_Particles@{Core::\_Particles}}
+\doxysubsubsection{\texorpdfstring{draw()}{draw()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Core\+::\+\_\+\+Particles\+::draw (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 373 of file Particles.\+cpp.
+
+
+
+References cout, and i\+Num\+Objects.
+
+
+
+Referenced by draw(), and Core\+::\+Game\+Sys\+::\+Atmosphere\+::draw().
+
+\mbox{\Hypertarget{classCore_1_1__Particles_ae0143837acf50754d08c615a7b7f223f}\label{classCore_1_1__Particles_ae0143837acf50754d08c615a7b7f223f}} 
+\index{Core::\_Particles@{Core::\_Particles}!draw@{draw}}
+\index{draw@{draw}!Core::\_Particles@{Core::\_Particles}}
+\doxysubsubsection{\texorpdfstring{draw()}{draw()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Core\+::\+\_\+\+Particles\+::draw (\begin{DoxyParamCaption}\item[{int}]{id }\end{DoxyParamCaption})}
+
+
+
+Definition at line 397 of file Particles.\+cpp.
+
+
+
+References cout, G\+L\+\_\+\+T\+E\+X\+T\+U\+R\+E0, id, Core\+::\+Texture\+::i\+Loaded, Core\+::\+Texture\+::\+Set(), and tex.
+
+\mbox{\Hypertarget{classCore_1_1__Particles_a5803a35cc8128d1c0fa1ecd3219780e5}\label{classCore_1_1__Particles_a5803a35cc8128d1c0fa1ecd3219780e5}} 
+\index{Core::\_Particles@{Core::\_Particles}!draw@{draw}}
+\index{draw@{draw}!Core::\_Particles@{Core::\_Particles}}
+\doxysubsubsection{\texorpdfstring{draw()}{draw()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Core\+::\+\_\+\+Particles\+::draw (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{gl4__old_2glext_8h_ab4ccfaa8ab0e1afaae94dc96ef52dde1}{std\+::string}}}]{name }\end{DoxyParamCaption})}
+
+
+
+Definition at line 390 of file Particles.\+cpp.
+
+
+
+References cout, draw(), and map.
+
+\mbox{\Hypertarget{classCore_1_1__Particles_af3dae9c5c791088a818fe0171e671e74}\label{classCore_1_1__Particles_af3dae9c5c791088a818fe0171e671e74}} 
+\index{Core::\_Particles@{Core::\_Particles}!init@{init}}
+\index{init@{init}!Core::\_Particles@{Core::\_Particles}}
+\doxysubsubsection{\texorpdfstring{init()}{init()}}
+{\footnotesize\ttfamily bool Core\+::\+\_\+\+Particles\+::init (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line 38 of file Particles.\+cpp.
+
+
+
+References b\+Debug, Core\+::\+Texture\+::\+Begin(), b\+Tex\+Loaded, Core\+::\+Mem\+Block\+::buffer, cout, D\+IR, F\+I\+L\+E\+N\+A\+ME, G\+L\+\_\+\+N\+E\+A\+R\+E\+ST, G\+L\+\_\+\+R\+E\+P\+E\+AT, id, Core\+::\+Texture\+::i\+Loaded, Core\+::\+\_\+\+Particle\+Data\+Old\+::i\+Loaded\+Textues, Core\+::\+Texture\+::\+Load(), Core\+::read\+File(), R\+E\+C\+O\+R\+D\+\_\+\+S\+I\+ZE, Core\+::\+Mem\+Block\+::size, Core\+::s\+Offset, tex, and T\+E\+X\+D\+IR.
+
+\mbox{\Hypertarget{classCore_1_1__Particles_a612b16c5897d6a2772a4b2817e251e9f}\label{classCore_1_1__Particles_a612b16c5897d6a2772a4b2817e251e9f}} 
+\index{Core::\_Particles@{Core::\_Particles}!update@{update}}
+\index{update@{update}!Core::\_Particles@{Core::\_Particles}}
+\doxysubsubsection{\texorpdfstring{update()}{update()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Core\+::\+\_\+\+Particles\+::update (\begin{DoxyParamCaption}\item[{bool}]{b\+Create\+Vao = {\ttfamily false} }\end{DoxyParamCaption})}
+
+
+
+Definition at line 228 of file Particles.\+cpp.
+
+
+
+References cout, and i\+Num\+Objects.
+
+
+
+Referenced by calc(), update(), and Core\+::\+Game\+Sys\+::\+Atmosphere\+::update().
+
+\mbox{\Hypertarget{classCore_1_1__Particles_aedc52aa0c44b632e22256715a3f66e48}\label{classCore_1_1__Particles_aedc52aa0c44b632e22256715a3f66e48}} 
+\index{Core::\_Particles@{Core::\_Particles}!update@{update}}
+\index{update@{update}!Core::\_Particles@{Core::\_Particles}}
+\doxysubsubsection{\texorpdfstring{update()}{update()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Core\+::\+\_\+\+Particles\+::update (\begin{DoxyParamCaption}\item[{int}]{id,  }\item[{bool}]{b\+Create\+Vao = {\ttfamily false} }\end{DoxyParamCaption})}
+
+
+
+Definition at line 244 of file Particles.\+cpp.
+
+
+
+References Core\+::\+P\+A\+R\+T\+I\+C\+L\+E\+\_\+\+Q\+U\+AD, and update\+Quad().
+
+\mbox{\Hypertarget{classCore_1_1__Particles_ae796a6a41c8e31f1a9312437df21572c}\label{classCore_1_1__Particles_ae796a6a41c8e31f1a9312437df21572c}} 
+\index{Core::\_Particles@{Core::\_Particles}!update@{update}}
+\index{update@{update}!Core::\_Particles@{Core::\_Particles}}
+\doxysubsubsection{\texorpdfstring{update()}{update()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Core\+::\+\_\+\+Particles\+::update (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{gl4__old_2glext_8h_ab4ccfaa8ab0e1afaae94dc96ef52dde1}{std\+::string}}}]{name,  }\item[{bool}]{b\+Create\+Vao = {\ttfamily false} }\end{DoxyParamCaption})}
+
+
+
+Definition at line 240 of file Particles.\+cpp.
+
+
+
+References map, and update().
+
+\mbox{\Hypertarget{classCore_1_1__Particles_af080fd2c43bd4eaef87ae69ff181cc7f}\label{classCore_1_1__Particles_af080fd2c43bd4eaef87ae69ff181cc7f}} 
+\index{Core::\_Particles@{Core::\_Particles}!updateQuad@{updateQuad}}
+\index{updateQuad@{updateQuad}!Core::\_Particles@{Core::\_Particles}}
+\doxysubsubsection{\texorpdfstring{updateQuad()}{updateQuad()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Core\+::\+\_\+\+Particles\+::update\+Quad (\begin{DoxyParamCaption}\item[{int}]{id,  }\item[{bool}]{b\+Create\+Vao = {\ttfamily false} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line 255 of file Particles.\+cpp.
+
+
+
+References Core\+::distance\+X\+Zpn(), f\+World\+Scale, Core\+::\+Timer\+::get\+\_\+ticks(), G\+L\+\_\+\+L\+I\+N\+ES, Core\+::\+G\+L\+A\+\_\+\+N\+O\+R\+M\+AL, Core\+::\+G\+L\+A\+\_\+\+V\+E\+R\+T\+EX, id, Core\+::\+Texture\+::i\+Loaded, Core\+::roll(), t, tex, Core\+::time\+Sys, Core\+::\+Degrees\+::to\+Radians(), and Core\+::\+Vector3f\+::x.
+
+
+
+Referenced by update().
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classCore_1_1__Particles_aa38f13a3e705ed6c5f36a1ea5524b5f2}\label{classCore_1_1__Particles_aa38f13a3e705ed6c5f36a1ea5524b5f2}} 
+\index{Core::\_Particles@{Core::\_Particles}!bDebug@{bDebug}}
+\index{bDebug@{bDebug}!Core::\_Particles@{Core::\_Particles}}
+\doxysubsubsection{\texorpdfstring{bDebug}{bDebug}}
+{\footnotesize\ttfamily const bool Core\+::\+\_\+\+Particles\+::b\+Debug = false\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+
+Definition at line 183 of file Particles.\+h.
+
+
+
+Referenced by init().
+
+\mbox{\Hypertarget{classCore_1_1__Particles_aa2a6302a1d811c064bfbf87a50fedf68}\label{classCore_1_1__Particles_aa2a6302a1d811c064bfbf87a50fedf68}} 
+\index{Core::\_Particles@{Core::\_Particles}!bErrorONS@{bErrorONS}}
+\index{bErrorONS@{bErrorONS}!Core::\_Particles@{Core::\_Particles}}
+\doxysubsubsection{\texorpdfstring{bErrorONS}{bErrorONS}}
+{\footnotesize\ttfamily bool Core\+::\+\_\+\+Particles\+::b\+Error\+O\+NS\mbox{[}32\mbox{]}\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line 173 of file Particles.\+h.
+
+
+
+Referenced by \+\_\+\+Particles().
+
+\mbox{\Hypertarget{classCore_1_1__Particles_a1a00aa7a452eaff1727bab0cd7c8f782}\label{classCore_1_1__Particles_a1a00aa7a452eaff1727bab0cd7c8f782}} 
+\index{Core::\_Particles@{Core::\_Particles}!bTexLoaded@{bTexLoaded}}
+\index{bTexLoaded@{bTexLoaded}!Core::\_Particles@{Core::\_Particles}}
+\doxysubsubsection{\texorpdfstring{bTexLoaded}{bTexLoaded}}
+{\footnotesize\ttfamily bool Core\+::\+\_\+\+Particles\+::b\+Tex\+Loaded = false\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+
+Definition at line 175 of file Particles.\+h.
+
+
+
+Referenced by init().
+
+\mbox{\Hypertarget{classCore_1_1__Particles_a15640dd9f109625a85232d4e1620827a}\label{classCore_1_1__Particles_a15640dd9f109625a85232d4e1620827a}} 
+\index{Core::\_Particles@{Core::\_Particles}!data@{data}}
+\index{data@{data}!Core::\_Particles@{Core::\_Particles}}
+\doxysubsubsection{\texorpdfstring{data}{data}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structCore_1_1__ParticleDataOld}{\+\_\+\+Particle\+Data\+Old}}$\ast$ Core\+::\+\_\+\+Particles\+::data}
+
+
+
+Definition at line 144 of file Particles.\+h.
+
+
+
+Referenced by $\sim$\+\_\+\+Particles().
+
+\mbox{\Hypertarget{classCore_1_1__Particles_a11271319922ebbb7bda312206d9595c5}\label{classCore_1_1__Particles_a11271319922ebbb7bda312206d9595c5}} 
+\index{Core::\_Particles@{Core::\_Particles}!DIR@{DIR}}
+\index{DIR@{DIR}!Core::\_Particles@{Core::\_Particles}}
+\doxysubsubsection{\texorpdfstring{DIR}{DIR}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{gl4__old_2glext_8h_ab4ccfaa8ab0e1afaae94dc96ef52dde1}{std\+::string}} Core\+::\+\_\+\+Particles\+::\+D\+IR = \char`\"{}./system/\char`\"{}\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+
+Definition at line 180 of file Particles.\+h.
+
+
+
+Referenced by init().
+
+\mbox{\Hypertarget{classCore_1_1__Particles_abf43bb765b898b398e3760a4d6f6d642}\label{classCore_1_1__Particles_abf43bb765b898b398e3760a4d6f6d642}} 
+\index{Core::\_Particles@{Core::\_Particles}!FILENAME@{FILENAME}}
+\index{FILENAME@{FILENAME}!Core::\_Particles@{Core::\_Particles}}
+\doxysubsubsection{\texorpdfstring{FILENAME}{FILENAME}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{gl4__old_2glext_8h_ab4ccfaa8ab0e1afaae94dc96ef52dde1}{std\+::string}} Core\+::\+\_\+\+Particles\+::\+F\+I\+L\+E\+N\+A\+ME = \char`\"{}particles.\+bin\char`\"{}\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+
+Definition at line 181 of file Particles.\+h.
+
+
+
+Referenced by init().
+
+\mbox{\Hypertarget{classCore_1_1__Particles_ae0e9a9b0fac90624e966191be84bd5be}\label{classCore_1_1__Particles_ae0e9a9b0fac90624e966191be84bd5be}} 
+\index{Core::\_Particles@{Core::\_Particles}!fWorldScale@{fWorldScale}}
+\index{fWorldScale@{fWorldScale}!Core::\_Particles@{Core::\_Particles}}
+\doxysubsubsection{\texorpdfstring{fWorldScale}{fWorldScale}}
+{\footnotesize\ttfamily float Core\+::\+\_\+\+Particles\+::f\+World\+Scale\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line 166 of file Particles.\+h.
+
+
+
+Referenced by update\+Quad().
+
+\mbox{\Hypertarget{classCore_1_1__Particles_af8e2fcc628900f6b1b5ea5260267bc1e}\label{classCore_1_1__Particles_af8e2fcc628900f6b1b5ea5260267bc1e}} 
+\index{Core::\_Particles@{Core::\_Particles}!iNumObjects@{iNumObjects}}
+\index{iNumObjects@{iNumObjects}!Core::\_Particles@{Core::\_Particles}}
+\doxysubsubsection{\texorpdfstring{iNumObjects}{iNumObjects}}
+{\footnotesize\ttfamily int Core\+::\+\_\+\+Particles\+::i\+Num\+Objects\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line 174 of file Particles.\+h.
+
+
+
+Referenced by \+\_\+\+Particles(), add(), calc(), draw(), and update().
+
+\mbox{\Hypertarget{classCore_1_1__Particles_a01713df7fed7a15e2612ddb583af3248}\label{classCore_1_1__Particles_a01713df7fed7a15e2612ddb583af3248}} 
+\index{Core::\_Particles@{Core::\_Particles}!map@{map}}
+\index{map@{map}!Core::\_Particles@{Core::\_Particles}}
+\doxysubsubsection{\texorpdfstring{map}{map}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceCore_ad1c469c7590fab5581312fe0cf249ac2}{Core\+::\+Map\+\_\+si}} Core\+::\+\_\+\+Particles\+::map\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line 171 of file Particles.\+h.
+
+
+
+Referenced by add(), calc(), draw(), and update().
+
+\mbox{\Hypertarget{classCore_1_1__Particles_a64d2a80046a09b7018ebc74db89c5a97}\label{classCore_1_1__Particles_a64d2a80046a09b7018ebc74db89c5a97}} 
+\index{Core::\_Particles@{Core::\_Particles}!MAX\_OBJECTS@{MAX\_OBJECTS}}
+\index{MAX\_OBJECTS@{MAX\_OBJECTS}!Core::\_Particles@{Core::\_Particles}}
+\doxysubsubsection{\texorpdfstring{MAX\_OBJECTS}{MAX\_OBJECTS}}
+{\footnotesize\ttfamily const int Core\+::\+\_\+\+Particles\+::\+M\+A\+X\+\_\+\+O\+B\+J\+E\+C\+TS = 16\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+
+Definition at line 178 of file Particles.\+h.
+
+
+
+Referenced by \+\_\+\+Particles(), and add().
+
+\mbox{\Hypertarget{classCore_1_1__Particles_a46fdf4f90d13d9a06a0e0dab7a1443e5}\label{classCore_1_1__Particles_a46fdf4f90d13d9a06a0e0dab7a1443e5}} 
+\index{Core::\_Particles@{Core::\_Particles}!MAX\_TEXTURES@{MAX\_TEXTURES}}
+\index{MAX\_TEXTURES@{MAX\_TEXTURES}!Core::\_Particles@{Core::\_Particles}}
+\doxysubsubsection{\texorpdfstring{MAX\_TEXTURES}{MAX\_TEXTURES}}
+{\footnotesize\ttfamily const uint Core\+::\+\_\+\+Particles\+::\+M\+A\+X\+\_\+\+T\+E\+X\+T\+U\+R\+ES = 32\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+
+Definition at line 177 of file Particles.\+h.
+
+\mbox{\Hypertarget{classCore_1_1__Particles_a1ace827ed42230496b367473249e0832}\label{classCore_1_1__Particles_a1ace827ed42230496b367473249e0832}} 
+\index{Core::\_Particles@{Core::\_Particles}!parent@{parent}}
+\index{parent@{parent}!Core::\_Particles@{Core::\_Particles}}
+\doxysubsubsection{\texorpdfstring{parent}{parent}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classCore_1_1GameSys_1_1Atmosphere}{Game\+Sys\+::\+Atmosphere}}\& Core\+::\+\_\+\+Particles\+::parent\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line 164 of file Particles.\+h.
+
+\mbox{\Hypertarget{classCore_1_1__Particles_abbe0d0e985426c44e2797e4ae77b7830}\label{classCore_1_1__Particles_abbe0d0e985426c44e2797e4ae77b7830}} 
+\index{Core::\_Particles@{Core::\_Particles}!RECORD\_SIZE@{RECORD\_SIZE}}
+\index{RECORD\_SIZE@{RECORD\_SIZE}!Core::\_Particles@{Core::\_Particles}}
+\doxysubsubsection{\texorpdfstring{RECORD\_SIZE}{RECORD\_SIZE}}
+{\footnotesize\ttfamily const uint Core\+::\+\_\+\+Particles\+::\+R\+E\+C\+O\+R\+D\+\_\+\+S\+I\+ZE = 32\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+
+Definition at line 179 of file Particles.\+h.
+
+
+
+Referenced by init().
+
+\mbox{\Hypertarget{classCore_1_1__Particles_a9c96c04c34385e6a9e404d8fb7edec6f}\label{classCore_1_1__Particles_a9c96c04c34385e6a9e404d8fb7edec6f}} 
+\index{Core::\_Particles@{Core::\_Particles}!rmap@{rmap}}
+\index{rmap@{rmap}!Core::\_Particles@{Core::\_Particles}}
+\doxysubsubsection{\texorpdfstring{rmap}{rmap}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceCore_a79d46fb977b783e78595737fad0b78c0}{Core\+::\+Map\+\_\+is}} Core\+::\+\_\+\+Particles\+::rmap\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line 172 of file Particles.\+h.
+
+
+
+Referenced by add(), and calc().
+
+\mbox{\Hypertarget{classCore_1_1__Particles_a7eed75696ff887ffe59e2eceb2a1cf66}\label{classCore_1_1__Particles_a7eed75696ff887ffe59e2eceb2a1cf66}} 
+\index{Core::\_Particles@{Core::\_Particles}!tex@{tex}}
+\index{tex@{tex}!Core::\_Particles@{Core::\_Particles}}
+\doxysubsubsection{\texorpdfstring{tex}{tex}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classCore_1_1Texture}{Texture}} Core\+::\+\_\+\+Particles\+::tex = \mbox{\hyperlink{classCore_1_1Texture}{Texture}}()\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+
+Definition at line 176 of file Particles.\+h.
+
+
+
+Referenced by calc(), draw(), init(), and update\+Quad().
+
+\mbox{\Hypertarget{classCore_1_1__Particles_a887b2e106555ee23756f7d510219369c}\label{classCore_1_1__Particles_a887b2e106555ee23756f7d510219369c}} 
+\index{Core::\_Particles@{Core::\_Particles}!TEXDIR@{TEXDIR}}
+\index{TEXDIR@{TEXDIR}!Core::\_Particles@{Core::\_Particles}}
+\doxysubsubsection{\texorpdfstring{TEXDIR}{TEXDIR}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{gl4__old_2glext_8h_ab4ccfaa8ab0e1afaae94dc96ef52dde1}{std\+::string}} Core\+::\+\_\+\+Particles\+::\+T\+E\+X\+D\+IR = \char`\"{}./texture/\mbox{\hyperlink{namespaceCore_a3450c9d8116d034e7b1c26094b2d0d2c}{particles}}/\char`\"{}\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+
+Definition at line 182 of file Particles.\+h.
+
+
+
+Referenced by init().
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/headers/core/\mbox{\hyperlink{Particles_8h}{Particles.\+h}}\item 
+src/headers/core/\mbox{\hyperlink{Particles_8cpp}{Particles.\+cpp}}\end{DoxyCompactItemize}

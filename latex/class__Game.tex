@@ -1,0 +1,400 @@
+\hypertarget{class__Game}{}\doxysection{\+\_\+\+Game Class Reference}
+\label{class__Game}\index{\_Game@{\_Game}}
+
+
+{\ttfamily \#include $<$run\+Game.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{class__Game_ad33c563c144a55b4715299a4b02051a2}{load}} ()
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{class__Game_a430b2a9ce8914c4e63156598082332e4}{Run}} ()
+\item 
+\mbox{\hyperlink{class__Game_a2ebb09a6eaff6238501055cf041bf46c}{\+\_\+\+Game}} ()
+\item 
+\mbox{\hyperlink{class__Game_acb1838b8834cc101b97e367606f199d2}{$\sim$\+\_\+\+Game}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structCore_1_1Vector3f}{Core\+::\+Vector3f}} \mbox{\hyperlink{class__Game_aed8dc749f4a633b000bac7182e6f6dbd}{v\+Debug\+Att\+Delta}}
+\item 
+\mbox{\hyperlink{structCore_1_1Vector3f}{Core\+::\+Vector3f}} \mbox{\hyperlink{class__Game_a60ebccdfb00b53d064df1fbc9d4ed046}{v\+Debug\+Pos\+Delta}}
+\item 
+int \mbox{\hyperlink{class__Game_a56fe7752134867c99c3f84ef9334f6f5}{i\+Debug\+Light}}
+\item 
+int \mbox{\hyperlink{class__Game_a372334b522cb4561b9a57147cb70c12a}{i\+Debug\+Object}}
+\item 
+bool \mbox{\hyperlink{class__Game_a9b445d5e1d5bbb3c7be9a7c2a61a657f}{b\+Debug\+Draw\+Mouse\+Ray}}
+\item 
+\mbox{\hyperlink{structCore_1_1Vector3f}{Core\+::\+Vector3f}} \mbox{\hyperlink{class__Game_a24069c354e74073095428bbbdc6baf28}{v\+Debug\+Rotation}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{class__Game_a54bc76e7954f84c3bbf703053f59d668}{Get\+Input}} ()
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{class__Game_ab61912a098e3f513bc039a61c2b58dd5}{Process\+Input}} ()
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{class__Game_a82a5a45fd54b4261344328d8cce9bbb8}{Update}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classCore_1_1__Keyboard}{Core\+::\+\_\+\+Keyboard}} \mbox{\hyperlink{class__Game_af8c960506df3d42a96bf1c4c1dbbc36b}{keyboard}}
+\item 
+\mbox{\hyperlink{classCore_1_1GameSys_1_1__WorldMap}{Core\+::\+Game\+Sys\+::\+\_\+\+World\+Map}} $\ast$ \mbox{\hyperlink{class__Game_a0b6042ea5252cb8693d7437b1f972a1c}{world}}
+\item 
+\mbox{\hyperlink{classCore_1_1GameSys_1_1AnimationSys}{Core\+::\+Game\+Sys\+::\+Animation\+Sys}} $\ast$ \mbox{\hyperlink{class__Game_ad51ab29c1296aca4fb7b3fdc4fe4e6f3}{animation}}
+\item 
+bool \mbox{\hyperlink{class__Game_aca56bdf293acfb4283cca1622e8df890}{b\+One\+Shot}} \mbox{[}64\mbox{]}
+\item 
+bool \mbox{\hyperlink{class__Game_acfc9a9d674efe2df44982feed0fe6f5a}{b\+Has\+Focus}}
+\item 
+float \mbox{\hyperlink{class__Game_a394ffa93427dbcf1d383bf6c59d188dd}{f\+Test\+\_\+f\+Scale\+Old}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static const int \mbox{\hyperlink{class__Game_a10e5304b2bbbf3e6e7cf75fea67c0849}{i\+Player\+Light}} = 0
+\end{DoxyCompactItemize}
+\doxysubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{class__Game_a736d0d1e383442d3279a13119107ab1b}{\+\_\+\+Admin}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+
+
+Definition at line 17 of file run\+Game.\+h.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class__Game_a2ebb09a6eaff6238501055cf041bf46c}\label{class__Game_a2ebb09a6eaff6238501055cf041bf46c}} 
+\index{\_Game@{\_Game}!\_Game@{\_Game}}
+\index{\_Game@{\_Game}!\_Game@{\_Game}}
+\doxysubsubsection{\texorpdfstring{\_Game()}{\_Game()}}
+{\footnotesize\ttfamily \+\_\+\+Game\+::\+\_\+\+Game (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 52 of file run\+Game.\+h.
+
+
+
+References animation, Core\+::audio\+Sys, b\+Debug\+Draw\+Mouse\+Ray, b\+Has\+Focus, b\+One\+Shot, Core\+::\+\_\+\+Keyboard\+::calc(), Core\+::collision, Core\+::\+Game\+Vars\+::\+Screen\+::f\+Scale, f\+Test\+\_\+f\+Scale\+Old, Core\+::game\+Vars, Core\+::helper, i\+Debug\+Light, i\+Debug\+Object, keyboard, Core\+::\+Game\+Vars\+::screen, and world.
+
+\mbox{\Hypertarget{class__Game_acb1838b8834cc101b97e367606f199d2}\label{class__Game_acb1838b8834cc101b97e367606f199d2}} 
+\index{\_Game@{\_Game}!````~\_Game@{$\sim$\_Game}}
+\index{````~\_Game@{$\sim$\_Game}!\_Game@{\_Game}}
+\doxysubsubsection{\texorpdfstring{$\sim$\_Game()}{~\_Game()}}
+{\footnotesize\ttfamily \+\_\+\+Game\+::$\sim$\+\_\+\+Game (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 103 of file run\+Game.\+h.
+
+
+
+References animation, and world.
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class__Game_a54bc76e7954f84c3bbf703053f59d668}\label{class__Game_a54bc76e7954f84c3bbf703053f59d668}} 
+\index{\_Game@{\_Game}!GetInput@{GetInput}}
+\index{GetInput@{GetInput}!\_Game@{\_Game}}
+\doxysubsubsection{\texorpdfstring{GetInput()}{GetInput()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \+\_\+\+Game\+::\+Get\+Input (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line 1081 of file run\+Game.\+h.
+
+
+
+References b\+Has\+Focus, Core\+::\+\_\+\+Keyboard\+::event, Core\+::game\+Vars, Core\+::\+Game\+Vars\+::\+Screen\+::half, keyboard, Core\+::mouse, Process\+Input(), Core\+::\+Game\+Vars\+::screen, Core\+::\+\_\+\+Mouse\+::update(), Core\+::\+\_\+\+Keyboard\+::update(), and Core\+::\+Vector2f\+::y.
+
+
+
+Referenced by Run().
+
+\mbox{\Hypertarget{class__Game_ad33c563c144a55b4715299a4b02051a2}\label{class__Game_ad33c563c144a55b4715299a4b02051a2}} 
+\index{\_Game@{\_Game}!load@{load}}
+\index{load@{load}!\_Game@{\_Game}}
+\doxysubsubsection{\texorpdfstring{load()}{load()}}
+{\footnotesize\ttfamily bool \+\_\+\+Game\+::load (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 114 of file run\+Game.\+h.
+
+
+
+References animation, Core\+::\+Game\+Sys\+::\+\_\+\+World\+Map\+::calc(), Core\+::\+Game\+Sys\+::\+Animation\+Sys\+::calc(), Core\+::\+\_\+\+Particle\+Emitter\+::calc(), Core\+::\+\_\+\+Particle\+Emitter\+::create(), Core\+::\+Game\+Sys\+::\+\_\+\+O3\+D\+::data, Core\+::\+Game\+Vars\+::\+Screen\+::f\+Scale, Core\+::game\+Vars, Core\+::\+\_\+\+Lights\+::\+Get\+Pos(), i\+Debug\+Light, i\+Debug\+Object, Core\+::\+\_\+\+Mouse\+::init(), Core\+::\+Game\+Sys\+::\+Animation\+Sys\+::init(), Core\+::\+Game\+Sys\+::\+\_\+\+O3\+D\+::\+\_\+\+O3\+D\+Collection\+::items, Core\+::\+Game\+Sys\+::\+\_\+\+World\+Map\+::lights, Core\+::\+Game\+Sys\+::\+\_\+\+World\+Map\+::load(), Core\+::\+Game\+Sys\+::\+Animation\+Sys\+::load(), Core\+::mouse, Core\+::\+Game\+Sys\+::\+\_\+\+World\+Map\+::o3d, Core\+::particles, Core\+::\+Game\+Sys\+::\+\_\+\+O3\+D\+Data\+::pos\+Mod, Core\+::\+Game\+Vars\+::screen, v\+Debug\+Att\+Delta, v\+Debug\+Pos\+Delta, world, Core\+::\+Vector3f\+::x, Core\+::\+Vector3f\+::y, and Core\+::\+Vector3f\+::z.
+
+
+
+Referenced by main().
+
+\mbox{\Hypertarget{class__Game_ab61912a098e3f513bc039a61c2b58dd5}\label{class__Game_ab61912a098e3f513bc039a61c2b58dd5}} 
+\index{\_Game@{\_Game}!ProcessInput@{ProcessInput}}
+\index{ProcessInput@{ProcessInput}!\_Game@{\_Game}}
+\doxysubsubsection{\texorpdfstring{ProcessInput()}{ProcessInput()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \+\_\+\+Game\+::\+Process\+Input (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line 1093 of file run\+Game.\+h.
+
+
+
+References Core\+::\+Game\+Vars\+::\+Player\+::active, Core\+::\+Game\+Vars\+::\+Run\+State\+::admin, b\+Debug\+Draw\+Mouse\+Ray, b\+Has\+Focus, Core\+::\+\_\+\+Collision\+::b\+Update\+Request, Core\+::collision, Core\+::\+Game\+Vars\+::controls, Core\+::\+Game\+Sys\+::\+\_\+\+O3\+D\+::data, Core\+::\+Game\+Vars\+::\+Timers\+::frame\+Rate, Core\+::game\+Vars, Core\+::\+\_\+\+Lights\+::\+Get\+Num\+Lights(), Core\+::\+\_\+\+Lights\+::\+Get\+Pos(), Core\+::glinit, Core\+::\+Game\+Vars\+::\+Screen\+::half, Core\+::\+Game\+Sys\+::\+\_\+\+O3\+D\+::\+\_\+\+O3\+D\+Collection\+::idcount, i\+Debug\+Light, i\+Debug\+Object, i\+Player\+Light, Core\+::\+Game\+Sys\+::\+\_\+\+O3\+D\+::\+\_\+\+O3\+D\+Collection\+::items, Core\+::\+Game\+Vars\+::\+Controls\+::key, keyboard, Core\+::\+\_\+\+Keyboard\+::keys, Core\+::\+Game\+Sys\+::\+Char\+Sheet\+::\+Transform\+::last, Core\+::\+Game\+Sys\+::\+\_\+\+World\+Map\+::lights, Core\+::\+Game\+Vars\+::\+Controls\+::mod\+Speed, Core\+::mouse, Core\+::\+Game\+Vars\+::\+Controls\+::\+\_\+\+Key\+Binding\+::mouse\+\_\+down, Core\+::\+Game\+Vars\+::\+Controls\+::\+\_\+\+Key\+Binding\+::mouse\+\_\+left, Core\+::\+Game\+Vars\+::\+Controls\+::\+\_\+\+Key\+Binding\+::mouse\+\_\+right, Core\+::\+Game\+Vars\+::\+Controls\+::\+\_\+\+Key\+Binding\+::mouse\+\_\+up, Core\+::\+Game\+Vars\+::\+Controls\+::\+\_\+\+Key\+Binding\+::move\+\_\+back, Core\+::\+Game\+Vars\+::\+Controls\+::\+\_\+\+Key\+Binding\+::move\+\_\+down, Core\+::\+Game\+Vars\+::\+Controls\+::\+\_\+\+Key\+Binding\+::move\+\_\+forward, Core\+::\+Game\+Vars\+::\+Controls\+::\+\_\+\+Key\+Binding\+::move\+\_\+up, Core\+::\+Game\+Vars\+::\+Controls\+::move\+Speed, Core\+::\+Game\+Sys\+::\+\_\+\+World\+Map\+::o3d, Core\+::\+Game\+Vars\+::player, Core\+::\+Game\+Sys\+::\+Char\+Sheet\+::\+Transform\+::pos, Core\+::\+Game\+Sys\+::\+\_\+\+O3\+D\+Data\+::pos\+Mod, Core\+::profiles, Core\+::\+Game\+Vars\+::\+Run\+State\+::quit, Core\+::\+\_\+\+Mouse\+::relX, Core\+::\+\_\+\+Mouse\+::relY, Core\+::\+\_\+\+Profile\+::reset(), Core\+::\+Game\+Sys\+::\+Char\+Sheet\+::\+Transform\+::rot, Core\+::\+Game\+Vars\+::\+Controls\+::\+\_\+\+Key\+Binding\+::run, Core\+::\+Game\+Vars\+::run\+State, Core\+::\+\_\+\+Mouse\+::\+Save\+Ray(), Core\+::\+Game\+Vars\+::screen, Core\+::\+\_\+\+Lights\+::\+Set\+Pos(), Core\+::\+Game\+Vars\+::\+Controls\+::\+\_\+\+Key\+Binding\+::sneak, Core\+::\+Timer\+::split(), Core\+::\+Game\+Vars\+::\+Controls\+::\+\_\+\+Key\+Binding\+::strafe\+\_\+left, Core\+::\+Game\+Vars\+::\+Controls\+::\+\_\+\+Key\+Binding\+::strafe\+\_\+right, Core\+::\+Game\+Vars\+::timer, Core\+::\+Radians\+::to\+Degrees(), Core\+::toggle(), Core\+::\+\_\+\+Mouse\+::\+Toggle\+Mouse(), Core\+::\+Degrees\+::to\+Radians(), Core\+::\+Game\+Sys\+::\+Char\+Sheet\+::transform, v\+Debug\+Rotation, world, Core\+::\+Vector3f\+::x, Core\+::\+Vector2f\+::y, Core\+::\+Vector3f\+::y, and Core\+::\+Vector3f\+::z.
+
+
+
+Referenced by Get\+Input().
+
+\mbox{\Hypertarget{class__Game_a430b2a9ce8914c4e63156598082332e4}\label{class__Game_a430b2a9ce8914c4e63156598082332e4}} 
+\index{\_Game@{\_Game}!Run@{Run}}
+\index{Run@{Run}!\_Game@{\_Game}}
+\doxysubsubsection{\texorpdfstring{Run()}{Run()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \+\_\+\+Game\+::\+Run (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 290 of file run\+Game.\+h.
+
+
+
+References Core\+::\+Game\+Vars\+::\+Player\+::active, Core\+::game\+Vars, Get\+Input(), Core\+::\+\_\+\+Mouse\+::\+Get\+Mouse\+Ray(), Core\+::mouse, Core\+::particles, Core\+::\+Game\+Vars\+::player, Core\+::profiles, Core\+::\+Game\+Vars\+::\+Screen\+::res, Core\+::\+Game\+Sys\+::\+Char\+Sheet\+::\+Transform\+::rot, Core\+::\+\_\+\+Profile\+::run\+Profile(), Core\+::\+Game\+Vars\+::screen, Core\+::\+Game\+Sys\+::\+Char\+Sheet\+::transform, Update(), Core\+::\+\_\+\+Particle\+Emitter\+::update(), and Core\+::\+Vector2f\+::y.
+
+
+
+Referenced by main().
+
+\mbox{\Hypertarget{class__Game_a82a5a45fd54b4261344328d8cce9bbb8}\label{class__Game_a82a5a45fd54b4261344328d8cce9bbb8}} 
+\index{\_Game@{\_Game}!Update@{Update}}
+\index{Update@{Update}!\_Game@{\_Game}}
+\doxysubsubsection{\texorpdfstring{Update()}{Update()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \+\_\+\+Game\+::\+Update (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line 362 of file run\+Game.\+h.
+
+
+
+References Core\+::\+Game\+Vars\+::\+Player\+::active, animation, Core\+::\+Post\+Process\+::\+Apply\+Brightness(), Core\+::\+Post\+Process\+::\+Apply\+Brightness\+Filter(), Core\+::\+Post\+Process\+::\+Apply\+Combine(), Core\+::\+Post\+Process\+::\+Apply\+Contrast(), Core\+::\+Post\+Process\+::\+Apply\+H\+Blur(), Core\+::\+Post\+Process\+::\+Apply\+Radial\+Blur(), Core\+::\+Post\+Process\+::\+Apply\+V\+Blur(), Core\+::\+Game\+Sys\+::\+\_\+\+World\+Map\+::atmosphere, Core\+::audio\+Sys, b\+Debug\+Draw\+Mouse\+Ray, Core\+::\+Game\+Sys\+::check\+Icon(), Core\+::colors, Core\+::\+G\+U\+I\+::\+C\+O\+N\+S\+T\+R\+A\+I\+N\+\_\+\+L\+E\+FT, Core\+::\+Game\+Vars\+::debug, Core\+::\+\_\+\+Mouse\+::dir, Core\+::\+Game\+Sys\+::\+\_\+\+World\+Map\+::draw(), Core\+::\+\_\+\+Text\+Sys\+::draw(), Core\+::\+\_\+\+Mouse\+::draw(), \+\_\+\+Admin\+::draw(), Core\+::\+Game\+Sys\+::\+Atmosphere\+::draw(), Core\+::\+\_\+\+Particle\+Emitter\+::draw(), Core\+::\+\_\+\+Text\+Sys\+::draw2(), Core\+::\+\_\+\+Helper\+::draw\+Line(), Core\+::\+\_\+\+Helper\+::draw\+Position(), Core\+::\+Game\+Sys\+::draw\+Sprite(), Core\+::\+\_\+\+Text\+Sys\+::draw\+Var2(), Core\+::\+Game\+Sys\+::\+Animation\+Sys\+::draw\+World(), Core\+::\+Post\+Process\+::\+End\+Render\+Layer(), Core\+::\+Game\+Vars\+::font, Core\+::framerate, Core\+::game\+Vars, Core\+::\+Game\+Sys\+::\+\_\+\+Satellite\+::get\+Alpha(), Core\+::\+\_\+\+Frame\+Rate\+::get\+F\+P\+S(), Core\+::\+\_\+\+Time\+Sys\+::\+Get\+Hour(), Core\+::\+\_\+\+Time\+Sys\+::\+Get\+Minute(), Core\+::\+\_\+\+Occlusion\+::\+Get\+Ratio(), Core\+::\+\_\+\+Time\+Sys\+::\+Get\+Second(), Core\+::\+\_\+\+Frame\+Rate\+::get\+Split\+Ticks(), Core\+::\+\_\+\+Frame\+Rate\+::get\+Std\+Dev(), G\+L\+\_\+\+D\+E\+P\+T\+H\+\_\+\+T\+E\+ST, Core\+::glinit, Core\+::\+\_\+\+Colors\+::green, Core\+::\+Game\+Vars\+::\+Screen\+::half, Core\+::helper, Core\+::\+\_\+\+Time\+Sys\+::i\+Day, i\+Debug\+Light, Core\+::\+\_\+\+Time\+Sys\+::i\+Year, Core\+::matrix, M\+Y\+\_\+\+N\+A\+M\+E\+S\+P\+A\+C\+E\+::menu\+Sys, Core\+::\+Game\+Sys\+::\+Atmosphere\+::\+M\+O\+D\+E\+\_\+\+F\+L\+A\+R\+ES, Core\+::\+Game\+Sys\+::\+Atmosphere\+::\+M\+O\+D\+E\+\_\+\+S\+A\+T\+E\+L\+L\+I\+TE, Core\+::mouse, Core\+::\+Game\+Vars\+::\+\_\+\+Debug\+::noise, Core\+::occlusion, Core\+::particles, Core\+::\+Game\+Vars\+::player, Core\+::\+Audio\+Sys\+::play\+Sound(), Core\+::\+Matrix\+\_\+\+System\+::\+Pop(), Core\+::\+\_\+\+Colors\+::\+Pop\+Front(), Core\+::\+Game\+Sys\+::\+Char\+Sheet\+::\+Transform\+::pos, Core\+::post\+Process, Core\+::profiles, Core\+::\+Matrix\+\_\+\+System\+::\+Push(), Core\+::\+\_\+\+Colors\+::\+Push\+Front(), Core\+::\+\_\+\+Mouse\+::rays, Core\+::\+\_\+\+Colors\+::red, Core\+::\+Post\+Process\+::\+Render\+Layer(), Core\+::\+Post\+Process\+::\+Render\+To\+Screen(), Core\+::\+Post\+Process\+::\+Render\+To\+Window(), Core\+::\+Game\+Vars\+::\+\_\+\+Debug\+::\+\_\+\+Noise\+::\+\_\+\+Simplex\+::res, Core\+::\+Gl\+Init\+\_\+\+System\+::\+Restore\+Clear\+Color(), Core\+::\+Game\+Sys\+::\+Char\+Sheet\+::\+Transform\+::rot, Core\+::\+Matrix\+\_\+\+System\+::\+Rotate(), Core\+::\+\_\+\+Profile\+::run\+Profile(), Core\+::\+Game\+Sys\+::\+Atmosphere\+::satellite, Core\+::\+Game\+Vars\+::screen, Core\+::\+\_\+\+Colors\+::\+Set\+Active(), Core\+::\+Matrix\+\_\+\+System\+::\+Set\+Identity(), Core\+::\+Matrix\+\_\+\+System\+::\+Set\+Projection(), Core\+::\+Matrix\+\_\+\+System\+::\+Set\+Transform(), Core\+::\+Game\+Vars\+::\+\_\+\+Debug\+::\+\_\+\+Noise\+::simplex, M\+Y\+\_\+\+N\+A\+M\+E\+S\+P\+A\+C\+E\+::sprite\+Sys, Core\+::\+Game\+Sys\+::\+Animation\+Sys\+::start\+Animation(), Core\+::text\+Sys, Core\+::time\+Sys, to\+\_\+string(), Core\+::\+Game\+Sys\+::\+Char\+Sheet\+::transform, Core\+::\+Matrix\+\_\+\+System\+::\+Translate(), Core\+::\+Game\+Vars\+::\+Font\+::v\+Size, M\+Y\+\_\+\+N\+A\+M\+E\+S\+P\+A\+C\+E\+::win\+Sys, world, Core\+::\+\_\+\+Mouse\+::x, Core\+::\+Vector2f\+::x, Core\+::\+Vector3f\+::x, Core\+::\+\_\+\+Mouse\+::y, Core\+::\+Vector2f\+::y, Core\+::\+Vector3f\+::y, and Core\+::\+Vector3f\+::z.
+
+
+
+Referenced by Run().
+
+
+
+\doxysubsection{Friends And Related Function Documentation}
+\mbox{\Hypertarget{class__Game_a736d0d1e383442d3279a13119107ab1b}\label{class__Game_a736d0d1e383442d3279a13119107ab1b}} 
+\index{\_Game@{\_Game}!\_Admin@{\_Admin}}
+\index{\_Admin@{\_Admin}!\_Game@{\_Game}}
+\doxysubsubsection{\texorpdfstring{\_Admin}{\_Admin}}
+{\footnotesize\ttfamily friend class \mbox{\hyperlink{class__Admin}{\+\_\+\+Admin}}\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+Definition at line 38 of file run\+Game.\+h.
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{class__Game_ad51ab29c1296aca4fb7b3fdc4fe4e6f3}\label{class__Game_ad51ab29c1296aca4fb7b3fdc4fe4e6f3}} 
+\index{\_Game@{\_Game}!animation@{animation}}
+\index{animation@{animation}!\_Game@{\_Game}}
+\doxysubsubsection{\texorpdfstring{animation}{animation}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classCore_1_1GameSys_1_1AnimationSys}{Core\+::\+Game\+Sys\+::\+Animation\+Sys}}$\ast$ \+\_\+\+Game\+::animation\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line 25 of file run\+Game.\+h.
+
+
+
+Referenced by \+\_\+\+Game(), load(), Update(), and $\sim$\+\_\+\+Game().
+
+\mbox{\Hypertarget{class__Game_a9b445d5e1d5bbb3c7be9a7c2a61a657f}\label{class__Game_a9b445d5e1d5bbb3c7be9a7c2a61a657f}} 
+\index{\_Game@{\_Game}!bDebugDrawMouseRay@{bDebugDrawMouseRay}}
+\index{bDebugDrawMouseRay@{bDebugDrawMouseRay}!\_Game@{\_Game}}
+\doxysubsubsection{\texorpdfstring{bDebugDrawMouseRay}{bDebugDrawMouseRay}}
+{\footnotesize\ttfamily bool \+\_\+\+Game\+::b\+Debug\+Draw\+Mouse\+Ray}
+
+
+
+Definition at line 45 of file run\+Game.\+h.
+
+
+
+Referenced by \+\_\+\+Game(), Process\+Input(), and Update().
+
+\mbox{\Hypertarget{class__Game_acfc9a9d674efe2df44982feed0fe6f5a}\label{class__Game_acfc9a9d674efe2df44982feed0fe6f5a}} 
+\index{\_Game@{\_Game}!bHasFocus@{bHasFocus}}
+\index{bHasFocus@{bHasFocus}!\_Game@{\_Game}}
+\doxysubsubsection{\texorpdfstring{bHasFocus}{bHasFocus}}
+{\footnotesize\ttfamily bool \+\_\+\+Game\+::b\+Has\+Focus\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line 30 of file run\+Game.\+h.
+
+
+
+Referenced by \+\_\+\+Game(), Get\+Input(), and Process\+Input().
+
+\mbox{\Hypertarget{class__Game_aca56bdf293acfb4283cca1622e8df890}\label{class__Game_aca56bdf293acfb4283cca1622e8df890}} 
+\index{\_Game@{\_Game}!bOneShot@{bOneShot}}
+\index{bOneShot@{bOneShot}!\_Game@{\_Game}}
+\doxysubsubsection{\texorpdfstring{bOneShot}{bOneShot}}
+{\footnotesize\ttfamily bool \+\_\+\+Game\+::b\+One\+Shot\mbox{[}64\mbox{]}\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line 29 of file run\+Game.\+h.
+
+
+
+Referenced by \+\_\+\+Game().
+
+\mbox{\Hypertarget{class__Game_a394ffa93427dbcf1d383bf6c59d188dd}\label{class__Game_a394ffa93427dbcf1d383bf6c59d188dd}} 
+\index{\_Game@{\_Game}!fTest\_fScaleOld@{fTest\_fScaleOld}}
+\index{fTest\_fScaleOld@{fTest\_fScaleOld}!\_Game@{\_Game}}
+\doxysubsubsection{\texorpdfstring{fTest\_fScaleOld}{fTest\_fScaleOld}}
+{\footnotesize\ttfamily float \+\_\+\+Game\+::f\+Test\+\_\+f\+Scale\+Old\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line 32 of file run\+Game.\+h.
+
+
+
+Referenced by \+\_\+\+Game().
+
+\mbox{\Hypertarget{class__Game_a56fe7752134867c99c3f84ef9334f6f5}\label{class__Game_a56fe7752134867c99c3f84ef9334f6f5}} 
+\index{\_Game@{\_Game}!iDebugLight@{iDebugLight}}
+\index{iDebugLight@{iDebugLight}!\_Game@{\_Game}}
+\doxysubsubsection{\texorpdfstring{iDebugLight}{iDebugLight}}
+{\footnotesize\ttfamily int \+\_\+\+Game\+::i\+Debug\+Light}
+
+
+
+Definition at line 43 of file run\+Game.\+h.
+
+
+
+Referenced by \+\_\+\+Game(), load(), Process\+Input(), \+\_\+\+Admin\+::run(), and Update().
+
+\mbox{\Hypertarget{class__Game_a372334b522cb4561b9a57147cb70c12a}\label{class__Game_a372334b522cb4561b9a57147cb70c12a}} 
+\index{\_Game@{\_Game}!iDebugObject@{iDebugObject}}
+\index{iDebugObject@{iDebugObject}!\_Game@{\_Game}}
+\doxysubsubsection{\texorpdfstring{iDebugObject}{iDebugObject}}
+{\footnotesize\ttfamily int \+\_\+\+Game\+::i\+Debug\+Object}
+
+
+
+Definition at line 44 of file run\+Game.\+h.
+
+
+
+Referenced by \+\_\+\+Game(), load(), Process\+Input(), and \+\_\+\+Admin\+::run().
+
+\mbox{\Hypertarget{class__Game_a10e5304b2bbbf3e6e7cf75fea67c0849}\label{class__Game_a10e5304b2bbbf3e6e7cf75fea67c0849}} 
+\index{\_Game@{\_Game}!iPlayerLight@{iPlayerLight}}
+\index{iPlayerLight@{iPlayerLight}!\_Game@{\_Game}}
+\doxysubsubsection{\texorpdfstring{iPlayerLight}{iPlayerLight}}
+{\footnotesize\ttfamily const int \+\_\+\+Game\+::i\+Player\+Light = 0\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+
+Definition at line 19 of file run\+Game.\+h.
+
+
+
+Referenced by Process\+Input().
+
+\mbox{\Hypertarget{class__Game_af8c960506df3d42a96bf1c4c1dbbc36b}\label{class__Game_af8c960506df3d42a96bf1c4c1dbbc36b}} 
+\index{\_Game@{\_Game}!keyboard@{keyboard}}
+\index{keyboard@{keyboard}!\_Game@{\_Game}}
+\doxysubsubsection{\texorpdfstring{keyboard}{keyboard}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classCore_1_1__Keyboard}{Core\+::\+\_\+\+Keyboard}} \+\_\+\+Game\+::keyboard\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line 20 of file run\+Game.\+h.
+
+
+
+Referenced by \+\_\+\+Game(), Get\+Input(), and Process\+Input().
+
+\mbox{\Hypertarget{class__Game_aed8dc749f4a633b000bac7182e6f6dbd}\label{class__Game_aed8dc749f4a633b000bac7182e6f6dbd}} 
+\index{\_Game@{\_Game}!vDebugAttDelta@{vDebugAttDelta}}
+\index{vDebugAttDelta@{vDebugAttDelta}!\_Game@{\_Game}}
+\doxysubsubsection{\texorpdfstring{vDebugAttDelta}{vDebugAttDelta}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structCore_1_1Vector3f}{Core\+::\+Vector3f}} \+\_\+\+Game\+::v\+Debug\+Att\+Delta}
+
+
+
+Definition at line 41 of file run\+Game.\+h.
+
+
+
+Referenced by load().
+
+\mbox{\Hypertarget{class__Game_a60ebccdfb00b53d064df1fbc9d4ed046}\label{class__Game_a60ebccdfb00b53d064df1fbc9d4ed046}} 
+\index{\_Game@{\_Game}!vDebugPosDelta@{vDebugPosDelta}}
+\index{vDebugPosDelta@{vDebugPosDelta}!\_Game@{\_Game}}
+\doxysubsubsection{\texorpdfstring{vDebugPosDelta}{vDebugPosDelta}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structCore_1_1Vector3f}{Core\+::\+Vector3f}} \+\_\+\+Game\+::v\+Debug\+Pos\+Delta}
+
+
+
+Definition at line 42 of file run\+Game.\+h.
+
+
+
+Referenced by load().
+
+\mbox{\Hypertarget{class__Game_a24069c354e74073095428bbbdc6baf28}\label{class__Game_a24069c354e74073095428bbbdc6baf28}} 
+\index{\_Game@{\_Game}!vDebugRotation@{vDebugRotation}}
+\index{vDebugRotation@{vDebugRotation}!\_Game@{\_Game}}
+\doxysubsubsection{\texorpdfstring{vDebugRotation}{vDebugRotation}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structCore_1_1Vector3f}{Core\+::\+Vector3f}} \+\_\+\+Game\+::v\+Debug\+Rotation}
+
+
+
+Definition at line 46 of file run\+Game.\+h.
+
+
+
+Referenced by Process\+Input().
+
+\mbox{\Hypertarget{class__Game_a0b6042ea5252cb8693d7437b1f972a1c}\label{class__Game_a0b6042ea5252cb8693d7437b1f972a1c}} 
+\index{\_Game@{\_Game}!world@{world}}
+\index{world@{world}!\_Game@{\_Game}}
+\doxysubsubsection{\texorpdfstring{world}{world}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classCore_1_1GameSys_1_1__WorldMap}{Core\+::\+Game\+Sys\+::\+\_\+\+World\+Map}}$\ast$ \+\_\+\+Game\+::world\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line 23 of file run\+Game.\+h.
+
+
+
+Referenced by \+\_\+\+Game(), load(), Process\+Input(), \+\_\+\+Admin\+::run(), Update(), and $\sim$\+\_\+\+Game().
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/game/\mbox{\hyperlink{runGame_8h}{run\+Game.\+h}}\end{DoxyCompactItemize}

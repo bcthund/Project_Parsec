@@ -1,0 +1,701 @@
+\hypertarget{classCore_1_1__BOUNDING__VOLUME}{}\doxysection{Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+ME Class Reference}
+\label{classCore_1_1__BOUNDING__VOLUME}\index{Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}}
+
+
+{\ttfamily \#include $<$bounding\+\_\+volume.\+h$>$}
+
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structCore_1_1__BOUNDING__VOLUME_1_1__BB}{\+\_\+\+BB}}
+\item 
+struct \mbox{\hyperlink{structCore_1_1__BOUNDING__VOLUME_1_1__BBC}{\+\_\+\+B\+BC}}
+\item 
+struct \mbox{\hyperlink{structCore_1_1__BOUNDING__VOLUME_1_1__BBS}{\+\_\+\+B\+BS}}
+\item 
+struct \mbox{\hyperlink{structCore_1_1__BOUNDING__VOLUME_1_1__CollisionData}{\+\_\+\+Collision\+Data}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME_aded4cfa3227c88b6dcc8508203e7191e}{\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+\_\+\+T\+Y\+PE}} \{ \newline
+\mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME_aded4cfa3227c88b6dcc8508203e7191eafb694312949f4c6569d9d5aeb9f8b40a}{B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+\_\+\+N\+O\+NE}}, 
+\mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME_aded4cfa3227c88b6dcc8508203e7191ea9a9552925d2cc75906c2efe0b61e6e81}{B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+\_\+\+O\+BB}}, 
+\mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME_aded4cfa3227c88b6dcc8508203e7191ead011677d7ea8d13825e48d3c62fc1df2}{B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+\_\+\+A\+A\+BB}}, 
+\mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME_aded4cfa3227c88b6dcc8508203e7191eaea5f9c5cafa655eae96c5e1c5cbf1c35}{B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+\_\+\+S\+P\+H\+E\+RE}}, 
+\newline
+\mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME_aded4cfa3227c88b6dcc8508203e7191eaaa693050482488e428ad94f07557b339}{B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+\_\+\+C\+Y\+L\+I\+N\+D\+ER}}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME_a8b0d1883483ebb0c3d8a994e258ae569}{\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+ME}} (\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} \&\mbox{\hyperlink{gl4__5_2glext_8h_a7d65d00ca3b0630d9b5c52df855b19f5}{t}})
+\item 
+\mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME_afcca83d183f60422b53f4465c11070cf}{$\sim$\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+ME}} ()
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME_a508f3efb42e8110d8d47032f611a5eb3}{init}} (\mbox{\hyperlink{classCore_1_1__Helper}{\+\_\+\+Helper}} \mbox{\hyperlink{namespaceCore_ae3c8c7d34773a7fdde18d84489e647e0}{helper}})
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME_a1abd6d9f8ecf26f21e4ead006f395fec}{Start}} (\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} \mbox{\hyperlink{gl4__5_2glext_8h_a4af680a6c683f88ed67b76f207f2e6e4}{s}})
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME_a5548e60fdf6e18b3c9907f2574f6078d}{Check\+Min\+Max\+O\+BB}} (\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} \mbox{\hyperlink{gl4__5_2glcorearb_8h_a10a82eabcb59d2fcd74acee063775f90}{v}})
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME_a0f17231c61b46bdc20de42d6dc697884}{Check\+Min\+Max\+A\+A\+BB}} (\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} \mbox{\hyperlink{gl4__5_2glcorearb_8h_a10a82eabcb59d2fcd74acee063775f90}{v}})
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME_a89f095b51d6a74271198664cb2bf69da}{Calc\+Center}} (\mbox{\hyperlink{structCore_1_1__BOUNDING__VOLUME_1_1__BB}{\+\_\+\+BB}} \&bb)
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME_a1e8781ff7753a3499e6c0b8c3e5975ed}{Calc\+O\+BB}} ()
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME_a4407226c5ff480c430910437e95cbbd4}{Calc\+A\+A\+BB}} ()
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME_a3a19370e8b329a70575961d14af5a8f9}{Check\+X\+YZ}} (\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} \mbox{\hyperlink{gl4__5_2glcorearb_8h_a10a82eabcb59d2fcd74acee063775f90}{v}})
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME_a8f8d42c3eab847b456f4ae16a76d1436}{Finish}} (\mbox{\hyperlink{classCore_1_1Matrix__System}{Matrix\+\_\+\+System}} \&\mbox{\hyperlink{gl4__5_2glext_8h_a7b24a3f2f56eb1244ae69dacb4fecb6f}{matrix}})
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME_a4104d0ab3df85d4dc870ee215fb86deb}{Set\+Position}} (\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} \mbox{\hyperlink{gl4__5_2glext_8h_aa5367c14d90f462230c2611b81b41d23}{p}})
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME_a969447d40d8130fc4cdfb85568786ec2}{Set\+Rotation}} (\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} \mbox{\hyperlink{gl4__5_2glcorearb_8h_a42ce7cdc612e53abee15043f80220d97}{r}})
+\item 
+\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} \mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME_a8677125db7b51193feaccc967486305d}{Get\+Center\+Position}} ()
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME_a9dd92313c61af1d2138edb42dd0b3ea1}{Draw}} (\mbox{\hyperlink{classCore_1_1Matrix__System}{Matrix\+\_\+\+System}} \&\mbox{\hyperlink{gl4__5_2glext_8h_a7b24a3f2f56eb1244ae69dacb4fecb6f}{matrix}}, \mbox{\hyperlink{classCore_1_1Shader__System}{Shader\+\_\+\+System}} \&\mbox{\hyperlink{gl4__5_2glcorearb_8h_a57b2a96adb1d51204909a82d861e395e}{shader}}, \mbox{\hyperlink{classCore_1_1__Helper}{\+\_\+\+Helper}} \&\mbox{\hyperlink{namespaceCore_ae3c8c7d34773a7fdde18d84489e647e0}{helper}}, \mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} translate=\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}(), bool b\+Draw\+Intersection=false)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} \mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME_aa8e3635e0f5dbbaeb250ed1c5249872a}{v\+Position}}
+\begin{DoxyCompactList}\small\item\em Translation of O3D. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} \mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME_a6e15afb179b6b832784d385efc83baf8}{v\+Rotation}}
+\item 
+\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} \mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME_aa94d4f030d923d82b246682195eaedbd}{v\+CP}}
+\item 
+\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} $\ast$ \mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME_ae909e79e8fe72d0b21433e0cf92e66ef}{v\+Translate}}
+\item 
+struct \mbox{\hyperlink{structCore_1_1__BOUNDING__VOLUME_1_1__BB}{Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+\_\+\+BB}} \mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME_a0f68c35d7b0d1be1df9811ff610f7c09}{O\+BB}}
+\item 
+struct \mbox{\hyperlink{structCore_1_1__BOUNDING__VOLUME_1_1__BB}{Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+\_\+\+BB}} \mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME_acb97ebfc2af1698b468fd7a0d2b24691}{A\+A\+BB}}
+\item 
+struct \mbox{\hyperlink{structCore_1_1__BOUNDING__VOLUME_1_1__CollisionData}{Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+\_\+\+Collision\+Data}} \mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME_af34d12d239be8901eafc21c40a4201ce}{cdata}}
+\item 
+struct \mbox{\hyperlink{structCore_1_1__BOUNDING__VOLUME_1_1__BBS}{Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+\_\+\+B\+BS}} \mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME_a167dee1d6ccdcb9e418b91a18f870a9d}{Sphere}}
+\item 
+\mbox{\hyperlink{structCore_1_1__BOUNDING__VOLUME_1_1__BBC}{Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+\_\+\+B\+BC}} \mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME_a3f71b05ad30b18d5fb48ba80e8567b0b}{Cylinder}}
+\item 
+float \mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME_aa63afe13b7ac790c16a3076b4b31b262}{f\+Padding}}
+\begin{DoxyCompactList}\small\item\em Bounding volume padding. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME_aa2d07a42df26f6c428f5d65925e5bdec}{i\+Type}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME_a175123c55c7b50472509826f9a1c90cb}{Draw\+Intersection}} (\mbox{\hyperlink{classCore_1_1Matrix__System}{Matrix\+\_\+\+System}} \&\mbox{\hyperlink{gl4__5_2glext_8h_a7b24a3f2f56eb1244ae69dacb4fecb6f}{matrix}}, \mbox{\hyperlink{classCore_1_1Shader__System}{Shader\+\_\+\+System}} \&\mbox{\hyperlink{gl4__5_2glcorearb_8h_a57b2a96adb1d51204909a82d861e395e}{shader}}, \mbox{\hyperlink{classCore_1_1__Helper}{\+\_\+\+Helper}} \&\mbox{\hyperlink{namespaceCore_ae3c8c7d34773a7fdde18d84489e647e0}{helper}})
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME_aaf92e29f9c7f41603cd49a43dd57aec3}{Draw\+O\+BB}} (\mbox{\hyperlink{classCore_1_1Matrix__System}{Matrix\+\_\+\+System}} \&\mbox{\hyperlink{gl4__5_2glext_8h_a7b24a3f2f56eb1244ae69dacb4fecb6f}{matrix}}, \mbox{\hyperlink{classCore_1_1Shader__System}{Shader\+\_\+\+System}} \&\mbox{\hyperlink{gl4__5_2glcorearb_8h_a57b2a96adb1d51204909a82d861e395e}{shader}}, \mbox{\hyperlink{classCore_1_1__Helper}{\+\_\+\+Helper}} \&\mbox{\hyperlink{namespaceCore_ae3c8c7d34773a7fdde18d84489e647e0}{helper}}, \mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} translate=\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}())
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME_a425759c6e2cb10c62552c67669b11edc}{Draw\+A\+A\+BB}} (\mbox{\hyperlink{classCore_1_1Matrix__System}{Matrix\+\_\+\+System}} \&\mbox{\hyperlink{gl4__5_2glext_8h_a7b24a3f2f56eb1244ae69dacb4fecb6f}{matrix}}, \mbox{\hyperlink{classCore_1_1Shader__System}{Shader\+\_\+\+System}} \&\mbox{\hyperlink{gl4__5_2glcorearb_8h_a57b2a96adb1d51204909a82d861e395e}{shader}}, \mbox{\hyperlink{classCore_1_1__Helper}{\+\_\+\+Helper}} \&\mbox{\hyperlink{namespaceCore_ae3c8c7d34773a7fdde18d84489e647e0}{helper}}, \mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} translate=\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}())
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME_a6ea4fa5b3a25888dcd0d5207fe336b4e}{Draw\+Sphere}} (\mbox{\hyperlink{classCore_1_1Matrix__System}{Matrix\+\_\+\+System}} \&\mbox{\hyperlink{gl4__5_2glext_8h_a7b24a3f2f56eb1244ae69dacb4fecb6f}{matrix}}, \mbox{\hyperlink{classCore_1_1Shader__System}{Shader\+\_\+\+System}} \&\mbox{\hyperlink{gl4__5_2glcorearb_8h_a57b2a96adb1d51204909a82d861e395e}{shader}}, \mbox{\hyperlink{classCore_1_1__Helper}{\+\_\+\+Helper}} \&\mbox{\hyperlink{namespaceCore_ae3c8c7d34773a7fdde18d84489e647e0}{helper}}, \mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} translate=\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}())
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME_a13ab8a3c21fec9b054cbeedfc40fb852}{Draw\+Cylinder}} (\mbox{\hyperlink{classCore_1_1Matrix__System}{Matrix\+\_\+\+System}} \&\mbox{\hyperlink{gl4__5_2glext_8h_a7b24a3f2f56eb1244ae69dacb4fecb6f}{matrix}}, \mbox{\hyperlink{classCore_1_1Shader__System}{Shader\+\_\+\+System}} \&\mbox{\hyperlink{gl4__5_2glcorearb_8h_a57b2a96adb1d51204909a82d861e395e}{shader}}, \mbox{\hyperlink{classCore_1_1__Helper}{\+\_\+\+Helper}} \&\mbox{\hyperlink{namespaceCore_ae3c8c7d34773a7fdde18d84489e647e0}{helper}}, \mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} translate=\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}())
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME_a7bf7a91a36246cece14c5ac718add57e}{b\+Finished}}
+\item 
+\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} \mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME_acae3d57e626a2ea933411dfdaed8afca}{v\+Scale}}
+\item 
+bool \mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME_a86503ebfba33aeb4f3d1f7169e65e8c5}{b\+Collision}}
+\item 
+\mbox{\hyperlink{structCore_1_1Matrix44f}{Matrix44f}} \mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME_a7904aa0d554957766851da8722e4e720}{m\+O\+BB}}
+\item 
+\mbox{\hyperlink{structCore_1_1Matrix44f}{Matrix44f}} \mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME_ad7ebd5a3e48f4c1d1c06d6bd11ef3331}{m\+A\+A\+BB}}
+\item 
+\mbox{\hyperlink{structCore_1_1Matrix44f}{Matrix44f}} \mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME_a53a6b92358f9d9bed228e8411390ace8}{m\+Sphere}}
+\item 
+\mbox{\hyperlink{structCore_1_1Matrix44f}{Matrix44f}} \mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME_aa14822589651447ee7b04ceeda2f4cef}{m\+Cylinder}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+
+
+Definition at line 18 of file bounding\+\_\+volume.\+h.
+
+
+
+\doxysubsection{Member Enumeration Documentation}
+\mbox{\Hypertarget{classCore_1_1__BOUNDING__VOLUME_aded4cfa3227c88b6dcc8508203e7191e}\label{classCore_1_1__BOUNDING__VOLUME_aded4cfa3227c88b6dcc8508203e7191e}} 
+\index{Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}!\_BOUNDING\_VOLUME\_TYPE@{\_BOUNDING\_VOLUME\_TYPE}}
+\index{\_BOUNDING\_VOLUME\_TYPE@{\_BOUNDING\_VOLUME\_TYPE}!Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}}
+\doxysubsubsection{\texorpdfstring{\_BOUNDING\_VOLUME\_TYPE}{\_BOUNDING\_VOLUME\_TYPE}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME_aded4cfa3227c88b6dcc8508203e7191e}{Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+\_\+\+T\+Y\+PE}}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{BOUNDING\_VOLUME\_NONE@{BOUNDING\_VOLUME\_NONE}!Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}}\index{Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}!BOUNDING\_VOLUME\_NONE@{BOUNDING\_VOLUME\_NONE}}}\mbox{\Hypertarget{classCore_1_1__BOUNDING__VOLUME_aded4cfa3227c88b6dcc8508203e7191eafb694312949f4c6569d9d5aeb9f8b40a}\label{classCore_1_1__BOUNDING__VOLUME_aded4cfa3227c88b6dcc8508203e7191eafb694312949f4c6569d9d5aeb9f8b40a}} 
+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+\_\+\+N\+O\+NE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{BOUNDING\_VOLUME\_OBB@{BOUNDING\_VOLUME\_OBB}!Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}}\index{Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}!BOUNDING\_VOLUME\_OBB@{BOUNDING\_VOLUME\_OBB}}}\mbox{\Hypertarget{classCore_1_1__BOUNDING__VOLUME_aded4cfa3227c88b6dcc8508203e7191ea9a9552925d2cc75906c2efe0b61e6e81}\label{classCore_1_1__BOUNDING__VOLUME_aded4cfa3227c88b6dcc8508203e7191ea9a9552925d2cc75906c2efe0b61e6e81}} 
+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+\_\+\+O\+BB&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{BOUNDING\_VOLUME\_AABB@{BOUNDING\_VOLUME\_AABB}!Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}}\index{Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}!BOUNDING\_VOLUME\_AABB@{BOUNDING\_VOLUME\_AABB}}}\mbox{\Hypertarget{classCore_1_1__BOUNDING__VOLUME_aded4cfa3227c88b6dcc8508203e7191ead011677d7ea8d13825e48d3c62fc1df2}\label{classCore_1_1__BOUNDING__VOLUME_aded4cfa3227c88b6dcc8508203e7191ead011677d7ea8d13825e48d3c62fc1df2}} 
+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+\_\+\+A\+A\+BB&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{BOUNDING\_VOLUME\_SPHERE@{BOUNDING\_VOLUME\_SPHERE}!Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}}\index{Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}!BOUNDING\_VOLUME\_SPHERE@{BOUNDING\_VOLUME\_SPHERE}}}\mbox{\Hypertarget{classCore_1_1__BOUNDING__VOLUME_aded4cfa3227c88b6dcc8508203e7191eaea5f9c5cafa655eae96c5e1c5cbf1c35}\label{classCore_1_1__BOUNDING__VOLUME_aded4cfa3227c88b6dcc8508203e7191eaea5f9c5cafa655eae96c5e1c5cbf1c35}} 
+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+\_\+\+S\+P\+H\+E\+RE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{BOUNDING\_VOLUME\_CYLINDER@{BOUNDING\_VOLUME\_CYLINDER}!Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}}\index{Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}!BOUNDING\_VOLUME\_CYLINDER@{BOUNDING\_VOLUME\_CYLINDER}}}\mbox{\Hypertarget{classCore_1_1__BOUNDING__VOLUME_aded4cfa3227c88b6dcc8508203e7191eaaa693050482488e428ad94f07557b339}\label{classCore_1_1__BOUNDING__VOLUME_aded4cfa3227c88b6dcc8508203e7191eaaa693050482488e428ad94f07557b339}} 
+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+\_\+\+C\+Y\+L\+I\+N\+D\+ER&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line 40 of file bounding\+\_\+volume.\+h.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classCore_1_1__BOUNDING__VOLUME_a8b0d1883483ebb0c3d8a994e258ae569}\label{classCore_1_1__BOUNDING__VOLUME_a8b0d1883483ebb0c3d8a994e258ae569}} 
+\index{Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}!\_BOUNDING\_VOLUME@{\_BOUNDING\_VOLUME}}
+\index{\_BOUNDING\_VOLUME@{\_BOUNDING\_VOLUME}!Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}}
+\doxysubsubsection{\texorpdfstring{\_BOUNDING\_VOLUME()}{\_BOUNDING\_VOLUME()}}
+{\footnotesize\ttfamily Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+ME (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} \&}]{t }\end{DoxyParamCaption})}
+
+
+
+Definition at line 110 of file bounding\+\_\+volume.\+h.
+
+
+
+References b\+Collision, b\+Finished, B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+\_\+\+N\+O\+NE, f\+Padding, i\+Type, t, v\+Position, v\+Rotation, and v\+Translate.
+
+\mbox{\Hypertarget{classCore_1_1__BOUNDING__VOLUME_afcca83d183f60422b53f4465c11070cf}\label{classCore_1_1__BOUNDING__VOLUME_afcca83d183f60422b53f4465c11070cf}} 
+\index{Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}!````~\_BOUNDING\_VOLUME@{$\sim$\_BOUNDING\_VOLUME}}
+\index{````~\_BOUNDING\_VOLUME@{$\sim$\_BOUNDING\_VOLUME}!Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}}
+\doxysubsubsection{\texorpdfstring{$\sim$\_BOUNDING\_VOLUME()}{~\_BOUNDING\_VOLUME()}}
+{\footnotesize\ttfamily Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::$\sim$\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+ME (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 122 of file bounding\+\_\+volume.\+h.
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classCore_1_1__BOUNDING__VOLUME_a4407226c5ff480c430910437e95cbbd4}\label{classCore_1_1__BOUNDING__VOLUME_a4407226c5ff480c430910437e95cbbd4}} 
+\index{Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}!CalcAABB@{CalcAABB}}
+\index{CalcAABB@{CalcAABB}!Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}}
+\doxysubsubsection{\texorpdfstring{CalcAABB()}{CalcAABB()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+Calc\+A\+A\+BB (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 185 of file bounding\+\_\+volume.\+h.
+
+
+
+References A\+A\+BB, Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+\_\+\+B\+B\+::f\+Height, Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+\_\+\+B\+B\+::f\+Length, f\+Padding, Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+\_\+\+B\+B\+::f\+Width, Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+\_\+\+B\+B\+::v\+Center, Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+\_\+\+B\+B\+::v\+Max, Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+\_\+\+B\+B\+::v\+MaxP, Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+\_\+\+B\+B\+::v\+Min, Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+\_\+\+B\+B\+::v\+MinP, v\+Position, Core\+::\+Vector3f\+::x, Core\+::\+Vector3f\+::y, and Core\+::\+Vector3f\+::z.
+
+\mbox{\Hypertarget{classCore_1_1__BOUNDING__VOLUME_a89f095b51d6a74271198664cb2bf69da}\label{classCore_1_1__BOUNDING__VOLUME_a89f095b51d6a74271198664cb2bf69da}} 
+\index{Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}!CalcCenter@{CalcCenter}}
+\index{CalcCenter@{CalcCenter}!Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}}
+\doxysubsubsection{\texorpdfstring{CalcCenter()}{CalcCenter()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+Calc\+Center (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structCore_1_1__BOUNDING__VOLUME_1_1__BB}{\+\_\+\+BB}} \&}]{bb }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classCore_1_1__BOUNDING__VOLUME_a1e8781ff7753a3499e6c0b8c3e5975ed}\label{classCore_1_1__BOUNDING__VOLUME_a1e8781ff7753a3499e6c0b8c3e5975ed}} 
+\index{Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}!CalcOBB@{CalcOBB}}
+\index{CalcOBB@{CalcOBB}!Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}}
+\doxysubsubsection{\texorpdfstring{CalcOBB()}{CalcOBB()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+Calc\+O\+BB (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 160 of file bounding\+\_\+volume.\+h.
+
+
+
+References Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+\_\+\+B\+B\+::f\+Height, Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+\_\+\+B\+B\+::f\+Length, f\+Padding, Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+\_\+\+B\+B\+::f\+Width, O\+BB, Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+\_\+\+B\+B\+::v\+Center, Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+\_\+\+B\+B\+::v\+Max, Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+\_\+\+B\+B\+::v\+MaxP, Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+\_\+\+B\+B\+::v\+Min, Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+\_\+\+B\+B\+::v\+MinP, v\+Scale, Core\+::\+Vector3f\+::x, Core\+::\+Vector3f\+::y, and Core\+::\+Vector3f\+::z.
+
+\mbox{\Hypertarget{classCore_1_1__BOUNDING__VOLUME_a0f17231c61b46bdc20de42d6dc697884}\label{classCore_1_1__BOUNDING__VOLUME_a0f17231c61b46bdc20de42d6dc697884}} 
+\index{Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}!CheckMinMaxAABB@{CheckMinMaxAABB}}
+\index{CheckMinMaxAABB@{CheckMinMaxAABB}!Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}}
+\doxysubsubsection{\texorpdfstring{CheckMinMaxAABB()}{CheckMinMaxAABB()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+Check\+Min\+Max\+A\+A\+BB (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}}]{v }\end{DoxyParamCaption})}
+
+
+
+Definition at line 146 of file bounding\+\_\+volume.\+h.
+
+
+
+References A\+A\+BB, Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+\_\+\+B\+B\+::v\+Max, Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+\_\+\+B\+B\+::v\+Min, Core\+::\+Vector3f\+::x, Core\+::\+Vector3f\+::y, and Core\+::\+Vector3f\+::z.
+
+\mbox{\Hypertarget{classCore_1_1__BOUNDING__VOLUME_a5548e60fdf6e18b3c9907f2574f6078d}\label{classCore_1_1__BOUNDING__VOLUME_a5548e60fdf6e18b3c9907f2574f6078d}} 
+\index{Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}!CheckMinMaxOBB@{CheckMinMaxOBB}}
+\index{CheckMinMaxOBB@{CheckMinMaxOBB}!Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}}
+\doxysubsubsection{\texorpdfstring{CheckMinMaxOBB()}{CheckMinMaxOBB()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+Check\+Min\+Max\+O\+BB (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}}]{v }\end{DoxyParamCaption})}
+
+
+
+Definition at line 133 of file bounding\+\_\+volume.\+h.
+
+
+
+References Check\+X\+Y\+Z(), O\+BB, Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+\_\+\+B\+B\+::v\+Max, Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+\_\+\+B\+B\+::v\+Min, Core\+::\+Vector3f\+::x, Core\+::\+Vector3f\+::y, and Core\+::\+Vector3f\+::z.
+
+\mbox{\Hypertarget{classCore_1_1__BOUNDING__VOLUME_a3a19370e8b329a70575961d14af5a8f9}\label{classCore_1_1__BOUNDING__VOLUME_a3a19370e8b329a70575961d14af5a8f9}} 
+\index{Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}!CheckXYZ@{CheckXYZ}}
+\index{CheckXYZ@{CheckXYZ}!Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}}
+\doxysubsubsection{\texorpdfstring{CheckXYZ()}{CheckXYZ()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+Check\+X\+YZ (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}}]{v }\end{DoxyParamCaption})}
+
+
+
+Definition at line 202 of file bounding\+\_\+volume.\+h.
+
+
+
+References Cylinder, O\+BB, Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+\_\+\+B\+B\+S\+::radius, Sphere, Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+\_\+\+B\+B\+::v\+Center, v\+Scale, Core\+::\+Vector3f\+::x, Core\+::\+Vector3f\+::y, and Core\+::\+Vector3f\+::z.
+
+
+
+Referenced by Check\+Min\+Max\+O\+B\+B().
+
+\mbox{\Hypertarget{classCore_1_1__BOUNDING__VOLUME_a9dd92313c61af1d2138edb42dd0b3ea1}\label{classCore_1_1__BOUNDING__VOLUME_a9dd92313c61af1d2138edb42dd0b3ea1}} 
+\index{Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}!Draw@{Draw}}
+\index{Draw@{Draw}!Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}}
+\doxysubsubsection{\texorpdfstring{Draw()}{Draw()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+Draw (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classCore_1_1Matrix__System}{Matrix\+\_\+\+System}} \&}]{matrix,  }\item[{\mbox{\hyperlink{classCore_1_1Shader__System}{Shader\+\_\+\+System}} \&}]{shader,  }\item[{\mbox{\hyperlink{classCore_1_1__Helper}{\+\_\+\+Helper}} \&}]{helper,  }\item[{\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}}]{translate = {\ttfamily \mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}()},  }\item[{bool}]{b\+Draw\+Intersection = {\ttfamily false} }\end{DoxyParamCaption})}
+
+
+
+Definition at line 269 of file bounding\+\_\+volume.\+h.
+
+
+
+References B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+\_\+\+A\+A\+BB, B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+\_\+\+C\+Y\+L\+I\+N\+D\+ER, B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+\_\+\+N\+O\+NE, B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+\_\+\+O\+BB, B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+\_\+\+S\+P\+H\+E\+RE, Draw\+A\+A\+B\+B(), Draw\+Cylinder(), Draw\+Intersection(), Draw\+O\+B\+B(), Draw\+Sphere(), Core\+::helper, and i\+Type.
+
+\mbox{\Hypertarget{classCore_1_1__BOUNDING__VOLUME_a425759c6e2cb10c62552c67669b11edc}\label{classCore_1_1__BOUNDING__VOLUME_a425759c6e2cb10c62552c67669b11edc}} 
+\index{Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}!DrawAABB@{DrawAABB}}
+\index{DrawAABB@{DrawAABB}!Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}}
+\doxysubsubsection{\texorpdfstring{DrawAABB()}{DrawAABB()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+Draw\+A\+A\+BB (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classCore_1_1Matrix__System}{Matrix\+\_\+\+System}} \&}]{matrix,  }\item[{\mbox{\hyperlink{classCore_1_1Shader__System}{Shader\+\_\+\+System}} \&}]{shader,  }\item[{\mbox{\hyperlink{classCore_1_1__Helper}{\+\_\+\+Helper}} \&}]{helper,  }\item[{\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}}]{translate = {\ttfamily \mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}()} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line 295 of file bounding\+\_\+volume.\+h.
+
+
+
+References b\+Finished, Core\+::\+\_\+\+Helper\+::draw\+Box(), G\+L\+\_\+\+F\+I\+LL, G\+L\+\_\+\+F\+R\+O\+N\+T\+\_\+\+A\+N\+D\+\_\+\+B\+A\+CK, G\+L\+\_\+\+L\+I\+NE, Core\+::\+G\+L\+S\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+V\+O\+L\+U\+M\+E\+\_\+\+A\+A\+BB, Core\+::helper, and m\+A\+A\+BB.
+
+
+
+Referenced by Draw().
+
+\mbox{\Hypertarget{classCore_1_1__BOUNDING__VOLUME_a13ab8a3c21fec9b054cbeedfc40fb852}\label{classCore_1_1__BOUNDING__VOLUME_a13ab8a3c21fec9b054cbeedfc40fb852}} 
+\index{Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}!DrawCylinder@{DrawCylinder}}
+\index{DrawCylinder@{DrawCylinder}!Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}}
+\doxysubsubsection{\texorpdfstring{DrawCylinder()}{DrawCylinder()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+Draw\+Cylinder (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classCore_1_1Matrix__System}{Matrix\+\_\+\+System}} \&}]{matrix,  }\item[{\mbox{\hyperlink{classCore_1_1Shader__System}{Shader\+\_\+\+System}} \&}]{shader,  }\item[{\mbox{\hyperlink{classCore_1_1__Helper}{\+\_\+\+Helper}} \&}]{helper,  }\item[{\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}}]{translate = {\ttfamily \mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}()} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line 325 of file bounding\+\_\+volume.\+h.
+
+
+
+References b\+Finished, Core\+::\+\_\+\+Helper\+::draw\+Cylinder(), G\+L\+\_\+\+F\+I\+LL, G\+L\+\_\+\+F\+R\+O\+N\+T\+\_\+\+A\+N\+D\+\_\+\+B\+A\+CK, G\+L\+\_\+\+L\+I\+NE, Core\+::\+G\+L\+S\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+V\+O\+L\+U\+M\+E\+\_\+\+C\+Y\+L\+I\+N\+D\+ER, Core\+::helper, and m\+Cylinder.
+
+
+
+Referenced by Draw().
+
+\mbox{\Hypertarget{classCore_1_1__BOUNDING__VOLUME_a175123c55c7b50472509826f9a1c90cb}\label{classCore_1_1__BOUNDING__VOLUME_a175123c55c7b50472509826f9a1c90cb}} 
+\index{Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}!DrawIntersection@{DrawIntersection}}
+\index{DrawIntersection@{DrawIntersection}!Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}}
+\doxysubsubsection{\texorpdfstring{DrawIntersection()}{DrawIntersection()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+Draw\+Intersection (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classCore_1_1Matrix__System}{Matrix\+\_\+\+System}} \&}]{matrix,  }\item[{\mbox{\hyperlink{classCore_1_1Shader__System}{Shader\+\_\+\+System}} \&}]{shader,  }\item[{\mbox{\hyperlink{classCore_1_1__Helper}{\+\_\+\+Helper}} \&}]{helper }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line 340 of file bounding\+\_\+volume.\+h.
+
+
+
+References cdata, Core\+::colors, Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+\_\+\+Collision\+Data\+::d, Core\+::\+\_\+\+Helper\+::draw\+Point(), Core\+::\+\_\+\+Helper\+::\+G\+L\+P\+O\+I\+N\+T\+\_\+\+R\+O\+SE, Core\+::\+\_\+\+Helper\+::\+G\+L\+P\+O\+I\+N\+T\+\_\+\+R\+O\+S\+E\+\_\+\+O\+U\+T\+L\+I\+NE, Core\+::helper, Core\+::\+\_\+\+Colors\+::red, Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+\_\+\+Collision\+Data\+::result, and Core\+::\+\_\+\+Colors\+::yellow.
+
+
+
+Referenced by Draw().
+
+\mbox{\Hypertarget{classCore_1_1__BOUNDING__VOLUME_aaf92e29f9c7f41603cd49a43dd57aec3}\label{classCore_1_1__BOUNDING__VOLUME_aaf92e29f9c7f41603cd49a43dd57aec3}} 
+\index{Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}!DrawOBB@{DrawOBB}}
+\index{DrawOBB@{DrawOBB}!Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}}
+\doxysubsubsection{\texorpdfstring{DrawOBB()}{DrawOBB()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+Draw\+O\+BB (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classCore_1_1Matrix__System}{Matrix\+\_\+\+System}} \&}]{matrix,  }\item[{\mbox{\hyperlink{classCore_1_1Shader__System}{Shader\+\_\+\+System}} \&}]{shader,  }\item[{\mbox{\hyperlink{classCore_1_1__Helper}{\+\_\+\+Helper}} \&}]{helper,  }\item[{\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}}]{translate = {\ttfamily \mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}()} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line 280 of file bounding\+\_\+volume.\+h.
+
+
+
+References b\+Finished, Core\+::\+\_\+\+Helper\+::draw\+Box(), G\+L\+\_\+\+F\+I\+LL, G\+L\+\_\+\+F\+R\+O\+N\+T\+\_\+\+A\+N\+D\+\_\+\+B\+A\+CK, G\+L\+\_\+\+L\+I\+NE, Core\+::\+G\+L\+S\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+V\+O\+L\+U\+M\+E\+\_\+\+O\+BB, Core\+::helper, and m\+O\+BB.
+
+
+
+Referenced by Draw().
+
+\mbox{\Hypertarget{classCore_1_1__BOUNDING__VOLUME_a6ea4fa5b3a25888dcd0d5207fe336b4e}\label{classCore_1_1__BOUNDING__VOLUME_a6ea4fa5b3a25888dcd0d5207fe336b4e}} 
+\index{Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}!DrawSphere@{DrawSphere}}
+\index{DrawSphere@{DrawSphere}!Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}}
+\doxysubsubsection{\texorpdfstring{DrawSphere()}{DrawSphere()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+Draw\+Sphere (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classCore_1_1Matrix__System}{Matrix\+\_\+\+System}} \&}]{matrix,  }\item[{\mbox{\hyperlink{classCore_1_1Shader__System}{Shader\+\_\+\+System}} \&}]{shader,  }\item[{\mbox{\hyperlink{classCore_1_1__Helper}{\+\_\+\+Helper}} \&}]{helper,  }\item[{\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}}]{translate = {\ttfamily \mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}()} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line 310 of file bounding\+\_\+volume.\+h.
+
+
+
+References b\+Finished, Core\+::\+\_\+\+Helper\+::draw\+Sphere(), G\+L\+\_\+\+F\+I\+LL, G\+L\+\_\+\+F\+R\+O\+N\+T\+\_\+\+A\+N\+D\+\_\+\+B\+A\+CK, G\+L\+\_\+\+L\+I\+NE, Core\+::\+G\+L\+S\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+V\+O\+L\+U\+M\+E\+\_\+\+S\+P\+H\+E\+RE, Core\+::helper, and m\+Sphere.
+
+
+
+Referenced by Draw().
+
+\mbox{\Hypertarget{classCore_1_1__BOUNDING__VOLUME_a8f8d42c3eab847b456f4ae16a76d1436}\label{classCore_1_1__BOUNDING__VOLUME_a8f8d42c3eab847b456f4ae16a76d1436}} 
+\index{Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}!Finish@{Finish}}
+\index{Finish@{Finish}!Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}}
+\doxysubsubsection{\texorpdfstring{Finish()}{Finish()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+Finish (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classCore_1_1Matrix__System}{Matrix\+\_\+\+System}} \&}]{matrix }\end{DoxyParamCaption})}
+
+
+
+Definition at line 224 of file bounding\+\_\+volume.\+h.
+
+
+
+References A\+A\+BB, b\+Finished, Cylinder, Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+\_\+\+B\+B\+::f\+Height, Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+\_\+\+B\+B\+::f\+Length, f\+Padding, Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+\_\+\+B\+B\+::f\+Width, m\+A\+A\+BB, m\+Cylinder, m\+O\+BB, m\+Sphere, O\+BB, Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+\_\+\+B\+B\+C\+::p, Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+\_\+\+B\+B\+C\+::q, Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+\_\+\+B\+B\+S\+::radius, Sphere, Core\+::\+Degrees\+::to\+Radians(), Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+\_\+\+B\+B\+::v\+Center, v\+CP, v\+Position, v\+Rotation, Core\+::\+Vector3f\+::x, Core\+::\+Vector3f\+::y, and Core\+::\+Vector3f\+::z.
+
+\mbox{\Hypertarget{classCore_1_1__BOUNDING__VOLUME_a8677125db7b51193feaccc967486305d}\label{classCore_1_1__BOUNDING__VOLUME_a8677125db7b51193feaccc967486305d}} 
+\index{Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}!GetCenterPosition@{GetCenterPosition}}
+\index{GetCenterPosition@{GetCenterPosition}!Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}}
+\doxysubsubsection{\texorpdfstring{GetCenterPosition()}{GetCenterPosition()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+Get\+Center\+Position (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 106 of file bounding\+\_\+volume.\+h.
+
+
+
+References v\+CP.
+
+\mbox{\Hypertarget{classCore_1_1__BOUNDING__VOLUME_a508f3efb42e8110d8d47032f611a5eb3}\label{classCore_1_1__BOUNDING__VOLUME_a508f3efb42e8110d8d47032f611a5eb3}} 
+\index{Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}!init@{init}}
+\index{init@{init}!Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}}
+\doxysubsubsection{\texorpdfstring{init()}{init()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::init (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classCore_1_1__Helper}{\+\_\+\+Helper}}}]{helper }\end{DoxyParamCaption})}
+
+
+
+Definition at line 125 of file bounding\+\_\+volume.\+h.
+
+\mbox{\Hypertarget{classCore_1_1__BOUNDING__VOLUME_a4104d0ab3df85d4dc870ee215fb86deb}\label{classCore_1_1__BOUNDING__VOLUME_a4104d0ab3df85d4dc870ee215fb86deb}} 
+\index{Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}!SetPosition@{SetPosition}}
+\index{SetPosition@{SetPosition}!Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}}
+\doxysubsubsection{\texorpdfstring{SetPosition()}{SetPosition()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+Set\+Position (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}}]{p }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 104 of file bounding\+\_\+volume.\+h.
+
+
+
+References p, and v\+Position.
+
+\mbox{\Hypertarget{classCore_1_1__BOUNDING__VOLUME_a969447d40d8130fc4cdfb85568786ec2}\label{classCore_1_1__BOUNDING__VOLUME_a969447d40d8130fc4cdfb85568786ec2}} 
+\index{Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}!SetRotation@{SetRotation}}
+\index{SetRotation@{SetRotation}!Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}}
+\doxysubsubsection{\texorpdfstring{SetRotation()}{SetRotation()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+Set\+Rotation (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}}]{r }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 105 of file bounding\+\_\+volume.\+h.
+
+
+
+References v\+Rotation.
+
+\mbox{\Hypertarget{classCore_1_1__BOUNDING__VOLUME_a1abd6d9f8ecf26f21e4ead006f395fec}\label{classCore_1_1__BOUNDING__VOLUME_a1abd6d9f8ecf26f21e4ead006f395fec}} 
+\index{Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}!Start@{Start}}
+\index{Start@{Start}!Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}}
+\doxysubsubsection{\texorpdfstring{Start()}{Start()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+Start (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}}]{s }\end{DoxyParamCaption})}
+
+
+
+Definition at line 128 of file bounding\+\_\+volume.\+h.
+
+
+
+References b\+Finished, and v\+Scale.
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classCore_1_1__BOUNDING__VOLUME_acb97ebfc2af1698b468fd7a0d2b24691}\label{classCore_1_1__BOUNDING__VOLUME_acb97ebfc2af1698b468fd7a0d2b24691}} 
+\index{Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}!AABB@{AABB}}
+\index{AABB@{AABB}!Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}}
+\doxysubsubsection{\texorpdfstring{AABB}{AABB}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structCore_1_1__BOUNDING__VOLUME_1_1__BB}{Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+\_\+\+BB}}  Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+A\+A\+BB}
+
+
+
+Referenced by Calc\+A\+A\+B\+B(), Check\+Min\+Max\+A\+A\+B\+B(), and Finish().
+
+\mbox{\Hypertarget{classCore_1_1__BOUNDING__VOLUME_a86503ebfba33aeb4f3d1f7169e65e8c5}\label{classCore_1_1__BOUNDING__VOLUME_a86503ebfba33aeb4f3d1f7169e65e8c5}} 
+\index{Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}!bCollision@{bCollision}}
+\index{bCollision@{bCollision}!Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}}
+\doxysubsubsection{\texorpdfstring{bCollision}{bCollision}}
+{\footnotesize\ttfamily bool Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::b\+Collision\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line 22 of file bounding\+\_\+volume.\+h.
+
+
+
+Referenced by \+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E().
+
+\mbox{\Hypertarget{classCore_1_1__BOUNDING__VOLUME_a7bf7a91a36246cece14c5ac718add57e}\label{classCore_1_1__BOUNDING__VOLUME_a7bf7a91a36246cece14c5ac718add57e}} 
+\index{Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}!bFinished@{bFinished}}
+\index{bFinished@{bFinished}!Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}}
+\doxysubsubsection{\texorpdfstring{bFinished}{bFinished}}
+{\footnotesize\ttfamily bool Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::b\+Finished\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line 20 of file bounding\+\_\+volume.\+h.
+
+
+
+Referenced by \+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E(), Draw\+A\+A\+B\+B(), Draw\+Cylinder(), Draw\+O\+B\+B(), Draw\+Sphere(), Finish(), and Start().
+
+\mbox{\Hypertarget{classCore_1_1__BOUNDING__VOLUME_af34d12d239be8901eafc21c40a4201ce}\label{classCore_1_1__BOUNDING__VOLUME_af34d12d239be8901eafc21c40a4201ce}} 
+\index{Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}!cdata@{cdata}}
+\index{cdata@{cdata}!Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}}
+\doxysubsubsection{\texorpdfstring{cdata}{cdata}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structCore_1_1__BOUNDING__VOLUME_1_1__CollisionData}{Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+\_\+\+Collision\+Data}}  Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::cdata}
+
+
+
+Referenced by Draw\+Intersection(), and Core\+::\+\_\+\+Collision\+::\+Set\+C\+Data().
+
+\mbox{\Hypertarget{classCore_1_1__BOUNDING__VOLUME_a3f71b05ad30b18d5fb48ba80e8567b0b}\label{classCore_1_1__BOUNDING__VOLUME_a3f71b05ad30b18d5fb48ba80e8567b0b}} 
+\index{Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}!Cylinder@{Cylinder}}
+\index{Cylinder@{Cylinder}!Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}}
+\doxysubsubsection{\texorpdfstring{Cylinder}{Cylinder}}
+{\footnotesize\ttfamily  \mbox{\hyperlink{structCore_1_1__BOUNDING__VOLUME_1_1__BBC}{Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+\_\+\+B\+BC}}  Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+Cylinder}
+
+
+
+Referenced by Check\+X\+Y\+Z(), Finish(), and Core\+::\+\_\+\+Collision\+::\+Ray\+\_\+\+Cylinder().
+
+\mbox{\Hypertarget{classCore_1_1__BOUNDING__VOLUME_aa63afe13b7ac790c16a3076b4b31b262}\label{classCore_1_1__BOUNDING__VOLUME_aa63afe13b7ac790c16a3076b4b31b262}} 
+\index{Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}!fPadding@{fPadding}}
+\index{fPadding@{fPadding}!Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}}
+\doxysubsubsection{\texorpdfstring{fPadding}{fPadding}}
+{\footnotesize\ttfamily float Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::f\+Padding}
+
+
+
+Bounding volume padding. 
+
+
+
+Definition at line 90 of file bounding\+\_\+volume.\+h.
+
+
+
+Referenced by \+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E(), Calc\+A\+A\+B\+B(), Calc\+O\+B\+B(), and Finish().
+
+\mbox{\Hypertarget{classCore_1_1__BOUNDING__VOLUME_aa2d07a42df26f6c428f5d65925e5bdec}\label{classCore_1_1__BOUNDING__VOLUME_aa2d07a42df26f6c428f5d65925e5bdec}} 
+\index{Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}!iType@{iType}}
+\index{iType@{iType}!Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}}
+\doxysubsubsection{\texorpdfstring{iType}{iType}}
+{\footnotesize\ttfamily int Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::i\+Type}
+
+
+
+Definition at line 91 of file bounding\+\_\+volume.\+h.
+
+
+
+Referenced by \+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E(), and Draw().
+
+\mbox{\Hypertarget{classCore_1_1__BOUNDING__VOLUME_ad7ebd5a3e48f4c1d1c06d6bd11ef3331}\label{classCore_1_1__BOUNDING__VOLUME_ad7ebd5a3e48f4c1d1c06d6bd11ef3331}} 
+\index{Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}!mAABB@{mAABB}}
+\index{mAABB@{mAABB}!Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}}
+\doxysubsubsection{\texorpdfstring{mAABB}{mAABB}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structCore_1_1Matrix44f}{Matrix44f}} Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::m\+A\+A\+BB\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line 24 of file bounding\+\_\+volume.\+h.
+
+
+
+Referenced by Draw\+A\+A\+B\+B(), and Finish().
+
+\mbox{\Hypertarget{classCore_1_1__BOUNDING__VOLUME_aa14822589651447ee7b04ceeda2f4cef}\label{classCore_1_1__BOUNDING__VOLUME_aa14822589651447ee7b04ceeda2f4cef}} 
+\index{Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}!mCylinder@{mCylinder}}
+\index{mCylinder@{mCylinder}!Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}}
+\doxysubsubsection{\texorpdfstring{mCylinder}{mCylinder}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structCore_1_1Matrix44f}{Matrix44f}} Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::m\+Cylinder\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line 26 of file bounding\+\_\+volume.\+h.
+
+
+
+Referenced by Draw\+Cylinder(), and Finish().
+
+\mbox{\Hypertarget{classCore_1_1__BOUNDING__VOLUME_a7904aa0d554957766851da8722e4e720}\label{classCore_1_1__BOUNDING__VOLUME_a7904aa0d554957766851da8722e4e720}} 
+\index{Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}!mOBB@{mOBB}}
+\index{mOBB@{mOBB}!Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}}
+\doxysubsubsection{\texorpdfstring{mOBB}{mOBB}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structCore_1_1Matrix44f}{Matrix44f}} Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::m\+O\+BB\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line 23 of file bounding\+\_\+volume.\+h.
+
+
+
+Referenced by Draw\+O\+B\+B(), and Finish().
+
+\mbox{\Hypertarget{classCore_1_1__BOUNDING__VOLUME_a53a6b92358f9d9bed228e8411390ace8}\label{classCore_1_1__BOUNDING__VOLUME_a53a6b92358f9d9bed228e8411390ace8}} 
+\index{Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}!mSphere@{mSphere}}
+\index{mSphere@{mSphere}!Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}}
+\doxysubsubsection{\texorpdfstring{mSphere}{mSphere}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structCore_1_1Matrix44f}{Matrix44f}} Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::m\+Sphere\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line 25 of file bounding\+\_\+volume.\+h.
+
+
+
+Referenced by Draw\+Sphere(), and Finish().
+
+\mbox{\Hypertarget{classCore_1_1__BOUNDING__VOLUME_a0f68c35d7b0d1be1df9811ff610f7c09}\label{classCore_1_1__BOUNDING__VOLUME_a0f68c35d7b0d1be1df9811ff610f7c09}} 
+\index{Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}!OBB@{OBB}}
+\index{OBB@{OBB}!Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}}
+\doxysubsubsection{\texorpdfstring{OBB}{OBB}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structCore_1_1__BOUNDING__VOLUME_1_1__BB}{Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+\_\+\+BB}}  Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+O\+BB}
+
+
+
+Referenced by Calc\+O\+B\+B(), Check\+Min\+Max\+O\+B\+B(), Check\+X\+Y\+Z(), and Finish().
+
+\mbox{\Hypertarget{classCore_1_1__BOUNDING__VOLUME_a167dee1d6ccdcb9e418b91a18f870a9d}\label{classCore_1_1__BOUNDING__VOLUME_a167dee1d6ccdcb9e418b91a18f870a9d}} 
+\index{Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}!Sphere@{Sphere}}
+\index{Sphere@{Sphere}!Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}}
+\doxysubsubsection{\texorpdfstring{Sphere}{Sphere}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structCore_1_1__BOUNDING__VOLUME_1_1__BBS}{Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+\_\+\+B\+BS}}  Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+Sphere}
+
+
+
+Referenced by Check\+X\+Y\+Z(), and Finish().
+
+\mbox{\Hypertarget{classCore_1_1__BOUNDING__VOLUME_aa94d4f030d923d82b246682195eaedbd}\label{classCore_1_1__BOUNDING__VOLUME_aa94d4f030d923d82b246682195eaedbd}} 
+\index{Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}!vCP@{vCP}}
+\index{vCP@{vCP}!Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}}
+\doxysubsubsection{\texorpdfstring{vCP}{vCP}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::v\+CP}
+
+
+
+Definition at line 37 of file bounding\+\_\+volume.\+h.
+
+
+
+Referenced by Finish(), and Get\+Center\+Position().
+
+\mbox{\Hypertarget{classCore_1_1__BOUNDING__VOLUME_aa8e3635e0f5dbbaeb250ed1c5249872a}\label{classCore_1_1__BOUNDING__VOLUME_aa8e3635e0f5dbbaeb250ed1c5249872a}} 
+\index{Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}!vPosition@{vPosition}}
+\index{vPosition@{vPosition}!Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}}
+\doxysubsubsection{\texorpdfstring{vPosition}{vPosition}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::v\+Position}
+
+
+
+Translation of O3D. 
+
+
+
+Definition at line 35 of file bounding\+\_\+volume.\+h.
+
+
+
+Referenced by \+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E(), Calc\+A\+A\+B\+B(), Finish(), and Set\+Position().
+
+\mbox{\Hypertarget{classCore_1_1__BOUNDING__VOLUME_a6e15afb179b6b832784d385efc83baf8}\label{classCore_1_1__BOUNDING__VOLUME_a6e15afb179b6b832784d385efc83baf8}} 
+\index{Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}!vRotation@{vRotation}}
+\index{vRotation@{vRotation}!Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}}
+\doxysubsubsection{\texorpdfstring{vRotation}{vRotation}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::v\+Rotation}
+
+
+
+Definition at line 36 of file bounding\+\_\+volume.\+h.
+
+
+
+Referenced by \+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E(), Finish(), and Set\+Rotation().
+
+\mbox{\Hypertarget{classCore_1_1__BOUNDING__VOLUME_acae3d57e626a2ea933411dfdaed8afca}\label{classCore_1_1__BOUNDING__VOLUME_acae3d57e626a2ea933411dfdaed8afca}} 
+\index{Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}!vScale@{vScale}}
+\index{vScale@{vScale}!Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}}
+\doxysubsubsection{\texorpdfstring{vScale}{vScale}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::v\+Scale\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line 21 of file bounding\+\_\+volume.\+h.
+
+
+
+Referenced by Calc\+O\+B\+B(), Check\+X\+Y\+Z(), and Start().
+
+\mbox{\Hypertarget{classCore_1_1__BOUNDING__VOLUME_ae909e79e8fe72d0b21433e0cf92e66ef}\label{classCore_1_1__BOUNDING__VOLUME_ae909e79e8fe72d0b21433e0cf92e66ef}} 
+\index{Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}!vTranslate@{vTranslate}}
+\index{vTranslate@{vTranslate}!Core::\_BOUNDING\_VOLUME@{Core::\_BOUNDING\_VOLUME}}
+\doxysubsubsection{\texorpdfstring{vTranslate}{vTranslate}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}$\ast$ Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::v\+Translate}
+
+
+
+Definition at line 38 of file bounding\+\_\+volume.\+h.
+
+
+
+Referenced by \+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E(), and Core\+::\+\_\+\+Collision\+::\+Ray\+\_\+\+Cylinder().
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/headers/core/\mbox{\hyperlink{bounding__volume_8h}{bounding\+\_\+volume.\+h}}\end{DoxyCompactItemize}

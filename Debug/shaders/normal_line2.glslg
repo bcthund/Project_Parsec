@@ -1,0 +1,27 @@
+#version 330 core
+precision highp float;
+float normal_length=10.0;
+out vec4 vFragColorFs;
+in Data {
+ in vec4 vFragColorVs;
+ in vec3 normal;
+ in mat4 mvp;
+} data[];
+layout (triangles) in;
+layout (line_strip) out;
+layout (max_vertices = 2) out;
+vec4 temp;
+void main(void) {
+ int i;
+ for ( i=0; i < gl_in.length(); i++) {
+  vFragColorFs = data[i].vFragColorVs;
+  if (gl_in[i].gl_Position.w != 69.0) {
+   gl_Position = data[i].mvp * gl_in[i].gl_Position;
+   EmitVertex();
+   gl_Position = data[i].mvp * vec4(gl_in[i].gl_Position.xyzw + vec4(data[i].normal.xyz, 0.0) * normal_length);
+   EmitVertex();
+  }
+  else EndPrimitive();
+ }
+ EndPrimitive();
+}

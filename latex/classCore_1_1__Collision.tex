@@ -1,0 +1,256 @@
+\hypertarget{classCore_1_1__Collision}{}\doxysection{Core\+::\+\_\+\+Collision Class Reference}
+\label{classCore_1_1__Collision}\index{Core::\_Collision@{Core::\_Collision}}
+
+
+{\ttfamily \#include $<$collision.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classCore_1_1__Collision_ae5a7662226796e646031fdd4788707c7}{\+\_\+\+Collision}} ()
+\item 
+\mbox{\hyperlink{classCore_1_1__Collision_a7c72c894aa915f6cf91932a86d81d5ea}{$\sim$\+\_\+\+Collision}} ()
+\item 
+bool \mbox{\hyperlink{classCore_1_1__Collision_a0fd08ad5fea49428d78e3e36983e6f80}{Ray}} (\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} \mbox{\hyperlink{gl4__5_2glext_8h_aa5367c14d90f462230c2611b81b41d23}{p}}, \mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} d, \mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME}{\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+ME}} \&\mbox{\hyperlink{gl4__5_2glext_8h_a4af680a6c683f88ed67b76f207f2e6e4}{s}}, bool b\+Update\+C\+Data=false)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{classCore_1_1__Collision_a7380cc65cb11e51fa5a437e00d183d7b}{b\+Update\+Request}} \mbox{[}32\mbox{]}
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} \mbox{\hyperlink{classCore_1_1__Collision_a0942dcb9f13f022650aaafa9ac47631d}{Calc\+Intersection}} (\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} \mbox{\hyperlink{gl4__5_2glext_8h_aa5367c14d90f462230c2611b81b41d23}{p}}, \mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} \mbox{\hyperlink{gl4__5_2glext_8h_a8fc1e7b9baaae687804c7eed46ca09c6}{q}}, float \mbox{\hyperlink{gl4__5_2glext_8h_a7d65d00ca3b0630d9b5c52df855b19f5}{t}})
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classCore_1_1__Collision_a47171e8de2acbafe5ce9691c68d80872}{Set\+C\+Data}} (\mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME}{\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+ME}} \&bv, \mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} d, float \mbox{\hyperlink{gl4__5_2glext_8h_a7d65d00ca3b0630d9b5c52df855b19f5}{t}}, bool \mbox{\hyperlink{gl4__5_2glcorearb_8h_a321ff419cd5252e54cf95e64dc6687ee}{result}})
+\item 
+bool \mbox{\hyperlink{classCore_1_1__Collision_ab22c999e14c8e9cbf0660e6fb4f7785d}{Ray\+\_\+\+O\+BB}} (\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} \mbox{\hyperlink{gl4__5_2glext_8h_aa5367c14d90f462230c2611b81b41d23}{p}}, \mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} d, \mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME}{\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+ME}} \&\mbox{\hyperlink{gl4__5_2glext_8h_a4af680a6c683f88ed67b76f207f2e6e4}{s}}, bool b\+Update\+C\+Data)
+\item 
+bool \mbox{\hyperlink{classCore_1_1__Collision_a7e1724ae47acd41cc2540b3e8b2a4283}{Ray\+\_\+\+A\+A\+BB}} (\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} \mbox{\hyperlink{gl4__5_2glext_8h_aa5367c14d90f462230c2611b81b41d23}{p}}, \mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} d, \mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME}{\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+ME}} \&\mbox{\hyperlink{gl4__5_2glcorearb_8h_a3309789fc188587d666cda5ece79cf82}{a}}, bool b\+Update\+C\+Data)
+\item 
+bool \mbox{\hyperlink{classCore_1_1__Collision_a1454c7e22479c90a989ae4b80d95e87f}{Ray\+\_\+\+A\+A\+BB}} (\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} \mbox{\hyperlink{gl4__5_2glext_8h_aa5367c14d90f462230c2611b81b41d23}{p}}, \mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} d, \mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME}{\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+ME}} \&\mbox{\hyperlink{gl4__5_2glcorearb_8h_a3309789fc188587d666cda5ece79cf82}{a}}, \mbox{\hyperlink{structCore_1_1__BOUNDING__VOLUME_1_1__BB}{\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+\_\+\+BB}} \&\mbox{\hyperlink{gl4__5_2glcorearb_8h_a0f71581a41fd2264c8944126dabbd010}{b}}, bool b\+Update\+C\+Data)
+\item 
+bool \mbox{\hyperlink{classCore_1_1__Collision_ab55d9c4170cabf57b393da7c0facb56f}{Ray\+\_\+\+Sphere}} (\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} \mbox{\hyperlink{gl4__5_2glext_8h_aa5367c14d90f462230c2611b81b41d23}{p}}, \mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} d, \mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME}{\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+ME}} \&\mbox{\hyperlink{gl4__5_2glext_8h_a4af680a6c683f88ed67b76f207f2e6e4}{s}})
+\item 
+bool \mbox{\hyperlink{classCore_1_1__Collision_ab9a4230aea2d412bc5837b9037e4fa17}{Ray\+\_\+\+Sphere\+Fast}} (\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} \mbox{\hyperlink{gl4__5_2glext_8h_aa5367c14d90f462230c2611b81b41d23}{p}}, \mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} d, \mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME}{\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+ME}} \&\mbox{\hyperlink{gl4__5_2glext_8h_a4af680a6c683f88ed67b76f207f2e6e4}{s}})
+\item 
+bool \mbox{\hyperlink{classCore_1_1__Collision_a16bef1b6f029181480f908a5fb716dcf}{Ray\+\_\+\+Cylinder}} (\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} vP, \mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} vD, \mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME}{\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+ME}} \&bv, bool b\+Update\+C\+Data)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+
+
+Definition at line 14 of file collision.\+h.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classCore_1_1__Collision_ae5a7662226796e646031fdd4788707c7}\label{classCore_1_1__Collision_ae5a7662226796e646031fdd4788707c7}} 
+\index{Core::\_Collision@{Core::\_Collision}!\_Collision@{\_Collision}}
+\index{\_Collision@{\_Collision}!Core::\_Collision@{Core::\_Collision}}
+\doxysubsubsection{\texorpdfstring{\_Collision()}{\_Collision()}}
+{\footnotesize\ttfamily Core\+::\+\_\+\+Collision\+::\+\_\+\+Collision (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 72 of file collision.\+h.
+
+
+
+References b\+Update\+Request.
+
+\mbox{\Hypertarget{classCore_1_1__Collision_a7c72c894aa915f6cf91932a86d81d5ea}\label{classCore_1_1__Collision_a7c72c894aa915f6cf91932a86d81d5ea}} 
+\index{Core::\_Collision@{Core::\_Collision}!````~\_Collision@{$\sim$\_Collision}}
+\index{````~\_Collision@{$\sim$\_Collision}!Core::\_Collision@{Core::\_Collision}}
+\doxysubsubsection{\texorpdfstring{$\sim$\_Collision()}{~\_Collision()}}
+{\footnotesize\ttfamily Core\+::\+\_\+\+Collision\+::$\sim$\+\_\+\+Collision (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 80 of file collision.\+h.
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classCore_1_1__Collision_a0942dcb9f13f022650aaafa9ac47631d}\label{classCore_1_1__Collision_a0942dcb9f13f022650aaafa9ac47631d}} 
+\index{Core::\_Collision@{Core::\_Collision}!CalcIntersection@{CalcIntersection}}
+\index{CalcIntersection@{CalcIntersection}!Core::\_Collision@{Core::\_Collision}}
+\doxysubsubsection{\texorpdfstring{CalcIntersection()}{CalcIntersection()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} Core\+::\+\_\+\+Collision\+::\+Calc\+Intersection (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}}]{p,  }\item[{\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}}]{q,  }\item[{float}]{t }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+
+
+
+Definition at line 17 of file collision.\+h.
+
+
+
+References t.
+
+
+
+Referenced by Ray\+\_\+\+A\+A\+B\+B(), Ray\+\_\+\+Cylinder(), Ray\+\_\+\+O\+B\+B(), and Ray\+\_\+\+Sphere().
+
+\mbox{\Hypertarget{classCore_1_1__Collision_a0fd08ad5fea49428d78e3e36983e6f80}\label{classCore_1_1__Collision_a0fd08ad5fea49428d78e3e36983e6f80}} 
+\index{Core::\_Collision@{Core::\_Collision}!Ray@{Ray}}
+\index{Ray@{Ray}!Core::\_Collision@{Core::\_Collision}}
+\doxysubsubsection{\texorpdfstring{Ray()}{Ray()}}
+{\footnotesize\ttfamily bool Core\+::\+\_\+\+Collision\+::\+Ray (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}}]{p,  }\item[{\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}}]{d,  }\item[{\mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME}{\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+ME}} \&}]{s,  }\item[{bool}]{b\+Update\+C\+Data = {\ttfamily false} }\end{DoxyParamCaption})}
+
+
+
+Definition at line 83 of file collision.\+h.
+
+
+
+References Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+\_\+\+A\+A\+BB, Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+\_\+\+C\+Y\+L\+I\+N\+D\+ER, Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+\_\+\+O\+BB, Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+\_\+\+S\+P\+H\+E\+RE, Ray\+\_\+\+A\+A\+B\+B(), Ray\+\_\+\+Cylinder(), Ray\+\_\+\+O\+B\+B(), Ray\+\_\+\+Sphere(), and Ray\+\_\+\+Sphere\+Fast().
+
+
+
+Referenced by Core\+::\+Game\+Sys\+::\+\_\+\+O3\+D\+::draw().
+
+\mbox{\Hypertarget{classCore_1_1__Collision_a1454c7e22479c90a989ae4b80d95e87f}\label{classCore_1_1__Collision_a1454c7e22479c90a989ae4b80d95e87f}} 
+\index{Core::\_Collision@{Core::\_Collision}!Ray\_AABB@{Ray\_AABB}}
+\index{Ray\_AABB@{Ray\_AABB}!Core::\_Collision@{Core::\_Collision}}
+\doxysubsubsection{\texorpdfstring{Ray\_AABB()}{Ray\_AABB()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily bool Core\+::\+\_\+\+Collision\+::\+Ray\+\_\+\+A\+A\+BB (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}}]{p,  }\item[{\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}}]{d,  }\item[{\mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME}{\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+ME}} \&}]{a,  }\item[{\mbox{\hyperlink{structCore_1_1__BOUNDING__VOLUME_1_1__BB}{\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+\_\+\+BB}} \&}]{b,  }\item[{bool}]{b\+Update\+C\+Data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line 132 of file collision.\+h.
+
+
+
+References Calc\+Intersection(), and Set\+C\+Data().
+
+\mbox{\Hypertarget{classCore_1_1__Collision_a7e1724ae47acd41cc2540b3e8b2a4283}\label{classCore_1_1__Collision_a7e1724ae47acd41cc2540b3e8b2a4283}} 
+\index{Core::\_Collision@{Core::\_Collision}!Ray\_AABB@{Ray\_AABB}}
+\index{Ray\_AABB@{Ray\_AABB}!Core::\_Collision@{Core::\_Collision}}
+\doxysubsubsection{\texorpdfstring{Ray\_AABB()}{Ray\_AABB()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily bool Core\+::\+\_\+\+Collision\+::\+Ray\+\_\+\+A\+A\+BB (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}}]{p,  }\item[{\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}}]{d,  }\item[{\mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME}{\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+ME}} \&}]{a,  }\item[{bool}]{b\+Update\+C\+Data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line 126 of file collision.\+h.
+
+
+
+References Calc\+Intersection(), and Set\+C\+Data().
+
+
+
+Referenced by Ray(), and Ray\+\_\+\+O\+B\+B().
+
+\mbox{\Hypertarget{classCore_1_1__Collision_a16bef1b6f029181480f908a5fb716dcf}\label{classCore_1_1__Collision_a16bef1b6f029181480f908a5fb716dcf}} 
+\index{Core::\_Collision@{Core::\_Collision}!Ray\_Cylinder@{Ray\_Cylinder}}
+\index{Ray\_Cylinder@{Ray\_Cylinder}!Core::\_Collision@{Core::\_Collision}}
+\doxysubsubsection{\texorpdfstring{Ray\_Cylinder()}{Ray\_Cylinder()}}
+{\footnotesize\ttfamily bool Core\+::\+\_\+\+Collision\+::\+Ray\+\_\+\+Cylinder (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}}]{vP,  }\item[{\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}}]{vD,  }\item[{\mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME}{\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+ME}} \&}]{bv,  }\item[{bool}]{b\+Update\+C\+Data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line 224 of file collision.\+h.
+
+
+
+References Calc\+Intersection(), Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+Cylinder, Core\+::\+\_\+gmath\+::\+Dot(), Core\+::gmath, p, Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+\_\+\+B\+B\+C\+::p, Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+\_\+\+B\+B\+C\+::q, Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+\_\+\+B\+B\+S\+::radius, Set\+C\+Data(), and Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::v\+Translate.
+
+
+
+Referenced by Ray().
+
+\mbox{\Hypertarget{classCore_1_1__Collision_ab22c999e14c8e9cbf0660e6fb4f7785d}\label{classCore_1_1__Collision_ab22c999e14c8e9cbf0660e6fb4f7785d}} 
+\index{Core::\_Collision@{Core::\_Collision}!Ray\_OBB@{Ray\_OBB}}
+\index{Ray\_OBB@{Ray\_OBB}!Core::\_Collision@{Core::\_Collision}}
+\doxysubsubsection{\texorpdfstring{Ray\_OBB()}{Ray\_OBB()}}
+{\footnotesize\ttfamily bool Core\+::\+\_\+\+Collision\+::\+Ray\+\_\+\+O\+BB (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}}]{p,  }\item[{\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}}]{d,  }\item[{\mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME}{\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+ME}} \&}]{s,  }\item[{bool}]{b\+Update\+C\+Data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line 94 of file collision.\+h.
+
+
+
+References Calc\+Intersection(), Ray\+\_\+\+A\+A\+B\+B(), Set\+C\+Data(), Core\+::\+Degrees\+::to\+Radians(), Core\+::\+Vector3f\+::x, Core\+::\+Vector4f\+::x, Core\+::\+Vector3f\+::y, Core\+::\+Vector4f\+::y, Core\+::\+Vector3f\+::z, and Core\+::\+Vector4f\+::z.
+
+
+
+Referenced by Ray().
+
+\mbox{\Hypertarget{classCore_1_1__Collision_ab55d9c4170cabf57b393da7c0facb56f}\label{classCore_1_1__Collision_ab55d9c4170cabf57b393da7c0facb56f}} 
+\index{Core::\_Collision@{Core::\_Collision}!Ray\_Sphere@{Ray\_Sphere}}
+\index{Ray\_Sphere@{Ray\_Sphere}!Core::\_Collision@{Core::\_Collision}}
+\doxysubsubsection{\texorpdfstring{Ray\_Sphere()}{Ray\_Sphere()}}
+{\footnotesize\ttfamily bool Core\+::\+\_\+\+Collision\+::\+Ray\+\_\+\+Sphere (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}}]{p,  }\item[{\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}}]{d,  }\item[{\mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME}{\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+ME}} \&}]{s }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line 163 of file collision.\+h.
+
+
+
+References Calc\+Intersection(), Core\+::\+\_\+gmath\+::\+Dot(), Core\+::gmath, and Set\+C\+Data().
+
+
+
+Referenced by Ray().
+
+\mbox{\Hypertarget{classCore_1_1__Collision_ab9a4230aea2d412bc5837b9037e4fa17}\label{classCore_1_1__Collision_ab9a4230aea2d412bc5837b9037e4fa17}} 
+\index{Core::\_Collision@{Core::\_Collision}!Ray\_SphereFast@{Ray\_SphereFast}}
+\index{Ray\_SphereFast@{Ray\_SphereFast}!Core::\_Collision@{Core::\_Collision}}
+\doxysubsubsection{\texorpdfstring{Ray\_SphereFast()}{Ray\_SphereFast()}}
+{\footnotesize\ttfamily bool Core\+::\+\_\+\+Collision\+::\+Ray\+\_\+\+Sphere\+Fast (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}}]{p,  }\item[{\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}}]{d,  }\item[{\mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME}{\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+ME}} \&}]{s }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line 196 of file collision.\+h.
+
+
+
+References Core\+::\+\_\+gmath\+::\+Dot(), and Core\+::gmath.
+
+
+
+Referenced by Ray().
+
+\mbox{\Hypertarget{classCore_1_1__Collision_a47171e8de2acbafe5ce9691c68d80872}\label{classCore_1_1__Collision_a47171e8de2acbafe5ce9691c68d80872}} 
+\index{Core::\_Collision@{Core::\_Collision}!SetCData@{SetCData}}
+\index{SetCData@{SetCData}!Core::\_Collision@{Core::\_Collision}}
+\doxysubsubsection{\texorpdfstring{SetCData()}{SetCData()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Core\+::\+\_\+\+Collision\+::\+Set\+C\+Data (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classCore_1_1__BOUNDING__VOLUME}{\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+ME}} \&}]{bv,  }\item[{\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}}]{d,  }\item[{float}]{t,  }\item[{bool}]{result }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line 316 of file collision.\+h.
+
+
+
+References Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::cdata, Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+\_\+\+Collision\+Data\+::d, Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+\_\+\+Collision\+Data\+::result, t, and Core\+::\+\_\+\+B\+O\+U\+N\+D\+I\+N\+G\+\_\+\+V\+O\+L\+U\+M\+E\+::\+\_\+\+Collision\+Data\+::t.
+
+
+
+Referenced by Ray\+\_\+\+A\+A\+B\+B(), Ray\+\_\+\+Cylinder(), Ray\+\_\+\+O\+B\+B(), and Ray\+\_\+\+Sphere().
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classCore_1_1__Collision_a7380cc65cb11e51fa5a437e00d183d7b}\label{classCore_1_1__Collision_a7380cc65cb11e51fa5a437e00d183d7b}} 
+\index{Core::\_Collision@{Core::\_Collision}!bUpdateRequest@{bUpdateRequest}}
+\index{bUpdateRequest@{bUpdateRequest}!Core::\_Collision@{Core::\_Collision}}
+\doxysubsubsection{\texorpdfstring{bUpdateRequest}{bUpdateRequest}}
+{\footnotesize\ttfamily bool Core\+::\+\_\+\+Collision\+::b\+Update\+Request\mbox{[}32\mbox{]}}
+
+
+
+Definition at line 54 of file collision.\+h.
+
+
+
+Referenced by \+\_\+\+Collision(), Core\+::\+Game\+Sys\+::\+\_\+\+O3\+D\+::draw(), and \+\_\+\+Game\+::\+Process\+Input().
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/headers/core/\mbox{\hyperlink{collision_8h}{collision.\+h}}\end{DoxyCompactItemize}

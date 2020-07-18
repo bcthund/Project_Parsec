@@ -1,0 +1,32 @@
+#version 330 core
+in float fFactor[];
+in vec2 vSizeG[];
+out vec2 vTexCoord;
+in float fAlpha1[];
+out float fAlpha;
+uniform mat4 mpMatrix;
+uniform mat4 mvMatrix;
+precision highp float;
+layout (lines) in;
+layout (triangle_strip, max_vertices=4) out;
+void main(void) {
+ int i, c=0;
+  for ( i=0; i < gl_in.length(); i++) {
+   if(gl_in[i].gl_Position.y > (-8*16)) {
+    vec4 vPos = mvMatrix * gl_in[i].gl_Position;
+    gl_Position = mpMatrix * (vPos + vec4( vSizeG[i].x, 0.0f, 0.0f, 0.0f));
+   if(c==0) vTexCoord = vec2(1.0f, 0.0f);
+   else vTexCoord = vec2(1.0f, 1.0f);
+   fAlpha = fAlpha1[i];
+   EmitVertex();
+
+    gl_Position = mpMatrix * (vPos + vec4(-vSizeG[i].x, 0.0f, 0.0f, 0.0f));
+   if(c==0) vTexCoord = vec2(0.0f, 0.0f);
+   else vTexCoord = vec2(0.0f, 1.0f);
+   fAlpha = fAlpha1[i];
+   EmitVertex();
+   c++;
+   }
+  }
+  EndPrimitive();
+}

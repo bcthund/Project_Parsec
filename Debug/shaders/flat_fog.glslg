@@ -1,0 +1,28 @@
+#version 330 core
+smooth in vec2 vTexCoordIn[];
+smooth out vec2 vTexCoord;
+smooth in vec4 vEyeSpacePos[]; 
+smooth out vec4 vEyeSpacePosOut; 
+precision highp float;
+layout (triangles) in;
+layout (triangle_strip) out;
+layout (max_vertices = 3) out;
+void main(void) {
+ int i;
+
+  vTexCoord = vTexCoordIn[0];
+  vEyeSpacePosOut = vEyeSpacePos[0];
+  gl_Position = gl_in[0].gl_Position;
+  EmitVertex();
+
+  vTexCoord = vTexCoordIn[1];
+  vEyeSpacePosOut = vEyeSpacePos[1];
+  gl_Position = gl_in[1].gl_Position;
+  EmitVertex();
+
+  vTexCoord = vTexCoordIn[2];
+  vEyeSpacePosOut = vEyeSpacePos[2];
+  gl_Position = gl_in[2].gl_Position;
+  EmitVertex();
+ EndPrimitive();
+}

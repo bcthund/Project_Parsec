@@ -1,0 +1,35 @@
+#version 330 core
+precision highp float;
+in mat3 mData[];
+out float fAlpha;
+out float fShade;
+uniform float fTime;
+uniform mat4 mpMatrix;
+uniform mat4 mvMatrix;
+uniform mat4 mvpMatrix;
+layout (lines) in;
+layout (triangle_strip, max_vertices = 3) out;
+void main(void) {
+ if(gl_in[0].gl_Position.y > mData[0][0][1]) {
+  vec4 vPos = mvMatrix * gl_in[0].gl_Position;
+  gl_Position = mpMatrix * (vPos + vec4(-mData[0][1][1], 0.0f, 0.0f, 0.0f));
+  fShade = mData[0][1][0];
+  fAlpha = mData[0][0][2];
+  EmitVertex();
+
+  vPos = mvMatrix * gl_in[0].gl_Position;
+  gl_Position = mpMatrix * (vPos + vec4(mData[0][1][1], 0.0f, 0.0f, 0.0f));
+  fShade = mData[0][1][0];
+  fAlpha = mData[0][0][2];
+  EmitVertex();
+
+  vPos = mvMatrix * gl_in[1].gl_Position;
+  float fWaveX = sin(gl_in[1].gl_Position[0]*64+fTime*20)*0.2;
+  float fWaveY = cos(gl_in[1].gl_Position[2]*64+gl_in[1].gl_Position[1]+fTime*20)*0.2;
+  gl_Position = mpMatrix * (vPos + vec4(fWaveX, mData[1][0][0], fWaveY, 0.0f));
+  fShade = mData[1][1][0];
+  fAlpha = mData[1][0][2];
+  EmitVertex();
+ }
+ EndPrimitive();
+}

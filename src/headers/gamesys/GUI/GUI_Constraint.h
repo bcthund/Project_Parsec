@@ -1,0 +1,1432 @@
+/*
+ * GUI.h
+ *
+ *  Created on: Mar 6, 2020
+ *      Author: bcthund
+ */
+
+#ifndef HEADERS_GAMESYS_GUI_CONSTRAINTS_H_
+#define HEADERS_GAMESYS_GUI_CONSTRAINTS_H_
+
+/*
+ * Creates GUI instances for particular objects that can be
+ * used as a building block for a full GUI.
+ *
+ * These classes draw the objects and handle IO, as well as
+ * 	providing "focus" tracking.
+ * 		- Focus may be achieved with a static INT that
+ * 			contains an ID. The ID will represent the
+ * 			active object.
+ * 		- Focus should be handled with a "history" so when
+ * 			an object releases focus the previous object in
+ * 			history gets focus back.
+ */
+
+#include <iostream>
+#include <climits>
+#include <memory>
+#include "../../core/core_functions.h"
+#include "../../core/Stipple.h"
+
+namespace Core {
+	/** ******************************************************************************************************************************
+	 *	\namespace GUI
+	 *
+	 * Creates GUI instances for particular objects that can be
+	 * used as a building block for a full GUI.
+	 * ****************************************************************************************************************************** */
+	namespace GUI {
+
+		// Forward declarations for freinds
+		namespace Object {
+			class Window;
+			class Label;
+			class ToolTip;
+			template <class T>class Field;
+			class Button;
+			template <class T>class Slider;
+			class Text;
+			class TextArea;
+			class TextEdit;
+			class ColorSwatch;
+			class CheckBox;
+			class Icon;
+			class Sprite;
+			class ProgressBar;
+		}
+
+		class Props_Window;
+		class Props_Buttonclass;
+		class Props_Slider;
+		class Props_Label;
+		class Props_Field;
+		class Props_Text;
+		class Props_TextArea;
+		class Props_ColorSwatch;
+		class Props_CheckBox;
+		class Props_Icon;
+		class Props_Sprite;
+		class Props_ProgressBar;
+
+		enum eButtonType {	BUTTON_ONESHOT,		// Button is active for one cycle
+							BUTTON_MOMENTARY,	// Button is active as long as pressed
+							BUTTON_TOGGLE,		// Button toggles state with each press
+							BUTTON_DEBOUNCE		// Button acts as a oneshot initially, but after a debounce time will act as momentary
+		};
+
+		enum eSizeConstraint {	SIZE_CONSTRAINT_RELATIVE,
+								SIZE_CONSTRAINT_ABSOLUTE
+		};
+
+		enum eSlider {		SLIDER_VERTICAL,
+							SLIDER_HORIZONTAL
+		};
+
+		// States for colors
+		// FIXME: Add a STATE_NODRAW, to update data but not draw to screen (use for tooltip autosize calc)
+		typedef int iState;
+		enum eObjectState  {	STATE_NONE		= 0,
+								STATE_HOVER		= 2,
+								STATE_ACTIVE	= 4,
+								STATE_DISABLED	= 8,
+								STATE_UPDATE	= 16,
+								STATE_NODRAW	= 32
+		};
+
+//		typedef int iPadding;
+		enum ePadding { 	PADDING_NONE			= 0,
+							PADDING_SIZE			= 1,
+							PADDING_POSITION		= 2,
+							PADDING_ALL				= PADDING_SIZE|PADDING_POSITION
+		};
+
+		typedef int iConstrain;
+		enum eConstrain {	CONSTRAIN_CENTER		= 1,
+							CONSTRAIN_LEFT			= 2,
+							CONSTRAIN_RIGHT			= 4,
+							CONSTRAIN_TOP			= 8,
+							CONSTRAIN_BOTTOM		= 16,
+							// Convenience Labels
+							CONSTRAIN_TOP_LEFT		= CONSTRAIN_TOP|CONSTRAIN_LEFT,
+							CONSTRAIN_TOP_RIGHT		= CONSTRAIN_TOP|CONSTRAIN_RIGHT,
+							CONSTRAIN_BOTTOM_LEFT	= CONSTRAIN_BOTTOM|CONSTRAIN_LEFT,
+							CONSTRAIN_BOTTOM_RIGHT	= CONSTRAIN_BOTTOM|CONSTRAIN_RIGHT
+		};
+
+
+		struct GUI_ColorB {
+			Color	* base;
+			GUI_ColorB()						{	base = nullptr;	}
+			GUI_ColorB(const GUI_ColorB *c)		{	base = c->base;	}
+			GUI_ColorB(Color *b)				{	base = b;	}
+		};
+
+		struct GUI_ColorH {
+			Color	* highlight;
+			GUI_ColorH()						{	highlight = nullptr;	}
+			GUI_ColorH(const GUI_ColorH *c)		{	highlight = c->highlight;	}
+			GUI_ColorH(Color *h)				{	highlight = h;	}
+		};
+
+		struct GUI_ColorA {
+			Color	* active;
+			GUI_ColorA()						{	active = nullptr;	}
+			GUI_ColorA(const GUI_ColorA *c)		{	active = c->active;	}
+			GUI_ColorA(Color *a)				{	active = a;	}
+		};
+
+		// Generic and Highlight only
+		struct GUI_ColorBH : public GUI_ColorB, public GUI_ColorH {
+			GUI_ColorBH()							{	base = nullptr;	highlight = nullptr;	}
+			GUI_ColorBH(const GUI_ColorBH *c)		{	base = c->base; highlight = c->highlight;	}
+			GUI_ColorBH(Color *b, Color *h)	{	base = b;	highlight = h;	}
+		};
+
+		// Generic, highlight, and active colors
+		struct GUI_ColorBHA : public GUI_ColorB, public GUI_ColorH, public GUI_ColorA {
+			GUI_ColorBHA()										{	base = nullptr;	highlight = nullptr;	active = nullptr;	}
+			GUI_ColorBHA(const GUI_ColorBHA *c)					{	base = c->base; highlight = c->highlight; active = c->active;	}
+			GUI_ColorBHA(Color *b, Color *h, Color *a)	{	base = b;	highlight = h;	active = a;	}
+		};
+
+		/** ******************************************************************************************************************************
+		 *  \class Props
+		 *  \brief General Props used for all objects
+		 *
+		 * Generic constraints that all other contraints rely on. This is also the class
+		 * that is used for parents to constrain objects to each other.
+		 *
+		 * ****************************************************************************************************************************** */
+		class Props {
+			public:
+				struct _Position : Vector2f {
+					Vector2f constraint;						///< Size reference constraint used to calculate actual position
+				} pos;											///< Actual calculated position from origin and anchor constraints, automatically updated
+
+				struct _Size : Vector2f {
+					struct _SizeConstraint : Vector2f {
+						eSizeConstraint xType,					///< Type of width constraint, relative or absolute
+										yType;					///< Type of height constraint, relative or absolute
+						bool			xAuto,
+										yAuto;
+						int				xMin,
+										xMax,
+										yMin,	// TODO: yMin not implemented
+										yMax;	// TODO: yMax not implemented
+
+						_SizeConstraint() {
+							x		= -1;
+							y		= -1;
+							xType	= SIZE_CONSTRAINT_ABSOLUTE;
+							yType	= SIZE_CONSTRAINT_ABSOLUTE;
+							xAuto	= false;
+							yAuto	= false;
+							xMin	= 10;
+							xMax	= 250;
+							yMin	= 10;
+							yMax	= 250;
+						}
+					} constraint;								///< Width and Height reference constraint used to calculate actual size
+					bool isAutoSet() {	return (!constraint.xAuto || (constraint.xAuto && constraint.x>0) ) && ( !constraint.yAuto || (constraint.yAuto && constraint.y>0) );	}
+				} size;											///< Actual calculated width(x) and height(y) from origin and anchor constraints, automatically updated
+
+				int						origin;					///< The starting drawing point with respect to the parent, if present, otherwise full screen.
+				int						anchor;					///< The point at which this object is offset from the origin.
+				Vector4i				vPadding;				///< Extra reserved space taken into account for origin.
+				ePadding				eEnablePadding;
+				bool 					visibility;				///< Controls if this object is drawn and any of its direct children.
+
+				struct {
+					std::string			Text;
+					bool				bShow;
+					int					border;
+					int					radius;
+					int					padding;
+					bool				round;
+					bool				showLabel;
+				} toolTip;
+
+			private:
+				void execPos(Vector2f cHalf, Vector2f oPos=Vector2f(0.0f), Vector4i vPad=Vector4i(0));
+				void execSize(Vector2f cSize, Vector4i vPad=Vector4i(0));
+
+			public:
+				void setPos(Vector2f v)												{	pos.constraint.x = v.x;	pos.constraint.y = v.y;	}
+				void setPos(int n1, int n2)											{	pos.constraint.x = n1;	pos.constraint.y = n2;	}
+				void modPos(int n1, int n2)											{	pos.constraint.x += n1;	pos.constraint.y += n2;	}
+				void setX(int n)													{	pos.constraint.x = n;	}
+				void setY(int n)													{	pos.constraint.y = n;	}
+				void modX(int n)													{	pos.constraint.x += n;	}
+				void modY(int n)													{	pos.constraint.y += n;	}
+				void setWidth(int n, eSizeConstraint e=SIZE_CONSTRAINT_ABSOLUTE)	{	size.constraint.x = n; size.constraint.xType = e;	}
+				void setHeight(int n, eSizeConstraint e=SIZE_CONSTRAINT_ABSOLUTE)	{	size.constraint.y = n; size.constraint.yType = e;	}
+				void modSize(int n1, int n2)										{	size.constraint.x += n1;	size.constraint.y += n2;	}
+				void setAnchor(iConstrain e=CONSTRAIN_CENTER)						{	anchor = e;	}
+				void setOrigin(iConstrain e=CONSTRAIN_CENTER)						{	origin = e;	}
+				void exec()															{	execPos(gameVars->screen.half);	execSize(gameVars->screen.res);	}
+				void exec(Props c)											{	execPos(c.size/2.0f, c.pos, c.vPadding);	execSize(c.size, c.vPadding);	}
+				Vector2f getPos()													{	return Vector2f(pos.x, pos.y);	}
+				Vector2f getSize()													{	return Vector2f(size.x, size.y);	}
+				void setPadding(int i)												{	vPadding.top = i; vPadding.bottom = i; vPadding.left = i; vPadding.right = i; }
+				void setPadding(int t, int b, int l, int r)							{	vPadding.top = t; vPadding.bottom = b; vPadding.left = l; vPadding.right = r; }
+				void setPadding(Vector4i v)											{	vPadding = v; }
+				void enablePadding(ePadding e=PADDING_POSITION)						{	eEnablePadding = e;	}
+				void disablePadding()												{	eEnablePadding = PADDING_NONE;	}
+				void setVisibility(bool b)											{	visibility = b;	}
+				void enableToolTip()												{	toolTip.bShow = true;	}
+				void disableToolTip()												{	toolTip.bShow = false;	}
+				void setToolTip(std::string s)										{	toolTip.Text = s; toolTip.bShow = true;	}
+				void autoWidth(bool b=true)											{	size.constraint.xAuto = b;	if(b) size.constraint.x = -1;	}
+				void autoHeight(bool b=true)										{	size.constraint.yAuto = b;	if(b) size.constraint.y = -1;	}
+				void setMinMaxWidth(int min, int max)								{	size.constraint.xMin = min; size.constraint.xMax = max;	}
+				void setMinWidth(int i)												{	size.constraint.xMin = i;	}
+				void setMaxWidth(int i)												{	size.constraint.xMax = i;	}
+				void setMinMaxHeight(int min, int max)								{	size.constraint.yMin = min; size.constraint.yMax = max;	}
+				void setMinHeight(int i)											{	size.constraint.yMin = i;	}
+				void setMaxHeight(int i)											{	size.constraint.yMax = i;	}
+
+				Props() {
+					toolTip.bShow		= true;
+					toolTip.Text		= "No ToolTip set!";
+					toolTip.border		= 1;
+					toolTip.radius		= 0;
+					toolTip.padding		= 4;
+					toolTip.round		= false;
+					toolTip.showLabel	= true;
+//					toolTip.color.header.background		= &gameVars->pallette.gui.toolTip.header.background;
+//					toolTip.color.header.border			= &gameVars->pallette.gui.toolTip.header.border;
+//					toolTip.color.header.text			= &gameVars->pallette.gui.toolTip.header.text;
+//					toolTip.color.textarea.background	= &gameVars->pallette.gui.toolTip.textarea.background;
+//					toolTip.color.textarea.border		= &gameVars->pallette.gui.toolTip.textarea.border;
+//					toolTip.color.textarea.text			= &gameVars->pallette.gui.toolTip.textarea.text;
+
+
+					size.constraint.xType = SIZE_CONSTRAINT_ABSOLUTE;
+					size.constraint.x = 0.0f;
+
+					size.constraint.yType = SIZE_CONSTRAINT_ABSOLUTE;
+					size.constraint.y = 0.0f;
+
+					origin = CONSTRAIN_CENTER;
+					anchor = CONSTRAIN_CENTER;
+
+					enablePadding(PADDING_POSITION);
+
+					visibility	= true;
+
+					setPos(0, 0);
+					setWidth(0);
+					setHeight(0);
+					autoWidth(false);
+					autoHeight(false);
+					setMinMaxWidth(10, 250);
+					setMinMaxHeight(10, 250);
+				}
+
+				Props(Props &src) {
+					toolTip.bShow			= src.toolTip.bShow;
+					toolTip.Text			= src.toolTip.Text;
+
+					origin					= src.origin;
+					anchor					= src.anchor;
+					vPadding				= src.vPadding;
+					visibility				= src.visibility;
+					eEnablePadding			= src.eEnablePadding;
+
+					pos.x					= src.pos.x;
+					pos.y					= src.pos.y;
+					pos.constraint.x		= src.pos.constraint.x;
+					pos.constraint.y		= src.pos.constraint.y;
+
+					size.x					= src.size.x;
+					size.y					= src.size.y;
+					size.constraint.x		= src.size.constraint.x;
+					size.constraint.xMin	= src.size.constraint.xMin;
+					size.constraint.xMax	= src.size.constraint.xMax;
+					size.constraint.xType	= src.size.constraint.xType;
+					size.constraint.xAuto	= src.size.constraint.xAuto;
+					size.constraint.y		= src.size.constraint.y;
+					size.constraint.yMin	= src.size.constraint.yMin;
+					size.constraint.yMax	= src.size.constraint.yMax;
+					size.constraint.yType	= src.size.constraint.yType;
+					size.constraint.yAuto	= src.size.constraint.yAuto;
+				}
+
+				~Props() {
+				}
+		};
+
+		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		// 			Object Options
+		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		/**
+		 * \brief Allow object to be part of a group with restricted usage
+		 *
+		 */
+		class Props_Addon_Group {
+			public:
+				int iGroup;
+//				std::string sGroup;
+
+				void setGroup(int i)			{	iGroup = i;	}
+//				void setGroup(std::string s)	{	sGroup = s;	}
+
+				Props_Addon_Group() : iGroup(0) /*, sGroup("")*/ {}
+		};
+
+		/**
+		 * \brief Object can be toggled
+		 *
+		 */
+		class Props_Addon_Toggle {
+			public:
+				bool bToggle;
+				void setToggle(bool b)									{	bToggle = b;		}
+				Props_Addon_Toggle() : bToggle(false)/*, initialState(STATE_NONE)*/ {}
+		};
+
+		/**
+		 * \brief Allows an object to return multiple different states
+		 *
+		 * @tparam T
+		 */
+		class Props_Addon_ReturnState {
+			public:
+//				enum eIndexType { NONE, BOOL, INT, FLOAT, STRING };
+
+//				struct s_AnyType {
+//					eIndexType type = NONE;
+//					union {
+//						bool		bOn;
+//						int			iOn;
+//						float		fOn;
+//						std::string sOn;
+//					};
+
+//					void set(bool b)		{ type = BOOL;		bOn = b;	}
+//					void set(int i)			{ type = INT;		iOn = i;	}
+//					void set(float f)		{ type = FLOAT;		fOn = f;	}
+//					void set(std::string s) { type = STRING;	sOn = s;	}
+
+//					void get(bool &b)		{	b = bOn;	}
+//					void get(int &i)		{	i = iOn;	}
+//					void get(float &f)		{	f = fOn;	}
+//				};
+//				s_AnyType on[8];
+//				s_AnyType off[8];
+				int on[8];
+				int off[8];
+
+//				struct s_On {
+//					s_AnyType on[8];
+//					Object::Button		&operator[](std::string buttonName)			{	return *buttons[map[buttonName]];	}
+//				} on;
+//
+//				struct s_Off {
+//					s_AnyType off[8];
+//				} off;
+
+				void setOnState(int i, int n=0)				{ on[n] = i; }
+				void setOffState(int i, int n=0)			{ off[n] = i; }
+
+//				void setOnState(bool b, int n=0)			{ on[n].set(b); }
+//				void setOnState(int i, int n=0)				{ on[n].set(i); }
+//				void setOnState(float f, int n=0)			{ on[n].set(f); }
+//				void setOnState(std::string s, int n=0)		{  }
+
+//				void setOffState(bool b, int n=0)			{ off[n].set(b); }
+//				void setOffState(int i, int n=0)			{ off[n].set(i); }
+//				void setOffState(float f, int n=0)			{ off[n].set(f); }
+//				void setOffState(std::string s, int n=0)	{  }
+
+				Props_Addon_ReturnState() {
+					for(int n=0; n<8; n++) {
+						on[n] = 1;
+						off[n] = 0;
+					}
+				}
+
+				Props_Addon_ReturnState(Props_Addon_ReturnState &src) {
+					for(int n=0; n<8; n++) {
+						on[n] = src.on[n];
+						off[n] = src.off[n];
+					}
+				}
+
+				Props_Addon_ReturnState &operator=(const Props_Addon_ReturnState &src) {
+					for(int n=0; n<8; n++) {
+						on[n] = src.on[n];
+						off[n] = src.off[n];
+					}
+
+					return *this;
+				}
+		};
+//		template <class T> class Props_Addon_ReturnState {
+//			public:
+//				T on[8];
+//				T off[8];
+//
+//				void setOnState(T t, int n=0)	{ on[std::min(n,7)] = t; }
+//				void setOffState(T t, int n=0)	{ off[std::min(n,7)] = t; }
+//
+//				Props_Addon_ReturnState() {
+//					for(int n=0; n<8; n++) {
+//						on[n] = 1;
+//						off[n] = 0;
+//					}
+//				}
+//		};
+
+		/**
+		 * \brief Object has a stipple pattern
+		 *
+		 */
+		class Props_Addon_Stipple {
+			friend class Object::Window;
+
+			public:
+				Stipple_Pattern	* stipple;
+				GUI_ColorBHA	stippleColor;
+				bool bEnableStipple;
+
+				void setStipple(bool b)										{ bEnableStipple = b; }
+				void enableStipple()										{ bEnableStipple = true; }
+				void disableStipple()										{ bEnableStipple = false; }
+				void setStipplePattern(Stipple_Pattern *s)					{ stipple = s; bEnableStipple = true; }
+				void setStippleColorB(Color *c)								{ stippleColor.base = c; }
+				void setStippleColorH(Color *c)								{ stippleColor.highlight = c; }
+				void setStippleColorA(Color *c)								{ stippleColor.active = c; }
+
+				Props_Addon_Stipple() {
+					bEnableStipple = false;
+					stipple = &Core::stipple[Core::stipple.STIPPLE_SAND];
+					stippleColor.base		= &gameVars->pallette.gui.window.stipple.base;
+					stippleColor.highlight	= &gameVars->pallette.gui.window.stipple.hover;
+					stippleColor.active		= &gameVars->pallette.gui.window.stipple.active;
+				}
+		};
+
+		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		// 			Windows
+		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		class Props_Window :	virtual public Props,
+								virtual public Props_Addon_Stipple {
+
+			friend class Object::Window;
+			friend class GUI;
+
+			private:
+				bool			bNoInput;
+
+			public:
+				struct {
+					GUI_ColorBHA	back,
+									border;
+				} windowColor;
+				bool			roundBorder;
+				int				borderNormal, borderHover;
+				int				radius;
+				bool			bScissor;
+
+				void setBorder(int iNormal, int iHover)						{	borderNormal = iNormal; borderHover = iHover;	}
+				void setRadius(int i)										{	radius = i;	}
+				void setRoundBorder(bool b=true)							{	roundBorder = b;	}
+				void setColorWindowB(Color *v1)								{	windowColor.back.base = v1;	}
+				void setColorWindowH(Color *v1)								{	windowColor.back.highlight = v1;	}
+				void setColorWindowA(Color *v1)								{	windowColor.back.active = v1;	}
+				void setColorWindowBH(Color *v1, Color *v2)					{	windowColor.back.base = v1, windowColor.back.highlight = v2;	}
+				void setColorWindowBHA(Color *v1, Color *v2, Color *v3)		{	windowColor.back.base = v1, windowColor.back.highlight = v2, windowColor.back.active = v3;	}
+				void setColorWindowBHA(GUI_ColorBHA colors)					{	windowColor.back = colors;	}
+				void setColorBorderB(Color *v1)								{	windowColor.border.base = v1;	}
+				void setColorBorderH(Color *v1)								{	windowColor.border.highlight = v1;	}
+				void setColorBorderA(Color *v1)								{	windowColor.border.active = v1;	}
+				void setColorBorderBH(Color *v1, Color *v2)					{	windowColor.border.base = v1, windowColor.border.highlight = v2;	}
+				void setColorBorderBHA(Color *v1, Color *v2, Color *v3)		{	windowColor.border.base = v1, windowColor.border.highlight = v2, windowColor.border.active = v3;	}
+				void setColorBorderBHA(GUI_ColorBHA colors)					{	windowColor.border = colors;	}
+				int  getRadius() 											{	return radius;	}
+				bool getRoundBorder()										{	return roundBorder;	}
+				void setScissor(bool b)										{	bScissor = b;	}
+				void enableScissor()										{	bScissor = true;	}
+				void disableScissor()										{	bScissor = false;	}
+
+//				int  getBorder()											{	return border;	}
+
+				Props_Window() {
+					bScissor				= true;
+					bNoInput				= false;
+
+					roundBorder				= true;
+					borderNormal			= 1;
+					borderHover				= 1;
+					radius					= 0;
+					vPadding.top			= 0;
+					vPadding.bottom			= 0;
+					vPadding.left			= 0;
+					vPadding.right			= 0;
+					enablePadding(Core::GUI::PADDING_ALL);
+//					setPadding(0);
+
+					windowColor.back.base			= &Core::gameVars->pallette.gui.window.background.base;
+					windowColor.back.highlight		= &Core::gameVars->pallette.gui.window.background.hover;
+					windowColor.back.active			= &Core::gameVars->pallette.gui.window.background.active;
+
+					windowColor.border.base			= &Core::gameVars->pallette.gui.window.border.base;
+					windowColor.border.highlight	= &Core::gameVars->pallette.gui.window.border.hover;
+					windowColor.border.active		= &Core::gameVars->pallette.gui.window.border.active;
+				}
+
+//				Props_Window(Props_Window &src) {
+//
+//				}
+
+				~Props_Window() {
+				}
+		};
+
+		/**
+		 *
+		 */
+		class Props_Addon_Background {
+			public:
+				bool bShowBackground;
+
+				Props_Window background;
+
+				void showBackground()										{	bShowBackground = true;		}
+				void hideBackground()										{	bShowBackground = false;	}
+
+				Props_Addon_Background() {
+					bShowBackground	= true;
+				}
+		};
+
+		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		//			Label
+		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		// FIXME: Update window constraints to be separate (background component)
+		class Props_Label : public Props_Window {
+
+			friend class Object::Label;
+
+			public:
+				GUI_ColorBHA	colorText;
+				bool			bShowBackground;
+
+				void setColorTextB(Color *v1)								{ colorText.base = v1; }
+				void setColorTextH(Color *v1)								{ colorText.highlight = v1; }
+				void setColorTextA(Color *v1)								{ colorText.active = v1; }
+				void setColorTextBH(Color *v1, Color *v2)					{ colorText.base = v1; colorText.highlight = v2; }
+				void setColorTextBHA(Color *v1, Color *v2, Color *v3)		{ colorText.base = v1; colorText.highlight = v2; colorText.active = v3; }
+				void setColorTextBHA(GUI_ColorBHA colors)					{ colorText = colors;	}
+				void showBackground()										{ bShowBackground = true;	}
+				void hideBackground()										{ bShowBackground = false;	}
+
+				Props_Label() {
+					setMinMaxWidth(50, 200);
+
+					bShowBackground				= false;
+					setPadding(2);
+					roundBorder					= true;
+					radius						= 3;
+
+					windowColor.back.base			= &Core::gameVars->pallette.gui.label.background.base;
+					windowColor.back.highlight		= &Core::gameVars->pallette.gui.label.background.hover;
+					windowColor.back.active			= &Core::gameVars->pallette.gui.label.background.active;
+
+					windowColor.border.base			= &Core::gameVars->pallette.gui.label.border.base;
+					windowColor.border.highlight		= &Core::gameVars->pallette.gui.label.border.hover;
+					windowColor.border.active			= &Core::gameVars->pallette.gui.label.border.active;
+
+					colorText.base				= &Core::gameVars->pallette.gui.label.text.base;
+					colorText.highlight			= &Core::gameVars->pallette.gui.label.text.hover;
+					colorText.active			= &Core::gameVars->pallette.gui.label.text.active;
+				}
+
+				~Props_Label() {
+				}
+		};
+
+		class Props_Addon_Label {
+			public:
+				bool			bShowLabel;
+
+				Props_Label label;
+
+				void showLabel()											{ bShowLabel = true; }
+				void hideLabel()											{ bShowLabel = false; }
+
+				Props_Addon_Label() {
+					bShowLabel		= false;
+					label.setPos(0, 0);
+
+//					label.bAutoSizeLabelX = true;
+//					label.bAutoSizeLabelY = true;
+
+					label.autoWidth();
+					label.autoHeight();
+				}
+		};
+
+		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		//			Field (Text/Numeric)
+		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		// FIXME: Update window constraints to be separate (background component)
+		class Props_Field : public Props_Window {
+
+			template <class T>
+			friend class Object::Field;
+
+			public:
+				GUI_ColorBHA	colorText;
+				bool			bNumeric;
+				int				precision;
+				float			minValue,
+								maxValue;
+
+				void setColorTextB(Color *v1)								{ colorText.base = v1; }
+				void setColorTextH(Color *v1)								{ colorText.highlight = v1; }
+				void setColorTextA(Color *v1)								{ colorText.active = v1; }
+				void setColorTextBH(Color *v1, Color *v2)					{ colorText.base = v1; colorText.highlight = v2; }
+				void setColorTextBHA(Color *v1, Color *v2, Color *v3)		{ colorText.base = v1; colorText.highlight = v2; colorText.active = v3; }
+				void setColorTextBHA(GUI_ColorBHA colors)					{ colorText = colors;	}
+				void setPrecision(int i)									{ precision = i; }
+				void setMinMax(float min, float max)						{ minValue = min; maxValue = max; }
+				void setMinMax(Vector2f v)									{ minValue = v.x; maxValue = v.y; }
+				void setMin(float f)										{ minValue = f; }
+				void setMax(float f)										{ maxValue = f; }
+
+
+				Props_Field() {
+					bNumeric					= false;
+					minValue					= INT_MIN;
+					maxValue					= INT_MAX;
+
+					setPadding(2);
+					setMinMaxWidth(10, 250);
+
+					colorText.base				= &Core::gameVars->pallette.gui.field.text.base;
+					colorText.highlight			= &Core::gameVars->pallette.gui.field.text.hover;
+					colorText.active			= &Core::gameVars->pallette.gui.field.text.active;
+
+					windowColor.back.base			= &Core::gameVars->pallette.gui.field.background.base;
+					windowColor.back.highlight		= &Core::gameVars->pallette.gui.field.background.hover;
+					windowColor.back.active			= &Core::gameVars->pallette.gui.field.background.active;
+
+					windowColor.border.base			= &Core::gameVars->pallette.gui.field.border.base;
+					windowColor.border.highlight		= &Core::gameVars->pallette.gui.field.border.hover;
+					windowColor.border.active			= &Core::gameVars->pallette.gui.field.border.active;
+
+					radius						= 0;
+					roundBorder					= false;
+
+					precision					= 3;
+				}
+
+				~Props_Field() {
+				}
+		};
+
+		class Props_Addon_Field {
+			public:
+				bool			bShowField;
+
+				Props_Field field;
+
+				void showField()											{ bShowField = true; }
+				void hideField()											{ bShowField = false; }
+
+				Props_Addon_Field() {
+					bShowField		= false;
+					field.setPos(0, 0);
+//					field.disablePadding();
+					field.setMinMaxWidth(10, 250);
+				}
+		};
+
+		/** ******************************************************************************************************************************
+		 *  \class Slider
+		 *  \brief Creates a slider and control with optional label and field for value editing
+		 *
+		 *
+		 *
+		 * ****************************************************************************************************************************** */
+		class Props_Slider :	virtual public Props_Window,
+									public Props_Addon_Label,
+									public Props_Addon_Field {
+
+			template <class T>
+			friend class Object::Slider;
+
+			public:
+				eSlider 	orientation;
+				float		minValue,
+					  	  	maxValue,
+							scrollSpeed;
+				int			precision,
+							iFieldSize;
+				bool 		bExactSize;
+				float		fMinimumStep;
+
+//				Props_Window slider;
+				Props_Window control;
+
+//				GUI_ColorBHA	colorText;
+
+				void setOrientation(eSlider e)								{ orientation = e; }
+				void setMinMax(Vector2f v)									{ minValue = v.x; maxValue = v.y; }
+				void setMinMax(float min, float max)						{ minValue = min; maxValue = max; }
+//				void setColorTextB(Color *v1)								{ colorText.base = v1; }
+//				void setColorTextH(Color *v1)								{ colorText.highlight = v1; }
+//				void setColorTextA(Color *v1)								{ colorText.active = v1; }
+//				void setColorTextBH(Color *v1, Color *v2)					{ colorText.base = v1, colorText.highlight = v2; }
+//				void setColorTextBHA(Color *v1, Color *v2, Color *v3)		{ colorText.base = v1, colorText.highlight = v2, colorText.active = v3; }
+//				void setColorTextBHA(GUI_ColorBHA colors)					{ colorText = colors; }
+				void setPrecision(int i)									{ precision = i; }
+				void setFieldSizeAbsolute(int i)							{ bExactSize = true; iFieldSize = i; }		// iFieldSize = exact size
+				void setFieldSizeRelative(int i)							{ bExactSize = false; iFieldSize = i; }		// iFieldSize = minimum size
+				void setScrollSpeed(float f)								{ scrollSpeed = f; }
+				void setMinimumStep(float f)								{ fMinimumStep = f; }
+				void swapOrientation() {
+					switch(orientation) {
+						case SLIDER_HORIZONTAL:	orientation = SLIDER_VERTICAL;		break;
+						case SLIDER_VERTICAL:	orientation = SLIDER_HORIZONTAL;	break;
+					}
+
+					{
+						int x				= size.constraint.x,
+							y				= size.constraint.y;
+						eSizeConstraint xt	= size.constraint.xType,
+										yt	= size.constraint.yType;
+
+						setWidth(y, yt);
+						setHeight(x, xt);
+					}
+
+					{
+						int x				= control.size.constraint.x,
+							y				= control.size.constraint.y;
+						eSizeConstraint xt	= control.size.constraint.xType,
+										yt	= control.size.constraint.yType;
+						control.setWidth(y, yt);
+						control.setHeight(x, xt);
+					}
+
+					{
+						int t = vPadding.top,
+							b = vPadding.bottom,
+							l = vPadding.left,
+							r = vPadding.right;
+						setPadding(l, r, t, b);
+					}
+				}
+
+				Props_Slider(eSlider orientation=SLIDER_HORIZONTAL) {
+					this->orientation	= orientation;
+					minValue			= 0.0f;
+					maxValue			= 100.0f;
+					scrollSpeed			= 1.0f;
+					fMinimumStep		= 0.5f;
+					precision			= 3;
+
+					// Label
+					bShowLabel			= false;
+					label.setOrigin(CONSTRAIN_LEFT);
+					label.setAnchor(CONSTRAIN_RIGHT);
+					label.setPadding(2);
+					label.setPos(0, 0);
+					label.setMinWidth(0);
+					label.setColorTextB(&Core::gameVars->pallette.gui.slider.text.base);
+					label.setColorTextH(&Core::gameVars->pallette.gui.slider.text.hover);
+					label.setColorTextA(&Core::gameVars->pallette.gui.slider.text.active);
+
+					// Field
+					bShowField			= false;
+					field.setOrigin(CONSTRAIN_RIGHT);
+					field.setAnchor(CONSTRAIN_LEFT);
+					field.setPadding(2);
+					field.setPos(0, 0);
+					field.setColorTextB(&Core::gameVars->pallette.gui.slider.text.base);
+					field.setColorTextH(&Core::gameVars->pallette.gui.slider.text.hover);
+					field.setColorTextA(&Core::gameVars->pallette.gui.slider.text.active);
+
+					// Slider
+					bExactSize			= false;
+					iFieldSize			= 80;
+					if(orientation==SLIDER_HORIZONTAL) setPadding(-8, -8, -5, -5);
+					else setPadding(-5, -5, -8, -8);
+					setBorder(1, 1);
+					setRadius(0);
+					setColorWindowB(&Core::gameVars->pallette.gui.slider.bar.base);
+					setColorWindowH(&Core::gameVars->pallette.gui.slider.bar.hover);
+					setColorWindowA(&Core::gameVars->pallette.gui.slider.bar.active);
+
+					setColorBorderB(&Core::gameVars->pallette.gui.slider.barBorder.base);
+					setColorBorderH(&Core::gameVars->pallette.gui.slider.barBorder.hover);
+					setColorBorderA(&Core::gameVars->pallette.gui.slider.barBorder.active);
+
+					// Control Handle
+					if(orientation==SLIDER_HORIZONTAL) {
+						control.setWidth(8, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+						control.setHeight(16, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+					}
+					else {
+						control.setWidth(16, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+						control.setHeight(8, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+					}
+					control.setBorder(1, 1);
+					control.setRadius(0);
+					control.setColorWindowB(&Core::gameVars->pallette.gui.slider.control.base);
+					control.setColorWindowH(&Core::gameVars->pallette.gui.slider.control.hover);
+					control.setColorWindowA(&Core::gameVars->pallette.gui.slider.control.active);
+
+					control.setColorBorderB(&Core::gameVars->pallette.gui.slider.controlBorder.base);
+					control.setColorBorderH(&Core::gameVars->pallette.gui.slider.controlBorder.hover);
+					control.setColorBorderA(&Core::gameVars->pallette.gui.slider.controlBorder.active);
+				}
+
+				~Props_Slider() {
+				}
+		};
+
+		class Props_Addon_Slider {
+			public:
+				bool bShowSlider;
+				Props_Slider slider;
+
+				void showSlider()											{ bShowSlider = true; }
+				void hideSlider()											{ bShowSlider = false; }
+
+				Props_Addon_Slider(eSlider orientation) {
+					slider = Props_Slider(orientation);
+					bShowSlider		= false;
+				}
+		};
+
+
+		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		// 			Buttons
+		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		class Props_Button :	public Props_Window,
+									virtual public Props_Addon_Group,
+									virtual public Props_Addon_Toggle,
+									virtual public Props_Addon_ReturnState {
+
+			friend class Object::Button;
+
+			public:
+				GUI_ColorBHA	colorText;
+				iConstrain		eLabelAnchor;
+				eButtonType		buttonType;
+				int				debounceTime;
+
+				void setColorTextB(Color *v1)								{	colorText.base = v1;	}
+				void setColorTextH(Color *v1)								{	colorText.highlight = v1;	}
+				void setColorTextA(Color *v1)								{	colorText.active = v1;	}
+				void setColorTextBH(Color *v1, Color *v2)					{	colorText.base = v1, colorText.highlight = v2;	}
+				void setColorTextBHA(Color *v1, Color *v2, Color *v3)		{	colorText.base = v1, colorText.highlight = v2, colorText.active = v3;	}
+				void setColorTextBHA(GUI_ColorBHA colors)					{	colorText = colors;	}
+				void setLabelAnchor(eConstrain e)							{	eLabelAnchor = e;	}
+				void setButtonType(eButtonType e)							{	buttonType = e;		}
+				void setDebounceTime(int i)									{	debounceTime = i;	}
+
+				Props_Button() {
+					buttonType				= BUTTON_ONESHOT;
+					eLabelAnchor			= CONSTRAIN_CENTER;
+					debounceTime			= 500;
+
+					windowColor.back.base		= &Core::gameVars->pallette.gui.button.background.base;
+					windowColor.back.highlight	= &Core::gameVars->pallette.gui.button.background.hover;
+					windowColor.back.active		= &Core::gameVars->pallette.gui.button.background.active;
+
+					windowColor.border.base		= &Core::gameVars->pallette.gui.button.border.base;
+					windowColor.border.highlight	= &Core::gameVars->pallette.gui.button.border.hover;
+					windowColor.border.active		= &Core::gameVars->pallette.gui.button.border.active;
+
+					colorText.base			= &Core::gameVars->pallette.gui.button.text.base;
+					colorText.highlight		= &Core::gameVars->pallette.gui.button.text.hover;
+					colorText.active		= &Core::gameVars->pallette.gui.button.text.active;
+				}
+
+				~Props_Button() {
+				}
+		};
+
+		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		// 			Text
+		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		class Props_Text : virtual public Props {
+
+			friend class Core::_TextSys;
+			friend class GUI::Object::Text;
+			friend class GUI::Object::TextEdit;
+			friend class GUI::Object::TextArea;
+			friend class GUI::Object::ToolTip;
+			friend class Props_TextArea;
+
+			// FIXME: Clean up and make members private as needed
+			private:
+				GUI_ColorBHA	colorText;
+				std::shared_ptr<std::string> bufferPtr;
+				bool			bLocalBuffer;
+				float			scrollPosition;
+				int				iMaxLines;
+				int				iCursorPosition;
+				bool			bEnableCursor;
+				bool			bWordWrap;
+				int				iLineSpacing;
+				Vector2i		limit;
+				int				iUpChars;
+				int				iCursorChars;
+				int				iDownChars;
+				bool			bOverwrite;
+//				Vector2i		vAutoSize;
+
+			public:
+				void setColorTextA(Color *v1)								{ colorText.active = v1; }
+				void setColorTextB(Color *v1)								{ colorText.base = v1; }
+				void setColorTextH(Color *v1)								{ colorText.highlight = v1; }
+				void setColorTextBH(Color *v1, Color *v2)					{ colorText.base = v1; colorText.highlight = v2; }
+				void setColorTextBHA(Color *v1, Color *v2, Color *v3)		{ colorText.base = v1; colorText.highlight = v2; colorText.active = v3; }
+				void setColorTextBHA(GUI_ColorBHA colors)					{ colorText = colors;	}
+				void scrollUp(int i=1)										{ scrollPosition = std::fmax(scrollPosition-i, 0); }
+				void scrollDown(int i=1)									{ scrollPosition += i; }
+				void setWordWrap(bool b)									{ bWordWrap = b;	}
+				void setLineSpacing(int i)									{ iLineSpacing = i;	}
+				void setBuffer(std::shared_ptr<std::string> s)				{	bLocalBuffer = false; bufferPtr = s;	}
+				void setBuffer(std::string s)								{	bLocalBuffer = true; bufferPtr = std::make_shared<std::string>(s);	}
+
+				Props_Text() {
+					scrollPosition			= 0;
+					iMaxLines				= 256;
+					bLocalBuffer			= false;
+					bWordWrap				= true;
+					iLineSpacing			= Core::gameVars->font.spacing;
+					bOverwrite				= false;
+
+					iUpChars				= 0;
+					iCursorChars			= 0;
+					iDownChars				= 0;
+
+					bEnableCursor			= false;
+					iCursorPosition			= 0;
+
+					colorText.base				= &Core::gameVars->pallette.gui.textArea.text.base;
+					colorText.highlight			= &Core::gameVars->pallette.gui.textArea.text.hover;
+					colorText.active			= &Core::gameVars->pallette.gui.textArea.text.active;
+
+					autoWidth();
+					autoHeight();
+
+//					vAutoSize.x				= -1;
+//					vAutoSize.y				= -1;
+				}
+
+				~Props_Text() {
+
+				}
+		};
+
+
+		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		// 			Text Area
+		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		class Props_TextArea :	public Props_Window,
+										public Props_Addon_Label {
+
+			friend class Object::TextArea;
+			friend class Object::TextEdit;
+			friend class Object::ToolTip;
+
+			private:
+				using Props::enablePadding;
+				using Props::disablePadding;
+
+			public:
+				Props_Text	text;
+				bool			enableScrolling;
+				int				iScrollSize;
+				void setScrolling(bool b)									{ enableScrolling = b; }
+				void setScrollSize(int i)									{ iScrollSize = i; }
+				void setLineSpacing(int i)									{ text.iLineSpacing = i;	}
+
+				void setBuffer(std::shared_ptr<std::string> s) {
+					text.bLocalBuffer = false;
+					text.bufferPtr = s;
+				}
+
+				void setBuffer(std::string s) {
+					text.bLocalBuffer = true;
+					text.bufferPtr = std::make_shared<std::string>(s);
+				}
+
+				void setPadding(int i)												{	text.setPadding(i); }
+				void setPadding(int t, int b, int l, int r)							{	text.setPadding(t, b, l, r); }
+				void setPadding(Vector4i v)											{	text.setPadding(v); }
+
+				Props_TextArea() {
+					enableScrolling				= false;
+					iScrollSize					= 20;
+
+					setBorder(1, 1);
+					setRadius(0);
+					Props::setPadding(0);
+					setScrolling(false);
+					setScrollSize(20);
+					text.setPadding(4);
+
+					hideLabel();
+					label.setOrigin(CONSTRAIN_TOP_LEFT);
+					label.setAnchor(CONSTRAIN_BOTTOM_LEFT);
+					label.disablePadding();
+
+					windowColor.back.base			= &Core::gameVars->pallette.gui.textArea.background.base;
+					windowColor.back.highlight		= &Core::gameVars->pallette.gui.textArea.background.hover;
+					windowColor.back.active			= &Core::gameVars->pallette.gui.textArea.background.active;
+
+					windowColor.border.base			= &Core::gameVars->pallette.gui.textArea.border.base;
+					windowColor.border.highlight		= &Core::gameVars->pallette.gui.textArea.border.hover;
+					windowColor.border.active			= &Core::gameVars->pallette.gui.textArea.border.active;
+				}
+		};
+
+		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		// 			Color Swatch
+		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		class Props_ColorSwatch :	virtual public Props_Window,
+										virtual public Props_Addon_Background,
+										public Props_Addon_Label,
+										public Props_Addon_Slider {
+
+			friend class Object::ColorSwatch;
+
+			public:
+				GUI_ColorB		colorBorder;
+//				GUI_ColorB		colorBackground;
+
+				void setColorBorderB(Color *v1)								{	colorBorder.base = v1;	}
+				int  getRadius() 											{	return radius;	}
+				bool getRoundBorder()										{	return roundBorder;	}
+//				int  getBorder()											{	return border;	}
+
+				Props_ColorSwatch() : Props_Addon_Slider(SLIDER_HORIZONTAL) {
+					colorBorder.base		= &Core::gameVars->pallette.gui.swatch.border.base;
+
+					showBackground();
+					background.setColorWindowB(&Core::colors[colors().White]);
+
+					bShowSlider		= true;
+					slider.setOrigin(CONSTRAIN_RIGHT);
+					slider.setAnchor(CONSTRAIN_LEFT);
+					slider.setPos(30, 0);
+					slider.setWidth(200);
+					slider.setMinMax(0.0f, 1.0f);
+					slider.setMinimumStep(0.01f);
+					slider.setPadding(-4);
+					slider.setPrecision(2);
+					slider.setHeight(4, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+					slider.control.setWidth(5, SIZE_CONSTRAINT_ABSOLUTE);
+
+					slider.showField();
+					slider.field.setPadding(2);
+					slider.setFieldSizeAbsolute(50);
+
+					slider.showLabel();
+					slider.label.setOrigin(CONSTRAIN_LEFT);
+					slider.label.setAnchor(CONSTRAIN_RIGHT);
+					slider.label.setPadding(2);
+
+					bShowLabel		= true;
+					label.setOrigin(CONSTRAIN_TOP);
+					label.setAnchor(CONSTRAIN_BOTTOM);
+					label.setPos(0, 0);
+
+					roundBorder = false;
+					radius = 0;
+					setPadding(0);
+				}
+
+				~Props_ColorSwatch() {
+				}
+		};
+
+		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		//			Checkbox
+		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		class Props_CheckBox :	virtual public Props_Window,
+										virtual public Props_Addon_Group,
+										virtual public Props_Addon_Toggle,
+										virtual public Props_Addon_Label,
+										virtual public Props_Addon_ReturnState {
+
+			friend class Object::CheckBox;
+
+			private:
+				Props_Window check;
+
+			public:
+				Props_CheckBox() {
+					bToggle = true;
+//					initialState = STATE_NONE;
+
+					label.setOrigin(CONSTRAIN_LEFT);
+					label.setAnchor(CONSTRAIN_RIGHT);
+					label.setPadding(2);
+					label.setPos(-10, 0);
+					label.autoWidth();
+					label.autoHeight();
+//					label.setLabelAutoSize(true, true);
+					showLabel();
+
+					setPadding(0);
+					setBorder(1, 1);
+					setWidth(20, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+					setHeight(20, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+					setRadius(10);
+
+					windowColor.back.base				= &Core::gameVars->pallette.gui.checkBox.background.base;
+					windowColor.back.highlight			= &Core::gameVars->pallette.gui.checkBox.background.hover;
+					windowColor.back.active				= &Core::gameVars->pallette.gui.checkBox.background.base;
+
+					windowColor.border.base				= &Core::gameVars->pallette.gui.checkBox.border.base;
+					windowColor.border.highlight			= &Core::gameVars->pallette.gui.checkBox.border.hover;
+					windowColor.border.active				= &Core::gameVars->pallette.gui.checkBox.border.active;
+
+					check.windowColor.back.base			= &Core::gameVars->pallette.gui.checkBox.background.active;
+					check.windowColor.back.highlight		= &Core::gameVars->pallette.gui.checkBox.background.active;
+					check.windowColor.back.active		= &Core::gameVars->pallette.gui.checkBox.background.active;
+
+					check.windowColor.border.base			= &Core::gameVars->pallette.gui.checkBox.border.base;
+					check.windowColor.border.highlight		= &Core::gameVars->pallette.gui.checkBox.border.hover;
+					check.windowColor.border.active		= &Core::gameVars->pallette.gui.checkBox.border.active;
+				}
+
+				~Props_CheckBox() {
+				}
+		};
+
+		/** ******************************************************************************************************************************
+		 *  \class Icons
+		 *  \brief Special form of button using an image atlas source
+		 *
+		 *	Acts just like a button, even has a duplicate of a buttons code with the addition
+		 *	of drawing an icon. It does not inherit from a button because that would bring
+		 *	some extra settings not used in icons (text).
+		 *
+		 *	Padding defines how the icon is drawn inside the given dimensions. Therefore padding
+		 *	cannot be used to determine field position.
+		 *
+		 * ****************************************************************************************************************************** */
+		class Props_Icon :	public Props,
+									virtual public Props_Addon_Background,
+									virtual public Props_Addon_Label,
+									virtual public Props_Addon_Group,
+									virtual public Props_Addon_Toggle,
+									virtual public Props_Addon_ReturnState {
+
+			friend class Object::Icon;
+
+			public:
+				GUI_ColorBHA	colorIcon;
+				struct {	int base, active, highlight;	} iconID;
+				eButtonType		buttonType;
+				int				debounceTime;
+				std::string		iconAtlas;
+
+				void setColorIconB		(Color *v1)							{	colorIcon.base = v1;	}
+				void setColorIconH		(Color *v1)							{	colorIcon.highlight = v1;	}
+				void setColorIconA		(Color *v1)							{	colorIcon.active = v1;	}
+				void setColorIconBH		(Color *v1, Color *v2)				{	colorIcon.base = v1, colorIcon.highlight = v2;	}
+				void setColorIconBHA	(Color *v1, Color *v2, Color *v3)	{	colorIcon.base = v1, colorIcon.highlight = v2, colorIcon.active = v3;	}
+				void setColorIconBHA	(GUI_ColorBHA colors)				{	colorIcon = colors;	}
+				void setIconIDs			(int b, int h, int a)				{	iconID.base = b; iconID.highlight = h; iconID.active = a;  	}
+				void setButtonType		(eButtonType e)						{	buttonType = e;		}
+				void setDebounceTime	(int i)								{	debounceTime = i;	}
+				void setImage			(std::string s)						{	iconAtlas = s;	}
+
+				Props_Icon() {
+					buttonType				= BUTTON_ONESHOT;
+					debounceTime			= 500;
+					iconAtlas				= "TestPattern.png";
+					iconID.base				= 0;
+					iconID.highlight		= 1;
+					iconID.active			= 2;
+					setPadding(2);
+
+					colorIcon.base			= &Core::gameVars->pallette.gui.icon.base;
+					colorIcon.highlight		= &Core::gameVars->pallette.gui.icon.hover;
+					colorIcon.active		= &Core::gameVars->pallette.gui.icon.active;
+
+					showBackground();
+					background.setBorder(1, 3);
+					background.setRadius(0);
+					background.setColorWindowB(&gameVars->pallette.gui.icon.background.base);
+					background.setColorWindowH(&gameVars->pallette.gui.icon.background.hover);
+					background.setColorWindowA(&gameVars->pallette.gui.icon.background.active);
+					background.setColorBorderB(&gameVars->pallette.gui.icon.border.base);
+					background.setColorBorderH(&gameVars->pallette.gui.icon.border.hover);
+					background.setColorBorderA(&gameVars->pallette.gui.icon.border.active);
+
+					showLabel();
+					label.setOrigin(Core::GUI::CONSTRAIN_TOP_RIGHT);
+					label.setAnchor(Core::GUI::CONSTRAIN_TOP_LEFT);
+					label.setPos(10, 0);
+					label.disablePadding();
+				}
+
+				~Props_Icon() {
+				}
+		};
+
+		/** ******************************************************************************************************************************
+		 *  \class Sprite
+		 *  \brief Simple image, no user interaction
+		 *
+		 *
+		 *
+		 * ****************************************************************************************************************************** */
+		class Props_Sprite :	public Props_Window,
+								virtual public Props_Addon_Group {
+
+			friend class Object::Sprite;
+
+			public:
+				GUI_ColorBHA	colorSprite;
+				std::string		spriteImage;
+
+				void setColorSpriteB	(Color *v1)							{	colorSprite.base = v1;	}
+				void setColorSpriteH	(Color *v1)							{	colorSprite.highlight = v1;	}
+				void setColorSpriteA	(Color *v1)							{	colorSprite.active = v1;	}
+				void setColorSpriteBH	(Color *v1, Color *v2)				{	colorSprite.base = v1, colorSprite.highlight = v2;	}
+				void setColorSpriteBHA	(Color *v1, Color *v2, Color *v3)	{	colorSprite.base = v1, colorSprite.highlight = v2, colorSprite.active = v3;	}
+				void setColorSpriteBHA	(GUI_ColorBHA colors)				{	colorSprite = colors;	}
+				void setImage			(std::string s)						{	spriteImage = s;	}
+
+				Props_Sprite() {
+					enablePadding(PADDING_ALL);
+
+					spriteImage				= "TestPattern.png";
+
+					windowColor.back.base		= &Core::gameVars->pallette.gui.sprite.background.base;
+					windowColor.back.highlight	= &Core::gameVars->pallette.gui.sprite.background.hover;
+					windowColor.back.active		= &Core::gameVars->pallette.gui.sprite.background.active;
+
+					windowColor.border.base		= &Core::gameVars->pallette.gui.sprite.border.base;
+					windowColor.border.highlight	= &Core::gameVars->pallette.gui.sprite.border.hover;
+					windowColor.border.active		= &Core::gameVars->pallette.gui.sprite.border.active;
+
+					colorSprite.base		= &Core::gameVars->pallette.gui.sprite.base;
+//					colorSprite.highlight	= &Core::gameVars->pallette.gui.sprite.hover;
+//					colorSprite.active		= &Core::gameVars->pallette.gui.sprite.active;
+				}
+
+				~Props_Sprite() {
+				}
+		};
+
+		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		//			ProgressBar
+		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		// FIXME: Update window constraints to be separate (background component)
+		class Props_ProgressBar : public Props_Window {
+
+			public:
+				struct {
+					GUI_ColorB		fill,
+									empty,
+									border;
+				} progressColor;
+
+				Props_Window empty, fill;	// TODO
+				bool		bShowField;		// TODO
+
+				void setColorProgressFill(Color *v1)							{ progressColor.fill.base = v1; }
+				void setColorProgressEmpty(Color *v1)							{ progressColor.empty.base = v1; }
+				void setColorProgressBorder(Color *v1)							{ progressColor.border.base = v1; }
+
+				Props_ProgressBar() {
+					autoWidth(false);
+					autoHeight(false);
+					setPadding(2);
+					bShowField						= true;
+					roundBorder						= true;
+					radius							= 3;
+
+					windowColor.back.base			= &Core::gameVars->pallette.gui.progressBar.background.base;
+					windowColor.back.highlight		= &Core::gameVars->pallette.gui.progressBar.background.base;
+					windowColor.back.active			= &Core::gameVars->pallette.gui.progressBar.background.base;
+
+					windowColor.border.base			= &Core::gameVars->pallette.gui.progressBar.background.border;
+					windowColor.border.highlight	= &Core::gameVars->pallette.gui.progressBar.background.border;
+					windowColor.border.active		= &Core::gameVars->pallette.gui.progressBar.background.border;
+
+					progressColor.empty.base		= &Core::gameVars->pallette.gui.progressBar.progress.empty;
+					progressColor.fill.base			= &Core::gameVars->pallette.gui.progressBar.progress.fill;
+					progressColor.border.base		= &Core::gameVars->pallette.gui.progressBar.progress.border;
+				}
+
+				~Props_ProgressBar() {
+				}
+		};
+
+		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		// 			General Functions
+		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		void Props::execPos(Vector2f cHalf, Vector2f oPos, Vector4i vPad) {
+			// Default position, based on center. (0, 0) is center of screen.
+			pos.x = pos.constraint.x+oPos.x;
+			pos.y = pos.constraint.y+oPos.y;
+
+			if(eEnablePadding&PADDING_POSITION) {
+
+				if(origin&CONSTRAIN_LEFT)									pos.x -= (cHalf.x - vPad.left);
+				else if(origin&CONSTRAIN_RIGHT)								pos.x += (cHalf.x - vPad.right);
+				else if(size.constraint.xType == SIZE_CONSTRAINT_RELATIVE)	pos.x += (vPad.left-vPad.right)/2.0f;
+
+				if(origin&CONSTRAIN_TOP)									pos.y += (cHalf.y - vPad.top);
+				else if(origin&CONSTRAIN_BOTTOM)							pos.y -= (cHalf.y - vPad.bottom);
+				else if(size.constraint.yType == SIZE_CONSTRAINT_RELATIVE)	pos.y += (vPad.bottom-vPad.top)/2.0f;
+			}
+			else {
+				if(origin&CONSTRAIN_LEFT)				pos.x -= cHalf.x;
+				else if(origin&CONSTRAIN_RIGHT)			pos.x += cHalf.x;
+
+				if(origin&CONSTRAIN_TOP)				pos.y += cHalf.y;
+				else if(origin&CONSTRAIN_BOTTOM)		pos.y -= cHalf.y;
+			}
+		}
+
+		void Props::execSize(Vector2f cSize, Vector4i vPad) {
+
+			/*
+			 * Constrain size to padding unless padding is negative.
+			 * If padding is negative then object is assumed to be anchored outside and padding no longer makes sense for sizeing
+			 */
+			size.x = 0;
+			size.y = 0;
+
+			if(eEnablePadding&PADDING_SIZE) {
+				switch (size.constraint.xType) {
+					case SIZE_CONSTRAINT_RELATIVE:	size.x = (((float)size.constraint.x/100) * (cSize.x-(vPad.left+vPad.right)));	break;
+					default:						size.x = size.constraint.x;
+				}
+
+				switch (size.constraint.yType) {
+					case SIZE_CONSTRAINT_RELATIVE:	size.y = (((float)size.constraint.y/100) * (cSize.y-(vPad.top+vPad.bottom)));	break;
+					default:						size.y = size.constraint.y;
+				}
+			}
+			else {
+				switch (size.constraint.xType) {
+					case SIZE_CONSTRAINT_ABSOLUTE:	size.x = size.constraint.x;	break;
+					default:						size.x = ((float)size.constraint.x/100) * cSize.x;
+				}
+
+				switch (size.constraint.yType) {
+					case SIZE_CONSTRAINT_ABSOLUTE:	size.y = size.constraint.y;	break;
+					default:						size.y = ((float)size.constraint.y/100) * cSize.y;
+				}
+			}
+
+			// Left/Right
+			if(anchor&CONSTRAIN_TOP)		pos.y -= (size.y/2.0f);
+			if(anchor&CONSTRAIN_BOTTOM)		pos.y += (size.y/2.0f);
+			if(anchor&CONSTRAIN_LEFT)		pos.x += (size.x/2.0f);
+			if(anchor&CONSTRAIN_RIGHT)		pos.x -= (size.x/2.0f);
+
+			// If an odd size, make even for pixel alignment
+			// This is ABSOLUTELY necessary to prevent artifacts, especially from window borders
+//			if(fmod(size.x, 2.0f)>0.0f) size.x += 1.0f;
+//			if(fmod(size.y, 2.0f)>0.0f) size.y += 1.0f;
+
+		}
+
+
+
+
+	}
+} /* namespace Core */
+
+#endif /* HEADERS_GAMESYS_GUI_CONSTRAINTS_H_ */

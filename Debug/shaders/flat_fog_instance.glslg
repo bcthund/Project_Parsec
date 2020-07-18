@@ -1,0 +1,84 @@
+#version 330 core
+smooth in vec2 vTexCoordIn[];
+smooth out vec2 vTexCoord;
+smooth in vec4 vEyeSpacePos[]; 
+smooth out vec4 vEyeSpacePosOut; 
+//in mat4 mvMatrixG[];
+//in float fHeight[];
+in vec4 vExtraG[];
+//uniform mat4 mpMatrix;
+uniform mat4 mvMatrix2;
+//uniform mat4 mrMatrix;
+uniform mat4 mvpMatrix;
+uniform float fRot;
+uniform vec4 vCamPos;
+precision highp float;
+layout (lines) in;
+layout (triangle_strip) out;
+layout (max_vertices = 4) out;
+void main(void) {
+int i;
+ for ( i=0; i < gl_in.length(); i++) {
+  vec3 right, up;
+//  right.x = mvMatrix2[0][0];  // 0
+//  right.y = mvMatrix2[1][0];  // 4
+//  right.z = mvMatrix2[2][0];  // 8
+  right.x = mvMatrix2[0][0];  // 0
+  right.y = mvMatrix2[1][0];  // 4
+  right.z = mvMatrix2[2][0];  // 8
+
+// Spherical Billboarding
+//  up.x = mvMatrix2[0][1];  // 1
+//  up.y = mvMatrix2[1][1];  // 5
+//  up.z = mvMatrix2[2][1];  // 9
+// Cylindrical Billboarding
+  up.x = 0.0f;  // 1
+  up.y = 1.0f;  // 5
+  up.z = 0.0f;  // 9
+ vec3 P = gl_in[i].gl_Position.xyz;
+
+  if(i==0) {
+// Cylindrical Billboarding
+// Scale x and z with total width, because the billboard axis is shared
+   vec3 a = P - (right + up) * vec3(vExtraG[i].x, 0.0, vExtraG[i].x);
+   gl_Position = mvpMatrix * vec4(a, 1.0);
+// Spherical Billboarding
+//   vec3 va = vec3(P.xy + vec2(-vExtraG[i].x, 0), P.z);
+//   gl_Position = mpMatrix * vec4(va, 1.0);
+   vTexCoord = vec2(0.0f, 1.0f);
+   vEyeSpacePosOut = vEyeSpacePos[0];
+   EmitVertex();
+
+// Cylindrical Billboarding
+   vec3 b = P - (right - up) * vec3(vExtraG[i].x, vExtraG[i].y, vExtraG[i].x);
+   gl_Position = mvpMatrix * vec4(b, 1.0);
+// Spherical Billboarding
+//   vec3 vb = vec3(P.xy + vec2(vExtraG[i].x, 0), P.z);
+//   gl_Position = mpMatrix * vec4(vb, 1.0);
+   vTexCoord = vec2(0.0f, 0.0f);
+   vEyeSpacePosOut = vEyeSpacePos[0];
+   EmitVertex();
+  } else {
+// Cylindrical Billboarding
+   vec3 d = P + (right - up) * vec3(vExtraG[i].x, 0.0, vExtraG[i].x);
+   gl_Position = mvpMatrix * vec4(d, 1.0);
+// Spherical Billboarding
+//   vec3 vd = vec3(P.xy + vec2(-vExtraG[i].x, vExtraG[i].y), P.z);
+//   gl_Position = mpMatrix * vec4(vd, 1.0);
+   vTexCoord = vec2(1.0f, 1.0f);
+   vEyeSpacePosOut = vEyeSpacePos[0];
+   EmitVertex();
+
+// Cylindrical Billboarding
+   vec3 c = P + (right + up) * vec3(vExtraG[i].x, vExtraG[i].y, vExtraG[i].x);
+   gl_Position = mvpMatrix * vec4(c, 1.0);
+// Spherical Billboarding
+//   vec3 vc = vec3(P.xy + vec2(vExtraG[i].x, vExtraG[i].y), P.z);
+//   gl_Position = mpMatrix * vec4(vc, 1.0);
+   vTexCoord = vec2(1.0f, 0.0f);
+   vEyeSpacePosOut = vEyeSpacePos[0];
+   EmitVertex();
+  }
+ }
+ EndPrimitive();
+}

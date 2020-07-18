@@ -1,0 +1,268 @@
+\hypertarget{classCore_1_1__Keyboard}{}\doxysection{Core\+::\+\_\+\+Keyboard Class Reference}
+\label{classCore_1_1__Keyboard}\index{Core::\_Keyboard@{Core::\_Keyboard}}
+
+
+{\ttfamily \#include $<$Input\+Sys.\+h$>$}
+
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structCore_1_1__Keyboard_1_1__KeyArray}{\+\_\+\+Key\+Array}}
+\item 
+struct \mbox{\hyperlink{structCore_1_1__Keyboard_1_1__KeyStruct}{\+\_\+\+Key\+Struct}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef std\+::map$<$ S\+D\+L\+\_\+\+Keycode, uint $>$ \mbox{\hyperlink{classCore_1_1__Keyboard_a7b004ef3f65fd7f724e2161dcf999add}{\+\_\+\+Key\+Map}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classCore_1_1__Keyboard_a2f4921f15bdea152d78dc45747a00f76}{\+\_\+\+Keyboard}} ()
+\item 
+\mbox{\hyperlink{classCore_1_1__Keyboard_abad26161c8981d7c4ef704a30bd50bba}{$\sim$\+\_\+\+Keyboard}} ()
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classCore_1_1__Keyboard_ac43d7ce9c497301eded23977d7908d57}{Add\+Key}} (S\+D\+L\+\_\+\+Keycode key\+Code, bool b\+Repeat)
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classCore_1_1__Keyboard_a8e0b1653da3840c158518122c1bdd530}{calc}} (bool b\+No\+Repeat=false)
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classCore_1_1__Keyboard_a80815bcfd5827b73bda25d23be64b3ca}{calc}} (S\+D\+L\+\_\+\+Keycode i\+Key, bool b\+Set\+Repeat=true)
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classCore_1_1__Keyboard_aec90f2eb0359dfda32100a618bcdae80}{edit\+Buffer}} (\mbox{\hyperlink{gl4__old_2glext_8h_ab4ccfaa8ab0e1afaae94dc96ef52dde1}{std\+::string}} \&\mbox{\hyperlink{gl4__5_2glcorearb_8h_a76461e97a098d2c9ae20ac193d3825ae}{buffer}}, bool b\+Numeric=false)
+\begin{DoxyCompactList}\small\item\em Simple editing mode for a buffer. Used for fields of numeric and text types. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classCore_1_1__Keyboard_a11868c6cd22a2ed806e99e345bd6d186}{edit\+Buffer\+At}} (\mbox{\hyperlink{gl4__old_2glext_8h_ab4ccfaa8ab0e1afaae94dc96ef52dde1}{std\+::string}} \&\mbox{\hyperlink{gl4__5_2glcorearb_8h_a76461e97a098d2c9ae20ac193d3825ae}{buffer}}, bool b\+Numeric, int \mbox{\hyperlink{gl4__5_2glcorearb_8h_a57f14e05b1900f16a2da82ade47d0c6d}{index}}, bool b\+Overwrite)
+\begin{DoxyCompactList}\small\item\em Edit a buffer at a specific position indicated by {\ttfamily index}. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classCore_1_1__Keyboard_a4959c6e98d61094e6de8bba5c5a79653}{update}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structCore_1_1__Keyboard_1_1__KeyArray}{\+\_\+\+Key\+Array}} \mbox{\hyperlink{classCore_1_1__Keyboard_aba654a14b43eda669237d78208dd2b4f}{keys}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const static Uint8 $\ast$ \mbox{\hyperlink{classCore_1_1__Keyboard_a411382c5596251af31ea56962ba4c20a}{event}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+
+
+Definition at line 399 of file Input\+Sys.\+h.
+
+
+
+\doxysubsection{Member Typedef Documentation}
+\mbox{\Hypertarget{classCore_1_1__Keyboard_a7b004ef3f65fd7f724e2161dcf999add}\label{classCore_1_1__Keyboard_a7b004ef3f65fd7f724e2161dcf999add}} 
+\index{Core::\_Keyboard@{Core::\_Keyboard}!\_KeyMap@{\_KeyMap}}
+\index{\_KeyMap@{\_KeyMap}!Core::\_Keyboard@{Core::\_Keyboard}}
+\doxysubsubsection{\texorpdfstring{\_KeyMap}{\_KeyMap}}
+{\footnotesize\ttfamily typedef std\+::map$<$ S\+D\+L\+\_\+\+Keycode, uint $>$ \mbox{\hyperlink{classCore_1_1__Keyboard_a7b004ef3f65fd7f724e2161dcf999add}{Core\+::\+\_\+\+Keyboard\+::\+\_\+\+Key\+Map}}}
+
+
+
+Definition at line 419 of file Input\+Sys.\+h.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classCore_1_1__Keyboard_a2f4921f15bdea152d78dc45747a00f76}\label{classCore_1_1__Keyboard_a2f4921f15bdea152d78dc45747a00f76}} 
+\index{Core::\_Keyboard@{Core::\_Keyboard}!\_Keyboard@{\_Keyboard}}
+\index{\_Keyboard@{\_Keyboard}!Core::\_Keyboard@{Core::\_Keyboard}}
+\doxysubsubsection{\texorpdfstring{\_Keyboard()}{\_Keyboard()}}
+{\footnotesize\ttfamily Core\+::\+\_\+\+Keyboard\+::\+\_\+\+Keyboard (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 489 of file Input\+Sys.\+h.
+
+
+
+References cout.
+
+\mbox{\Hypertarget{classCore_1_1__Keyboard_abad26161c8981d7c4ef704a30bd50bba}\label{classCore_1_1__Keyboard_abad26161c8981d7c4ef704a30bd50bba}} 
+\index{Core::\_Keyboard@{Core::\_Keyboard}!````~\_Keyboard@{$\sim$\_Keyboard}}
+\index{````~\_Keyboard@{$\sim$\_Keyboard}!Core::\_Keyboard@{Core::\_Keyboard}}
+\doxysubsubsection{\texorpdfstring{$\sim$\_Keyboard()}{~\_Keyboard()}}
+{\footnotesize\ttfamily Core\+::\+\_\+\+Keyboard\+::$\sim$\+\_\+\+Keyboard (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 497 of file Input\+Sys.\+h.
+
+
+
+References cout.
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classCore_1_1__Keyboard_ac43d7ce9c497301eded23977d7908d57}\label{classCore_1_1__Keyboard_ac43d7ce9c497301eded23977d7908d57}} 
+\index{Core::\_Keyboard@{Core::\_Keyboard}!AddKey@{AddKey}}
+\index{AddKey@{AddKey}!Core::\_Keyboard@{Core::\_Keyboard}}
+\doxysubsubsection{\texorpdfstring{AddKey()}{AddKey()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Core\+::\+\_\+\+Keyboard\+::\+Add\+Key (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Keycode}]{key\+Code,  }\item[{bool}]{b\+Repeat }\end{DoxyParamCaption})}
+
+
+
+Definition at line 503 of file Input\+Sys.\+h.
+
+
+
+References Core\+::\+\_\+\+Keyboard\+::\+\_\+\+Key\+Array\+::insert(), and keys.
+
+
+
+Referenced by calc().
+
+\mbox{\Hypertarget{classCore_1_1__Keyboard_a8e0b1653da3840c158518122c1bdd530}\label{classCore_1_1__Keyboard_a8e0b1653da3840c158518122c1bdd530}} 
+\index{Core::\_Keyboard@{Core::\_Keyboard}!calc@{calc}}
+\index{calc@{calc}!Core::\_Keyboard@{Core::\_Keyboard}}
+\doxysubsubsection{\texorpdfstring{calc()}{calc()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Core\+::\+\_\+\+Keyboard\+::calc (\begin{DoxyParamCaption}\item[{bool}]{b\+No\+Repeat = {\ttfamily false} }\end{DoxyParamCaption})}
+
+
+
+Definition at line 507 of file Input\+Sys.\+h.
+
+
+
+References Add\+Key().
+
+
+
+Referenced by \+\_\+\+Admin\+::\+\_\+\+Admin(), \+\_\+\+Game\+::\+\_\+\+Game(), Core\+::\+G\+U\+I\+::\+Object\+::\+Field\+Base\+::\+Field\+Base(), and Core\+::\+G\+U\+I\+::\+Object\+::\+Text\+Edit\+Base\+::\+Text\+Edit\+Base().
+
+\mbox{\Hypertarget{classCore_1_1__Keyboard_a80815bcfd5827b73bda25d23be64b3ca}\label{classCore_1_1__Keyboard_a80815bcfd5827b73bda25d23be64b3ca}} 
+\index{Core::\_Keyboard@{Core::\_Keyboard}!calc@{calc}}
+\index{calc@{calc}!Core::\_Keyboard@{Core::\_Keyboard}}
+\doxysubsubsection{\texorpdfstring{calc()}{calc()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Core\+::\+\_\+\+Keyboard\+::calc (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Keycode}]{i\+Key,  }\item[{bool}]{b\+Set\+Repeat = {\ttfamily true} }\end{DoxyParamCaption})}
+
+
+
+Definition at line 986 of file Input\+Sys.\+h.
+
+
+
+References keys.
+
+\mbox{\Hypertarget{classCore_1_1__Keyboard_aec90f2eb0359dfda32100a618bcdae80}\label{classCore_1_1__Keyboard_aec90f2eb0359dfda32100a618bcdae80}} 
+\index{Core::\_Keyboard@{Core::\_Keyboard}!editBuffer@{editBuffer}}
+\index{editBuffer@{editBuffer}!Core::\_Keyboard@{Core::\_Keyboard}}
+\doxysubsubsection{\texorpdfstring{editBuffer()}{editBuffer()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Core\+::\+\_\+\+Keyboard\+::edit\+Buffer (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{gl4__old_2glext_8h_ab4ccfaa8ab0e1afaae94dc96ef52dde1}{std\+::string}} \&}]{buffer,  }\item[{bool}]{b\+Numeric = {\ttfamily false} }\end{DoxyParamCaption})}
+
+
+
+Simple editing mode for a buffer. Used for fields of numeric and text types. 
+
+\DoxyHorRuler
+ 
+\begin{DoxyParams}{Parameters}
+{\em buffer} & Text to be edited \\
+\hline
+{\em b\+Numeric} & Numeric editing only\\
+\hline
+\end{DoxyParams}
+Thus function allows a buffer to be edited but has no cursor position. It will edit from the end of the string only. In numeric mode the + and -\/ keys can be used to toggle the sign state without erasing the entire buffer. The D\+EL key can be used to clear the buffer completely. 
+
+Definition at line 1001 of file Input\+Sys.\+h.
+
+
+
+References keys.
+
+
+
+Referenced by Core\+::\+G\+U\+I\+::\+Object\+::\+Text\+Edit\+::exec\+Edit().
+
+\mbox{\Hypertarget{classCore_1_1__Keyboard_a11868c6cd22a2ed806e99e345bd6d186}\label{classCore_1_1__Keyboard_a11868c6cd22a2ed806e99e345bd6d186}} 
+\index{Core::\_Keyboard@{Core::\_Keyboard}!editBufferAt@{editBufferAt}}
+\index{editBufferAt@{editBufferAt}!Core::\_Keyboard@{Core::\_Keyboard}}
+\doxysubsubsection{\texorpdfstring{editBufferAt()}{editBufferAt()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Core\+::\+\_\+\+Keyboard\+::edit\+Buffer\+At (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{gl4__old_2glext_8h_ab4ccfaa8ab0e1afaae94dc96ef52dde1}{std\+::string}} \&}]{buffer,  }\item[{bool}]{b\+Numeric,  }\item[{int}]{index,  }\item[{bool}]{b\+Overwrite }\end{DoxyParamCaption})}
+
+
+
+Edit a buffer at a specific position indicated by {\ttfamily index}. 
+
+\DoxyHorRuler
+ 
+\begin{DoxyParams}{Parameters}
+{\em buffer} & Text to be edited \\
+\hline
+{\em b\+Numeric} & Numeric editing only \\
+\hline
+{\em index} & Cursor position, location to edit text at \\
+\hline
+{\em b\+Overwrite} & Whether to overwrite text at position or insert\\
+\hline
+\end{DoxyParams}
+More advanced text editing function that allows editing at a cursor position either in insert or overwrite mode. Can still be specified as numeric only with the -\/ and + keys used to toggle the sign of the value. D\+EL erases the entire buffer in Numeric mode only, in text mode it will erase the character A\+F\+T\+ER the current cursor position.
+
+\DoxyHorRuler
+ 
+
+Definition at line 1162 of file Input\+Sys.\+h.
+
+
+
+References keys.
+
+\mbox{\Hypertarget{classCore_1_1__Keyboard_a4959c6e98d61094e6de8bba5c5a79653}\label{classCore_1_1__Keyboard_a4959c6e98d61094e6de8bba5c5a79653}} 
+\index{Core::\_Keyboard@{Core::\_Keyboard}!update@{update}}
+\index{update@{update}!Core::\_Keyboard@{Core::\_Keyboard}}
+\doxysubsubsection{\texorpdfstring{update()}{update()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Core\+::\+\_\+\+Keyboard\+::update (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 1310 of file Input\+Sys.\+h.
+
+
+
+References Core\+::\+\_\+\+Keyboard\+::\+\_\+\+Key\+Array\+::check(), keys, and Core\+::\+\_\+\+Keyboard\+::\+\_\+\+Key\+Array\+::toggle().
+
+
+
+Referenced by Core\+::\+G\+U\+I\+::\+Object\+::\+Text\+Edit\+::exec\+Edit(), \+\_\+\+Game\+::\+Get\+Input(), and \+\_\+\+Admin\+::\+Get\+Input().
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classCore_1_1__Keyboard_a411382c5596251af31ea56962ba4c20a}\label{classCore_1_1__Keyboard_a411382c5596251af31ea56962ba4c20a}} 
+\index{Core::\_Keyboard@{Core::\_Keyboard}!event@{event}}
+\index{event@{event}!Core::\_Keyboard@{Core::\_Keyboard}}
+\doxysubsubsection{\texorpdfstring{event}{event}}
+{\footnotesize\ttfamily const Uint8 $\ast$ Core\+::\+\_\+\+Keyboard\+::event\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Definition at line 417 of file Input\+Sys.\+h.
+
+
+
+Referenced by Core\+::\+G\+U\+I\+::\+Object\+::\+Text\+Edit\+::exec\+Edit(), \+\_\+\+Game\+::\+Get\+Input(), and \+\_\+\+Admin\+::\+Get\+Input().
+
+\mbox{\Hypertarget{classCore_1_1__Keyboard_aba654a14b43eda669237d78208dd2b4f}\label{classCore_1_1__Keyboard_aba654a14b43eda669237d78208dd2b4f}} 
+\index{Core::\_Keyboard@{Core::\_Keyboard}!keys@{keys}}
+\index{keys@{keys}!Core::\_Keyboard@{Core::\_Keyboard}}
+\doxysubsubsection{\texorpdfstring{keys}{keys}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structCore_1_1__Keyboard_1_1__KeyArray}{\+\_\+\+Key\+Array}} Core\+::\+\_\+\+Keyboard\+::keys}
+
+
+
+Definition at line 484 of file Input\+Sys.\+h.
+
+
+
+Referenced by Add\+Key(), calc(), edit\+Buffer(), edit\+Buffer\+At(), Core\+::\+G\+U\+I\+::\+Object\+::\+Text\+Edit\+::exec\+Edit(), \+\_\+\+Game\+::\+Process\+Input(), \+\_\+\+Admin\+::\+Process\+Input(), and update().
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/headers/core/\mbox{\hyperlink{InputSys_8h}{Input\+Sys.\+h}}\end{DoxyCompactItemize}

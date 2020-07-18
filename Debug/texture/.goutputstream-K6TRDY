@@ -1,0 +1,24 @@
+[ani]
+animated textures, not currently implemented
+
+[atmosphere]
+Skybox, flora, sun, moon
+
+[icons]
+icon sets, currently 64x64 possible extension to 128x128 or more
+
+[sprite]
+2D images used for items such as trees, NPCs, and texture mapping
+
+[sys_sprite]
+System textures for things such as window backgrounds, books, scrolls,
+papers, etc. Still a work in progress.
+
+[system]
+Other system textures. Currently only for the font, menu tileset, and
+console background.
+
+[tileset]
+Textures for terrain and dungeon walls/floors. The name "tileset" is
+just carried over from rpgmaker, the entire folder is the tileset but
+in the future there may be folders to define tilesets to load.

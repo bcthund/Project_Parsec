@@ -1,0 +1,594 @@
+\hypertarget{classCore_1_1__Lights}{}\doxysection{Core\+::\+\_\+\+Lights Class Reference}
+\label{classCore_1_1__Lights}\index{Core::\_Lights@{Core::\_Lights}}
+
+
+{\ttfamily \#include $<$lights.\+h$>$}
+
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structCore_1_1__Lights_1_1__LightData}{\+\_\+\+Light\+Data}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{classCore_1_1__Lights_a1b2b1459af3f3cbb855b9e6040ebe600}{\+\_\+\+Light\+Type}} \{ \newline
+\mbox{\hyperlink{classCore_1_1__Lights_a1b2b1459af3f3cbb855b9e6040ebe600a9e868964ea4e87e183d099b4246ece20}{L\+I\+G\+H\+T\+\_\+\+N\+O\+NE}} =0, 
+\mbox{\hyperlink{classCore_1_1__Lights_a1b2b1459af3f3cbb855b9e6040ebe600a12de5cce0bec52c81e92840fa3fe711f}{L\+I\+G\+H\+T\+\_\+\+D\+I\+R\+E\+C\+T\+I\+O\+N\+AL}}, 
+\mbox{\hyperlink{classCore_1_1__Lights_a1b2b1459af3f3cbb855b9e6040ebe600a66879d1fa42c82e501dbc8cb779ab71c}{L\+I\+G\+H\+T\+\_\+\+O\+M\+NI}}, 
+\mbox{\hyperlink{classCore_1_1__Lights_a1b2b1459af3f3cbb855b9e6040ebe600a0a67cb089d64fe1abec86703d699cd5e}{L\+I\+G\+H\+T\+\_\+\+S\+P\+O\+T\+\_\+\+H\+A\+RD}}, 
+\newline
+\mbox{\hyperlink{classCore_1_1__Lights_a1b2b1459af3f3cbb855b9e6040ebe600a4b138711952558338c5aacd5c55db8ec}{L\+I\+G\+H\+T\+\_\+\+S\+P\+O\+T\+\_\+\+S\+O\+FT}}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classCore_1_1__Lights_a2428b926c4f7ba8c8d10a0680860e31f}{\+\_\+\+Lights}} ()
+\item 
+\mbox{\hyperlink{classCore_1_1__Lights_a2637c16ed798106dc83a407015382f5f}{$\sim$\+\_\+\+Lights}} ()
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classCore_1_1__Lights_a135955851f86a3e70d1d4495b1fa11e7}{init}} ()
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classCore_1_1__Lights_a46ccd157a788396aa0886ea255efb824}{load}} ()
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classCore_1_1__Lights_a210604732c623bd3dd345243ed94fd58}{calc}} (float f\+Scale)
+\item 
+uint \mbox{\hyperlink{classCore_1_1__Lights_a5bce9742d1ed316f646555b5e0296b05}{Add\+Light}} (\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} pos, \mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} dir, \mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} diffuse, \mbox{\hyperlink{classCore_1_1__Lights_a1b2b1459af3f3cbb855b9e6040ebe600}{\+\_\+\+Light\+Type}} \mbox{\hyperlink{gl4__5_2glcorearb_8h_ab7c1afc09f67635c2c376638fcc0db5f}{type}}=\mbox{\hyperlink{classCore_1_1__Lights_a1b2b1459af3f3cbb855b9e6040ebe600a12de5cce0bec52c81e92840fa3fe711f}{L\+I\+G\+H\+T\+\_\+\+D\+I\+R\+E\+C\+T\+I\+O\+N\+AL}})
+\item 
+uint \mbox{\hyperlink{classCore_1_1__Lights_a12a875e2cad290bb0b225558d733c6fc}{Add\+Light}} (\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} pos, \mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} dir, \mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} diffuse, \mbox{\hyperlink{structCore_1_1Degrees}{Degrees}} f\+Inner\+Cone, \mbox{\hyperlink{structCore_1_1Degrees}{Degrees}} f\+Outer\+Cone, \mbox{\hyperlink{classCore_1_1__Lights_a1b2b1459af3f3cbb855b9e6040ebe600}{\+\_\+\+Light\+Type}} \mbox{\hyperlink{gl4__5_2glcorearb_8h_ab7c1afc09f67635c2c376638fcc0db5f}{type}}=\mbox{\hyperlink{classCore_1_1__Lights_a1b2b1459af3f3cbb855b9e6040ebe600a4b138711952558338c5aacd5c55db8ec}{L\+I\+G\+H\+T\+\_\+\+S\+P\+O\+T\+\_\+\+S\+O\+FT}})
+\item 
+uint \mbox{\hyperlink{classCore_1_1__Lights_a81065a29242df02424694792e9dc0f6d}{Add\+Light}} (\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} pos, \mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} dir, \mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} diffuse, float attenuation, \mbox{\hyperlink{classCore_1_1__Lights_a1b2b1459af3f3cbb855b9e6040ebe600}{\+\_\+\+Light\+Type}} \mbox{\hyperlink{gl4__5_2glcorearb_8h_ab7c1afc09f67635c2c376638fcc0db5f}{type}}=\mbox{\hyperlink{classCore_1_1__Lights_a1b2b1459af3f3cbb855b9e6040ebe600a66879d1fa42c82e501dbc8cb779ab71c}{L\+I\+G\+H\+T\+\_\+\+O\+M\+NI}})
+\item 
+uint \mbox{\hyperlink{classCore_1_1__Lights_a3edb4995d7d0a4c99ae06441dc1a08ae}{Add\+Light}} (\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} pos, \mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} dir, \mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} diffuse, \mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} attenuation, \mbox{\hyperlink{classCore_1_1__Lights_a1b2b1459af3f3cbb855b9e6040ebe600}{\+\_\+\+Light\+Type}} \mbox{\hyperlink{gl4__5_2glcorearb_8h_ab7c1afc09f67635c2c376638fcc0db5f}{type}}=\mbox{\hyperlink{classCore_1_1__Lights_a1b2b1459af3f3cbb855b9e6040ebe600a66879d1fa42c82e501dbc8cb779ab71c}{L\+I\+G\+H\+T\+\_\+\+O\+M\+NI}})
+\item 
+uint \mbox{\hyperlink{classCore_1_1__Lights_acdc16e18b33dd07be9ffff9b99d28e2f}{Add\+Light}} (\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} pos, \mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} dir, \mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} diffuse, \mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} ambient, \mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} specular, \mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} attenuation, \mbox{\hyperlink{structCore_1_1Degrees}{Degrees}} f\+Inner\+Cone, \mbox{\hyperlink{structCore_1_1Degrees}{Degrees}} f\+Outer\+Cone, \mbox{\hyperlink{classCore_1_1__Lights_a1b2b1459af3f3cbb855b9e6040ebe600}{\+\_\+\+Light\+Type}} \mbox{\hyperlink{gl4__5_2glcorearb_8h_ab7c1afc09f67635c2c376638fcc0db5f}{type}}=\mbox{\hyperlink{classCore_1_1__Lights_a1b2b1459af3f3cbb855b9e6040ebe600a66879d1fa42c82e501dbc8cb779ab71c}{L\+I\+G\+H\+T\+\_\+\+O\+M\+NI}})
+\item 
+\mbox{\hyperlink{structCore_1_1__Lights_1_1__LightData}{\+\_\+\+Light\+Data}} $\ast$ \mbox{\hyperlink{classCore_1_1__Lights_a56b7fa72a73b664cd158e84ea9bce5a6}{Get\+Light\+Data}} ()
+\item 
+bool \mbox{\hyperlink{classCore_1_1__Lights_a8eef784d4c6eb18e1826dee786eb55b4}{Get\+Light\+Loaded}} (uint \mbox{\hyperlink{gl4__5_2glext_8h_abb50fc1ead3a02a46fb52daa2045f95c}{num}})
+\item 
+uint \mbox{\hyperlink{classCore_1_1__Lights_a7e5072c2f944aab1d6176d5656cb279d}{Get\+Num\+Lights}} ()
+\item 
+\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} \mbox{\hyperlink{classCore_1_1__Lights_a427bc445d3a74415e2c53d2f2339b482}{Get\+Pos}} (uint \mbox{\hyperlink{gl4__5_2glext_8h_abb50fc1ead3a02a46fb52daa2045f95c}{num}})
+\item 
+\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} \mbox{\hyperlink{classCore_1_1__Lights_ab3cd5312d9eabffd7c350d3dc41a03b0}{Get\+Pos\+Ptr}} (uint \mbox{\hyperlink{gl4__5_2glext_8h_abb50fc1ead3a02a46fb52daa2045f95c}{num}})
+\item 
+\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} \mbox{\hyperlink{classCore_1_1__Lights_ad950e6bdb5084139a763fb45038dfe77}{Get\+Dir}} (uint \mbox{\hyperlink{gl4__5_2glext_8h_abb50fc1ead3a02a46fb52daa2045f95c}{num}})
+\item 
+\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} \mbox{\hyperlink{classCore_1_1__Lights_a25ca2815262117a771f6b9b1fc92586d}{Get\+Dir\+Rad}} (uint \mbox{\hyperlink{gl4__5_2glext_8h_abb50fc1ead3a02a46fb52daa2045f95c}{num}})
+\item 
+\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} \mbox{\hyperlink{classCore_1_1__Lights_a68d19c88a0fbd1aeaa23856187fd8a2e}{Get\+Dir\+Ptr}} (uint \mbox{\hyperlink{gl4__5_2glext_8h_abb50fc1ead3a02a46fb52daa2045f95c}{num}})
+\item 
+\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} \mbox{\hyperlink{classCore_1_1__Lights_a487704836909e2650d2089c2f0cf2c2a}{Get\+Diffuse}} (uint \mbox{\hyperlink{gl4__5_2glext_8h_abb50fc1ead3a02a46fb52daa2045f95c}{num}})
+\item 
+\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} \mbox{\hyperlink{classCore_1_1__Lights_adcdfd48a228144aaeb07db6a065eb5d9}{Get\+Ambient}} (uint \mbox{\hyperlink{gl4__5_2glext_8h_abb50fc1ead3a02a46fb52daa2045f95c}{num}})
+\item 
+\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} \mbox{\hyperlink{classCore_1_1__Lights_a419ad03b01cf5fdcf618c627bce5d3f2}{Get\+Specular}} (uint \mbox{\hyperlink{gl4__5_2glext_8h_abb50fc1ead3a02a46fb52daa2045f95c}{num}})
+\item 
+\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} \mbox{\hyperlink{classCore_1_1__Lights_a871aaddeaa0433b4f53d64b2c9330ada}{Get\+Attenuation}} (uint \mbox{\hyperlink{gl4__5_2glext_8h_abb50fc1ead3a02a46fb52daa2045f95c}{num}})
+\item 
+\mbox{\hyperlink{classCore_1_1__Lights_a1b2b1459af3f3cbb855b9e6040ebe600}{\+\_\+\+Light\+Type}} \mbox{\hyperlink{classCore_1_1__Lights_a7065c08d2f388e00149fee841e243c41}{Get\+Type}} (uint \mbox{\hyperlink{gl4__5_2glext_8h_abb50fc1ead3a02a46fb52daa2045f95c}{num}})
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classCore_1_1__Lights_aa6d6f3623e45faeb18ef858203714d20}{Set\+Pos}} (uint \mbox{\hyperlink{gl4__5_2glext_8h_abb50fc1ead3a02a46fb52daa2045f95c}{num}}, \mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} pos)
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classCore_1_1__Lights_a719c5e672ad9dc98c19c7f17870c0a4d}{Set\+Dir}} (uint \mbox{\hyperlink{gl4__5_2glext_8h_abb50fc1ead3a02a46fb52daa2045f95c}{num}}, \mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} dir)
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classCore_1_1__Lights_a803e259e889a487bfc125889813854ac}{Set\+Diffuse}} (uint \mbox{\hyperlink{gl4__5_2glext_8h_abb50fc1ead3a02a46fb52daa2045f95c}{num}}, \mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} dif)
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classCore_1_1__Lights_ab34b97a252f7aa398273365d891bf909}{Set\+Ambient}} (uint \mbox{\hyperlink{gl4__5_2glext_8h_abb50fc1ead3a02a46fb52daa2045f95c}{num}}, \mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} amb)
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classCore_1_1__Lights_a2967c9164803a07fcb95ef085ab17f90}{Set\+Specular}} (uint \mbox{\hyperlink{gl4__5_2glext_8h_abb50fc1ead3a02a46fb52daa2045f95c}{num}}, \mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} spec)
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classCore_1_1__Lights_a511a55980097ae2749c5dfbb0adaf2bd}{Set\+Attenuation}} (uint \mbox{\hyperlink{gl4__5_2glext_8h_abb50fc1ead3a02a46fb52daa2045f95c}{num}}, \mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} att)
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classCore_1_1__Lights_ae9028c333ad04710e6f6e7d036c62102}{Set\+Type}} (uint \mbox{\hyperlink{gl4__5_2glext_8h_abb50fc1ead3a02a46fb52daa2045f95c}{num}}, \mbox{\hyperlink{classCore_1_1__Lights_a1b2b1459af3f3cbb855b9e6040ebe600}{\+\_\+\+Light\+Type}} \mbox{\hyperlink{gl4__5_2glcorearb_8h_ab7c1afc09f67635c2c376638fcc0db5f}{type}})
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+uint \mbox{\hyperlink{classCore_1_1__Lights_ad4ffb054761ff75ebdd65b052ff74b34}{ui\+Num\+Lights}}
+\item 
+uint \mbox{\hyperlink{classCore_1_1__Lights_ada84cb35b725c472b8b411061a749ffa}{ui\+Current\+Lights}}
+\item 
+\mbox{\hyperlink{structCore_1_1__Lights_1_1__LightData}{\+\_\+\+Light\+Data}} $\ast$ \mbox{\hyperlink{classCore_1_1__Lights_a8bbf49dcc3da28cf133918d9ed2c9f55}{data}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+
+
+Definition at line 35 of file lights.\+h.
+
+
+
+\doxysubsection{Member Enumeration Documentation}
+\mbox{\Hypertarget{classCore_1_1__Lights_a1b2b1459af3f3cbb855b9e6040ebe600}\label{classCore_1_1__Lights_a1b2b1459af3f3cbb855b9e6040ebe600}} 
+\index{Core::\_Lights@{Core::\_Lights}!\_LightType@{\_LightType}}
+\index{\_LightType@{\_LightType}!Core::\_Lights@{Core::\_Lights}}
+\doxysubsubsection{\texorpdfstring{\_LightType}{\_LightType}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{classCore_1_1__Lights_a1b2b1459af3f3cbb855b9e6040ebe600}{Core\+::\+\_\+\+Lights\+::\+\_\+\+Light\+Type}}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{LIGHT\_NONE@{LIGHT\_NONE}!Core::\_Lights@{Core::\_Lights}}\index{Core::\_Lights@{Core::\_Lights}!LIGHT\_NONE@{LIGHT\_NONE}}}\mbox{\Hypertarget{classCore_1_1__Lights_a1b2b1459af3f3cbb855b9e6040ebe600a9e868964ea4e87e183d099b4246ece20}\label{classCore_1_1__Lights_a1b2b1459af3f3cbb855b9e6040ebe600a9e868964ea4e87e183d099b4246ece20}} 
+L\+I\+G\+H\+T\+\_\+\+N\+O\+NE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{LIGHT\_DIRECTIONAL@{LIGHT\_DIRECTIONAL}!Core::\_Lights@{Core::\_Lights}}\index{Core::\_Lights@{Core::\_Lights}!LIGHT\_DIRECTIONAL@{LIGHT\_DIRECTIONAL}}}\mbox{\Hypertarget{classCore_1_1__Lights_a1b2b1459af3f3cbb855b9e6040ebe600a12de5cce0bec52c81e92840fa3fe711f}\label{classCore_1_1__Lights_a1b2b1459af3f3cbb855b9e6040ebe600a12de5cce0bec52c81e92840fa3fe711f}} 
+L\+I\+G\+H\+T\+\_\+\+D\+I\+R\+E\+C\+T\+I\+O\+N\+AL&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{LIGHT\_OMNI@{LIGHT\_OMNI}!Core::\_Lights@{Core::\_Lights}}\index{Core::\_Lights@{Core::\_Lights}!LIGHT\_OMNI@{LIGHT\_OMNI}}}\mbox{\Hypertarget{classCore_1_1__Lights_a1b2b1459af3f3cbb855b9e6040ebe600a66879d1fa42c82e501dbc8cb779ab71c}\label{classCore_1_1__Lights_a1b2b1459af3f3cbb855b9e6040ebe600a66879d1fa42c82e501dbc8cb779ab71c}} 
+L\+I\+G\+H\+T\+\_\+\+O\+M\+NI&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{LIGHT\_SPOT\_HARD@{LIGHT\_SPOT\_HARD}!Core::\_Lights@{Core::\_Lights}}\index{Core::\_Lights@{Core::\_Lights}!LIGHT\_SPOT\_HARD@{LIGHT\_SPOT\_HARD}}}\mbox{\Hypertarget{classCore_1_1__Lights_a1b2b1459af3f3cbb855b9e6040ebe600a0a67cb089d64fe1abec86703d699cd5e}\label{classCore_1_1__Lights_a1b2b1459af3f3cbb855b9e6040ebe600a0a67cb089d64fe1abec86703d699cd5e}} 
+L\+I\+G\+H\+T\+\_\+\+S\+P\+O\+T\+\_\+\+H\+A\+RD&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{LIGHT\_SPOT\_SOFT@{LIGHT\_SPOT\_SOFT}!Core::\_Lights@{Core::\_Lights}}\index{Core::\_Lights@{Core::\_Lights}!LIGHT\_SPOT\_SOFT@{LIGHT\_SPOT\_SOFT}}}\mbox{\Hypertarget{classCore_1_1__Lights_a1b2b1459af3f3cbb855b9e6040ebe600a4b138711952558338c5aacd5c55db8ec}\label{classCore_1_1__Lights_a1b2b1459af3f3cbb855b9e6040ebe600a4b138711952558338c5aacd5c55db8ec}} 
+L\+I\+G\+H\+T\+\_\+\+S\+P\+O\+T\+\_\+\+S\+O\+FT&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line 37 of file lights.\+h.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classCore_1_1__Lights_a2428b926c4f7ba8c8d10a0680860e31f}\label{classCore_1_1__Lights_a2428b926c4f7ba8c8d10a0680860e31f}} 
+\index{Core::\_Lights@{Core::\_Lights}!\_Lights@{\_Lights}}
+\index{\_Lights@{\_Lights}!Core::\_Lights@{Core::\_Lights}}
+\doxysubsubsection{\texorpdfstring{\_Lights()}{\_Lights()}}
+{\footnotesize\ttfamily Core\+::\+\_\+\+Lights\+::\+\_\+\+Lights (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 7 of file lights.\+cpp.
+
+
+
+References cout, ui\+Current\+Lights, and ui\+Num\+Lights.
+
+\mbox{\Hypertarget{classCore_1_1__Lights_a2637c16ed798106dc83a407015382f5f}\label{classCore_1_1__Lights_a2637c16ed798106dc83a407015382f5f}} 
+\index{Core::\_Lights@{Core::\_Lights}!````~\_Lights@{$\sim$\_Lights}}
+\index{````~\_Lights@{$\sim$\_Lights}!Core::\_Lights@{Core::\_Lights}}
+\doxysubsubsection{\texorpdfstring{$\sim$\_Lights()}{~\_Lights()}}
+{\footnotesize\ttfamily Core\+::\+\_\+\+Lights\+::$\sim$\+\_\+\+Lights (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 16 of file lights.\+cpp.
+
+
+
+References cout, and data.
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classCore_1_1__Lights_a5bce9742d1ed316f646555b5e0296b05}\label{classCore_1_1__Lights_a5bce9742d1ed316f646555b5e0296b05}} 
+\index{Core::\_Lights@{Core::\_Lights}!AddLight@{AddLight}}
+\index{AddLight@{AddLight}!Core::\_Lights@{Core::\_Lights}}
+\doxysubsubsection{\texorpdfstring{AddLight()}{AddLight()}\hspace{0.1cm}{\footnotesize\ttfamily [1/5]}}
+{\footnotesize\ttfamily uint Core\+::\+\_\+\+Lights\+::\+Add\+Light (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}}]{pos,  }\item[{\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}}]{dir,  }\item[{\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}}]{diffuse,  }\item[{\mbox{\hyperlink{classCore_1_1__Lights_a1b2b1459af3f3cbb855b9e6040ebe600}{\+\_\+\+Light\+Type}}}]{type = {\ttfamily \mbox{\hyperlink{classCore_1_1__Lights_a1b2b1459af3f3cbb855b9e6040ebe600a12de5cce0bec52c81e92840fa3fe711f}{L\+I\+G\+H\+T\+\_\+\+D\+I\+R\+E\+C\+T\+I\+O\+N\+AL}}} }\end{DoxyParamCaption})}
+
+
+
+Definition at line 80 of file lights.\+cpp.
+
+
+
+Referenced by Add\+Light(), and calc().
+
+\mbox{\Hypertarget{classCore_1_1__Lights_a12a875e2cad290bb0b225558d733c6fc}\label{classCore_1_1__Lights_a12a875e2cad290bb0b225558d733c6fc}} 
+\index{Core::\_Lights@{Core::\_Lights}!AddLight@{AddLight}}
+\index{AddLight@{AddLight}!Core::\_Lights@{Core::\_Lights}}
+\doxysubsubsection{\texorpdfstring{AddLight()}{AddLight()}\hspace{0.1cm}{\footnotesize\ttfamily [2/5]}}
+{\footnotesize\ttfamily uint Core\+::\+\_\+\+Lights\+::\+Add\+Light (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}}]{pos,  }\item[{\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}}]{dir,  }\item[{\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}}]{diffuse,  }\item[{\mbox{\hyperlink{structCore_1_1Degrees}{Degrees}}}]{f\+Inner\+Cone,  }\item[{\mbox{\hyperlink{structCore_1_1Degrees}{Degrees}}}]{f\+Outer\+Cone,  }\item[{\mbox{\hyperlink{classCore_1_1__Lights_a1b2b1459af3f3cbb855b9e6040ebe600}{\+\_\+\+Light\+Type}}}]{type = {\ttfamily \mbox{\hyperlink{classCore_1_1__Lights_a1b2b1459af3f3cbb855b9e6040ebe600a4b138711952558338c5aacd5c55db8ec}{L\+I\+G\+H\+T\+\_\+\+S\+P\+O\+T\+\_\+\+S\+O\+FT}}} }\end{DoxyParamCaption})}
+
+
+
+Definition at line 84 of file lights.\+cpp.
+
+
+
+References Add\+Light().
+
+\mbox{\Hypertarget{classCore_1_1__Lights_a81065a29242df02424694792e9dc0f6d}\label{classCore_1_1__Lights_a81065a29242df02424694792e9dc0f6d}} 
+\index{Core::\_Lights@{Core::\_Lights}!AddLight@{AddLight}}
+\index{AddLight@{AddLight}!Core::\_Lights@{Core::\_Lights}}
+\doxysubsubsection{\texorpdfstring{AddLight()}{AddLight()}\hspace{0.1cm}{\footnotesize\ttfamily [3/5]}}
+{\footnotesize\ttfamily uint Core\+::\+\_\+\+Lights\+::\+Add\+Light (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}}]{pos,  }\item[{\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}}]{dir,  }\item[{\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}}]{diffuse,  }\item[{float}]{attenuation,  }\item[{\mbox{\hyperlink{classCore_1_1__Lights_a1b2b1459af3f3cbb855b9e6040ebe600}{\+\_\+\+Light\+Type}}}]{type = {\ttfamily \mbox{\hyperlink{classCore_1_1__Lights_a1b2b1459af3f3cbb855b9e6040ebe600a66879d1fa42c82e501dbc8cb779ab71c}{L\+I\+G\+H\+T\+\_\+\+O\+M\+NI}}} }\end{DoxyParamCaption})}
+
+
+
+Definition at line 88 of file lights.\+cpp.
+
+
+
+References Add\+Light().
+
+\mbox{\Hypertarget{classCore_1_1__Lights_acdc16e18b33dd07be9ffff9b99d28e2f}\label{classCore_1_1__Lights_acdc16e18b33dd07be9ffff9b99d28e2f}} 
+\index{Core::\_Lights@{Core::\_Lights}!AddLight@{AddLight}}
+\index{AddLight@{AddLight}!Core::\_Lights@{Core::\_Lights}}
+\doxysubsubsection{\texorpdfstring{AddLight()}{AddLight()}\hspace{0.1cm}{\footnotesize\ttfamily [4/5]}}
+{\footnotesize\ttfamily uint Core\+::\+\_\+\+Lights\+::\+Add\+Light (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}}]{pos,  }\item[{\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}}]{dir,  }\item[{\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}}]{diffuse,  }\item[{\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}}]{ambient,  }\item[{\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}}]{specular,  }\item[{\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}}]{attenuation,  }\item[{\mbox{\hyperlink{structCore_1_1Degrees}{Degrees}}}]{f\+Inner\+Cone,  }\item[{\mbox{\hyperlink{structCore_1_1Degrees}{Degrees}}}]{f\+Outer\+Cone,  }\item[{\mbox{\hyperlink{classCore_1_1__Lights_a1b2b1459af3f3cbb855b9e6040ebe600}{\+\_\+\+Light\+Type}}}]{type = {\ttfamily \mbox{\hyperlink{classCore_1_1__Lights_a1b2b1459af3f3cbb855b9e6040ebe600a66879d1fa42c82e501dbc8cb779ab71c}{L\+I\+G\+H\+T\+\_\+\+O\+M\+NI}}} }\end{DoxyParamCaption})}
+
+
+
+Definition at line 96 of file lights.\+cpp.
+
+
+
+References Core\+::\+Degrees\+::to\+Radians(), ui\+Current\+Lights, Core\+::\+Vector3f\+::x, Core\+::\+Vector3f\+::y, and Core\+::\+Vector3f\+::z.
+
+\mbox{\Hypertarget{classCore_1_1__Lights_a3edb4995d7d0a4c99ae06441dc1a08ae}\label{classCore_1_1__Lights_a3edb4995d7d0a4c99ae06441dc1a08ae}} 
+\index{Core::\_Lights@{Core::\_Lights}!AddLight@{AddLight}}
+\index{AddLight@{AddLight}!Core::\_Lights@{Core::\_Lights}}
+\doxysubsubsection{\texorpdfstring{AddLight()}{AddLight()}\hspace{0.1cm}{\footnotesize\ttfamily [5/5]}}
+{\footnotesize\ttfamily uint Core\+::\+\_\+\+Lights\+::\+Add\+Light (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}}]{pos,  }\item[{\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}}]{dir,  }\item[{\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}}]{diffuse,  }\item[{\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}}]{attenuation,  }\item[{\mbox{\hyperlink{classCore_1_1__Lights_a1b2b1459af3f3cbb855b9e6040ebe600}{\+\_\+\+Light\+Type}}}]{type = {\ttfamily \mbox{\hyperlink{classCore_1_1__Lights_a1b2b1459af3f3cbb855b9e6040ebe600a66879d1fa42c82e501dbc8cb779ab71c}{L\+I\+G\+H\+T\+\_\+\+O\+M\+NI}}} }\end{DoxyParamCaption})}
+
+
+
+Definition at line 92 of file lights.\+cpp.
+
+
+
+References Add\+Light().
+
+\mbox{\Hypertarget{classCore_1_1__Lights_a210604732c623bd3dd345243ed94fd58}\label{classCore_1_1__Lights_a210604732c623bd3dd345243ed94fd58}} 
+\index{Core::\_Lights@{Core::\_Lights}!calc@{calc}}
+\index{calc@{calc}!Core::\_Lights@{Core::\_Lights}}
+\doxysubsubsection{\texorpdfstring{calc()}{calc()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Core\+::\+\_\+\+Lights\+::calc (\begin{DoxyParamCaption}\item[{float}]{f\+Scale }\end{DoxyParamCaption})}
+
+
+
+Definition at line 39 of file lights.\+cpp.
+
+
+
+References Add\+Light(), cout, L\+I\+G\+H\+T\+\_\+\+D\+I\+R\+E\+C\+T\+I\+O\+N\+AL, L\+I\+G\+H\+T\+\_\+\+O\+M\+NI, and Core\+::s\+Offset.
+
+
+
+Referenced by Core\+::\+Game\+Sys\+::\+\_\+\+World\+Map\+::calc().
+
+\mbox{\Hypertarget{classCore_1_1__Lights_adcdfd48a228144aaeb07db6a065eb5d9}\label{classCore_1_1__Lights_adcdfd48a228144aaeb07db6a065eb5d9}} 
+\index{Core::\_Lights@{Core::\_Lights}!GetAmbient@{GetAmbient}}
+\index{GetAmbient@{GetAmbient}!Core::\_Lights@{Core::\_Lights}}
+\doxysubsubsection{\texorpdfstring{GetAmbient()}{GetAmbient()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} Core\+::\+\_\+\+Lights\+::\+Get\+Ambient (\begin{DoxyParamCaption}\item[{uint}]{num }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 84 of file lights.\+h.
+
+
+
+Referenced by Core\+::\+Shader\+\_\+\+System\+::get\+Uniform().
+
+\mbox{\Hypertarget{classCore_1_1__Lights_a871aaddeaa0433b4f53d64b2c9330ada}\label{classCore_1_1__Lights_a871aaddeaa0433b4f53d64b2c9330ada}} 
+\index{Core::\_Lights@{Core::\_Lights}!GetAttenuation@{GetAttenuation}}
+\index{GetAttenuation@{GetAttenuation}!Core::\_Lights@{Core::\_Lights}}
+\doxysubsubsection{\texorpdfstring{GetAttenuation()}{GetAttenuation()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} Core\+::\+\_\+\+Lights\+::\+Get\+Attenuation (\begin{DoxyParamCaption}\item[{uint}]{num }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 86 of file lights.\+h.
+
+
+
+Referenced by Core\+::\+Shader\+\_\+\+System\+::get\+Uniform().
+
+\mbox{\Hypertarget{classCore_1_1__Lights_a487704836909e2650d2089c2f0cf2c2a}\label{classCore_1_1__Lights_a487704836909e2650d2089c2f0cf2c2a}} 
+\index{Core::\_Lights@{Core::\_Lights}!GetDiffuse@{GetDiffuse}}
+\index{GetDiffuse@{GetDiffuse}!Core::\_Lights@{Core::\_Lights}}
+\doxysubsubsection{\texorpdfstring{GetDiffuse()}{GetDiffuse()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} Core\+::\+\_\+\+Lights\+::\+Get\+Diffuse (\begin{DoxyParamCaption}\item[{uint}]{num }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 83 of file lights.\+h.
+
+
+
+Referenced by Core\+::\+Shader\+\_\+\+System\+::get\+Uniform().
+
+\mbox{\Hypertarget{classCore_1_1__Lights_ad950e6bdb5084139a763fb45038dfe77}\label{classCore_1_1__Lights_ad950e6bdb5084139a763fb45038dfe77}} 
+\index{Core::\_Lights@{Core::\_Lights}!GetDir@{GetDir}}
+\index{GetDir@{GetDir}!Core::\_Lights@{Core::\_Lights}}
+\doxysubsubsection{\texorpdfstring{GetDir()}{GetDir()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} Core\+::\+\_\+\+Lights\+::\+Get\+Dir (\begin{DoxyParamCaption}\item[{uint}]{num }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 79 of file lights.\+h.
+
+
+
+Referenced by Core\+::\+Shader\+\_\+\+System\+::get\+Uniform(), and \+\_\+\+Admin\+::run().
+
+\mbox{\Hypertarget{classCore_1_1__Lights_a68d19c88a0fbd1aeaa23856187fd8a2e}\label{classCore_1_1__Lights_a68d19c88a0fbd1aeaa23856187fd8a2e}} 
+\index{Core::\_Lights@{Core::\_Lights}!GetDirPtr@{GetDirPtr}}
+\index{GetDirPtr@{GetDirPtr}!Core::\_Lights@{Core::\_Lights}}
+\doxysubsubsection{\texorpdfstring{GetDirPtr()}{GetDirPtr()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} Core\+::\+\_\+\+Lights\+::\+Get\+Dir\+Ptr (\begin{DoxyParamCaption}\item[{uint}]{num }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 81 of file lights.\+h.
+
+\mbox{\Hypertarget{classCore_1_1__Lights_a25ca2815262117a771f6b9b1fc92586d}\label{classCore_1_1__Lights_a25ca2815262117a771f6b9b1fc92586d}} 
+\index{Core::\_Lights@{Core::\_Lights}!GetDirRad@{GetDirRad}}
+\index{GetDirRad@{GetDirRad}!Core::\_Lights@{Core::\_Lights}}
+\doxysubsubsection{\texorpdfstring{GetDirRad()}{GetDirRad()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} Core\+::\+\_\+\+Lights\+::\+Get\+Dir\+Rad (\begin{DoxyParamCaption}\item[{uint}]{num }\end{DoxyParamCaption})}
+
+
+
+Definition at line 130 of file lights.\+cpp.
+
+\mbox{\Hypertarget{classCore_1_1__Lights_a56b7fa72a73b664cd158e84ea9bce5a6}\label{classCore_1_1__Lights_a56b7fa72a73b664cd158e84ea9bce5a6}} 
+\index{Core::\_Lights@{Core::\_Lights}!GetLightData@{GetLightData}}
+\index{GetLightData@{GetLightData}!Core::\_Lights@{Core::\_Lights}}
+\doxysubsubsection{\texorpdfstring{GetLightData()}{GetLightData()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structCore_1_1__Lights_1_1__LightData}{\+\_\+\+Light\+Data}}$\ast$ Core\+::\+\_\+\+Lights\+::\+Get\+Light\+Data (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 72 of file lights.\+h.
+
+
+
+References data.
+
+\mbox{\Hypertarget{classCore_1_1__Lights_a8eef784d4c6eb18e1826dee786eb55b4}\label{classCore_1_1__Lights_a8eef784d4c6eb18e1826dee786eb55b4}} 
+\index{Core::\_Lights@{Core::\_Lights}!GetLightLoaded@{GetLightLoaded}}
+\index{GetLightLoaded@{GetLightLoaded}!Core::\_Lights@{Core::\_Lights}}
+\doxysubsubsection{\texorpdfstring{GetLightLoaded()}{GetLightLoaded()}}
+{\footnotesize\ttfamily bool Core\+::\+\_\+\+Lights\+::\+Get\+Light\+Loaded (\begin{DoxyParamCaption}\item[{uint}]{num }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 73 of file lights.\+h.
+
+\mbox{\Hypertarget{classCore_1_1__Lights_a7e5072c2f944aab1d6176d5656cb279d}\label{classCore_1_1__Lights_a7e5072c2f944aab1d6176d5656cb279d}} 
+\index{Core::\_Lights@{Core::\_Lights}!GetNumLights@{GetNumLights}}
+\index{GetNumLights@{GetNumLights}!Core::\_Lights@{Core::\_Lights}}
+\doxysubsubsection{\texorpdfstring{GetNumLights()}{GetNumLights()}}
+{\footnotesize\ttfamily uint Core\+::\+\_\+\+Lights\+::\+Get\+Num\+Lights (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 74 of file lights.\+h.
+
+
+
+References ui\+Current\+Lights.
+
+
+
+Referenced by Core\+::\+Shader\+\_\+\+System\+::get\+Uniform(), and \+\_\+\+Game\+::\+Process\+Input().
+
+\mbox{\Hypertarget{classCore_1_1__Lights_a427bc445d3a74415e2c53d2f2339b482}\label{classCore_1_1__Lights_a427bc445d3a74415e2c53d2f2339b482}} 
+\index{Core::\_Lights@{Core::\_Lights}!GetPos@{GetPos}}
+\index{GetPos@{GetPos}!Core::\_Lights@{Core::\_Lights}}
+\doxysubsubsection{\texorpdfstring{GetPos()}{GetPos()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} Core\+::\+\_\+\+Lights\+::\+Get\+Pos (\begin{DoxyParamCaption}\item[{uint}]{num }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 76 of file lights.\+h.
+
+
+
+Referenced by Core\+::\+Shader\+\_\+\+System\+::get\+Uniform(), \+\_\+\+Game\+::load(), \+\_\+\+Game\+::\+Process\+Input(), and \+\_\+\+Admin\+::run().
+
+\mbox{\Hypertarget{classCore_1_1__Lights_ab3cd5312d9eabffd7c350d3dc41a03b0}\label{classCore_1_1__Lights_ab3cd5312d9eabffd7c350d3dc41a03b0}} 
+\index{Core::\_Lights@{Core::\_Lights}!GetPosPtr@{GetPosPtr}}
+\index{GetPosPtr@{GetPosPtr}!Core::\_Lights@{Core::\_Lights}}
+\doxysubsubsection{\texorpdfstring{GetPosPtr()}{GetPosPtr()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} Core\+::\+\_\+\+Lights\+::\+Get\+Pos\+Ptr (\begin{DoxyParamCaption}\item[{uint}]{num }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 77 of file lights.\+h.
+
+\mbox{\Hypertarget{classCore_1_1__Lights_a419ad03b01cf5fdcf618c627bce5d3f2}\label{classCore_1_1__Lights_a419ad03b01cf5fdcf618c627bce5d3f2}} 
+\index{Core::\_Lights@{Core::\_Lights}!GetSpecular@{GetSpecular}}
+\index{GetSpecular@{GetSpecular}!Core::\_Lights@{Core::\_Lights}}
+\doxysubsubsection{\texorpdfstring{GetSpecular()}{GetSpecular()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}} Core\+::\+\_\+\+Lights\+::\+Get\+Specular (\begin{DoxyParamCaption}\item[{uint}]{num }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 85 of file lights.\+h.
+
+
+
+Referenced by Core\+::\+Shader\+\_\+\+System\+::get\+Uniform().
+
+\mbox{\Hypertarget{classCore_1_1__Lights_a7065c08d2f388e00149fee841e243c41}\label{classCore_1_1__Lights_a7065c08d2f388e00149fee841e243c41}} 
+\index{Core::\_Lights@{Core::\_Lights}!GetType@{GetType}}
+\index{GetType@{GetType}!Core::\_Lights@{Core::\_Lights}}
+\doxysubsubsection{\texorpdfstring{GetType()}{GetType()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classCore_1_1__Lights_a1b2b1459af3f3cbb855b9e6040ebe600}{\+\_\+\+Light\+Type}} Core\+::\+\_\+\+Lights\+::\+Get\+Type (\begin{DoxyParamCaption}\item[{uint}]{num }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 87 of file lights.\+h.
+
+
+
+References L\+I\+G\+H\+T\+\_\+\+N\+O\+NE.
+
+
+
+Referenced by Core\+::\+Shader\+\_\+\+System\+::get\+Uniform().
+
+\mbox{\Hypertarget{classCore_1_1__Lights_a135955851f86a3e70d1d4495b1fa11e7}\label{classCore_1_1__Lights_a135955851f86a3e70d1d4495b1fa11e7}} 
+\index{Core::\_Lights@{Core::\_Lights}!init@{init}}
+\index{init@{init}!Core::\_Lights@{Core::\_Lights}}
+\doxysubsubsection{\texorpdfstring{init()}{init()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Core\+::\+\_\+\+Lights\+::init (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 23 of file lights.\+cpp.
+
+
+
+References cout, L\+I\+G\+H\+T\+\_\+\+N\+O\+NE, Core\+::s\+Offset, and ui\+Num\+Lights.
+
+
+
+Referenced by Core\+::\+Game\+Sys\+::\+\_\+\+World\+Map\+::\+\_\+\+World\+Map().
+
+\mbox{\Hypertarget{classCore_1_1__Lights_a46ccd157a788396aa0886ea255efb824}\label{classCore_1_1__Lights_a46ccd157a788396aa0886ea255efb824}} 
+\index{Core::\_Lights@{Core::\_Lights}!load@{load}}
+\index{load@{load}!Core::\_Lights@{Core::\_Lights}}
+\doxysubsubsection{\texorpdfstring{load()}{load()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Core\+::\+\_\+\+Lights\+::load (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 33 of file lights.\+cpp.
+
+
+
+References cout, and Core\+::s\+Offset.
+
+
+
+Referenced by Core\+::\+Game\+Sys\+::\+\_\+\+World\+Map\+::load().
+
+\mbox{\Hypertarget{classCore_1_1__Lights_ab34b97a252f7aa398273365d891bf909}\label{classCore_1_1__Lights_ab34b97a252f7aa398273365d891bf909}} 
+\index{Core::\_Lights@{Core::\_Lights}!SetAmbient@{SetAmbient}}
+\index{SetAmbient@{SetAmbient}!Core::\_Lights@{Core::\_Lights}}
+\doxysubsubsection{\texorpdfstring{SetAmbient()}{SetAmbient()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Core\+::\+\_\+\+Lights\+::\+Set\+Ambient (\begin{DoxyParamCaption}\item[{uint}]{num,  }\item[{\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}}]{amb }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 92 of file lights.\+h.
+
+\mbox{\Hypertarget{classCore_1_1__Lights_a511a55980097ae2749c5dfbb0adaf2bd}\label{classCore_1_1__Lights_a511a55980097ae2749c5dfbb0adaf2bd}} 
+\index{Core::\_Lights@{Core::\_Lights}!SetAttenuation@{SetAttenuation}}
+\index{SetAttenuation@{SetAttenuation}!Core::\_Lights@{Core::\_Lights}}
+\doxysubsubsection{\texorpdfstring{SetAttenuation()}{SetAttenuation()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Core\+::\+\_\+\+Lights\+::\+Set\+Attenuation (\begin{DoxyParamCaption}\item[{uint}]{num,  }\item[{\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}}]{att }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 94 of file lights.\+h.
+
+\mbox{\Hypertarget{classCore_1_1__Lights_a803e259e889a487bfc125889813854ac}\label{classCore_1_1__Lights_a803e259e889a487bfc125889813854ac}} 
+\index{Core::\_Lights@{Core::\_Lights}!SetDiffuse@{SetDiffuse}}
+\index{SetDiffuse@{SetDiffuse}!Core::\_Lights@{Core::\_Lights}}
+\doxysubsubsection{\texorpdfstring{SetDiffuse()}{SetDiffuse()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Core\+::\+\_\+\+Lights\+::\+Set\+Diffuse (\begin{DoxyParamCaption}\item[{uint}]{num,  }\item[{\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}}]{dif }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 91 of file lights.\+h.
+
+\mbox{\Hypertarget{classCore_1_1__Lights_a719c5e672ad9dc98c19c7f17870c0a4d}\label{classCore_1_1__Lights_a719c5e672ad9dc98c19c7f17870c0a4d}} 
+\index{Core::\_Lights@{Core::\_Lights}!SetDir@{SetDir}}
+\index{SetDir@{SetDir}!Core::\_Lights@{Core::\_Lights}}
+\doxysubsubsection{\texorpdfstring{SetDir()}{SetDir()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Core\+::\+\_\+\+Lights\+::\+Set\+Dir (\begin{DoxyParamCaption}\item[{uint}]{num,  }\item[{\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}}]{dir }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 90 of file lights.\+h.
+
+\mbox{\Hypertarget{classCore_1_1__Lights_aa6d6f3623e45faeb18ef858203714d20}\label{classCore_1_1__Lights_aa6d6f3623e45faeb18ef858203714d20}} 
+\index{Core::\_Lights@{Core::\_Lights}!SetPos@{SetPos}}
+\index{SetPos@{SetPos}!Core::\_Lights@{Core::\_Lights}}
+\doxysubsubsection{\texorpdfstring{SetPos()}{SetPos()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Core\+::\+\_\+\+Lights\+::\+Set\+Pos (\begin{DoxyParamCaption}\item[{uint}]{num,  }\item[{\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}}]{pos }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 89 of file lights.\+h.
+
+
+
+Referenced by \+\_\+\+Game\+::\+Process\+Input().
+
+\mbox{\Hypertarget{classCore_1_1__Lights_a2967c9164803a07fcb95ef085ab17f90}\label{classCore_1_1__Lights_a2967c9164803a07fcb95ef085ab17f90}} 
+\index{Core::\_Lights@{Core::\_Lights}!SetSpecular@{SetSpecular}}
+\index{SetSpecular@{SetSpecular}!Core::\_Lights@{Core::\_Lights}}
+\doxysubsubsection{\texorpdfstring{SetSpecular()}{SetSpecular()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Core\+::\+\_\+\+Lights\+::\+Set\+Specular (\begin{DoxyParamCaption}\item[{uint}]{num,  }\item[{\mbox{\hyperlink{structCore_1_1Vector3f}{Vector3f}}}]{spec }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 93 of file lights.\+h.
+
+\mbox{\Hypertarget{classCore_1_1__Lights_ae9028c333ad04710e6f6e7d036c62102}\label{classCore_1_1__Lights_ae9028c333ad04710e6f6e7d036c62102}} 
+\index{Core::\_Lights@{Core::\_Lights}!SetType@{SetType}}
+\index{SetType@{SetType}!Core::\_Lights@{Core::\_Lights}}
+\doxysubsubsection{\texorpdfstring{SetType()}{SetType()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Core\+::\+\_\+\+Lights\+::\+Set\+Type (\begin{DoxyParamCaption}\item[{uint}]{num,  }\item[{\mbox{\hyperlink{classCore_1_1__Lights_a1b2b1459af3f3cbb855b9e6040ebe600}{\+\_\+\+Light\+Type}}}]{type }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 95 of file lights.\+h.
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classCore_1_1__Lights_a8bbf49dcc3da28cf133918d9ed2c9f55}\label{classCore_1_1__Lights_a8bbf49dcc3da28cf133918d9ed2c9f55}} 
+\index{Core::\_Lights@{Core::\_Lights}!data@{data}}
+\index{data@{data}!Core::\_Lights@{Core::\_Lights}}
+\doxysubsubsection{\texorpdfstring{data}{data}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structCore_1_1__Lights_1_1__LightData}{\+\_\+\+Light\+Data}}$\ast$ Core\+::\+\_\+\+Lights\+::data\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line 59 of file lights.\+h.
+
+
+
+Referenced by Get\+Light\+Data(), and $\sim$\+\_\+\+Lights().
+
+\mbox{\Hypertarget{classCore_1_1__Lights_ada84cb35b725c472b8b411061a749ffa}\label{classCore_1_1__Lights_ada84cb35b725c472b8b411061a749ffa}} 
+\index{Core::\_Lights@{Core::\_Lights}!uiCurrentLights@{uiCurrentLights}}
+\index{uiCurrentLights@{uiCurrentLights}!Core::\_Lights@{Core::\_Lights}}
+\doxysubsubsection{\texorpdfstring{uiCurrentLights}{uiCurrentLights}}
+{\footnotesize\ttfamily uint Core\+::\+\_\+\+Lights\+::ui\+Current\+Lights\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line 57 of file lights.\+h.
+
+
+
+Referenced by \+\_\+\+Lights(), Add\+Light(), and Get\+Num\+Lights().
+
+\mbox{\Hypertarget{classCore_1_1__Lights_ad4ffb054761ff75ebdd65b052ff74b34}\label{classCore_1_1__Lights_ad4ffb054761ff75ebdd65b052ff74b34}} 
+\index{Core::\_Lights@{Core::\_Lights}!uiNumLights@{uiNumLights}}
+\index{uiNumLights@{uiNumLights}!Core::\_Lights@{Core::\_Lights}}
+\doxysubsubsection{\texorpdfstring{uiNumLights}{uiNumLights}}
+{\footnotesize\ttfamily uint Core\+::\+\_\+\+Lights\+::ui\+Num\+Lights\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line 57 of file lights.\+h.
+
+
+
+Referenced by \+\_\+\+Lights(), and init().
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/headers/core/\mbox{\hyperlink{lights_8h}{lights.\+h}}\item 
+src/headers/core/\mbox{\hyperlink{lights_8cpp}{lights.\+cpp}}\end{DoxyCompactItemize}
