@@ -1,5 +1,7 @@
 # Project_Parsec
 This is a personal project with the goal of being a general purpose game engine. I created this just as a way of better understanding programming in C++ and how to program with OpenGL. It has only ever been tested on an Nvidia graphics card and likely wont work on ATI due to differences in shader programming.<br>
+<br>
+The project is written in C++ in the Eclipse IDE. You should be able to go into the Debug folder and use: ```make clean && make all``` which should produce the binary ```Project_Parsec``` which is the current name of this project.
 
 # A (Not) Short History
 This project essentially started over 10 years ago using RPG Maker XP with a copy I had downloaded and later discovered was a hacked version of the software. After realising that as well as noticing some limitations to the program in general me and my brother decided we should make a game from scratch.<br>
@@ -12,7 +14,7 @@ I had to do some research on how to program a graphical application on Linux and
 <img src="./screens/7.jpg" alt="Flat World" width="500"/><img src="./screens/11.jpg" alt="First Sun" width="500"/><br>
 <br>
 <br>
-By this point it had already been a good 5 years of going back and forth trying to figure out how I wanted to do this. At the time I was using OpenGL 3.2 if I recall correctly, before core profile and shaders were mandatory. I created a world with 3D terrain using a very crude binary map file with heightmap data. I had the terrain shading working and even had shadows working. The 2D trees would billboard and I even added an effect for 3D glasses just for fun. I eventually learned however that OpenGL was going to be switching to core profile entirely requiring shaders be written and I had to make a choice. I decided I was going to start over and rewrite the game using nothing but OpenGL 4.2 core profile with shaders.<br>
+By this point it had already been a good 5 years of going back and forth trying to figure out how I wanted to do this. At the time I was using OpenGL 3.2 if I recall correctly, before core profile and shaders were mandatory. I created a world with 3D terrain using a very crude binary map file with heightmap data. I had the terrain shading working and even had shadows working. The 2D trees would billboard and I even added an effect for 3D glasses just for fun. I eventually learned however that OpenGL was going to be switching to core profile entirely requiring shaders be written and I had to make a choice. I decided I was going to start over and rewrite the game using nothing but OpenGL 4.2 core profile with shaders. The original name of the project was Project Destroyer which is named after a mock up game I had made and was the first game I made in RPG Maker XP.<br>
 <img src="./screens/35.jpg" alt="First Heightmap" width="500"/><img src="./screens/42.jpg" alt="Shadows" width="500"/><br>
 <br>
 <br>
@@ -38,7 +40,11 @@ Weather effects were added including rain, snow, and hail. A simple LOD system w
 At this point the engine was coming along quite well and I had a large detailed world modeled in Blender and groups of NPCs throughout the world that you could battle although many systems were only partially built and many things didn't work properly. Lighting on 3D objects and 2D objects was inconsistent if itworked at all. When trying to implement a lamp that followed the character around I found it couldn't be done properly due to some sort of scaling issues. This short list of problems pales in comparison to all of the issues and roadblocks. With these issues in mind I decided to again rewrite the engine from scratch using all of the systems I had already created and implement them one at a time in a new engine. That is this engine which has come a long way so far.<br>
 <br>
 # Current State (2020-07-18)
+The new name of the project became Project Parsec at this point because the goal was no longer to make the original game intended but rather to consider a simpler game. As the name implies it was meant to be a space game using some concepts from many games I have played such as X-Wing, Eve Online, Vendetta, Freespace, etc as well as several books such as the Star Carrier series. This is the current end goal with an RPG game as the follow up end goal. But I want the engine to be versatile so that any game type can be created with it. Not to try and complete with the Unity engine or anything like that, but just as a hobby for myself.<br>
+<br>
+<br>
 In its current state most of the basic systems have been implemented aside from the atmosphere which is fairly complex and includes flora, weather, skybox, clouds, exosphere, and several other items. A particle system has been created but not finished, it still has some memory leaks when particles fade out but the basic system works fine.<br>
+<br>
 <br>
 The 3D object loader has been fixed so there are no longer memory leaks when loading 3D models. Lighting has been fixed on 3D objects and even a lighting system has been created to manage lights that can simply be added to the system and automatically passed to shaders. Direct, spot, and area lights can be created. Although processing of multiple lights can be fairly intensive as nothing has been optimized. Post processing has been added for additional effects and new effects can be easily added. There is also preliminary collision and bounding volume systems currently providing mouse ray intersection. There is sphere, box, and cylinder shapes and can be axis aligned or object aligned.<br>
 <img src="./screens/115.jpg" alt="Spotlight" width="500"/><img src="./screens/116.jpg" alt="Intersection" width="500"/><br>
