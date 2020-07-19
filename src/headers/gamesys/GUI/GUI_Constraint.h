@@ -487,7 +487,7 @@ namespace Core {
 				struct {
 					GUI_ColorBHA	back,
 									border;
-				} windowColor;
+				} color;
 				bool			roundBorder;
 				int				borderNormal, borderHover;
 				int				radius;
@@ -496,18 +496,18 @@ namespace Core {
 				void setBorder(int iNormal, int iHover)						{	borderNormal = iNormal; borderHover = iHover;	}
 				void setRadius(int i)										{	radius = i;	}
 				void setRoundBorder(bool b=true)							{	roundBorder = b;	}
-				void setColorWindowB(Color *v1)								{	windowColor.back.base = v1;	}
-				void setColorWindowH(Color *v1)								{	windowColor.back.highlight = v1;	}
-				void setColorWindowA(Color *v1)								{	windowColor.back.active = v1;	}
-				void setColorWindowBH(Color *v1, Color *v2)					{	windowColor.back.base = v1, windowColor.back.highlight = v2;	}
-				void setColorWindowBHA(Color *v1, Color *v2, Color *v3)		{	windowColor.back.base = v1, windowColor.back.highlight = v2, windowColor.back.active = v3;	}
-				void setColorWindowBHA(GUI_ColorBHA colors)					{	windowColor.back = colors;	}
-				void setColorBorderB(Color *v1)								{	windowColor.border.base = v1;	}
-				void setColorBorderH(Color *v1)								{	windowColor.border.highlight = v1;	}
-				void setColorBorderA(Color *v1)								{	windowColor.border.active = v1;	}
-				void setColorBorderBH(Color *v1, Color *v2)					{	windowColor.border.base = v1, windowColor.border.highlight = v2;	}
-				void setColorBorderBHA(Color *v1, Color *v2, Color *v3)		{	windowColor.border.base = v1, windowColor.border.highlight = v2, windowColor.border.active = v3;	}
-				void setColorBorderBHA(GUI_ColorBHA colors)					{	windowColor.border = colors;	}
+				void setColorWindowB(Color *v1)								{	color.back.base = v1;	}
+				void setColorWindowH(Color *v1)								{	color.back.highlight = v1;	}
+				void setColorWindowA(Color *v1)								{	color.back.active = v1;	}
+				void setColorWindowBH(Color *v1, Color *v2)					{	color.back.base = v1, color.back.highlight = v2;	}
+				void setColorWindowBHA(Color *v1, Color *v2, Color *v3)		{	color.back.base = v1, color.back.highlight = v2, color.back.active = v3;	}
+				void setColorWindowBHA(GUI_ColorBHA colors)					{	color.back = colors;	}
+				void setColorBorderB(Color *v1)								{	color.border.base = v1;	}
+				void setColorBorderH(Color *v1)								{	color.border.highlight = v1;	}
+				void setColorBorderA(Color *v1)								{	color.border.active = v1;	}
+				void setColorBorderBH(Color *v1, Color *v2)					{	color.border.base = v1, color.border.highlight = v2;	}
+				void setColorBorderBHA(Color *v1, Color *v2, Color *v3)		{	color.border.base = v1, color.border.highlight = v2, color.border.active = v3;	}
+				void setColorBorderBHA(GUI_ColorBHA colors)					{	color.border = colors;	}
 				int  getRadius() 											{	return radius;	}
 				bool getRoundBorder()										{	return roundBorder;	}
 				void setScissor(bool b)										{	bScissor = b;	}
@@ -531,13 +531,13 @@ namespace Core {
 					enablePadding(Core::GUI::PADDING_ALL);
 //					setPadding(0);
 
-					windowColor.back.base			= &Core::gameVars->pallette.gui.window.background.base;
-					windowColor.back.highlight		= &Core::gameVars->pallette.gui.window.background.hover;
-					windowColor.back.active			= &Core::gameVars->pallette.gui.window.background.active;
+					color.back.base			= &Core::gameVars->pallette.gui.window.background.base;
+					color.back.highlight	= &Core::gameVars->pallette.gui.window.background.hover;
+					color.back.active		= &Core::gameVars->pallette.gui.window.background.active;
 
-					windowColor.border.base			= &Core::gameVars->pallette.gui.window.border.base;
-					windowColor.border.highlight	= &Core::gameVars->pallette.gui.window.border.hover;
-					windowColor.border.active		= &Core::gameVars->pallette.gui.window.border.active;
+					color.border.base		= &Core::gameVars->pallette.gui.window.border.base;
+					color.border.highlight	= &Core::gameVars->pallette.gui.window.border.hover;
+					color.border.active		= &Core::gameVars->pallette.gui.window.border.active;
 				}
 
 //				Props_Window(Props_Window &src) {
@@ -596,13 +596,13 @@ namespace Core {
 					roundBorder					= true;
 					radius						= 3;
 
-					windowColor.back.base			= &Core::gameVars->pallette.gui.label.background.base;
-					windowColor.back.highlight		= &Core::gameVars->pallette.gui.label.background.hover;
-					windowColor.back.active			= &Core::gameVars->pallette.gui.label.background.active;
+					color.back.base				= &Core::gameVars->pallette.gui.label.background.base;
+					color.back.highlight		= &Core::gameVars->pallette.gui.label.background.hover;
+					color.back.active			= &Core::gameVars->pallette.gui.label.background.active;
 
-					windowColor.border.base			= &Core::gameVars->pallette.gui.label.border.base;
-					windowColor.border.highlight		= &Core::gameVars->pallette.gui.label.border.hover;
-					windowColor.border.active			= &Core::gameVars->pallette.gui.label.border.active;
+					color.border.base			= &Core::gameVars->pallette.gui.label.border.base;
+					color.border.highlight		= &Core::gameVars->pallette.gui.label.border.hover;
+					color.border.active			= &Core::gameVars->pallette.gui.label.border.active;
 
 					colorText.base				= &Core::gameVars->pallette.gui.label.text.base;
 					colorText.highlight			= &Core::gameVars->pallette.gui.label.text.hover;
@@ -677,13 +677,13 @@ namespace Core {
 					colorText.highlight			= &Core::gameVars->pallette.gui.field.text.hover;
 					colorText.active			= &Core::gameVars->pallette.gui.field.text.active;
 
-					windowColor.back.base			= &Core::gameVars->pallette.gui.field.background.base;
-					windowColor.back.highlight		= &Core::gameVars->pallette.gui.field.background.hover;
-					windowColor.back.active			= &Core::gameVars->pallette.gui.field.background.active;
+					color.back.base				= &Core::gameVars->pallette.gui.field.background.base;
+					color.back.highlight		= &Core::gameVars->pallette.gui.field.background.hover;
+					color.back.active			= &Core::gameVars->pallette.gui.field.background.active;
 
-					windowColor.border.base			= &Core::gameVars->pallette.gui.field.border.base;
-					windowColor.border.highlight		= &Core::gameVars->pallette.gui.field.border.hover;
-					windowColor.border.active			= &Core::gameVars->pallette.gui.field.border.active;
+					color.border.base			= &Core::gameVars->pallette.gui.field.border.base;
+					color.border.highlight		= &Core::gameVars->pallette.gui.field.border.hover;
+					color.border.active			= &Core::gameVars->pallette.gui.field.border.active;
 
 					radius						= 0;
 					roundBorder					= false;
@@ -905,13 +905,13 @@ namespace Core {
 					eLabelAnchor			= CONSTRAIN_CENTER;
 					debounceTime			= 500;
 
-					windowColor.back.base		= &Core::gameVars->pallette.gui.button.background.base;
-					windowColor.back.highlight	= &Core::gameVars->pallette.gui.button.background.hover;
-					windowColor.back.active		= &Core::gameVars->pallette.gui.button.background.active;
+					color.back.base			= &Core::gameVars->pallette.gui.button.background.base;
+					color.back.highlight	= &Core::gameVars->pallette.gui.button.background.hover;
+					color.back.active		= &Core::gameVars->pallette.gui.button.background.active;
 
-					windowColor.border.base		= &Core::gameVars->pallette.gui.button.border.base;
-					windowColor.border.highlight	= &Core::gameVars->pallette.gui.button.border.hover;
-					windowColor.border.active		= &Core::gameVars->pallette.gui.button.border.active;
+					color.border.base		= &Core::gameVars->pallette.gui.button.border.base;
+					color.border.highlight	= &Core::gameVars->pallette.gui.button.border.hover;
+					color.border.active		= &Core::gameVars->pallette.gui.button.border.active;
 
 					colorText.base			= &Core::gameVars->pallette.gui.button.text.base;
 					colorText.highlight		= &Core::gameVars->pallette.gui.button.text.hover;
@@ -1054,13 +1054,13 @@ namespace Core {
 					label.setAnchor(CONSTRAIN_BOTTOM_LEFT);
 					label.disablePadding();
 
-					windowColor.back.base			= &Core::gameVars->pallette.gui.textArea.background.base;
-					windowColor.back.highlight		= &Core::gameVars->pallette.gui.textArea.background.hover;
-					windowColor.back.active			= &Core::gameVars->pallette.gui.textArea.background.active;
+					color.back.base				= &Core::gameVars->pallette.gui.textArea.background.base;
+					color.back.highlight		= &Core::gameVars->pallette.gui.textArea.background.hover;
+					color.back.active			= &Core::gameVars->pallette.gui.textArea.background.active;
 
-					windowColor.border.base			= &Core::gameVars->pallette.gui.textArea.border.base;
-					windowColor.border.highlight		= &Core::gameVars->pallette.gui.textArea.border.hover;
-					windowColor.border.active			= &Core::gameVars->pallette.gui.textArea.border.active;
+					color.border.base			= &Core::gameVars->pallette.gui.textArea.border.base;
+					color.border.highlight		= &Core::gameVars->pallette.gui.textArea.border.hover;
+					color.border.active			= &Core::gameVars->pallette.gui.textArea.border.active;
 				}
 		};
 
@@ -1162,21 +1162,21 @@ namespace Core {
 					setHeight(20, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
 					setRadius(10);
 
-					windowColor.back.base				= &Core::gameVars->pallette.gui.checkBox.background.base;
-					windowColor.back.highlight			= &Core::gameVars->pallette.gui.checkBox.background.hover;
-					windowColor.back.active				= &Core::gameVars->pallette.gui.checkBox.background.base;
+					color.back.base					= &Core::gameVars->pallette.gui.checkBox.background.base;
+					color.back.highlight			= &Core::gameVars->pallette.gui.checkBox.background.hover;
+					color.back.active				= &Core::gameVars->pallette.gui.checkBox.background.base;
 
-					windowColor.border.base				= &Core::gameVars->pallette.gui.checkBox.border.base;
-					windowColor.border.highlight			= &Core::gameVars->pallette.gui.checkBox.border.hover;
-					windowColor.border.active				= &Core::gameVars->pallette.gui.checkBox.border.active;
+					color.border.base				= &Core::gameVars->pallette.gui.checkBox.border.base;
+					color.border.highlight			= &Core::gameVars->pallette.gui.checkBox.border.hover;
+					color.border.active				= &Core::gameVars->pallette.gui.checkBox.border.active;
 
-					check.windowColor.back.base			= &Core::gameVars->pallette.gui.checkBox.background.active;
-					check.windowColor.back.highlight		= &Core::gameVars->pallette.gui.checkBox.background.active;
-					check.windowColor.back.active		= &Core::gameVars->pallette.gui.checkBox.background.active;
+					check.color.back.base			= &Core::gameVars->pallette.gui.checkBox.background.active;
+					check.color.back.highlight		= &Core::gameVars->pallette.gui.checkBox.background.active;
+					check.color.back.active			= &Core::gameVars->pallette.gui.checkBox.background.active;
 
-					check.windowColor.border.base			= &Core::gameVars->pallette.gui.checkBox.border.base;
-					check.windowColor.border.highlight		= &Core::gameVars->pallette.gui.checkBox.border.hover;
-					check.windowColor.border.active		= &Core::gameVars->pallette.gui.checkBox.border.active;
+					check.color.border.base			= &Core::gameVars->pallette.gui.checkBox.border.base;
+					check.color.border.highlight		= &Core::gameVars->pallette.gui.checkBox.border.hover;
+					check.color.border.active		= &Core::gameVars->pallette.gui.checkBox.border.active;
 				}
 
 				~Props_CheckBox() {
@@ -1285,13 +1285,13 @@ namespace Core {
 
 					spriteImage				= "TestPattern.png";
 
-					windowColor.back.base		= &Core::gameVars->pallette.gui.sprite.background.base;
-					windowColor.back.highlight	= &Core::gameVars->pallette.gui.sprite.background.hover;
-					windowColor.back.active		= &Core::gameVars->pallette.gui.sprite.background.active;
+					color.back.base			= &Core::gameVars->pallette.gui.sprite.background.base;
+					color.back.highlight	= &Core::gameVars->pallette.gui.sprite.background.hover;
+					color.back.active		= &Core::gameVars->pallette.gui.sprite.background.active;
 
-					windowColor.border.base		= &Core::gameVars->pallette.gui.sprite.border.base;
-					windowColor.border.highlight	= &Core::gameVars->pallette.gui.sprite.border.hover;
-					windowColor.border.active		= &Core::gameVars->pallette.gui.sprite.border.active;
+					color.border.base		= &Core::gameVars->pallette.gui.sprite.border.base;
+					color.border.highlight	= &Core::gameVars->pallette.gui.sprite.border.hover;
+					color.border.active		= &Core::gameVars->pallette.gui.sprite.border.active;
 
 					colorSprite.base		= &Core::gameVars->pallette.gui.sprite.base;
 //					colorSprite.highlight	= &Core::gameVars->pallette.gui.sprite.hover;
@@ -1308,41 +1308,95 @@ namespace Core {
 		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 		// FIXME: Update window constraints to be separate (background component)
+		// TODO: [Properties] NoProgress: Border, radius, stipple pattern, enable stipple; Progress: border, height(normally 100% relative); Field: show, width
 		class Props_ProgressBar : public Props_Window {
+//		class Props_ProgressBar {
 
 			public:
-				struct {
-					GUI_ColorB		fill,
-									empty,
-									border;
-				} progressColor;
+//				struct {
+//					GUI_ColorB		fill,
+//									empty,
+//									border;
+//				} progressColor;
 
+				Props_Field field;
 				Props_Window empty, fill;	// TODO
 				bool		bShowField;		// TODO
 
-				void setColorProgressFill(Color *v1)							{ progressColor.fill.base = v1; }
-				void setColorProgressEmpty(Color *v1)							{ progressColor.empty.base = v1; }
-				void setColorProgressBorder(Color *v1)							{ progressColor.border.base = v1; }
+//				void setColorProgressFill(Color *v1)							{ progressColor.fill.base = v1; }
+//				void setColorProgressEmpty(Color *v1)							{ progressColor.empty.base = v1; }
+//				void setColorProgressBorder(Color *v1)							{ progressColor.border.base = v1; }
 
 				Props_ProgressBar() {
+
+//					background.autoWidth(false);
+//					background.autoHeight(false);
+//					background.setPadding(2);
+//					background.roundBorder						= true;
+//					background.radius							= 3;
+//					background.color.back.base			= &Core::gameVars->pallette.gui.progressBar.background.base;
+//					background.color.back.highlight		= &Core::gameVars->pallette.gui.progressBar.background.base;
+//					background.color.back.active			= &Core::gameVars->pallette.gui.progressBar.background.base;
+//					background.color.border.base			= &Core::gameVars->pallette.gui.progressBar.background.border;
+//					background.color.border.highlight		= &Core::gameVars->pallette.gui.progressBar.background.border;
+//					background.color.border.active		= &Core::gameVars->pallette.gui.progressBar.background.border;
+
 					autoWidth(false);
 					autoHeight(false);
 					setPadding(2);
-					bShowField						= true;
 					roundBorder						= true;
 					radius							= 3;
+					color.back.base				= &Core::gameVars->pallette.gui.progressBar.background.base;
+					color.back.highlight		= &Core::gameVars->pallette.gui.progressBar.background.base;
+					color.back.active			= &Core::gameVars->pallette.gui.progressBar.background.base;
+					color.border.base			= &Core::gameVars->pallette.gui.progressBar.background.border;
+					color.border.highlight		= &Core::gameVars->pallette.gui.progressBar.background.border;
+					color.border.active			= &Core::gameVars->pallette.gui.progressBar.background.border;
 
-					windowColor.back.base			= &Core::gameVars->pallette.gui.progressBar.background.base;
-					windowColor.back.highlight		= &Core::gameVars->pallette.gui.progressBar.background.base;
-					windowColor.back.active			= &Core::gameVars->pallette.gui.progressBar.background.base;
+					empty.setOrigin(CONSTRAIN_CENTER);
+					empty.setAnchor(CONSTRAIN_CENTER);
+					empty.setWidth(100, SIZE_CONSTRAINT_RELATIVE);
+					empty.setHeight(100, SIZE_CONSTRAINT_RELATIVE);
+					empty.setBorder(1, 1);
+					empty.setRadius(0);
+					empty.setPadding(1);
+					empty.enablePadding(Core::GUI::PADDING_ALL);
+					empty.disableScissor();
+					empty.setStipplePattern(&Core::stipple[Core::stipple.STIPPLE_ANSI31]);
+					empty.enableStipple();
+					empty.color.back.base			= &Core::gameVars->pallette.gui.progressBar.progress.empty;
+					empty.color.back.highlight		= &Core::gameVars->pallette.gui.progressBar.progress.empty;
+					empty.color.back.active			= &Core::gameVars->pallette.gui.progressBar.progress.empty;
+					empty.color.border.base			= &Core::gameVars->pallette.gui.progressBar.progress.border;
+					empty.color.border.highlight	= &Core::gameVars->pallette.gui.progressBar.progress.border;
+					empty.color.border.active		= &Core::gameVars->pallette.gui.progressBar.progress.border;
 
-					windowColor.border.base			= &Core::gameVars->pallette.gui.progressBar.background.border;
-					windowColor.border.highlight	= &Core::gameVars->pallette.gui.progressBar.background.border;
-					windowColor.border.active		= &Core::gameVars->pallette.gui.progressBar.background.border;
+					fill.setOrigin(CONSTRAIN_LEFT);
+					fill.setAnchor(CONSTRAIN_LEFT);
+					fill.setWidth(0, SIZE_CONSTRAINT_RELATIVE);
+					fill.setHeight(100, SIZE_CONSTRAINT_RELATIVE);
+					fill.setBorder(0, 0);
+					fill.setRadius(0);
+					fill.setPadding(0);
+					fill.color.back.base			= &Core::gameVars->pallette.gui.progressBar.progress.fill;
+					fill.color.back.highlight		= &Core::gameVars->pallette.gui.progressBar.progress.fill;
+					fill.color.back.active			= &Core::gameVars->pallette.gui.progressBar.progress.fill;
+					fill.color.border.base			= &Core::gameVars->pallette.gui.progressBar.progress.border;
+					fill.color.border.highlight		= &Core::gameVars->pallette.gui.progressBar.progress.border;
+					fill.color.border.active		= &Core::gameVars->pallette.gui.progressBar.progress.border;
 
-					progressColor.empty.base		= &Core::gameVars->pallette.gui.progressBar.progress.empty;
-					progressColor.fill.base			= &Core::gameVars->pallette.gui.progressBar.progress.fill;
-					progressColor.border.base		= &Core::gameVars->pallette.gui.progressBar.progress.border;
+					field.setOrigin(CONSTRAIN_CENTER);
+					field.setAnchor(CONSTRAIN_CENTER);
+					field.autoWidth();
+					field.autoHeight();
+					field.setPadding(5);
+					field.setMinWidth(3*Core::gameVars->font.vSize.x+5+5);
+
+//					progressColor.empty.base		= &Core::gameVars->pallette.gui.progressBar.progress.empty;
+//					progressColor.fill.base			= &Core::gameVars->pallette.gui.progressBar.progress.fill;
+//					progressColor.border.base		= &Core::gameVars->pallette.gui.progressBar.progress.border;
+
+					bShowField						= true;
 				}
 
 				~Props_ProgressBar() {

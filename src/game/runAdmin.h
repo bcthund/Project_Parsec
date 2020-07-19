@@ -1438,26 +1438,26 @@ void _Admin::init() {
 	/*
 	 * Color Boxes
 	 */
-	if (!bOneShot[41]) {
-		std::cout << "GUI: Loading #41: Colors 2....................................... ";
+	if (!bOneShot[40]) {
+		std::cout << "GUI: Loading #40: Colors 2....................................... ";
 //		//std::cout << "...............................................................";
 //
-		bOneShot[41] = true;
-		std::cout << "Done" << std::endl;
-	}
-
-	if (!bOneShot[40]) {
-		std::cout << "GUI: Loading #40: Skill Tree ................................... ";
-		//std::cout << "...............................................................";
-
-		initSkillTree();
-
 		bOneShot[40] = true;
 		std::cout << "Done" << std::endl;
 	}
 
 	if (!bOneShot[41]) {
-		std::cout << "GUI: Loading #41: Scissor Test ................................. ";
+		std::cout << "GUI: Loading #41: Skill Tree ................................... ";
+		//std::cout << "...............................................................";
+
+		initSkillTree();
+
+		bOneShot[41] = true;
+		std::cout << "Done" << std::endl;
+	}
+
+	if (!bOneShot[42]) {
+		std::cout << "GUI: Loading #42: Scissor Test ................................. ";
 		//std::cout << "...............................................................";
 
 		Core::GUI::Props_TextArea c;
@@ -1541,12 +1541,12 @@ void _Admin::init() {
 			Core::gui["GameMenu"]["Window 17"]["Padding"].Slider.add("Padding: R", &Core::gui["GameMenu"]["Window 17"].con->vPadding.right, con);
 		}
 
-		bOneShot[41] = true;
+		bOneShot[42] = true;
 		std::cout << "Done" << std::endl;
 	}
 
-	if (!bOneShot[42]) {
-		std::cout << "GUI: Loading #42: Progress Bar ................................. ";
+	if (!bOneShot[43]) {
+		std::cout << "GUI: Loading #43: Progress Bar ................................. ";
 		//std::cout << "...............................................................";
 
 		Core::GUI::Props_ProgressBar prop;
@@ -1576,7 +1576,7 @@ void _Admin::init() {
 		Core::gui["GameMenu"]["Window 18"].Slider.add("Progress", Core::gui["GameMenu"]["Window 18"].ProgressBar["Progress Bar"].getPointer(), con);
 //		Core::gui["GameMenu"]["Window 18"].Slider.add("Progress", &Core::gui["GameMenu"]["Window 18"].ProgressBar["Progress Bar"].valuePtr, con);
 
-		bOneShot[42] = true;
+		bOneShot[43] = true;
 		std::cout << "Done" << std::endl;
 	}
 

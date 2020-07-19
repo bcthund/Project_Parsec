@@ -115,10 +115,11 @@
  * 				[X] Show horizontal progress
  * 				[X] Allow progress percentage overlay (field)
  * 				[X] Create progress pallette
- * 				[ ] Move progress bar properties into primary ProgressBar property to allow customization.
- * 				[ ] Make progress percentage toggleable
- * TODO: [ ] Update constrints colors to be in struct for cleaner access
+ * 				[X] Move progress bar properties into primary ProgressBar property to allow customization.
+ * 				[X] Make progress percentage toggleable
+ * 				[ ] Make Field read-only (see TODO item below)
  * TODO: [ ] Allow fields to be ready only without disable, this will allow custom coloring.
+ * TODO: [ ] Update constraints colors to be in struct for cleaner access
  * TODO: [ ] Allow sliders to have locally defined values instead of just pointers
  * TODO: [ ] Fix slider CTRL mod to allow minimum step at least. Sometimes no movement on sliders using CTRL.
  * 				- General mod calculations should be fixed, minimum step should be the CTRL value.

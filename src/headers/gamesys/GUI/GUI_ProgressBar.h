@@ -186,25 +186,28 @@ namespace Core {
 				else winBack = Object::Window(name, con);
 				winBack.init();
 
+				// TODO: [Properties] NoProgress: Border, radius, stipple pattern, enable stipple; Progress: border, height(normally 100% relative); Field: show, width
+
 				// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 				// 		Progress Bar Empty
 				// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 				{
-					Props_Window props;
-					props.setOrigin(CONSTRAIN_CENTER);
-					props.setAnchor(CONSTRAIN_CENTER);
-					props.setWidth(100, SIZE_CONSTRAINT_RELATIVE);
-					props.setHeight(100, SIZE_CONSTRAINT_RELATIVE);
-					props.setBorder(1, 1);
-					props.setRadius(0);
-					props.setPadding(1);
-					props.enablePadding(Core::GUI::PADDING_ALL);
-					props.disableScissor();
-					props.setStipplePattern(&Core::stipple[Core::stipple.STIPPLE_ANSI31]);
-					props.enableStipple();
-					props.setColorWindowBHA(con->progressColor.empty.base, con->progressColor.empty.base, con->progressColor.empty.base);
-					props.setColorBorderBHA(con->progressColor.border.base, con->progressColor.border.base, con->progressColor.border.base);
-					winNoProgress = Object::Window(*winBack.con, "Progress", props);
+//					Props_Window props;
+//					props.setOrigin(CONSTRAIN_CENTER);
+//					props.setAnchor(CONSTRAIN_CENTER);
+//					props.setWidth(100, SIZE_CONSTRAINT_RELATIVE);
+//					props.setHeight(100, SIZE_CONSTRAINT_RELATIVE);
+//					props.setBorder(1, 1);
+//					props.setRadius(0);
+//					props.setPadding(1);
+//					props.enablePadding(Core::GUI::PADDING_ALL);
+//					props.disableScissor();
+//					props.setStipplePattern(&Core::stipple[Core::stipple.STIPPLE_ANSI31]);
+//					props.enableStipple();
+//					props.setColorWindowBHA(con->progressColor.empty.base, con->progressColor.empty.base, con->progressColor.empty.base);
+//					props.setColorBorderBHA(con->progressColor.border.base, con->progressColor.border.base, con->progressColor.border.base);
+//					winNoProgress = Object::Window(*winBack.con, "Progress", props);
+					winNoProgress = Object::Window(*winBack.con, "Progress", con->empty);
 					winNoProgress.init();
 				}
 
@@ -212,16 +215,17 @@ namespace Core {
 				// 		Progress Bar
 				// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 				{
-					Props_Window props;
-					props.setOrigin(CONSTRAIN_LEFT);
-					props.setAnchor(CONSTRAIN_LEFT);
-					props.setWidth(*valuePtr, SIZE_CONSTRAINT_RELATIVE);		// TODO: Tie width to internal/external pointer for progress.
-					props.setHeight(100, SIZE_CONSTRAINT_RELATIVE);
-					props.setBorder(0, 0);
-					props.setRadius(0);
-					props.setPadding(0);
-					props.setColorWindowBHA(con->progressColor.fill.base, con->progressColor.fill.base, con->progressColor.fill.base);
-					winProgress = Object::Window(*winNoProgress.con, "NoProgress", props);
+//					Props_Window props;
+//					props.setOrigin(CONSTRAIN_LEFT);
+//					props.setAnchor(CONSTRAIN_LEFT);
+					con->fill.setWidth(*valuePtr, SIZE_CONSTRAINT_RELATIVE);
+//					props.setHeight(100, SIZE_CONSTRAINT_RELATIVE);
+//					props.setBorder(0, 0);
+//					props.setRadius(0);
+//					props.setPadding(0);
+//					props.setColorWindowBHA(con->progressColor.fill.base, con->progressColor.fill.base, con->progressColor.fill.base);
+//					winProgress = Object::Window(*winNoProgress.con, "NoProgress", props);
+					winProgress = Object::Window(*winNoProgress.con, "NoProgress", con->fill);
 					winProgress.init();
 				}
 
