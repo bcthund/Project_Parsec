@@ -234,7 +234,7 @@ namespace Core {
 			 * Numeric template specialization
 			 */
 			template <class T> std::string Field<T>::execEdit() {
-				if(bHasFocus) {
+				if(bHasFocus && this->con->bEditable) {
 					execEditInput();
 					return sEditVar;
 				}
@@ -247,7 +247,7 @@ namespace Core {
 			 * String template specialization
 			 */
 			template <> std::string Field<std::string>::execEdit() {
-				if(bHasFocus) {
+				if(bHasFocus && this->con->bEditable) {
 					execEditInput();
 					return sEditVar;
 				}
@@ -264,7 +264,7 @@ namespace Core {
 					}
 					else this->mState = Core::_Mouse::MOUSE_NONE;
 
-					if(this->enabled() && !(eExternState&STATE_ACTIVE)) {
+					if(this->enabled() && this->con->bEditable && !(eExternState&STATE_ACTIVE)) {
 						if(!this->bFocusPresent && this->mState==Core::_Mouse::MOUSE_LEFT) {
 							bHasFocus = true;
 							this->bFocusPresent = true;
@@ -318,9 +318,9 @@ namespace Core {
 						lastValue = vBuffer;
 
 						// Draw button text
-						if((this->eObjectState&STATE_HOVER) && !bHasFocus)	colors.PushFront(*this->con->colorText.highlight);
-						else if(this->eObjectState&STATE_ACTIVE)			colors.PushFront(*this->con->colorText.active);
-						else												colors.PushFront(*this->con->colorText.base);
+						if((this->eObjectState&STATE_HOVER) && !bHasFocus)	colors.PushFront(*this->con->color.text().highlight);
+						else if(this->eObjectState&STATE_ACTIVE)			colors.PushFront(*this->con->color.text().active);
+						else												colors.PushFront(*this->con->color.text().base);
 
 						textSys->draw(this->con, vBuffer, CONSTRAIN_CENTER);
 						colors.PopFront();

@@ -131,9 +131,9 @@ namespace Core {
 							if(eObjectState&STATE_HOVER)	colors.PushFront(gameVars->pallette.gui.disabled.text.hover);
 							else							colors.PushFront(gameVars->pallette.gui.disabled.text.base);
 						}
-						else if(eObjectState&STATE_HOVER) 		colors.PushFront(*con->colorText.highlight);
-						else if(eObjectState&STATE_ACTIVE)		colors.PushFront(*con->colorText.highlight);
-						else 									colors.PushFront(*con->colorText.base);
+						else if(eObjectState&STATE_HOVER) 		colors.PushFront(*con->color.text().highlight);
+						else if(eObjectState&STATE_ACTIVE)		colors.PushFront(*con->color.text().highlight);
+						else 									colors.PushFront(*con->color.text().base);
 						textSys->draw(con, name, CONSTRAIN_CENTER);
 						colors.PopFront();
 					}

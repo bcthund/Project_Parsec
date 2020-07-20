@@ -9,10 +9,8 @@
 #define HEADERS_GAMESYS_GUITEXTAREA_H_
 
 #include <iostream>
-//#include "../core/core_functions.h"
-//#include "../core/vao.h"
-//#include "../core/matrix.h"
-//#include "../core/shader.h"
+#include "../../core/InputSys.h"
+#include "../../gamesys/gameVars.h"
 #include "GUI_Constraint.h"
 #include "GUI_ToolTip.h"
 #include "GUI_Window.h"
@@ -171,7 +169,7 @@ namespace Core {
 					cWin.disablePadding();
 					cWin.setBorder(0, false);
 					cWin.setRadius(0);
-					cWin.setColorWindowB(&colors[colors().Tan]);
+					cWin.color.back().base = &colors[colors().Tan];
 					scrollBarContainer = new Window(*con, name, cWin);
 					scrollBarContainer->init();
 
@@ -182,17 +180,17 @@ namespace Core {
 					cButton.setRadius(3);
 					cButton.setButtonType(Core::GUI::BUTTON_DEBOUNCE);
 
-					cButton.setColorWindowBHA(	&Core::gameVars->pallette.gui.textArea.scroll.base,
-												&Core::gameVars->pallette.gui.textArea.scroll.hover,
-												&Core::gameVars->pallette.gui.textArea.scroll.active);
+					cButton.color.back().base			= &Core::gameVars->pallette.gui.textArea.scroll.base;
+					cButton.color.back().highlight		= &Core::gameVars->pallette.gui.textArea.scroll.hover;
+					cButton.color.back().active			= &Core::gameVars->pallette.gui.textArea.scroll.active;
 
-					cButton.setColorBorderBHA(	&Core::gameVars->pallette.gui.textArea.scrollBorder.base,
-												&Core::gameVars->pallette.gui.textArea.scrollBorder.hover,
-												&Core::gameVars->pallette.gui.textArea.scrollBorder.active);
+					cButton.color.border().base			= &Core::gameVars->pallette.gui.textArea.scrollBorder.base;
+					cButton.color.border().highlight	= &Core::gameVars->pallette.gui.textArea.scrollBorder.hover;
+					cButton.color.border().active		= &Core::gameVars->pallette.gui.textArea.scrollBorder.active;
 
-					cButton.setColorTextBHA(	&Core::gameVars->pallette.gui.textArea.scrollText.base,
-												&Core::gameVars->pallette.gui.textArea.scrollText.hover,
-												&Core::gameVars->pallette.gui.textArea.scrollText.active);
+					cButton.color.text().base			= &Core::gameVars->pallette.gui.textArea.scrollText.base;
+					cButton.color.text().highlight		= &Core::gameVars->pallette.gui.textArea.scrollText.hover;
+					cButton.color.text().active			= &Core::gameVars->pallette.gui.textArea.scrollText.active;
 
 					cButton.setPos(0, 0);
 					cButton.setOrigin(CONSTRAIN_TOP);
@@ -327,8 +325,8 @@ namespace Core {
 					}
 
 					// Autosize
-					if(con->size.constraint.xAuto) con->setWidth(con->text.size.x, SIZE_CONSTRAINT_ABSOLUTE);
-					if(con->size.constraint.yAuto) con->setHeight(con->text.size.y, SIZE_CONSTRAINT_ABSOLUTE);
+					//if(con->size.constraint.xAuto) con->setWidth(con->text.size.x, SIZE_CONSTRAINT_ABSOLUTE);
+					//if(con->size.constraint.yAuto) con->setHeight(con->text.size.y+gameVars->font.vSize.y, SIZE_CONSTRAINT_ABSOLUTE);
 				}
 
 

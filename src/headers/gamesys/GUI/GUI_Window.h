@@ -27,10 +27,11 @@
 #include "../../core/vao.h"
 #include "../../core/matrix.h"
 #include "../../core/shader.h"
+#include "../../gamesys/gameVars.h"
+#include "../../core/Colors.h"
 #include "GUI_Constraint.h"
 //#include "GUI_ToolTip.h"
 #include "GUI_Objects.h"
-#include "../../core/Colors.h"
 
 /*
  * FIXME: Add window decorations (Border and Corner Stipple patterns) How?
@@ -151,8 +152,10 @@ namespace Core {
 			}
 
 			void Window::update() {
-				int iRadius = fmin(fmin(con->radius, con->size.x/2.0f), con->size.y/2.0f);
-				con->setRadius(iRadius);
+				if (con->bResizeRadius) {
+					int iRadius = fmin(fmin(con->radius, con->size.x/2.0f), con->size.y/2.0f);
+					con->setRadius(iRadius);
+				}
 			}
 
 			void Window::updateObjectState(iState eExternState) {
@@ -193,16 +196,16 @@ namespace Core {
 							}
 						}
 						else if(eObjectState&STATE_ACTIVE) {
-							colors.PushFront(*con->windowColor.back.active);
-							colors.PushBack(*con->windowColor.border.active);
+							colors.PushFront(*con->color.back().active);
+							colors.PushBack(*con->color.border().active);
 						}
 						else if(eObjectState&STATE_HOVER) {
-							colors.PushFront(*con->windowColor.back.highlight);
-							colors.PushBack(*con->windowColor.border.highlight);
+							colors.PushFront(*con->color.back().highlight);
+							colors.PushBack(*con->color.border().highlight);
 						}
 						else {
-							colors.PushFront(*con->windowColor.back.base);
-							colors.PushBack(*con->windowColor.border.base);
+							colors.PushFront(*con->color.back().base);
+							colors.PushBack(*con->color.border().base);
 						}
 
 						// Enable border hover

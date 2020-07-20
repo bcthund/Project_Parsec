@@ -23,10 +23,7 @@
  */
 
 #include <iostream>
-//#include "../core/core_functions.h"
-//#include "../core/vao.h"
-//#include "../core/matrix.h"
-//#include "../core/shader.h"
+#include "../../core/Stipple.h"
 #include "GUI_Constraint.h"
 #include "GUI_ToolTip.h"
 #include "GUI_Slider.h"
@@ -167,8 +164,8 @@ namespace Core {
 
 				if(bHasParent) swatch = Window(*parent, name, con);
 				else swatch = Window(name, con);
-				swatch.con->setColorWindowB(colorPtr);
-				swatch.con->setColorWindowH(colorPtr);
+				swatch.con->color.back().base = colorPtr;
+				swatch.con->color.back().highlight = colorPtr;
 				swatch.init();
 
 				if(con->bShowBackground) {

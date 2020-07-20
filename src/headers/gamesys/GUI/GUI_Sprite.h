@@ -160,7 +160,7 @@ namespace Core {
 						if(eObjectState&STATE_HOVER)	colors.PushFront(gameVars->pallette.gui.disabled.base.hover);
 						else							colors.PushFront(gameVars->pallette.gui.disabled.base.base);
 					}
-					else 								colors.PushFront(*con->colorSprite.base);
+					else 								colors.PushFront(*con->color.sprite().base);
 					spriteSys->draw(con, con->spriteImage);
 					colors.PopFront();
 				}

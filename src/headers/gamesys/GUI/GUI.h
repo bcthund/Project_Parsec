@@ -103,6 +103,11 @@
  * 				- Scissor coordinates calculated in constrants exec?
  * 				[X] Allow scissoring to be disabled (So you can draw additional windows with another window as parent)
  * 				[ ] Scissor stack
+ * 					[ ] Create a simple Scissor class
+ * 					[ ] Use a Push and coordinates to set the current scissor area
+ * 					[ ] Use Pop to return to the previous scissor area
+ * 					[ ] Monitor for overflow/underflow of push/pop
+ * 					[ ] Add an enable/disable option; Global and per stack item, so a Push can simply disable scissor for that item
  * TODO: [X] Modify tooltip autosize to also look at label size
  * 				- The name of the tooltip, if shown, may be wider than the set tooltip text.
  * TODO: [E] Centering should take into account label and field on sliders if possible (don't think this is possible with the current setup)
@@ -111,15 +116,16 @@
  * 				- Cyclical problem with using a window to draw a label before window defined
  * TODO: [X] Add mouse hover detection to windows
  * 				- Interferes with other items for some reason. Likely relate to eObjectState but seems tied to mState.
- * TODO: [ ] Progress Bar/Progress Spinner (classic spinning /|\-/|\- style)
+ * TODO: [X] Progress Bar/Progress Spinner (classic spinning /|\-/|\- style)
  * 				[X] Show horizontal progress
  * 				[X] Allow progress percentage overlay (field)
  * 				[X] Create progress pallette
  * 				[X] Move progress bar properties into primary ProgressBar property to allow customization.
  * 				[X] Make progress percentage toggleable
- * 				[ ] Make Field read-only (see TODO item below)
- * TODO: [ ] Allow fields to be ready only without disable, this will allow custom coloring.
- * TODO: [ ] Update constraints colors to be in struct for cleaner access
+ * 				[X] Make Field read-only (see TODO item below)
+ * TODO: [X] Allow fields to be ready only without disable, this will allow custom coloring.
+ * TODO: [X] Autoheight on textarea incorrect, drops last line.
+ * TODO: [X] Update constraints colors to be in struct for cleaner access
  * TODO: [ ] Allow sliders to have locally defined values instead of just pointers
  * TODO: [ ] Fix slider CTRL mod to allow minimum step at least. Sometimes no movement on sliders using CTRL.
  * 				- General mod calculations should be fixed, minimum step should be the CTRL value.
@@ -261,8 +267,8 @@ namespace Core {
 			c.setWidth(Core::gameVars->screen.res.x, SIZE_CONSTRAINT_ABSOLUTE);
 			c.setHeight(Core::gameVars->screen.res.y, SIZE_CONSTRAINT_ABSOLUTE);
 			c.setPadding(0);
-			c.setColorWindowB(&colors[colors().Transparent]);
-			c.setColorBorderB(&colors[colors().Transparent]);
+			c.color.back().base = &colors[colors().Transparent];
+			c.color.border().base = &colors[colors().Transparent];
 			c.bNoInput = true;
 
 			GUI_Container * gui = new GUI_Container(guiName, c);

@@ -37,9 +37,14 @@ namespace Core {
 				public:
 					Slider();
 					Slider(std::string n, T *ptr, Props_Slider c);
-					Slider(Props &p, std::string n, T *ptr, Props_Slider c);
 					Slider(std::string n, T *ptr, Props_Slider *c);
+					Slider(Props &p, std::string n, T *ptr, Props_Slider c);
 					Slider(Props &p, std::string n, T *ptr, Props_Slider *c);
+
+					Slider(std::string n, T t, Props_Slider c);
+					Slider(std::string n, T t, Props_Slider *c);
+					Slider(Props &p, std::string n, T t, Props_Slider c);
+					Slider(Props &p, std::string n, T t, Props_Slider *c);
 					virtual ~Slider();
 
 					ToolTip toolTip;
@@ -95,27 +100,7 @@ namespace Core {
 				this->bHasParent	= false;
 				this->parent		= nullptr;
 
-				this->valuePtr		= ptr;
-
-				this->bLocalCon		= true;
-				this->con			= new Props_Slider();
-				*this->con			= c;
-			}
-
-			template <class T> Slider<T>::Slider(Props &p, std::string n, T *ptr, Props_Slider c) {
-				currentPos			= Vector2f(0.0f);
-				bHasFocus			= false;
-				minPos				= 0.0f;
-				maxPos				= 100.0f;
-				spanPos				= 100.0f;
-				spanValue			= 0.0f;
-				field				= nullptr;
-				label				= nullptr;
-				this->name			= n;
-
-				this->bHasParent	= true;
-				this->parent		= &p;
-
+				this->bLocalValue	= false;
 				this->valuePtr		= ptr;
 
 				this->bLocalCon		= true;
@@ -137,10 +122,33 @@ namespace Core {
 				this->bHasParent	= false;
 				this->parent		= nullptr;
 
+				this->bLocalValue	= false;
 				this->valuePtr		= ptr;
 
 				this->bLocalCon		= false;
 				this->con			= c;
+			}
+
+			template <class T> Slider<T>::Slider(Props &p, std::string n, T *ptr, Props_Slider c) {
+				currentPos			= Vector2f(0.0f);
+				bHasFocus			= false;
+				minPos				= 0.0f;
+				maxPos				= 100.0f;
+				spanPos				= 100.0f;
+				spanValue			= 0.0f;
+				field				= nullptr;
+				label				= nullptr;
+				this->name			= n;
+
+				this->bHasParent	= true;
+				this->parent		= &p;
+
+				this->bLocalValue	= false;
+				this->valuePtr		= ptr;
+
+				this->bLocalCon		= true;
+				this->con			= new Props_Slider();
+				*this->con			= c;
 			}
 
 			template <class T> Slider<T>::Slider(Props &p, std::string n, T *ptr, Props_Slider *c) {
@@ -157,11 +165,127 @@ namespace Core {
 				this->bHasParent	= true;
 				this->parent		= &p;
 
+				this->bLocalValue	= false;
 				this->valuePtr		= ptr;
 
 				this->bLocalCon		= false;
 				this->con			= c;
 			}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			template <class T> Slider<T>::Slider(std::string n, T *ptr, Props_Slider c) {
+				currentPos			= Vector2f(0.0f);
+				bHasFocus			= false;
+				minPos				= 0.0f;
+				maxPos				= 100.0f;
+				spanPos				= 100.0f;
+				spanValue			= 0.0f;
+				field				= nullptr;
+				label				= nullptr;
+				this->name			= n;
+
+				this->bHasParent	= false;
+				this->parent		= nullptr;
+
+				this->bLocalValue	= false;
+				this->valuePtr		= ptr;
+
+				this->bLocalCon		= true;
+				this->con			= new Props_Slider();
+				*this->con			= c;
+			}
+
+			template <class T> Slider<T>::Slider(std::string n, T *ptr, Props_Slider *c) {
+				currentPos			= Vector2f(0.0f);
+				bHasFocus			= false;
+				minPos				= 0.0f;
+				maxPos				= 100.0f;
+				spanPos				= 100.0f;
+				spanValue			= 0.0f;
+				field				= nullptr;
+				label				= nullptr;
+				this->name			= n;
+
+				this->bHasParent	= false;
+				this->parent		= nullptr;
+
+				this->bLocalValue	= false;
+				this->valuePtr		= ptr;
+
+				this->bLocalCon		= false;
+				this->con			= c;
+			}
+
+			template <class T> Slider<T>::Slider(Props &p, std::string n, T *ptr, Props_Slider c) {
+				currentPos			= Vector2f(0.0f);
+				bHasFocus			= false;
+				minPos				= 0.0f;
+				maxPos				= 100.0f;
+				spanPos				= 100.0f;
+				spanValue			= 0.0f;
+				field				= nullptr;
+				label				= nullptr;
+				this->name			= n;
+
+				this->bHasParent	= true;
+				this->parent		= &p;
+
+				this->bLocalValue	= false;
+				this->valuePtr		= ptr;
+
+				this->bLocalCon		= true;
+				this->con			= new Props_Slider();
+				*this->con			= c;
+			}
+
+			template <class T> Slider<T>::Slider(Props &p, std::string n, T *ptr, Props_Slider *c) {
+				currentPos			= Vector2f(0.0f);
+				bHasFocus			= false;
+				minPos				= 0.0f;
+				maxPos				= 100.0f;
+				spanPos				= 100.0f;
+				spanValue			= 0.0f;
+				field				= nullptr;
+				label				= nullptr;
+				this->name			= n;
+
+				this->bHasParent	= true;
+				this->parent		= &p;
+
+				this->bLocalValue	= false;
+				this->valuePtr		= ptr;
+
+				this->bLocalCon		= false;
+				this->con			= c;
+			}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 			template <class T> Slider<T>::~Slider() {
 				if(this->bLocalCon && this->con != nullptr) delete this->con;

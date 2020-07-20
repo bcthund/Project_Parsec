@@ -206,8 +206,8 @@ _Admin::_Admin(_Game *gamePtr) :
 	keyboard.calc(Core::_Keyboard::KEYTYPE_ONESHOT);
 }
 
-#include "runAdmin/SkillTree.h"
-#include "runAdmin/Colors.h"
+//#include "runAdmin/SkillTree.h"
+//#include "runAdmin/Colors.h"
 
 /** ******************************************************************************************************************************
  *
@@ -323,7 +323,7 @@ void _Admin::init() {
 		con.enablePadding(Core::GUI::PADDING_ALL);
 		con.setMinWidth(100);
 		con.showBackground();
-		con.setColorWindowB(&Core::colors[Core::colors().Gray_web]);
+		con.color.back().base = &Core::colors[Core::colors().Gray_web];
 //		con.setLabelAutoSize(true, true);
 		con.autoWidth(false);
 		con.autoHeight(true);
@@ -1429,7 +1429,7 @@ void _Admin::init() {
 	if (!bOneShot[39]) {
 		std::cout << "GUI: Loading #39: Colors ........................................ ";
 
-		initColors();
+		//initColors();
 
 		bOneShot[39] = true;
 		std::cout << "Done" << std::endl;
@@ -1450,7 +1450,7 @@ void _Admin::init() {
 		std::cout << "GUI: Loading #41: Skill Tree ................................... ";
 		//std::cout << "...............................................................";
 
-		initSkillTree();
+		//initSkillTree();
 
 		bOneShot[41] = true;
 		std::cout << "Done" << std::endl;
@@ -1554,14 +1554,36 @@ void _Admin::init() {
 		prop.setOrigin(Core::GUI::CONSTRAIN_TOP);
 		prop.setAnchor(Core::GUI::CONSTRAIN_TOP);
 		prop.setWidth(100, Core::GUI::SIZE_CONSTRAINT_RELATIVE);
-//		prop.setWidth(300, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
 		prop.setHeight(50, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
 		prop.setPos(0, -40);
 		prop.setPadding(5);
-//		prop.enablePadding(Core::GUI::PADDING_ALL);
-//		prop.setVisibility(true);
 		prop.disableScissor();
-		Core::gui["GameMenu"]["Window 18"].ProgressBar.add("Progress Bar", 25, prop);
+		Core::gui["GameMenu"]["Window 18"].ProgressBar.add("Progress Bar 1", 25, prop);
+
+		prop.setOrigin(Core::GUI::CONSTRAIN_TOP);
+		prop.setAnchor(Core::GUI::CONSTRAIN_TOP);
+		prop.setWidth(100, Core::GUI::SIZE_CONSTRAINT_RELATIVE);
+		prop.setHeight(50, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+		prop.modPos(0, -60);
+		prop.setPadding(5);
+		prop.disableScissor();
+		prop.empty.setHeight(75, Core::GUI::SIZE_CONSTRAINT_RELATIVE);
+		prop.empty.setBorder(1, 1);
+		prop.empty.setRadius(10);
+		prop.empty.setPadding(0);
+		prop.empty.setStipplePattern(&Core::stipple[Core::stipple.STIPPLE_DOTS]);
+		prop.empty.color.back().base = &Core::colors[Core::colors().Red];
+		prop.fill.setBorder(1, 1);
+		prop.fill.setRadius(10);
+		prop.fill.color.back().base = &Core::colors[Core::colors().Green];
+
+		prop.field.color.border().base = &Core::colors[Core::colors().White];
+		prop.field.color.border().highlight = &Core::colors[Core::colors().White];
+		prop.field.color.border().active = &Core::colors[Core::colors().White];
+		prop.field.color.back().base = &Core::colors[Core::colors().White];
+		prop.field.color.back().highlight = &Core::colors[Core::colors().White];
+		prop.field.color.back().active = &Core::colors[Core::colors().White];
+		Core::gui["GameMenu"]["Window 18"].ProgressBar.add("Progress Bar 2", Core::gui["GameMenu"]["Window 18"].ProgressBar["Progress Bar 1"].getPointer(), prop);
 
 		// TODO: Add a slider to set progress amount
 		Core::GUI::Props_Slider con;
@@ -1573,7 +1595,7 @@ void _Admin::init() {
 		con.showLabel();
 		con.showField();
 		con.setPos(0, 10);		con.setMinMax(0, 100);		con.setMinimumStep(1.0f);
-		Core::gui["GameMenu"]["Window 18"].Slider.add("Progress", Core::gui["GameMenu"]["Window 18"].ProgressBar["Progress Bar"].getPointer(), con);
+		Core::gui["GameMenu"]["Window 18"].Slider.add("Progress", Core::gui["GameMenu"]["Window 18"].ProgressBar["Progress Bar 1"].getPointer(), con);
 //		Core::gui["GameMenu"]["Window 18"].Slider.add("Progress", &Core::gui["GameMenu"]["Window 18"].ProgressBar["Progress Bar"].valuePtr, con);
 
 		bOneShot[43] = true;

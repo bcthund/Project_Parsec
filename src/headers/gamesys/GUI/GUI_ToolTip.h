@@ -66,13 +66,13 @@ namespace Core {
 				// Create button window with contraints to parent if present
 				con->setWidth(150, SIZE_CONSTRAINT_ABSOLUTE);
 				con->setHeight(50, SIZE_CONSTRAINT_ABSOLUTE);
-				con->setColorBorderA(&gameVars->pallette.gui.toolTip.textarea.border);		// TODO: move pallette to constraints with Set functions
-				con->setColorWindowA(&gameVars->pallette.gui.toolTip.textarea.background);	// TODO: move pallette to constraints with Set functions
+				con->color.border().active = &gameVars->pallette.gui.toolTip.textarea.border;		// TODO: move pallette to constraints with Set functions
+				con->color.back().active = &gameVars->pallette.gui.toolTip.textarea.background;	// TODO: move pallette to constraints with Set functions
 				con->setPadding(0);
 				con->setBorder(con->toolTip.border, con->toolTip.border);
 				con->setRadius(con->toolTip.radius);
 				con->setRoundBorder(con->toolTip.round);
-				con->text.setColorTextA(&gameVars->pallette.gui.toolTip.textarea.text);		// TODO: move pallette to constraints with Set functions
+				con->text.color.text().active = &gameVars->pallette.gui.toolTip.textarea.text;		// TODO: move pallette to constraints with Set functions
 				con->autoWidth();
 				con->autoHeight();
 				con->showLabel();
@@ -100,9 +100,9 @@ namespace Core {
 
 				if(con->bShowLabel) {
 					label = new Label(*con, name, con->label);
-					label->con->setColorBorderA(&gameVars->pallette.gui.toolTip.header.border);
-					label->con->setColorWindowA(&gameVars->pallette.gui.toolTip.header.background);
-					label->con->setColorTextA(&gameVars->pallette.gui.toolTip.header.text);
+					label->con->color.border().active = &gameVars->pallette.gui.toolTip.header.border;
+					label->con->color.back().active = &gameVars->pallette.gui.toolTip.header.background;
+					label->con->color.text().active = &gameVars->pallette.gui.toolTip.header.text;
 					label->con->showBackground();
 					label->con->setBorder(1, 1);
 					label->con->setRadius(0);

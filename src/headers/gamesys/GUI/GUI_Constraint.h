@@ -484,41 +484,85 @@ namespace Core {
 				bool			bNoInput;
 
 			public:
-				struct {
-					GUI_ColorBHA	back,
-									border;
+//				struct Colors {
+//					GUI_ColorBHA	back,
+//									border;
+//				} color;
+
+
+				struct Colors {
+					private:
+						struct {
+							GUI_ColorBHA	back,
+											border;
+						} data;
+
+					public:
+						GUI_ColorBHA &back()	{ return data.back; }
+						GUI_ColorBHA &border()	{ return data.border; }
+
+					Colors() {}
 				} color;
+
+
+
+//				class _SetColor {
+//					private:
+//						Props_Window * parent;
+//					public:
+//
+//						class _Back {
+//							private:
+//								_SetColor * parent;
+//								GUI_ColorBHA * colorPtr;
+//							public:
+//								void base(Color *color) { parent->parent->color.back.base=color; }
+//								void highlight(Color *color) { parent->parent->color.back.highlight=color; }
+//								void active(Color *color) { parent->parent->color.back.active=color; }
+//								_Back(_SetColor *p, GUI_ColorBHA *ptr) { parent = p; colorPtr=ptr; }
+//						};
+//						_Back back = _Back(this, &parent->color.back);
+//
+//						class _Border {
+//							private:
+//								_SetColor * parent;
+//								GUI_ColorBHA * colorPtr;
+//							public:
+//								void base(Color *color) { parent->parent->color.back.base=color; }
+//								void highlight(Color *color) { parent->parent->color.back.highlight=color; }
+//								void active(Color *color) { parent->parent->color.back.active=color; }
+//								_Border(_SetColor *p, GUI_ColorBHA *ptr) { parent = p; colorPtr=ptr; }
+//						};
+//						_Border border = _Border(this, &parent->color.border);
+//
+//						_SetColor(Props_Window * p) { parent = p; }
+//				};
+//				_SetColor setColor = _SetColor(this);
+
+
+
 				bool			roundBorder;
 				int				borderNormal, borderHover;
 				int				radius;
+				bool			bResizeRadius;
 				bool			bScissor;
 
 				void setBorder(int iNormal, int iHover)						{	borderNormal = iNormal; borderHover = iHover;	}
 				void setRadius(int i)										{	radius = i;	}
 				void setRoundBorder(bool b=true)							{	roundBorder = b;	}
-				void setColorWindowB(Color *v1)								{	color.back.base = v1;	}
-				void setColorWindowH(Color *v1)								{	color.back.highlight = v1;	}
-				void setColorWindowA(Color *v1)								{	color.back.active = v1;	}
-				void setColorWindowBH(Color *v1, Color *v2)					{	color.back.base = v1, color.back.highlight = v2;	}
-				void setColorWindowBHA(Color *v1, Color *v2, Color *v3)		{	color.back.base = v1, color.back.highlight = v2, color.back.active = v3;	}
-				void setColorWindowBHA(GUI_ColorBHA colors)					{	color.back = colors;	}
-				void setColorBorderB(Color *v1)								{	color.border.base = v1;	}
-				void setColorBorderH(Color *v1)								{	color.border.highlight = v1;	}
-				void setColorBorderA(Color *v1)								{	color.border.active = v1;	}
-				void setColorBorderBH(Color *v1, Color *v2)					{	color.border.base = v1, color.border.highlight = v2;	}
-				void setColorBorderBHA(Color *v1, Color *v2, Color *v3)		{	color.border.base = v1, color.border.highlight = v2, color.border.active = v3;	}
-				void setColorBorderBHA(GUI_ColorBHA colors)					{	color.border = colors;	}
 				int  getRadius() 											{	return radius;	}
 				bool getRoundBorder()										{	return roundBorder;	}
 				void setScissor(bool b)										{	bScissor = b;	}
 				void enableScissor()										{	bScissor = true;	}
 				void disableScissor()										{	bScissor = false;	}
+				void setResizeRadius(bool b=true)							{	bResizeRadius = b; }
 
 //				int  getBorder()											{	return border;	}
 
 				Props_Window() {
 					bScissor				= true;
 					bNoInput				= false;
+					bResizeRadius			= true;
 
 					roundBorder				= true;
 					borderNormal			= 1;
@@ -531,13 +575,13 @@ namespace Core {
 					enablePadding(Core::GUI::PADDING_ALL);
 //					setPadding(0);
 
-					color.back.base			= &Core::gameVars->pallette.gui.window.background.base;
-					color.back.highlight	= &Core::gameVars->pallette.gui.window.background.hover;
-					color.back.active		= &Core::gameVars->pallette.gui.window.background.active;
+					color.back().base			= &Core::gameVars->pallette.gui.window.background.base;
+					color.back().highlight	= &Core::gameVars->pallette.gui.window.background.hover;
+					color.back().active		= &Core::gameVars->pallette.gui.window.background.active;
 
-					color.border.base		= &Core::gameVars->pallette.gui.window.border.base;
-					color.border.highlight	= &Core::gameVars->pallette.gui.window.border.hover;
-					color.border.active		= &Core::gameVars->pallette.gui.window.border.active;
+					color.border().base		= &Core::gameVars->pallette.gui.window.border.base;
+					color.border().highlight	= &Core::gameVars->pallette.gui.window.border.hover;
+					color.border().active		= &Core::gameVars->pallette.gui.window.border.active;
 				}
 
 //				Props_Window(Props_Window &src) {
@@ -576,15 +620,27 @@ namespace Core {
 			friend class Object::Label;
 
 			public:
-				GUI_ColorBHA	colorText;
-				bool			bShowBackground;
+				struct Colors {
+					private:
+						struct {
+							GUI_ColorBHA	text;
+							GUI_ColorBHA	*backPtr,
+											*borderPtr;
+						} data;
 
-				void setColorTextB(Color *v1)								{ colorText.base = v1; }
-				void setColorTextH(Color *v1)								{ colorText.highlight = v1; }
-				void setColorTextA(Color *v1)								{ colorText.active = v1; }
-				void setColorTextBH(Color *v1, Color *v2)					{ colorText.base = v1; colorText.highlight = v2; }
-				void setColorTextBHA(Color *v1, Color *v2, Color *v3)		{ colorText.base = v1; colorText.highlight = v2; colorText.active = v3; }
-				void setColorTextBHA(GUI_ColorBHA colors)					{ colorText = colors;	}
+					public:
+						GUI_ColorBHA &text()	{ return data.text; }
+						GUI_ColorBHA &back()	{ return *data.backPtr; }
+						GUI_ColorBHA &border()	{ return *data.borderPtr; }
+
+
+					Colors(GUI_ColorBHA *backPtr, GUI_ColorBHA *borderPtr) {
+						data.backPtr = backPtr;
+						data.borderPtr = borderPtr;
+					}
+				} color = Colors(&Props_Window::color.back(), &Props_Window::color.border());
+
+				bool			bShowBackground;
 				void showBackground()										{ bShowBackground = true;	}
 				void hideBackground()										{ bShowBackground = false;	}
 
@@ -596,17 +652,17 @@ namespace Core {
 					roundBorder					= true;
 					radius						= 3;
 
-					color.back.base				= &Core::gameVars->pallette.gui.label.background.base;
-					color.back.highlight		= &Core::gameVars->pallette.gui.label.background.hover;
-					color.back.active			= &Core::gameVars->pallette.gui.label.background.active;
+					color.back().base				= &Core::gameVars->pallette.gui.label.background.base;
+					color.back().highlight		= &Core::gameVars->pallette.gui.label.background.hover;
+					color.back().active			= &Core::gameVars->pallette.gui.label.background.active;
 
-					color.border.base			= &Core::gameVars->pallette.gui.label.border.base;
-					color.border.highlight		= &Core::gameVars->pallette.gui.label.border.hover;
-					color.border.active			= &Core::gameVars->pallette.gui.label.border.active;
+					color.border().base			= &Core::gameVars->pallette.gui.label.border.base;
+					color.border().highlight		= &Core::gameVars->pallette.gui.label.border.hover;
+					color.border().active			= &Core::gameVars->pallette.gui.label.border.active;
 
-					colorText.base				= &Core::gameVars->pallette.gui.label.text.base;
-					colorText.highlight			= &Core::gameVars->pallette.gui.label.text.hover;
-					colorText.active			= &Core::gameVars->pallette.gui.label.text.active;
+					color.text().base				= &Core::gameVars->pallette.gui.label.text.base;
+					color.text().highlight		= &Core::gameVars->pallette.gui.label.text.hover;
+					color.text().active			= &Core::gameVars->pallette.gui.label.text.active;
 				}
 
 				~Props_Label() {
@@ -646,49 +702,69 @@ namespace Core {
 			friend class Object::Field;
 
 			public:
-				GUI_ColorBHA	colorText;
-				bool			bNumeric;
+
+				// TODO: Implement this mapping to all objects
+				struct Colors {
+					private:
+						struct {
+							GUI_ColorBHA	text;
+							GUI_ColorBHA	*backPtr,
+											*borderPtr;
+						} data;
+
+					public:
+						GUI_ColorBHA &text()	{ return data.text; }
+						GUI_ColorBHA &back()	{ return *data.backPtr; }
+						GUI_ColorBHA &border()	{ return *data.borderPtr; }
+
+
+					Colors(GUI_ColorBHA *backPtr, GUI_ColorBHA *borderPtr) {
+						data.backPtr = backPtr;
+						data.borderPtr = borderPtr;
+					}
+				} color = Colors(&Props_Window::color.back(), &Props_Window::color.border());
+
+				bool			bNumeric,
+								bEditable;
 				int				precision;
 				float			minValue,
 								maxValue;
+				//Props_Window 	window;
 
-				void setColorTextB(Color *v1)								{ colorText.base = v1; }
-				void setColorTextH(Color *v1)								{ colorText.highlight = v1; }
-				void setColorTextA(Color *v1)								{ colorText.active = v1; }
-				void setColorTextBH(Color *v1, Color *v2)					{ colorText.base = v1; colorText.highlight = v2; }
-				void setColorTextBHA(Color *v1, Color *v2, Color *v3)		{ colorText.base = v1; colorText.highlight = v2; colorText.active = v3; }
-				void setColorTextBHA(GUI_ColorBHA colors)					{ colorText = colors;	}
 				void setPrecision(int i)									{ precision = i; }
 				void setMinMax(float min, float max)						{ minValue = min; maxValue = max; }
 				void setMinMax(Vector2f v)									{ minValue = v.x; maxValue = v.y; }
 				void setMin(float f)										{ minValue = f; }
 				void setMax(float f)										{ maxValue = f; }
+				void setEditable(bool b=true)								{ bEditable = b; }
 
 
 				Props_Field() {
+					//color.back = &colorWindow.back;
+					//color.border = &colorWindow.border;
+
 					bNumeric					= false;
+					precision					= 3;
+					bEditable					= true;
 					minValue					= INT_MIN;
 					maxValue					= INT_MAX;
 
+					color.text().base				= &Core::gameVars->pallette.gui.field.text.base;
+					color.text().highlight		= &Core::gameVars->pallette.gui.field.text.hover;
+					color.text().active			= &Core::gameVars->pallette.gui.field.text.active;
+
 					setPadding(2);
 					setMinMaxWidth(10, 250);
-
-					colorText.base				= &Core::gameVars->pallette.gui.field.text.base;
-					colorText.highlight			= &Core::gameVars->pallette.gui.field.text.hover;
-					colorText.active			= &Core::gameVars->pallette.gui.field.text.active;
-
-					color.back.base				= &Core::gameVars->pallette.gui.field.background.base;
-					color.back.highlight		= &Core::gameVars->pallette.gui.field.background.hover;
-					color.back.active			= &Core::gameVars->pallette.gui.field.background.active;
-
-					color.border.base			= &Core::gameVars->pallette.gui.field.border.base;
-					color.border.highlight		= &Core::gameVars->pallette.gui.field.border.hover;
-					color.border.active			= &Core::gameVars->pallette.gui.field.border.active;
-
 					radius						= 0;
 					roundBorder					= false;
 
-					precision					= 3;
+					color.back().base			= &Core::gameVars->pallette.gui.field.background.base;
+					color.back().highlight		= &Core::gameVars->pallette.gui.field.background.hover;
+					color.back().active			= &Core::gameVars->pallette.gui.field.background.active;
+
+					color.border().base			= &Core::gameVars->pallette.gui.field.border.base;
+					color.border().highlight	= &Core::gameVars->pallette.gui.field.border.hover;
+					color.border().active		= &Core::gameVars->pallette.gui.field.border.active;
 				}
 
 				~Props_Field() {
@@ -736,20 +812,11 @@ namespace Core {
 				bool 		bExactSize;
 				float		fMinimumStep;
 
-//				Props_Window slider;
 				Props_Window control;
-
-//				GUI_ColorBHA	colorText;
 
 				void setOrientation(eSlider e)								{ orientation = e; }
 				void setMinMax(Vector2f v)									{ minValue = v.x; maxValue = v.y; }
 				void setMinMax(float min, float max)						{ minValue = min; maxValue = max; }
-//				void setColorTextB(Color *v1)								{ colorText.base = v1; }
-//				void setColorTextH(Color *v1)								{ colorText.highlight = v1; }
-//				void setColorTextA(Color *v1)								{ colorText.active = v1; }
-//				void setColorTextBH(Color *v1, Color *v2)					{ colorText.base = v1, colorText.highlight = v2; }
-//				void setColorTextBHA(Color *v1, Color *v2, Color *v3)		{ colorText.base = v1, colorText.highlight = v2, colorText.active = v3; }
-//				void setColorTextBHA(GUI_ColorBHA colors)					{ colorText = colors; }
 				void setPrecision(int i)									{ precision = i; }
 				void setFieldSizeAbsolute(int i)							{ bExactSize = true; iFieldSize = i; }		// iFieldSize = exact size
 				void setFieldSizeRelative(int i)							{ bExactSize = false; iFieldSize = i; }		// iFieldSize = minimum size
@@ -804,9 +871,9 @@ namespace Core {
 					label.setPadding(2);
 					label.setPos(0, 0);
 					label.setMinWidth(0);
-					label.setColorTextB(&Core::gameVars->pallette.gui.slider.text.base);
-					label.setColorTextH(&Core::gameVars->pallette.gui.slider.text.hover);
-					label.setColorTextA(&Core::gameVars->pallette.gui.slider.text.active);
+					label.color.text().base = &Core::gameVars->pallette.gui.slider.text.base;
+					label.color.text().highlight = &Core::gameVars->pallette.gui.slider.text.hover;
+					label.color.text().active = &Core::gameVars->pallette.gui.slider.text.active;
 
 					// Field
 					bShowField			= false;
@@ -814,9 +881,9 @@ namespace Core {
 					field.setAnchor(CONSTRAIN_LEFT);
 					field.setPadding(2);
 					field.setPos(0, 0);
-					field.setColorTextB(&Core::gameVars->pallette.gui.slider.text.base);
-					field.setColorTextH(&Core::gameVars->pallette.gui.slider.text.hover);
-					field.setColorTextA(&Core::gameVars->pallette.gui.slider.text.active);
+					field.color.text().base = &Core::gameVars->pallette.gui.slider.text.base;
+					field.color.text().highlight = &Core::gameVars->pallette.gui.slider.text.hover;
+					field.color.text().active = &Core::gameVars->pallette.gui.slider.text.active;
 
 					// Slider
 					bExactSize			= false;
@@ -825,13 +892,13 @@ namespace Core {
 					else setPadding(-5, -5, -8, -8);
 					setBorder(1, 1);
 					setRadius(0);
-					setColorWindowB(&Core::gameVars->pallette.gui.slider.bar.base);
-					setColorWindowH(&Core::gameVars->pallette.gui.slider.bar.hover);
-					setColorWindowA(&Core::gameVars->pallette.gui.slider.bar.active);
+					color.back().base = &Core::gameVars->pallette.gui.slider.bar.base;
+					color.back().highlight = &Core::gameVars->pallette.gui.slider.bar.hover;
+					color.back().active = &Core::gameVars->pallette.gui.slider.bar.active;
 
-					setColorBorderB(&Core::gameVars->pallette.gui.slider.barBorder.base);
-					setColorBorderH(&Core::gameVars->pallette.gui.slider.barBorder.hover);
-					setColorBorderA(&Core::gameVars->pallette.gui.slider.barBorder.active);
+					color.border().base = &Core::gameVars->pallette.gui.slider.barBorder.base;
+					color.border().highlight = &Core::gameVars->pallette.gui.slider.barBorder.hover;
+					color.border().active = &Core::gameVars->pallette.gui.slider.barBorder.active;
 
 					// Control Handle
 					if(orientation==SLIDER_HORIZONTAL) {
@@ -844,13 +911,13 @@ namespace Core {
 					}
 					control.setBorder(1, 1);
 					control.setRadius(0);
-					control.setColorWindowB(&Core::gameVars->pallette.gui.slider.control.base);
-					control.setColorWindowH(&Core::gameVars->pallette.gui.slider.control.hover);
-					control.setColorWindowA(&Core::gameVars->pallette.gui.slider.control.active);
+					control.color.back().base = &Core::gameVars->pallette.gui.slider.control.base;
+					control.color.back().highlight = &Core::gameVars->pallette.gui.slider.control.hover;
+					control.color.back().active = &Core::gameVars->pallette.gui.slider.control.active;
 
-					control.setColorBorderB(&Core::gameVars->pallette.gui.slider.controlBorder.base);
-					control.setColorBorderH(&Core::gameVars->pallette.gui.slider.controlBorder.hover);
-					control.setColorBorderA(&Core::gameVars->pallette.gui.slider.controlBorder.active);
+					control.color.border().base = &Core::gameVars->pallette.gui.slider.controlBorder.base;
+					control.color.border().highlight = &Core::gameVars->pallette.gui.slider.controlBorder.hover;
+					control.color.border().active = &Core::gameVars->pallette.gui.slider.controlBorder.active;
 				}
 
 				~Props_Slider() {
@@ -885,17 +952,30 @@ namespace Core {
 			friend class Object::Button;
 
 			public:
-				GUI_ColorBHA	colorText;
+				struct Colors {
+					private:
+						struct {
+							GUI_ColorBHA	text;
+							GUI_ColorBHA	*backPtr,
+											*borderPtr;
+						} data;
+
+					public:
+						GUI_ColorBHA &text()	{ return data.text; }
+						GUI_ColorBHA &back()	{ return *data.backPtr; }
+						GUI_ColorBHA &border()	{ return *data.borderPtr; }
+
+
+					Colors(GUI_ColorBHA *backPtr, GUI_ColorBHA *borderPtr) {
+						data.backPtr = backPtr;
+						data.borderPtr = borderPtr;
+					}
+				} color = Colors(&Props_Window::color.back(), &Props_Window::color.border());
+
 				iConstrain		eLabelAnchor;
 				eButtonType		buttonType;
 				int				debounceTime;
 
-				void setColorTextB(Color *v1)								{	colorText.base = v1;	}
-				void setColorTextH(Color *v1)								{	colorText.highlight = v1;	}
-				void setColorTextA(Color *v1)								{	colorText.active = v1;	}
-				void setColorTextBH(Color *v1, Color *v2)					{	colorText.base = v1, colorText.highlight = v2;	}
-				void setColorTextBHA(Color *v1, Color *v2, Color *v3)		{	colorText.base = v1, colorText.highlight = v2, colorText.active = v3;	}
-				void setColorTextBHA(GUI_ColorBHA colors)					{	colorText = colors;	}
 				void setLabelAnchor(eConstrain e)							{	eLabelAnchor = e;	}
 				void setButtonType(eButtonType e)							{	buttonType = e;		}
 				void setDebounceTime(int i)									{	debounceTime = i;	}
@@ -905,17 +985,17 @@ namespace Core {
 					eLabelAnchor			= CONSTRAIN_CENTER;
 					debounceTime			= 500;
 
-					color.back.base			= &Core::gameVars->pallette.gui.button.background.base;
-					color.back.highlight	= &Core::gameVars->pallette.gui.button.background.hover;
-					color.back.active		= &Core::gameVars->pallette.gui.button.background.active;
+					color.back().base		= &Core::gameVars->pallette.gui.button.background.base;
+					color.back().highlight	= &Core::gameVars->pallette.gui.button.background.hover;
+					color.back().active		= &Core::gameVars->pallette.gui.button.background.active;
 
-					color.border.base		= &Core::gameVars->pallette.gui.button.border.base;
-					color.border.highlight	= &Core::gameVars->pallette.gui.button.border.hover;
-					color.border.active		= &Core::gameVars->pallette.gui.button.border.active;
+					color.border().base		= &Core::gameVars->pallette.gui.button.border.base;
+					color.border().highlight	= &Core::gameVars->pallette.gui.button.border.hover;
+					color.border().active	= &Core::gameVars->pallette.gui.button.border.active;
 
-					colorText.base			= &Core::gameVars->pallette.gui.button.text.base;
-					colorText.highlight		= &Core::gameVars->pallette.gui.button.text.hover;
-					colorText.active		= &Core::gameVars->pallette.gui.button.text.active;
+					color.text().base			= &Core::gameVars->pallette.gui.button.text.base;
+					color.text().highlight	= &Core::gameVars->pallette.gui.button.text.hover;
+					color.text().active		= &Core::gameVars->pallette.gui.button.text.active;
 				}
 
 				~Props_Button() {
@@ -938,7 +1018,18 @@ namespace Core {
 
 			// FIXME: Clean up and make members private as needed
 			private:
-				GUI_ColorBHA	colorText;
+				struct Colors {
+					private:
+						struct {
+							GUI_ColorBHA	text;
+						} data;
+
+					public:
+						GUI_ColorBHA &text()	{ return data.text; }
+
+					Colors() {}
+				} color;
+
 				std::shared_ptr<std::string> bufferPtr;
 				bool			bLocalBuffer;
 				float			scrollPosition;
@@ -955,12 +1046,6 @@ namespace Core {
 //				Vector2i		vAutoSize;
 
 			public:
-				void setColorTextA(Color *v1)								{ colorText.active = v1; }
-				void setColorTextB(Color *v1)								{ colorText.base = v1; }
-				void setColorTextH(Color *v1)								{ colorText.highlight = v1; }
-				void setColorTextBH(Color *v1, Color *v2)					{ colorText.base = v1; colorText.highlight = v2; }
-				void setColorTextBHA(Color *v1, Color *v2, Color *v3)		{ colorText.base = v1; colorText.highlight = v2; colorText.active = v3; }
-				void setColorTextBHA(GUI_ColorBHA colors)					{ colorText = colors;	}
 				void scrollUp(int i=1)										{ scrollPosition = std::fmax(scrollPosition-i, 0); }
 				void scrollDown(int i=1)									{ scrollPosition += i; }
 				void setWordWrap(bool b)									{ bWordWrap = b;	}
@@ -983,9 +1068,9 @@ namespace Core {
 					bEnableCursor			= false;
 					iCursorPosition			= 0;
 
-					colorText.base				= &Core::gameVars->pallette.gui.textArea.text.base;
-					colorText.highlight			= &Core::gameVars->pallette.gui.textArea.text.hover;
-					colorText.active			= &Core::gameVars->pallette.gui.textArea.text.active;
+					color.text().base			= &Core::gameVars->pallette.gui.textArea.text.base;
+					color.text().highlight		= &Core::gameVars->pallette.gui.textArea.text.hover;
+					color.text().active			= &Core::gameVars->pallette.gui.textArea.text.active;
 
 					autoWidth();
 					autoHeight();
@@ -1054,13 +1139,13 @@ namespace Core {
 					label.setAnchor(CONSTRAIN_BOTTOM_LEFT);
 					label.disablePadding();
 
-					color.back.base				= &Core::gameVars->pallette.gui.textArea.background.base;
-					color.back.highlight		= &Core::gameVars->pallette.gui.textArea.background.hover;
-					color.back.active			= &Core::gameVars->pallette.gui.textArea.background.active;
+					color.back().base				= &Core::gameVars->pallette.gui.textArea.background.base;
+					color.back().highlight		= &Core::gameVars->pallette.gui.textArea.background.hover;
+					color.back().active			= &Core::gameVars->pallette.gui.textArea.background.active;
 
-					color.border.base			= &Core::gameVars->pallette.gui.textArea.border.base;
-					color.border.highlight		= &Core::gameVars->pallette.gui.textArea.border.hover;
-					color.border.active			= &Core::gameVars->pallette.gui.textArea.border.active;
+					color.border().base			= &Core::gameVars->pallette.gui.textArea.border.base;
+					color.border().highlight		= &Core::gameVars->pallette.gui.textArea.border.hover;
+					color.border().active			= &Core::gameVars->pallette.gui.textArea.border.active;
 				}
 		};
 
@@ -1077,19 +1162,38 @@ namespace Core {
 			friend class Object::ColorSwatch;
 
 			public:
-				GUI_ColorB		colorBorder;
+				struct Colors {
+					private:
+						struct {
+							GUI_ColorBHA	swatchBorder;
+							GUI_ColorBHA	*backPtr,
+											*borderPtr;
+						} data;
+
+					public:
+						GUI_ColorBHA &swatchBorder()	{ return data.swatchBorder; }
+						GUI_ColorBHA &back()			{ return *data.backPtr; }
+						GUI_ColorBHA &border()			{ return *data.borderPtr; }
+
+
+					Colors(GUI_ColorBHA *backPtr, GUI_ColorBHA *borderPtr) {
+						data.backPtr = backPtr;
+						data.borderPtr = borderPtr;
+					}
+				} color = Colors(&Props_Window::color.back(), &Props_Window::color.border());
+
 //				GUI_ColorB		colorBackground;
 
-				void setColorBorderB(Color *v1)								{	colorBorder.base = v1;	}
+//				void setColorBorderB(Color *v1)								{	colorBorder.base = v1;	}
 				int  getRadius() 											{	return radius;	}
 				bool getRoundBorder()										{	return roundBorder;	}
 //				int  getBorder()											{	return border;	}
 
 				Props_ColorSwatch() : Props_Addon_Slider(SLIDER_HORIZONTAL) {
-					colorBorder.base		= &Core::gameVars->pallette.gui.swatch.border.base;
+					color.swatchBorder().base		= &Core::gameVars->pallette.gui.swatch.border.base;
 
 					showBackground();
-					background.setColorWindowB(&Core::colors[colors().White]);
+					background.color.back().base = &Core::colors[colors().White];
 
 					bShowSlider		= true;
 					slider.setOrigin(CONSTRAIN_RIGHT);
@@ -1162,21 +1266,21 @@ namespace Core {
 					setHeight(20, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
 					setRadius(10);
 
-					color.back.base					= &Core::gameVars->pallette.gui.checkBox.background.base;
-					color.back.highlight			= &Core::gameVars->pallette.gui.checkBox.background.hover;
-					color.back.active				= &Core::gameVars->pallette.gui.checkBox.background.base;
+					color.back().base					= &Core::gameVars->pallette.gui.checkBox.background.base;
+					color.back().highlight			= &Core::gameVars->pallette.gui.checkBox.background.hover;
+					color.back().active				= &Core::gameVars->pallette.gui.checkBox.background.base;
 
-					color.border.base				= &Core::gameVars->pallette.gui.checkBox.border.base;
-					color.border.highlight			= &Core::gameVars->pallette.gui.checkBox.border.hover;
-					color.border.active				= &Core::gameVars->pallette.gui.checkBox.border.active;
+					color.border().base				= &Core::gameVars->pallette.gui.checkBox.border.base;
+					color.border().highlight			= &Core::gameVars->pallette.gui.checkBox.border.hover;
+					color.border().active				= &Core::gameVars->pallette.gui.checkBox.border.active;
 
-					check.color.back.base			= &Core::gameVars->pallette.gui.checkBox.background.active;
-					check.color.back.highlight		= &Core::gameVars->pallette.gui.checkBox.background.active;
-					check.color.back.active			= &Core::gameVars->pallette.gui.checkBox.background.active;
+					check.color.back().base			= &Core::gameVars->pallette.gui.checkBox.background.active;
+					check.color.back().highlight		= &Core::gameVars->pallette.gui.checkBox.background.active;
+					check.color.back().active			= &Core::gameVars->pallette.gui.checkBox.background.active;
 
-					check.color.border.base			= &Core::gameVars->pallette.gui.checkBox.border.base;
-					check.color.border.highlight		= &Core::gameVars->pallette.gui.checkBox.border.hover;
-					check.color.border.active		= &Core::gameVars->pallette.gui.checkBox.border.active;
+					check.color.border().base			= &Core::gameVars->pallette.gui.checkBox.border.base;
+					check.color.border().highlight		= &Core::gameVars->pallette.gui.checkBox.border.hover;
+					check.color.border().active		= &Core::gameVars->pallette.gui.checkBox.border.active;
 				}
 
 				~Props_CheckBox() {
@@ -1205,18 +1309,23 @@ namespace Core {
 			friend class Object::Icon;
 
 			public:
-				GUI_ColorBHA	colorIcon;
+				struct Colors {
+					private:
+						struct {
+							GUI_ColorBHA	icon;
+						} data;
+
+					public:
+						GUI_ColorBHA &icon()	{ return data.icon; }
+
+					Colors() {}
+				} color;
+
 				struct {	int base, active, highlight;	} iconID;
 				eButtonType		buttonType;
 				int				debounceTime;
 				std::string		iconAtlas;
 
-				void setColorIconB		(Color *v1)							{	colorIcon.base = v1;	}
-				void setColorIconH		(Color *v1)							{	colorIcon.highlight = v1;	}
-				void setColorIconA		(Color *v1)							{	colorIcon.active = v1;	}
-				void setColorIconBH		(Color *v1, Color *v2)				{	colorIcon.base = v1, colorIcon.highlight = v2;	}
-				void setColorIconBHA	(Color *v1, Color *v2, Color *v3)	{	colorIcon.base = v1, colorIcon.highlight = v2, colorIcon.active = v3;	}
-				void setColorIconBHA	(GUI_ColorBHA colors)				{	colorIcon = colors;	}
 				void setIconIDs			(int b, int h, int a)				{	iconID.base = b; iconID.highlight = h; iconID.active = a;  	}
 				void setButtonType		(eButtonType e)						{	buttonType = e;		}
 				void setDebounceTime	(int i)								{	debounceTime = i;	}
@@ -1231,19 +1340,19 @@ namespace Core {
 					iconID.active			= 2;
 					setPadding(2);
 
-					colorIcon.base			= &Core::gameVars->pallette.gui.icon.base;
-					colorIcon.highlight		= &Core::gameVars->pallette.gui.icon.hover;
-					colorIcon.active		= &Core::gameVars->pallette.gui.icon.active;
+					color.icon().base			= &Core::gameVars->pallette.gui.icon.base;
+					color.icon().highlight	= &Core::gameVars->pallette.gui.icon.hover;
+					color.icon().active		= &Core::gameVars->pallette.gui.icon.active;
 
 					showBackground();
 					background.setBorder(1, 3);
 					background.setRadius(0);
-					background.setColorWindowB(&gameVars->pallette.gui.icon.background.base);
-					background.setColorWindowH(&gameVars->pallette.gui.icon.background.hover);
-					background.setColorWindowA(&gameVars->pallette.gui.icon.background.active);
-					background.setColorBorderB(&gameVars->pallette.gui.icon.border.base);
-					background.setColorBorderH(&gameVars->pallette.gui.icon.border.hover);
-					background.setColorBorderA(&gameVars->pallette.gui.icon.border.active);
+					background.color.back().base = &gameVars->pallette.gui.icon.background.base;
+					background.color.back().highlight = &gameVars->pallette.gui.icon.background.hover;
+					background.color.back().active = &gameVars->pallette.gui.icon.background.active;
+					background.color.border().base = &gameVars->pallette.gui.icon.border.base;
+					background.color.border().highlight = &gameVars->pallette.gui.icon.border.hover;
+					background.color.border().active = &gameVars->pallette.gui.icon.border.active;
 
 					showLabel();
 					label.setOrigin(Core::GUI::CONSTRAIN_TOP_RIGHT);
@@ -1269,15 +1378,28 @@ namespace Core {
 			friend class Object::Sprite;
 
 			public:
-				GUI_ColorBHA	colorSprite;
+				struct Colors {
+					private:
+							struct {
+							GUI_ColorBHA	sprite;
+							GUI_ColorBHA	*backPtr,
+											*borderPtr;
+						} data;
+
+					public:
+						GUI_ColorBHA &sprite()	{ return data.sprite; }
+						GUI_ColorBHA &back()	{ return *data.backPtr; }
+						GUI_ColorBHA &border()	{ return *data.borderPtr; }
+
+
+					Colors(GUI_ColorBHA *backPtr, GUI_ColorBHA *borderPtr) {
+						data.backPtr = backPtr;
+						data.borderPtr = borderPtr;
+					}
+				} color = Colors(&Props_Window::color.back(), &Props_Window::color.border());
+
 				std::string		spriteImage;
 
-				void setColorSpriteB	(Color *v1)							{	colorSprite.base = v1;	}
-				void setColorSpriteH	(Color *v1)							{	colorSprite.highlight = v1;	}
-				void setColorSpriteA	(Color *v1)							{	colorSprite.active = v1;	}
-				void setColorSpriteBH	(Color *v1, Color *v2)				{	colorSprite.base = v1, colorSprite.highlight = v2;	}
-				void setColorSpriteBHA	(Color *v1, Color *v2, Color *v3)	{	colorSprite.base = v1, colorSprite.highlight = v2, colorSprite.active = v3;	}
-				void setColorSpriteBHA	(GUI_ColorBHA colors)				{	colorSprite = colors;	}
 				void setImage			(std::string s)						{	spriteImage = s;	}
 
 				Props_Sprite() {
@@ -1285,15 +1407,15 @@ namespace Core {
 
 					spriteImage				= "TestPattern.png";
 
-					color.back.base			= &Core::gameVars->pallette.gui.sprite.background.base;
-					color.back.highlight	= &Core::gameVars->pallette.gui.sprite.background.hover;
-					color.back.active		= &Core::gameVars->pallette.gui.sprite.background.active;
+					color.back().base		= &Core::gameVars->pallette.gui.sprite.background.base;
+					color.back().highlight	= &Core::gameVars->pallette.gui.sprite.background.hover;
+					color.back().active		= &Core::gameVars->pallette.gui.sprite.background.active;
 
-					color.border.base		= &Core::gameVars->pallette.gui.sprite.border.base;
-					color.border.highlight	= &Core::gameVars->pallette.gui.sprite.border.hover;
-					color.border.active		= &Core::gameVars->pallette.gui.sprite.border.active;
+					color.border().base		= &Core::gameVars->pallette.gui.sprite.border.base;
+					color.border().highlight	= &Core::gameVars->pallette.gui.sprite.border.hover;
+					color.border().active	= &Core::gameVars->pallette.gui.sprite.border.active;
 
-					colorSprite.base		= &Core::gameVars->pallette.gui.sprite.base;
+					color.sprite().base		= &Core::gameVars->pallette.gui.sprite.base;
 //					colorSprite.highlight	= &Core::gameVars->pallette.gui.sprite.hover;
 //					colorSprite.active		= &Core::gameVars->pallette.gui.sprite.active;
 				}
@@ -1346,12 +1468,12 @@ namespace Core {
 					setPadding(2);
 					roundBorder						= true;
 					radius							= 3;
-					color.back.base				= &Core::gameVars->pallette.gui.progressBar.background.base;
-					color.back.highlight		= &Core::gameVars->pallette.gui.progressBar.background.base;
-					color.back.active			= &Core::gameVars->pallette.gui.progressBar.background.base;
-					color.border.base			= &Core::gameVars->pallette.gui.progressBar.background.border;
-					color.border.highlight		= &Core::gameVars->pallette.gui.progressBar.background.border;
-					color.border.active			= &Core::gameVars->pallette.gui.progressBar.background.border;
+					color.back().base				= &Core::gameVars->pallette.gui.progressBar.background.base;
+					color.back().highlight		= &Core::gameVars->pallette.gui.progressBar.background.base;
+					color.back().active			= &Core::gameVars->pallette.gui.progressBar.background.base;
+					color.border().base			= &Core::gameVars->pallette.gui.progressBar.background.border;
+					color.border().highlight		= &Core::gameVars->pallette.gui.progressBar.background.border;
+					color.border().active			= &Core::gameVars->pallette.gui.progressBar.background.border;
 
 					empty.setOrigin(CONSTRAIN_CENTER);
 					empty.setAnchor(CONSTRAIN_CENTER);
@@ -1364,12 +1486,12 @@ namespace Core {
 					empty.disableScissor();
 					empty.setStipplePattern(&Core::stipple[Core::stipple.STIPPLE_ANSI31]);
 					empty.enableStipple();
-					empty.color.back.base			= &Core::gameVars->pallette.gui.progressBar.progress.empty;
-					empty.color.back.highlight		= &Core::gameVars->pallette.gui.progressBar.progress.empty;
-					empty.color.back.active			= &Core::gameVars->pallette.gui.progressBar.progress.empty;
-					empty.color.border.base			= &Core::gameVars->pallette.gui.progressBar.progress.border;
-					empty.color.border.highlight	= &Core::gameVars->pallette.gui.progressBar.progress.border;
-					empty.color.border.active		= &Core::gameVars->pallette.gui.progressBar.progress.border;
+					empty.color.back().base			= &Core::gameVars->pallette.gui.progressBar.progress.empty;
+					empty.color.back().highlight		= &Core::gameVars->pallette.gui.progressBar.progress.empty;
+					empty.color.back().active			= &Core::gameVars->pallette.gui.progressBar.progress.empty;
+					empty.color.border().base			= &Core::gameVars->pallette.gui.progressBar.progress.border;
+					empty.color.border().highlight	= &Core::gameVars->pallette.gui.progressBar.progress.border;
+					empty.color.border().active		= &Core::gameVars->pallette.gui.progressBar.progress.border;
 
 					fill.setOrigin(CONSTRAIN_LEFT);
 					fill.setAnchor(CONSTRAIN_LEFT);
@@ -1378,17 +1500,19 @@ namespace Core {
 					fill.setBorder(0, 0);
 					fill.setRadius(0);
 					fill.setPadding(0);
-					fill.color.back.base			= &Core::gameVars->pallette.gui.progressBar.progress.fill;
-					fill.color.back.highlight		= &Core::gameVars->pallette.gui.progressBar.progress.fill;
-					fill.color.back.active			= &Core::gameVars->pallette.gui.progressBar.progress.fill;
-					fill.color.border.base			= &Core::gameVars->pallette.gui.progressBar.progress.border;
-					fill.color.border.highlight		= &Core::gameVars->pallette.gui.progressBar.progress.border;
-					fill.color.border.active		= &Core::gameVars->pallette.gui.progressBar.progress.border;
+					fill.setResizeRadius(false);
+					fill.color.back().base			= &Core::gameVars->pallette.gui.progressBar.progress.fill;
+					fill.color.back().highlight		= &Core::gameVars->pallette.gui.progressBar.progress.fill;
+					fill.color.back().active			= &Core::gameVars->pallette.gui.progressBar.progress.fill;
+					fill.color.border().base			= &Core::gameVars->pallette.gui.progressBar.progress.border;
+					fill.color.border().highlight		= &Core::gameVars->pallette.gui.progressBar.progress.border;
+					fill.color.border().active		= &Core::gameVars->pallette.gui.progressBar.progress.border;
 
 					field.setOrigin(CONSTRAIN_CENTER);
 					field.setAnchor(CONSTRAIN_CENTER);
 					field.autoWidth();
 					field.autoHeight();
+					field.setEditable(false);
 					field.setPadding(5);
 					field.setMinWidth(3*Core::gameVars->font.vSize.x+5+5);
 

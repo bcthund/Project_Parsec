@@ -233,19 +233,15 @@ namespace Core {
 				// 		Progress Bar
 				// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 				{
-					Props_Field props;
-//					Props_Label props;
-					props.setOrigin(CONSTRAIN_CENTER);
-					props.setAnchor(CONSTRAIN_CENTER);
-					props.autoWidth();
-					props.autoHeight();
-					props.setPadding(5);
-					props.setMinWidth(3*Core::gameVars->font.vSize.x+5+5);
-//					props.setHeight(50, SIZE_CONSTRAINT_RELATIVE);
-//					props.setWidth(25, SIZE_CONSTRAINT_RELATIVE);
-//					field = Object::Field<int>(*winNoProgress.con, "Progress Field", valuePtr, props);
+//					Props_Field props;
+//					props.setOrigin(CONSTRAIN_CENTER);
+//					props.setAnchor(CONSTRAIN_CENTER);
+//					props.autoWidth();
+//					props.autoHeight();
+//					props.setPadding(5);
+//					props.setMinWidth(3*Core::gameVars->font.vSize.x+5+5);
 					field = Object::AnyField();
-					field.set(*winNoProgress.con, "Progress Field", valuePtr, props);
+					field.set(*winNoProgress.con, "Progress Field", valuePtr, con->field);
 					field.init();
 				}
 

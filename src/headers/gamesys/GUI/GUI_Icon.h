@@ -391,9 +391,9 @@ namespace Core {
 						if(eObjectState&STATE_HOVER)	colors.PushFront(gameVars->pallette.gui.disabled.text.hover);
 						else							colors.PushFront(gameVars->pallette.gui.disabled.text.base);
 					}
-					else if(eObjectState&STATE_ACTIVE) { colors.PushFront(*con->colorIcon.active); iconID = con->iconID.active; }
-					else if(eObjectState&STATE_HOVER) { colors.PushFront(*con->colorIcon.highlight); iconID = con->iconID.highlight; }
-					else colors.PushFront(*con->colorIcon.base);
+					else if(eObjectState&STATE_ACTIVE) { colors.PushFront(*con->color.icon().active); iconID = con->iconID.active; }
+					else if(eObjectState&STATE_HOVER) { colors.PushFront(*con->color.icon().highlight); iconID = con->iconID.highlight; }
+					else colors.PushFront(*con->color.icon().base);
 
 					iconSys->draw(con, con->iconAtlas, iconID, 64);
 					colors.PopFront();

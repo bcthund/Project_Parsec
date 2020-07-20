@@ -9,10 +9,6 @@
 #define HEADERS_GAMESYS_GUITEXTEDIT_H_
 
 #include <iostream>
-//#include "../core/core_functions.h"
-//#include "../core/vao.h"
-//#include "../core/matrix.h"
-//#include "../core/shader.h"
 #include "../../core/InputSys.h"
 #include "../../gamesys/gameVars.h"
 #include "GUI_Constraint.h"
@@ -213,7 +209,7 @@ namespace Core {
 					cWin.disablePadding();
 					cWin.setBorder(0, false);
 					cWin.setRadius(0);
-					cWin.setColorWindowB(&colors[colors().Tan]);
+					cWin.color.back().base = &colors[colors().Tan];
 					scrollBarContainer = new Window(*con, name, cWin);
 					scrollBarContainer->init();
 
@@ -224,17 +220,17 @@ namespace Core {
 					cButton.setRadius(3);
 					cButton.setButtonType(Core::GUI::BUTTON_DEBOUNCE);
 
-					cButton.setColorWindowBHA(	&Core::gameVars->pallette.gui.textArea.scroll.base,
-												&Core::gameVars->pallette.gui.textArea.scroll.hover,
-												&Core::gameVars->pallette.gui.textArea.scroll.active);
+					cButton.color.back().base			= &Core::gameVars->pallette.gui.textArea.scroll.base;
+					cButton.color.back().highlight		= &Core::gameVars->pallette.gui.textArea.scroll.hover;
+					cButton.color.back().active			= &Core::gameVars->pallette.gui.textArea.scroll.active;
 
-					cButton.setColorBorderBHA(	&Core::gameVars->pallette.gui.textArea.scrollBorder.base,
-												&Core::gameVars->pallette.gui.textArea.scrollBorder.hover,
-												&Core::gameVars->pallette.gui.textArea.scrollBorder.active);
+					cButton.color.border().base			= &Core::gameVars->pallette.gui.textArea.scrollBorder.base;
+					cButton.color.border().highlight	= &Core::gameVars->pallette.gui.textArea.scrollBorder.hover;
+					cButton.color.border().active		= &Core::gameVars->pallette.gui.textArea.scrollBorder.active;
 
-					cButton.setColorTextBHA(	&Core::gameVars->pallette.gui.textArea.scrollText.base,
-												&Core::gameVars->pallette.gui.textArea.scrollText.hover,
-												&Core::gameVars->pallette.gui.textArea.scrollText.active);
+					cButton.color.text().base			= &Core::gameVars->pallette.gui.textArea.scrollText.base;
+					cButton.color.text().highlight		= &Core::gameVars->pallette.gui.textArea.scrollText.hover;
+					cButton.color.text().active			= &Core::gameVars->pallette.gui.textArea.scrollText.active;
 
 					cButton.setPos(0, 0);
 					cButton.setOrigin(CONSTRAIN_TOP);
@@ -378,67 +374,67 @@ namespace Core {
 
 					execEdit();
 
-					if(con->text.size.isAutoSet()) {
-						// Scroll Buttons
-						if(con->enableScrolling) {
-							// Draw button window
-							if(!bScrollOneShot) {
-								win.con->setWidth(con->size.x-con->iScrollSize, SIZE_CONSTRAINT_ABSOLUTE);
-								bScrollOneShot = true;
-							}
-							win.exec(eObjectState);
+					// Scroll Buttons
+					if(con->enableScrolling) {
+						// Draw button window
+						if(!bScrollOneShot) {
+							win.con->setWidth(con->size.x-con->iScrollSize, SIZE_CONSTRAINT_ABSOLUTE);
+							bScrollOneShot = true;
+						}
+						win.exec(eObjectState);
 
-							// Update constraints, needed for autosize and direct external modifications
+						// Update constraints, needed for autosize and direct external modifications
+						if(con->text.size.isAutoSet()) {
 							text.con->setWidth(con->size.x, SIZE_CONSTRAINT_ABSOLUTE);
 							text.con->setHeight(con->size.y, SIZE_CONSTRAINT_ABSOLUTE);
-							text.exec(eObjectState);
+						}
+						text.exec(eObjectState);
 
-							if(con->bShowLabel) label->exec(eObjectState);
+						if(con->bShowLabel) label->exec(eObjectState);
 
-							scrollBarContainer->con->setHeight(con->size.constraint.y, SIZE_CONSTRAINT_ABSOLUTE);
-							scrollBar->con->setMinMax(text.con->iMaxLines, 0);
-							scrollBar->con->setHeight(scrollBarContainer->con->size.y-(2*con->iScrollSize), SIZE_CONSTRAINT_ABSOLUTE);
+						scrollBarContainer->con->setHeight(con->size.constraint.y, SIZE_CONSTRAINT_ABSOLUTE);
+						scrollBar->con->setMinMax(text.con->iMaxLines, 0);
+						scrollBar->con->setHeight(scrollBarContainer->con->size.y-(2*con->iScrollSize), SIZE_CONSTRAINT_ABSOLUTE);
 
-							if(!(eObjectState&STATE_DISABLED)) {
-								scrollBarContainer->exec();
-								scrollUp->exec();
-								scrollDown->exec();
-								scrollBar->exec();
-							}
-							else {
-								scrollBarContainer->exec(STATE_DISABLED);
-								scrollUp->exec(STATE_DISABLED);
-								scrollDown->exec(STATE_DISABLED);
-								scrollBar->exec(STATE_DISABLED);
-							}
-
-							// Check scroll buttons
-							if(scrollUp->getState()) text.con->scrollUp();
-							if(scrollDown->getState()) text.con->scrollDown();
+						if(!(eObjectState&STATE_DISABLED)) {
+							scrollBarContainer->exec();
+							scrollUp->exec();
+							scrollDown->exec();
+							scrollBar->exec();
 						}
 						else {
-							// Draw button window
-							if(bScrollOneShot) {
-								win.con->setWidth(con->size.x+20, SIZE_CONSTRAINT_ABSOLUTE);
-								bScrollOneShot = false;
-							}
-							win.exec(eObjectState);
-
-							// Update constraints, needed for autosize and direct external modifications
-							text.con->setWidth(con->size.x, SIZE_CONSTRAINT_ABSOLUTE);
-							text.con->setHeight(con->size.y, SIZE_CONSTRAINT_ABSOLUTE);
-							text.exec(eObjectState);
-
-							if(con->bShowLabel) label->exec(eObjectState);
+							scrollBarContainer->exec(STATE_DISABLED);
+							scrollUp->exec(STATE_DISABLED);
+							scrollDown->exec(STATE_DISABLED);
+							scrollBar->exec(STATE_DISABLED);
 						}
+
+						// Check scroll buttons
+						if(scrollUp->getState()) text.con->scrollUp();
+						if(scrollDown->getState()) text.con->scrollDown();
 					}
 					else {
+						// Draw button window
+						if(bScrollOneShot) {
+							win.con->setWidth(con->size.x+20, SIZE_CONSTRAINT_ABSOLUTE);
+							bScrollOneShot = false;
+						}
+						win.exec(eObjectState);
+
+						// Update constraints, needed for autosize and direct external modifications
+						if(con->text.size.isAutoSet()) {
+							text.con->setWidth(con->size.x, SIZE_CONSTRAINT_ABSOLUTE);
+							text.con->setHeight(con->size.y, SIZE_CONSTRAINT_ABSOLUTE);
+						}
 						text.exec(eObjectState);
+						text.exec(eObjectState);
+
+						if(con->bShowLabel) label->exec(eObjectState);
 					}
 
-					// Autosize
+					// Autosize (Needs some extra padding on textbox, not really sure why but probably due to scrolling implementation)
 					if(con->size.constraint.xAuto) con->setWidth(con->text.size.x, SIZE_CONSTRAINT_ABSOLUTE);
-					if(con->size.constraint.yAuto) con->setHeight(con->text.size.y, SIZE_CONSTRAINT_ABSOLUTE);
+					if(con->size.constraint.yAuto) con->setHeight(con->text.size.y+gameVars->font.vSize.y, SIZE_CONSTRAINT_ABSOLUTE);
 
 				}
 			}
