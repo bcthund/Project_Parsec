@@ -1,6 +1,0 @@
-<map id="Core::GameSys::AnimationSys::drawWorld" name="Core::GameSys::AnimationSys::drawWorld">
-<area shape="rect" id="node1" title=" " alt="" coords="5,49,188,90"/>
-<area shape="rect" id="node2" href="$classCore_1_1__gmath.html#a6753f990f5e1ae018d69d636df4aa317" title=" " alt="" coords="248,5,392,32"/>
-<area shape="rect" id="node3" href="$classCore_1_1VAO.html#a3072110ba182f2d5499a5c2b57b29916" title=" " alt="" coords="259,56,381,83"/>
-<area shape="rect" id="node4" href="$classCore_1_1__gmath.html#a4a85095528162ae55626e1d9f1c1cbc1" title=" " alt="" coords="236,107,404,133"/>
-</map>

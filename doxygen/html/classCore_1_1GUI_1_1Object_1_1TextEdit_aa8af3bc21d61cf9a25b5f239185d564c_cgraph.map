@@ -1,8 +1,0 @@
-<map id="Core::GUI::Object::TextEdit::updateNoFocus" name="Core::GUI::Object::TextEdit::updateNoFocus">
-<area shape="rect" id="node1" title=" " alt="" coords="5,103,176,145"/>
-<area shape="rect" id="node2" href="$classCore_1_1GUI_1_1Object_1_1TextEdit.html#ac336fc12cb81ed9893fd3cc15a0b24aa" title=" " alt="" coords="224,103,411,145"/>
-<area shape="rect" id="node3" href="$classCore_1_1__Mouse.html#a639062065d0bbd3604b270eaafd60702" title=" " alt="" coords="465,5,641,32"/>
-<area shape="rect" id="node4" href="$classCore_1_1GUI_1_1Object_1_1Base_1_1Interactive.html#a0ee9b54ecaeff855b9d9087540247f69" title=" " alt="" coords="461,56,645,112"/>
-<area shape="rect" id="node5" href="$classCore_1_1GUI_1_1Object_1_1Base_1_1Generic.html#aef7983e3da071bb67c32ec1474a703a6" title=" " alt="" coords="477,136,628,192"/>
-<area shape="rect" id="node6" href="$classCore_1_1GUI_1_1Object_1_1Base_1_1Interactive.html#aebac2895e2be17e0166a667247f9cbf6" title=" " alt="" coords="459,216,647,272"/>
-</map>

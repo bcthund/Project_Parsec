@@ -1,8 +1,0 @@
-<map id="Core::GameSys::drawSprite" name="Core::GameSys::drawSprite">
-<area shape="rect" id="node1" title=" " alt="" coords="5,100,192,127"/>
-<area shape="rect" id="node2" href="$namespaceCore_1_1GameSys.html#af1eb6140ecdc4571fb44ae8e7de39cb1" title=" " alt="" coords="240,100,427,127"/>
-<area shape="rect" id="node3" href="$classCore_1_1__Colors.html#aa7624cbbd0c1b94247efff11d9f7e742" title=" " alt="" coords="500,5,664,32"/>
-<area shape="rect" id="node5" href="$classCore_1_1__Colors.html#a80ce9c5980115ce42c071d99b5404689" title=" " alt="" coords="497,173,667,200"/>
-<area shape="rect" id="node4" href="$classCore_1_1__Colors.html#ac6f4cb56a442f2341b56f96a76fdecfb" title=" " alt="" coords="475,56,689,83"/>
-<area shape="rect" id="node6" href="$classCore_1_1__Colors.html#a80ba60280fb470bd33c13a6411e4c2e3" title=" " alt="" coords="497,107,667,149"/>
-</map>

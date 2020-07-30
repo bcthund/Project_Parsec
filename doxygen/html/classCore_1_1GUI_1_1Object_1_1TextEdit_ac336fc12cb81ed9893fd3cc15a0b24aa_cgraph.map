@@ -1,7 +1,0 @@
-<map id="Core::GUI::Object::TextEdit::updateObjectState" name="Core::GUI::Object::TextEdit::updateObjectState">
-<area shape="rect" id="node1" title=" " alt="" coords="5,103,192,145"/>
-<area shape="rect" id="node2" href="$classCore_1_1__Mouse.html#a639062065d0bbd3604b270eaafd60702" title=" " alt="" coords="246,5,422,32"/>
-<area shape="rect" id="node3" href="$classCore_1_1GUI_1_1Object_1_1Base_1_1Interactive.html#a0ee9b54ecaeff855b9d9087540247f69" title=" " alt="" coords="242,56,426,112"/>
-<area shape="rect" id="node4" href="$classCore_1_1GUI_1_1Object_1_1Base_1_1Generic.html#aef7983e3da071bb67c32ec1474a703a6" title=" " alt="" coords="259,136,409,192"/>
-<area shape="rect" id="node5" href="$classCore_1_1GUI_1_1Object_1_1Base_1_1Interactive.html#aebac2895e2be17e0166a667247f9cbf6" title=" " alt="" coords="240,216,428,272"/>
-</map>

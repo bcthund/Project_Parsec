@@ -1,6 +1,0 @@
-<map id="Core::Vector2f" name="Core::Vector2f">
-<area shape="rect" id="node1" title=" " alt="" coords="5,71,112,98"/>
-<area shape="rect" id="node2" href="$structCore_1_1GUI_1_1Props_1_1__Position.html" title=" " alt="" coords="177,5,309,47"/>
-<area shape="rect" id="node3" href="$structCore_1_1GUI_1_1Props_1_1__Size.html" title=" " alt="" coords="160,71,325,98"/>
-<area shape="rect" id="node4" href="$structCore_1_1GUI_1_1Props_1_1__Size_1_1__SizeConstraint.html" title=" " alt="" coords="165,123,321,164"/>
-</map>

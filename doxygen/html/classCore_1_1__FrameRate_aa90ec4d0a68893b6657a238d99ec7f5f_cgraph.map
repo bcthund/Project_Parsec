@@ -1,9 +1,0 @@
-<map id="Core::_FrameRate::update" name="Core::_FrameRate::update">
-<area shape="rect" id="node1" title=" " alt="" coords="5,56,183,83"/>
-<area shape="rect" id="node2" href="$classCore_1_1__FrameRate.html#a4447a2de266820d9da2f3edefe91b9b2" title=" " alt="" coords="231,5,419,32"/>
-<area shape="rect" id="node4" href="$classCore_1_1PTimer.html#a955d51e013f9dcef8f1d68c64260c0cc" title=" " alt="" coords="258,107,391,133"/>
-<area shape="rect" id="node7" href="$classCore_1_1PTimer.html#a2a45d6131f2b224593b26396d892a354" title=" " alt="" coords="251,56,398,83"/>
-<area shape="rect" id="node3" href="$classCore_1_1PTimer.html#afdfd8297fe4eedc243d71aa7747ca4b0" title=" " alt="" coords="471,5,630,32"/>
-<area shape="rect" id="node5" href="$namespaceCore.html#a050a3fb44e3af964ec2d0f10d2d41e90" title=" " alt="" coords="511,107,590,133"/>
-<area shape="rect" id="node6" href="$classCore_1_1RunningStat.html#a62e67897d5285b4ef39ba071204130fa" title=" " alt="" coords="467,56,635,83"/>
-</map>

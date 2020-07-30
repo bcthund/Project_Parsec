@@ -1,6 +1,0 @@
-<map id="Core::GameSys::_WorldMap::_WorldMap" name="Core::GameSys::_WorldMap::_WorldMap">
-<area shape="rect" id="node1" title=" " alt="" coords="5,57,195,98"/>
-<area shape="rect" id="node2" href="$classCore_1_1__Lights.html#a135955851f86a3e70d1d4495b1fa11e7" title=" " alt="" coords="277,5,403,32"/>
-<area shape="rect" id="node3" href="$classCore_1_1GameSys_1_1Atmosphere.html#af65b65945bd105aa900990145c53168e" title=" " alt="" coords="243,57,437,98"/>
-<area shape="rect" id="node4" href="$classCore_1_1GameSys_1_1MapSys.html#a18bcb2317ff70f4e5af705fea839ae83" title=" " alt="" coords="254,122,426,163"/>
-</map>

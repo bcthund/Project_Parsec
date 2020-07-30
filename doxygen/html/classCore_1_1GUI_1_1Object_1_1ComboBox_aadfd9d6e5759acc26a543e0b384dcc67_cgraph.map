@@ -1,9 +1,0 @@
-<map id="Core::GUI::Object::ComboBox::updateObjectState" name="Core::GUI::Object::ComboBox::updateObjectState">
-<area shape="rect" id="node1" title=" " alt="" coords="5,129,208,170"/>
-<area shape="rect" id="node2" href="$classCore_1_1__Mouse.html#a639062065d0bbd3604b270eaafd60702" title=" " alt="" coords="271,5,447,32"/>
-<area shape="rect" id="node3" href="$classCore_1_1GUI_1_1Object_1_1Base_1_1Generic.html#aef7983e3da071bb67c32ec1474a703a6" title=" " alt="" coords="280,56,439,112"/>
-<area shape="rect" id="node4" href="$classCore_1_1GUI_1_1Props.html#a58ddb52657f4d54eb3987ae0ed878a9d" title=" " alt="" coords="256,136,463,163"/>
-<area shape="rect" id="node5" href="$classCore_1_1GUI_1_1Object_1_1ComboBox.html#a9c4c0a9d2eca286d336fdd622b2b69b4" title=" " alt="" coords="256,187,463,229"/>
-<area shape="rect" id="node7" href="$classCore_1_1GUI_1_1Object_1_1Base_1_1Interactive.html#aebac2895e2be17e0166a667247f9cbf6" title=" " alt="" coords="259,253,460,309"/>
-<area shape="rect" id="node6" href="$classCore_1_1__Mouse.html#a36b81d67a1194c0414425af4f51b24cf" title=" " alt="" coords="511,195,695,221"/>
-</map>

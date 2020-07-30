@@ -1,8 +1,0 @@
-<map id="RunDungeon" name="RunDungeon">
-<area shape="rect" id="node1" title=" " alt="" coords="132,184,231,211"/>
-<area shape="rect" id="node2" href="$classWater.html" title=" " alt="" coords="5,95,61,121"/>
-<area shape="rect" id="node3" href="$classO3D__Dungeon.html" title=" " alt="" coords="86,95,194,121"/>
-<area shape="rect" id="node4" href="$classO2DD.html" title=" " alt="" coords="219,95,277,121"/>
-<area shape="rect" id="node5" href="$classO2D__BASE.html" title=" " alt="" coords="159,5,251,32"/>
-<area shape="rect" id="node6" href="$classDungeonMap.html" title=" " alt="" coords="276,5,375,32"/>
-</map>

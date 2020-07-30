@@ -1,7 +1,0 @@
-<map id="Core::GUI::Props_Addon_Toggle" name="Core::GUI::Props_Addon_Toggle">
-<area shape="rect" id="node1" title="Object can be toggled." alt="" coords="225,5,393,47"/>
-<area shape="rect" id="node2" href="$classCore_1_1GUI_1_1Props__Button.html" title=" " alt="" coords="19,95,188,121"/>
-<area shape="rect" id="node4" href="$classCore_1_1GUI_1_1Props__CheckBox.html" title=" " alt="" coords="213,95,405,121"/>
-<area shape="rect" id="node5" href="$classCore_1_1GUI_1_1Props__Icon.html" title=" " alt="" coords="429,95,585,121"/>
-<area shape="rect" id="node3" href="$classCore_1_1GUI_1_1Props__ComboBox.html" title=" " alt="" coords="5,169,201,196"/>
-</map>

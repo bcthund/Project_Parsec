@@ -1,8 +1,0 @@
-<map id="Core::GUI::Props_Addon_Label" name="Core::GUI::Props_Addon_Label">
-<area shape="rect" id="node1" title=" " alt="" coords="5,99,173,141"/>
-<area shape="rect" id="node2" href="$classCore_1_1GUI_1_1Props__CheckBox.html" title=" " alt="" coords="229,5,421,32"/>
-<area shape="rect" id="node3" href="$classCore_1_1GUI_1_1Props__ColorSwatch.html" title=" " alt="" coords="221,56,428,83"/>
-<area shape="rect" id="node4" href="$classCore_1_1GUI_1_1Props__Icon.html" title=" " alt="" coords="247,107,403,133"/>
-<area shape="rect" id="node5" href="$classCore_1_1GUI_1_1Props__Slider.html" title=" " alt="" coords="243,157,407,184"/>
-<area shape="rect" id="node6" href="$classCore_1_1GUI_1_1Props__TextArea.html" title=" " alt="" coords="233,208,416,235"/>
-</map>

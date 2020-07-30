@@ -1,6 +1,0 @@
-<map id="Core::GUI::Object::FieldBase" name="Core::GUI::Object::FieldBase">
-<area shape="rect" id="node1" title=" " alt="" coords="32,273,168,315"/>
-<area shape="rect" id="node2" href="$classCore_1_1__Keyboard.html" title=" " alt="" coords="40,184,160,211"/>
-<area shape="rect" id="node3" href="$structCore_1_1__Keyboard_1_1__KeyArray.html" title=" " alt="" coords="5,95,195,121"/>
-<area shape="rect" id="node4" href="$classCore_1_1Timer.html" title=" " alt="" coords="55,5,145,32"/>
-</map>

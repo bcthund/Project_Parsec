@@ -1,7 +1,0 @@
-<map id="WorldMap::shift" name="WorldMap::shift">
-<area shape="rect" id="node1" title=" " alt="" coords="5,31,119,57"/>
-<area shape="rect" id="node2" href="$classWorldMap.html#a52667a049526ba07fccc60aac18a10f4" title=" " alt="" coords="167,5,279,32"/>
-<area shape="rect" id="node4" href="$classWorldMap.html#a5f09ea92e08627e788e5faff636d9c9f" title=" " alt="" coords="167,56,279,83"/>
-<area shape="rect" id="node3" href="$classWorldMap.html#a2479cecf42a8a23bd4b2f6a18ff5cca3" title=" " alt="" coords="327,5,447,32"/>
-<area shape="rect" id="node5" href="$namespaceCore.html#a43da948d51230314bc4aca00a2a18f4b" title=" " alt="" coords="335,56,439,83"/>
-</map>

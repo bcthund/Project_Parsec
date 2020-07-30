@@ -1,6 +1,0 @@
-<map id="Core::_Debug::update" name="Core::_Debug::update">
-<area shape="rect" id="node1" title="Check and reset timers per cycle, to be called at beginning of program loop." alt="" coords="5,31,156,57"/>
-<area shape="rect" id="node2" href="$classCore_1_1Timer.html#a1538fad4f566deb3e74dd1c5b4eda0b7" title=" " alt="" coords="204,5,371,32"/>
-<area shape="rect" id="node4" href="$classCore_1_1Timer.html#aad974e854b799d25fc559383cc5a194b" title=" " alt="" coords="226,56,349,83"/>
-<area shape="rect" id="node3" href="$classCore_1_1Timer.html#a778cb9ce079fdb2c8cd02c0ef65259ff" title=" " alt="" coords="419,5,571,32"/>
-</map>
