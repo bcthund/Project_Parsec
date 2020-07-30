@@ -69,9 +69,18 @@ namespace Core {
 				return mLookAt;
 			}
 
-			inline bool PointQuad2d(Vector2f p, Vector2f u, Vector2f v) {
-				if ( (p[0]>u[0]) && (p[0]<v[0]) && (p[1]>u[1]) && (p[1]<v[1])) return true;
-				else return false;
+			inline bool PointQuad2d(Vector2f p, Vector2f u, Vector2f v, bool bExclusive=false) {
+				if(bExclusive) {
+					if ( (p[0]>u[0]) && (p[0]<v[0]) && (p[1]>u[1]) && (p[1]<v[1])) return true;
+					//else return false;
+				}
+				else {
+//					if ( (p[0]>=u[0]) && (p[0]<v[0]) && (p[1]>=u[1]) && (p[1]<v[1])) return true;
+					if ( (p[0]>=u[0]) && (p[0]<v[0]) && (p[1]>=u[1]) && (p[1]<v[1])) return true;
+//					if ( (p[0]>=u[0]) && (p[0]<=v[0]) && (p[1]>=u[1]) && (p[1]<=v[1])) return true;
+					//else return false;
+				}
+				return false;
 			}
 
 			Vector3f Cross(Vector3f u, Vector3f v, bool bNorm=false) {

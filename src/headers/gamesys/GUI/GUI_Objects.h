@@ -55,9 +55,13 @@ namespace Core {
 						friend class TextArea;
 						friend class TextEdit;
 						friend class Window;
+						friend class ProgressBar;
+						friend class ComboBox;
 
-					protected:
-						Core::_Mouse::MOUSE_STATE mState;
+					//protected:	// Doesn't always work right, friend can't access
+					public:
+						//Core::_Mouse::MOUSE_STATE mState;
+						Core::_Mouse::iMouseState mState;
 						std::string name;
 						bool bInit;
 						bool bLocalCon;
@@ -65,9 +69,11 @@ namespace Core {
 						bool bIsGrouped;
 						bool bRepeatStatus;
 						iState eObjectState;
+						Timer timeFocusDebounce;
+						int iFocusDebounce;
 
 					private:
-//						bool bCopied;	// FIXME: Implement copy/assignment constructors
+//						bool bCopied;	// FIXME: MEMORY LEAKS HERE: Pointers not getting deleted
 						class _AndOrBase {
 							friend class Generic;
 							private:
@@ -132,9 +138,14 @@ namespace Core {
 						int border;
 						C			* con;
 						Props * parent;
+						bool bEnabled;
 						void hide()		{	con->visibility = false;	}
 						void show()		{	con->visibility = true;	}
 						bool visible()	{	return con->visibility;	}
+
+						void setEnabled(bool b) {
+							bEnabled = b;
+						}
 
 						void setEnableA(bool b, int n=0) { *enable.s_AND[n].b = b; }
 
@@ -173,7 +184,7 @@ namespace Core {
 								bAND = bAND && enable.AND(n);
 								bOR = bOR || enable.OR(n);
 							}
-							return bAND && bOR;
+							return bEnabled && (bAND && bOR);
 						}
 						iState	getObjectState()	{	return eObjectState;	}
 
@@ -195,6 +206,8 @@ namespace Core {
 							}
 							enable.OR(0) = true;
 							border = 1;
+							bEnabled = true;
+							iFocusDebounce = 100;
 						}
 
 						virtual ~Generic() {
@@ -218,6 +231,8 @@ namespace Core {
 							bIsGrouped			= src.bIsGrouped;
 							eObjectState		= src.eObjectState;
 							bRepeatStatus		= src.bRepeatStatus;
+							bEnabled			= src.bEnabled;
+							iFocusDebounce		= src.iFocusDebounce;
 
 							bLocalCon			= src.bLocalCon;
 							if(bLocalCon) con = new C(*src.con);
@@ -237,15 +252,13 @@ namespace Core {
 					public:
 						static bool bFocusPresent;				// An object currently has focus
 						static std::string sActiveObject;		// Global active object, only one object can be active at a time (Field, slider, textedit, etc)
-						static std::string sGroupObject[32];	// Active grouped object
 						Interactive_Base() {}
 						~Interactive_Base() {}
 				};
 				bool Interactive_Base::bFocusPresent			= false;
 				std::string Interactive_Base::sActiveObject		= "";
-				std::string Interactive_Base::sGroupObject[32]	= { "" };
 
-				template <class C, typename T>
+				template <class C>
 				class Interactive : public Generic<C>, virtual public Interactive_Base {
 	//					friend class Container;
 						friend class Button;
@@ -262,73 +275,124 @@ namespace Core {
 						friend class TextArea;
 						friend class TextEdit;
 						friend class Window;
+						friend class ComboBox;
 					protected:
-						T	*valuePtr;
-						bool bLocalValue;
-						bool bReturnInit;
-						bool bValueChanged;
+						bool *statePtr;
+						bool bLocalState;
+						bool bStateChanged;
 						Timer debounceTimer;
-						Props_Addon_ReturnState *returnState;
 
 					public:
+						t_DataSet dataSet;
+						std::string sOnState, sOffState;
+
 						Interactive() {
-							valuePtr		= nullptr;
-							bValueChanged	= false;
-							bLocalValue		= false;
-							returnState		= nullptr;
-							bReturnInit		= false;
+							statePtr		= nullptr;
+							bStateChanged	= false;
+							bLocalState		= false;
+							sOnState		= "ON";
+							sOffState		= "OFF";
+						}
+
+						Interactive(const Interactive &src) {
+							//std::cout << "Interactive &operator=() called\n";
+							this->mState	= src.mState;
+							statePtr		= new bool(src.statePtr);
+							bStateChanged	= src.bStateChanged;
+							bLocalState		= src.bLocalState;
+
+							Generic<C>::operator=(src);
+							//this->Interactive_Base::operator=(src);
 						}
 
 						Interactive &operator=(const Interactive &src) {
-							std::cout << "Interactive &operator=() called\n";
-//							mState			= src.mState;
-							valuePtr		= src.valuePtr;
-							bValueChanged	= src.bValueChanged;
-							bLocalValue		= src.bLocalValue;
-							returnState		= src.returnState;
-							bReturnInit		= src.bReturnInit;
-							returnState		= new Props_Addon_ReturnState(*src.returnState);
+							//std::cout << "Interactive &operator=() called\n";
+							this->mState	= src.mState;
+							statePtr		= new bool(src.statePtr);
+							bStateChanged	= src.bStateChanged;
+							bLocalState		= src.bLocalState;
 
-							this->Generic<C>::operator =(src);
+							this->Generic<C>::operator=(src);
 							return *this;
 						}
 
-						bool	getPtrValue()		{	return *valuePtr;	}
-						void	setPointer(T *ptr)	{
-							if(bLocalValue && valuePtr != nullptr) delete valuePtr;
-							bLocalValue = false;
-							valuePtr = ptr;
-						}		// FIXME: What if local value already declared? Need to delete.
-						T*		getPointer()		{	return valuePtr;	}
+						/**
+						 * \brief Get the value of this object. For a button it will be the boolean state.
+						 * @return Return value of this object
+						 */
+						bool getState() {	return *statePtr;	}
 
-						void init(Props_Addon_ReturnState *ptr) {
-							returnState		= ptr;
-							bReturnInit		= true;
+						/**
+						 * \brief Set the pointer of internal state to an external item
+						 * @param ptr The ptr to use instead of internal pointer. Must be managed (deleted) externally.
+						 */
+						void	setStatePtr(bool *ptr)	{
+							if(bLocalState && statePtr != nullptr) delete statePtr;
+							bLocalState = false;
+							statePtr = ptr;
 						}
 
-						int getState(int n=0)  {
-							if(bReturnInit) {
-								if(this->eObjectState&STATE_ACTIVE)	return returnState->on[n];
-								else return returnState->off[n];
-							}
-							else return 0;
+						/**
+						 * \brief Get a pointer to the internal value, which could point to an external value
+						 * @return Pointer to internal/external value
+						 */
+						bool * getStatePtr()		{	return statePtr;	}
+
+						/**
+						 * \brief Set the value of the internal state
+						 * @param b Value to set state to
+						 */
+						void setState(bool b) {
+							*statePtr = b;
 						}
 
-						bool	valueChanged() {
-							if(bValueChanged) {
-								bValueChanged = false;
+						/**
+						 * \brief Get the custom return states
+						 * @param n Return state index
+						 * @return Value of returnState at index \p n
+						 */
+						t_BIFS getDataSetValue(int n=0) {
+							if(this->eObjectState&STATE_ACTIVE)	return dataSet[sOnState][n];
+							else return dataSet[sOffState][n];
+						}
+
+						/**
+						 * \brief Gets the entire dataset for an object as a reference so it can be modified
+						 * @return Return the entire dataset for this object
+						 */
+						t_DataSet &getDataSet() {
+							return dataSet;
+						}
+
+						/**
+						 * \brief Check if the value has changed since last read. Can only be called once, resets immediately after calling.
+						 * @return True if internal value has changed
+						 */
+
+						bool	stateChanged() {
+							if(bStateChanged) {
+								bStateChanged = false;
 								return true;
 							}
 							return false;
 						}
 
-						void	updateValuePtr() {
-//							// FIXME: Disconnect between eObjectState and valuePtr. eObjectState should be set from valuePtr, and probably not here.
-							if(this->eObjectState&STATE_ACTIVE) *valuePtr = (T)returnState->on[0];
-							else *valuePtr = (T)returnState->off[0];
-//
-////							if(*valuePtr) this->eObjectState = STATE_ACTIVE;
-////							else this->eObjectState = STATE_NONE;
+						/**
+						 * Update the internal/external value according to internal state
+						 */
+						void updateStatePtr() {
+							if(this->eObjectState&STATE_ACTIVE) *statePtr = true;
+							else *statePtr = false;
+						}
+
+						/**
+						 * Update the internal state in case the internal/external value was changed externally
+						 */
+						void checkStatePtr() {
+							if(*statePtr && !(this->eObjectState&STATE_ACTIVE))
+								this->eObjectState = STATE_ACTIVE;
+							else if(!*statePtr && (this->eObjectState&STATE_ACTIVE))
+								this->eObjectState = STATE_NONE;
 						}
 				};
 

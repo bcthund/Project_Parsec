@@ -1,0 +1,412 @@
+\hypertarget{classCore_1_1AudioSys}{}\doxysection{Core\+::Audio\+Sys Class Reference}
+\label{classCore_1_1AudioSys}\index{Core::AudioSys@{Core::AudioSys}}
+
+
+{\ttfamily \#include $<$audiosys.\+h$>$}
+
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structCore_1_1AudioSys_1_1__ChunkItem}{\+\_\+\+Chunk\+Item}}
+\item 
+struct \mbox{\hyperlink{structCore_1_1AudioSys_1_1__MusicItem}{\+\_\+\+Music\+Item}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classCore_1_1AudioSys_a606095ce8d6ed57eb76392e2dbea1133}{Audio\+Sys}} ()
+\item 
+\mbox{\hyperlink{classCore_1_1AudioSys_a25df179612c6de8158acf077ef5bc9c3}{$\sim$\+Audio\+Sys}} ()
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classCore_1_1AudioSys_a245cb350a9e5e9fecf2e214dd763df6a}{play\+Sound}} (int i\+Sample, int i\+Loop=0, bool b\+Overlap=true, int i\+Channel=-\/1)
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classCore_1_1AudioSys_a2c97c173c1eb2e57ed153b0aa45d51ca}{play\+Music}} (int i\+Sample, int i\+Loop=-\/1, int i\+Fade=0)
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classCore_1_1AudioSys_a0dd6fdbfe7d30d1eade0db4b4362e1b6}{play\+Music}} (\+\_\+\+\_\+uint8\+\_\+t ui)
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classCore_1_1AudioSys_a2c1dc31b5ffb1480fb30700ccc2409c4}{fade\+Out\+Music}} (\+\_\+\+\_\+uint8\+\_\+t ui, int ms)
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classCore_1_1AudioSys_a1f28b1ab84c82771964342f51fbbbc15}{stop\+Music}} ()
+\item 
+bool \mbox{\hyperlink{classCore_1_1AudioSys_a36d32e0da71e3f98783fc765eb00ddd2}{load}} ()
+\item 
+bool \mbox{\hyperlink{classCore_1_1AudioSys_ab732ae0ebd5d9e088e3cc5d8ae4ee853}{init}} ()
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classCore_1_1AudioSys_a9669ab7009b3e8b7c44c893bcba5d7b1}{Mute}} ()
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classCore_1_1AudioSys_a6e4918bfd4396ecdd05b60877c9ab650}{Unmute}} ()
+\item 
+\+\_\+\+\_\+uint8\+\_\+t \mbox{\hyperlink{classCore_1_1AudioSys_aaac884289a339675a544581de5d73785}{get\+Beat}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Types}
+\begin{DoxyCompactItemize}
+\item 
+enum \{ \mbox{\hyperlink{classCore_1_1AudioSys_acfa987f8e73f51bbe0d4c0a3cad5295aa263324c46a31b541fb748e860b54c1d0}{I\+N\+I\+T\+\_\+\+N\+O\+NE}} =0, 
+\mbox{\hyperlink{classCore_1_1AudioSys_acfa987f8e73f51bbe0d4c0a3cad5295aaac762c9e898e6ac465a59d47c60bbf03}{I\+N\+I\+T\+\_\+\+M\+I\+X\+\_\+\+I\+N\+IT}} =1, 
+\mbox{\hyperlink{classCore_1_1AudioSys_acfa987f8e73f51bbe0d4c0a3cad5295aa80db76d7604dc7c50dc7a6375299f0ba}{I\+N\+I\+T\+\_\+\+S\+D\+L\+\_\+\+I\+N\+I\+T\+\_\+\+A\+U\+D\+IO}} =2, 
+\mbox{\hyperlink{classCore_1_1AudioSys_acfa987f8e73f51bbe0d4c0a3cad5295aaef3e277b2d1325e361d0ef391ca167d7}{I\+N\+I\+T\+\_\+\+M\+I\+X\+\_\+\+O\+P\+E\+N\+A\+U\+D\+IO}} =4
+ \}
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classCore_1_1AudioSys_aebd52e55d989e1a6077572f201f60892}{load\+Sound}} (int i\+Count, \mbox{\hyperlink{gl4__old_2glext_8h_ab4ccfaa8ab0e1afaae94dc96ef52dde1}{std\+::string}} s\+Load)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classCore_1_1AudioSys_aa36e617588c01860b4a152cf8dbfe183}{set\+Beat}} (\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} $\ast$udata, \+\_\+\+\_\+uint8\+\_\+t $\ast$\mbox{\hyperlink{gl4__5_2glcorearb_8h_a10d3bc96cdfc1d478f52c13d5ffd9316}{stream}}, int \mbox{\hyperlink{gl4__5_2glcorearb_8h_a652168017ea9a8bbcead03d5c16269fb}{len}})
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{classCore_1_1AudioSys_a451eb3c8dde2f6f37296b9441134a0c0}{i\+Init}}
+\item 
+int \mbox{\hyperlink{classCore_1_1AudioSys_a28341cfe381aa46c8440136c4c2bffe7}{i\+Decoders}}
+\item 
+int \mbox{\hyperlink{classCore_1_1AudioSys_a5e9b1e8b1495d560f25fb93e63e20c44}{i\+Channels}}
+\item 
+struct \mbox{\hyperlink{structCore_1_1AudioSys_1_1__ChunkItem}{Core\+::\+Audio\+Sys\+::\+\_\+\+Chunk\+Item}} \mbox{\hyperlink{classCore_1_1AudioSys_a430955e55b80044fc1d83094cf10a5cb}{sound\+Item}} \mbox{[}128\mbox{]}
+\item 
+struct \mbox{\hyperlink{structCore_1_1AudioSys_1_1__MusicItem}{Core\+::\+Audio\+Sys\+::\+\_\+\+Music\+Item}} \mbox{\hyperlink{classCore_1_1AudioSys_aaf7b559c7d0816d7337c41fe57bcd44a}{music\+Item}} \mbox{[}128\mbox{]}
+\item 
+bool \mbox{\hyperlink{classCore_1_1AudioSys_a9dc9923b6d42f4a1eb8bae2684ab6d43}{b\+Mute}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static int \mbox{\hyperlink{classCore_1_1AudioSys_adba4b2ed53939d4c94fa72a0f5fc6846}{i\+Beat}} = 0
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+
+
+Definition at line 21 of file audiosys.\+h.
+
+
+
+\doxysubsection{Member Enumeration Documentation}
+\mbox{\Hypertarget{classCore_1_1AudioSys_acfa987f8e73f51bbe0d4c0a3cad5295a}\label{classCore_1_1AudioSys_acfa987f8e73f51bbe0d4c0a3cad5295a}} 
+\doxysubsubsection{\texorpdfstring{anonymous enum}{anonymous enum}}
+{\footnotesize\ttfamily anonymous enum\hspace{0.3cm}{\ttfamily [private]}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{INIT\_NONE@{INIT\_NONE}!Core::AudioSys@{Core::AudioSys}}\index{Core::AudioSys@{Core::AudioSys}!INIT\_NONE@{INIT\_NONE}}}\mbox{\Hypertarget{classCore_1_1AudioSys_acfa987f8e73f51bbe0d4c0a3cad5295aa263324c46a31b541fb748e860b54c1d0}\label{classCore_1_1AudioSys_acfa987f8e73f51bbe0d4c0a3cad5295aa263324c46a31b541fb748e860b54c1d0}} 
+I\+N\+I\+T\+\_\+\+N\+O\+NE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{INIT\_MIX\_INIT@{INIT\_MIX\_INIT}!Core::AudioSys@{Core::AudioSys}}\index{Core::AudioSys@{Core::AudioSys}!INIT\_MIX\_INIT@{INIT\_MIX\_INIT}}}\mbox{\Hypertarget{classCore_1_1AudioSys_acfa987f8e73f51bbe0d4c0a3cad5295aaac762c9e898e6ac465a59d47c60bbf03}\label{classCore_1_1AudioSys_acfa987f8e73f51bbe0d4c0a3cad5295aaac762c9e898e6ac465a59d47c60bbf03}} 
+I\+N\+I\+T\+\_\+\+M\+I\+X\+\_\+\+I\+N\+IT&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{INIT\_SDL\_INIT\_AUDIO@{INIT\_SDL\_INIT\_AUDIO}!Core::AudioSys@{Core::AudioSys}}\index{Core::AudioSys@{Core::AudioSys}!INIT\_SDL\_INIT\_AUDIO@{INIT\_SDL\_INIT\_AUDIO}}}\mbox{\Hypertarget{classCore_1_1AudioSys_acfa987f8e73f51bbe0d4c0a3cad5295aa80db76d7604dc7c50dc7a6375299f0ba}\label{classCore_1_1AudioSys_acfa987f8e73f51bbe0d4c0a3cad5295aa80db76d7604dc7c50dc7a6375299f0ba}} 
+I\+N\+I\+T\+\_\+\+S\+D\+L\+\_\+\+I\+N\+I\+T\+\_\+\+A\+U\+D\+IO&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{INIT\_MIX\_OPENAUDIO@{INIT\_MIX\_OPENAUDIO}!Core::AudioSys@{Core::AudioSys}}\index{Core::AudioSys@{Core::AudioSys}!INIT\_MIX\_OPENAUDIO@{INIT\_MIX\_OPENAUDIO}}}\mbox{\Hypertarget{classCore_1_1AudioSys_acfa987f8e73f51bbe0d4c0a3cad5295aaef3e277b2d1325e361d0ef391ca167d7}\label{classCore_1_1AudioSys_acfa987f8e73f51bbe0d4c0a3cad5295aaef3e277b2d1325e361d0ef391ca167d7}} 
+I\+N\+I\+T\+\_\+\+M\+I\+X\+\_\+\+O\+P\+E\+N\+A\+U\+D\+IO&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line 25 of file audiosys.\+h.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classCore_1_1AudioSys_a606095ce8d6ed57eb76392e2dbea1133}\label{classCore_1_1AudioSys_a606095ce8d6ed57eb76392e2dbea1133}} 
+\index{Core::AudioSys@{Core::AudioSys}!AudioSys@{AudioSys}}
+\index{AudioSys@{AudioSys}!Core::AudioSys@{Core::AudioSys}}
+\doxysubsubsection{\texorpdfstring{AudioSys()}{AudioSys()}}
+{\footnotesize\ttfamily Core\+::\+Audio\+Sys\+::\+Audio\+Sys (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 14 of file audiosys.\+cpp.
+
+
+
+References b\+Mute, i\+Channels, i\+Decoders, i\+Init, I\+N\+I\+T\+\_\+\+N\+O\+NE, and set\+Beat().
+
+\mbox{\Hypertarget{classCore_1_1AudioSys_a25df179612c6de8158acf077ef5bc9c3}\label{classCore_1_1AudioSys_a25df179612c6de8158acf077ef5bc9c3}} 
+\index{Core::AudioSys@{Core::AudioSys}!````~AudioSys@{$\sim$AudioSys}}
+\index{````~AudioSys@{$\sim$AudioSys}!Core::AudioSys@{Core::AudioSys}}
+\doxysubsubsection{\texorpdfstring{$\sim$AudioSys()}{~AudioSys()}}
+{\footnotesize\ttfamily Core\+::\+Audio\+Sys\+::$\sim$\+Audio\+Sys (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 25 of file audiosys.\+cpp.
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classCore_1_1AudioSys_a2c1dc31b5ffb1480fb30700ccc2409c4}\label{classCore_1_1AudioSys_a2c1dc31b5ffb1480fb30700ccc2409c4}} 
+\index{Core::AudioSys@{Core::AudioSys}!fadeOutMusic@{fadeOutMusic}}
+\index{fadeOutMusic@{fadeOutMusic}!Core::AudioSys@{Core::AudioSys}}
+\doxysubsubsection{\texorpdfstring{fadeOutMusic()}{fadeOutMusic()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Core\+::\+Audio\+Sys\+::fade\+Out\+Music (\begin{DoxyParamCaption}\item[{\+\_\+\+\_\+uint8\+\_\+t}]{ui,  }\item[{int}]{ms = {\ttfamily 1000} }\end{DoxyParamCaption})}
+
+
+
+Definition at line 257 of file audiosys.\+cpp.
+
+\mbox{\Hypertarget{classCore_1_1AudioSys_aaac884289a339675a544581de5d73785}\label{classCore_1_1AudioSys_aaac884289a339675a544581de5d73785}} 
+\index{Core::AudioSys@{Core::AudioSys}!getBeat@{getBeat}}
+\index{getBeat@{getBeat}!Core::AudioSys@{Core::AudioSys}}
+\doxysubsubsection{\texorpdfstring{getBeat()}{getBeat()}}
+{\footnotesize\ttfamily \+\_\+\+\_\+uint8\+\_\+t Core\+::\+Audio\+Sys\+::get\+Beat (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 284 of file audiosys.\+cpp.
+
+
+
+References i\+Beat.
+
+\mbox{\Hypertarget{classCore_1_1AudioSys_ab732ae0ebd5d9e088e3cc5d8ae4ee853}\label{classCore_1_1AudioSys_ab732ae0ebd5d9e088e3cc5d8ae4ee853}} 
+\index{Core::AudioSys@{Core::AudioSys}!init@{init}}
+\index{init@{init}!Core::AudioSys@{Core::AudioSys}}
+\doxysubsubsection{\texorpdfstring{init()}{init()}}
+{\footnotesize\ttfamily bool Core\+::\+Audio\+Sys\+::init (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 33 of file audiosys.\+cpp.
+
+
+
+References cout, i\+Channels, i\+Decoders, i\+Init, I\+N\+I\+T\+\_\+\+M\+I\+X\+\_\+\+I\+N\+IT, I\+N\+I\+T\+\_\+\+M\+I\+X\+\_\+\+O\+P\+E\+N\+A\+U\+D\+IO, and I\+N\+I\+T\+\_\+\+S\+D\+L\+\_\+\+I\+N\+I\+T\+\_\+\+A\+U\+D\+IO.
+
+\mbox{\Hypertarget{classCore_1_1AudioSys_a36d32e0da71e3f98783fc765eb00ddd2}\label{classCore_1_1AudioSys_a36d32e0da71e3f98783fc765eb00ddd2}} 
+\index{Core::AudioSys@{Core::AudioSys}!load@{load}}
+\index{load@{load}!Core::AudioSys@{Core::AudioSys}}
+\doxysubsubsection{\texorpdfstring{load()}{load()}}
+{\footnotesize\ttfamily bool Core\+::\+Audio\+Sys\+::load (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 84 of file audiosys.\+cpp.
+
+
+
+References Core\+::\+Audio\+Sys\+::\+\_\+\+Music\+Item\+::b\+Load, cout, load\+Sound(), Core\+::\+Audio\+Sys\+::\+\_\+\+Music\+Item\+::music, and music\+Item.
+
+\mbox{\Hypertarget{classCore_1_1AudioSys_aebd52e55d989e1a6077572f201f60892}\label{classCore_1_1AudioSys_aebd52e55d989e1a6077572f201f60892}} 
+\index{Core::AudioSys@{Core::AudioSys}!loadSound@{loadSound}}
+\index{loadSound@{loadSound}!Core::AudioSys@{Core::AudioSys}}
+\doxysubsubsection{\texorpdfstring{loadSound()}{loadSound()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Core\+::\+Audio\+Sys\+::load\+Sound (\begin{DoxyParamCaption}\item[{int}]{i\+Count,  }\item[{\mbox{\hyperlink{gl4__old_2glext_8h_ab4ccfaa8ab0e1afaae94dc96ef52dde1}{std\+::string}}}]{s\+Load }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line 206 of file audiosys.\+cpp.
+
+
+
+References Core\+::\+Audio\+Sys\+::\+\_\+\+Chunk\+Item\+::b\+Load, Core\+::\+Audio\+Sys\+::\+\_\+\+Chunk\+Item\+::chunk, and sound\+Item.
+
+
+
+Referenced by load().
+
+\mbox{\Hypertarget{classCore_1_1AudioSys_a9669ab7009b3e8b7c44c893bcba5d7b1}\label{classCore_1_1AudioSys_a9669ab7009b3e8b7c44c893bcba5d7b1}} 
+\index{Core::AudioSys@{Core::AudioSys}!Mute@{Mute}}
+\index{Mute@{Mute}!Core::AudioSys@{Core::AudioSys}}
+\doxysubsubsection{\texorpdfstring{Mute()}{Mute()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Core\+::\+Audio\+Sys\+::\+Mute (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 82 of file audiosys.\+h.
+
+
+
+References b\+Mute.
+
+\mbox{\Hypertarget{classCore_1_1AudioSys_a0dd6fdbfe7d30d1eade0db4b4362e1b6}\label{classCore_1_1AudioSys_a0dd6fdbfe7d30d1eade0db4b4362e1b6}} 
+\index{Core::AudioSys@{Core::AudioSys}!playMusic@{playMusic}}
+\index{playMusic@{playMusic}!Core::AudioSys@{Core::AudioSys}}
+\doxysubsubsection{\texorpdfstring{playMusic()}{playMusic()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Core\+::\+Audio\+Sys\+::play\+Music (\begin{DoxyParamCaption}\item[{\+\_\+\+\_\+uint8\+\_\+t}]{ui }\end{DoxyParamCaption})}
+
+
+
+Definition at line 241 of file audiosys.\+cpp.
+
+\mbox{\Hypertarget{classCore_1_1AudioSys_a2c97c173c1eb2e57ed153b0aa45d51ca}\label{classCore_1_1AudioSys_a2c97c173c1eb2e57ed153b0aa45d51ca}} 
+\index{Core::AudioSys@{Core::AudioSys}!playMusic@{playMusic}}
+\index{playMusic@{playMusic}!Core::AudioSys@{Core::AudioSys}}
+\doxysubsubsection{\texorpdfstring{playMusic()}{playMusic()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Core\+::\+Audio\+Sys\+::play\+Music (\begin{DoxyParamCaption}\item[{int}]{i\+Sample,  }\item[{int}]{i\+Loop = {\ttfamily -\/1},  }\item[{int}]{i\+Fade = {\ttfamily 0} }\end{DoxyParamCaption})}
+
+
+
+Definition at line 228 of file audiosys.\+cpp.
+
+
+
+References b\+Mute, and music\+Item.
+
+\mbox{\Hypertarget{classCore_1_1AudioSys_a245cb350a9e5e9fecf2e214dd763df6a}\label{classCore_1_1AudioSys_a245cb350a9e5e9fecf2e214dd763df6a}} 
+\index{Core::AudioSys@{Core::AudioSys}!playSound@{playSound}}
+\index{playSound@{playSound}!Core::AudioSys@{Core::AudioSys}}
+\doxysubsubsection{\texorpdfstring{playSound()}{playSound()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Core\+::\+Audio\+Sys\+::play\+Sound (\begin{DoxyParamCaption}\item[{int}]{i\+Sample,  }\item[{int}]{i\+Loop = {\ttfamily 0},  }\item[{bool}]{b\+Overlap = {\ttfamily true},  }\item[{int}]{i\+Channel = {\ttfamily -\/1} }\end{DoxyParamCaption})}
+
+
+
+Definition at line 221 of file audiosys.\+cpp.
+
+
+
+References sound\+Item.
+
+
+
+Referenced by Core\+::\+Game\+Sys\+::\+Animation\+Sys\+::draw\+World(), Core\+::\+G\+U\+I\+::\+Object\+::\+Base\+::\+Audio\+Feedback\+::\+Sound\+\_\+\+Play\+Auto(), Core\+::\+G\+U\+I\+::\+Object\+::\+Base\+::\+Audio\+Feedback\+::\+Sound\+\_\+\+Play\+Off(), and Core\+::\+G\+U\+I\+::\+Object\+::\+Base\+::\+Audio\+Feedback\+::\+Sound\+\_\+\+Play\+On().
+
+\mbox{\Hypertarget{classCore_1_1AudioSys_aa36e617588c01860b4a152cf8dbfe183}\label{classCore_1_1AudioSys_aa36e617588c01860b4a152cf8dbfe183}} 
+\index{Core::AudioSys@{Core::AudioSys}!setBeat@{setBeat}}
+\index{setBeat@{setBeat}!Core::AudioSys@{Core::AudioSys}}
+\doxysubsubsection{\texorpdfstring{setBeat()}{setBeat()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Core\+::\+Audio\+Sys\+::set\+Beat (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} $\ast$}]{udata,  }\item[{\+\_\+\+\_\+uint8\+\_\+t $\ast$}]{stream,  }\item[{int}]{len }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+
+Definition at line 277 of file audiosys.\+cpp.
+
+
+
+References i\+Beat.
+
+
+
+Referenced by Audio\+Sys().
+
+\mbox{\Hypertarget{classCore_1_1AudioSys_a1f28b1ab84c82771964342f51fbbbc15}\label{classCore_1_1AudioSys_a1f28b1ab84c82771964342f51fbbbc15}} 
+\index{Core::AudioSys@{Core::AudioSys}!stopMusic@{stopMusic}}
+\index{stopMusic@{stopMusic}!Core::AudioSys@{Core::AudioSys}}
+\doxysubsubsection{\texorpdfstring{stopMusic()}{stopMusic()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Core\+::\+Audio\+Sys\+::stop\+Music (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 272 of file audiosys.\+cpp.
+
+\mbox{\Hypertarget{classCore_1_1AudioSys_a6e4918bfd4396ecdd05b60877c9ab650}\label{classCore_1_1AudioSys_a6e4918bfd4396ecdd05b60877c9ab650}} 
+\index{Core::AudioSys@{Core::AudioSys}!Unmute@{Unmute}}
+\index{Unmute@{Unmute}!Core::AudioSys@{Core::AudioSys}}
+\doxysubsubsection{\texorpdfstring{Unmute()}{Unmute()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Core\+::\+Audio\+Sys\+::\+Unmute (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 83 of file audiosys.\+h.
+
+
+
+References b\+Mute.
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classCore_1_1AudioSys_a9dc9923b6d42f4a1eb8bae2684ab6d43}\label{classCore_1_1AudioSys_a9dc9923b6d42f4a1eb8bae2684ab6d43}} 
+\index{Core::AudioSys@{Core::AudioSys}!bMute@{bMute}}
+\index{bMute@{bMute}!Core::AudioSys@{Core::AudioSys}}
+\doxysubsubsection{\texorpdfstring{bMute}{bMute}}
+{\footnotesize\ttfamily bool Core\+::\+Audio\+Sys\+::b\+Mute\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line 64 of file audiosys.\+h.
+
+
+
+Referenced by Audio\+Sys(), Mute(), play\+Music(), and Unmute().
+
+\mbox{\Hypertarget{classCore_1_1AudioSys_adba4b2ed53939d4c94fa72a0f5fc6846}\label{classCore_1_1AudioSys_adba4b2ed53939d4c94fa72a0f5fc6846}} 
+\index{Core::AudioSys@{Core::AudioSys}!iBeat@{iBeat}}
+\index{iBeat@{iBeat}!Core::AudioSys@{Core::AudioSys}}
+\doxysubsubsection{\texorpdfstring{iBeat}{iBeat}}
+{\footnotesize\ttfamily int Core\+::\+Audio\+Sys\+::i\+Beat = 0\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+
+Definition at line 24 of file audiosys.\+h.
+
+
+
+Referenced by get\+Beat(), and set\+Beat().
+
+\mbox{\Hypertarget{classCore_1_1AudioSys_a5e9b1e8b1495d560f25fb93e63e20c44}\label{classCore_1_1AudioSys_a5e9b1e8b1495d560f25fb93e63e20c44}} 
+\index{Core::AudioSys@{Core::AudioSys}!iChannels@{iChannels}}
+\index{iChannels@{iChannels}!Core::AudioSys@{Core::AudioSys}}
+\doxysubsubsection{\texorpdfstring{iChannels}{iChannels}}
+{\footnotesize\ttfamily int Core\+::\+Audio\+Sys\+::i\+Channels\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line 26 of file audiosys.\+h.
+
+
+
+Referenced by Audio\+Sys(), and init().
+
+\mbox{\Hypertarget{classCore_1_1AudioSys_a28341cfe381aa46c8440136c4c2bffe7}\label{classCore_1_1AudioSys_a28341cfe381aa46c8440136c4c2bffe7}} 
+\index{Core::AudioSys@{Core::AudioSys}!iDecoders@{iDecoders}}
+\index{iDecoders@{iDecoders}!Core::AudioSys@{Core::AudioSys}}
+\doxysubsubsection{\texorpdfstring{iDecoders}{iDecoders}}
+{\footnotesize\ttfamily int Core\+::\+Audio\+Sys\+::i\+Decoders\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line 26 of file audiosys.\+h.
+
+
+
+Referenced by Audio\+Sys(), and init().
+
+\mbox{\Hypertarget{classCore_1_1AudioSys_a451eb3c8dde2f6f37296b9441134a0c0}\label{classCore_1_1AudioSys_a451eb3c8dde2f6f37296b9441134a0c0}} 
+\index{Core::AudioSys@{Core::AudioSys}!iInit@{iInit}}
+\index{iInit@{iInit}!Core::AudioSys@{Core::AudioSys}}
+\doxysubsubsection{\texorpdfstring{iInit}{iInit}}
+{\footnotesize\ttfamily int Core\+::\+Audio\+Sys\+::i\+Init\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line 23 of file audiosys.\+h.
+
+
+
+Referenced by Audio\+Sys(), and init().
+
+\mbox{\Hypertarget{classCore_1_1AudioSys_aaf7b559c7d0816d7337c41fe57bcd44a}\label{classCore_1_1AudioSys_aaf7b559c7d0816d7337c41fe57bcd44a}} 
+\index{Core::AudioSys@{Core::AudioSys}!musicItem@{musicItem}}
+\index{musicItem@{musicItem}!Core::AudioSys@{Core::AudioSys}}
+\doxysubsubsection{\texorpdfstring{musicItem}{musicItem}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structCore_1_1AudioSys_1_1__MusicItem}{Core\+::\+Audio\+Sys\+::\+\_\+\+Music\+Item}}  Core\+::\+Audio\+Sys\+::music\+Item\mbox{[}128\mbox{]}\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Referenced by load(), and play\+Music().
+
+\mbox{\Hypertarget{classCore_1_1AudioSys_a430955e55b80044fc1d83094cf10a5cb}\label{classCore_1_1AudioSys_a430955e55b80044fc1d83094cf10a5cb}} 
+\index{Core::AudioSys@{Core::AudioSys}!soundItem@{soundItem}}
+\index{soundItem@{soundItem}!Core::AudioSys@{Core::AudioSys}}
+\doxysubsubsection{\texorpdfstring{soundItem}{soundItem}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structCore_1_1AudioSys_1_1__ChunkItem}{Core\+::\+Audio\+Sys\+::\+\_\+\+Chunk\+Item}}  Core\+::\+Audio\+Sys\+::sound\+Item\mbox{[}128\mbox{]}\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Referenced by load\+Sound(), and play\+Sound().
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/headers/core/\mbox{\hyperlink{audiosys_8h}{audiosys.\+h}}\item 
+src/headers/core/\mbox{\hyperlink{audiosys_8cpp}{audiosys.\+cpp}}\end{DoxyCompactItemize}

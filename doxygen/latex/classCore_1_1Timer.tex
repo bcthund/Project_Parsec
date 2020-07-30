@@ -1,0 +1,206 @@
+\hypertarget{classCore_1_1Timer}{}\doxysection{Core\+::Timer Class Reference}
+\label{classCore_1_1Timer}\index{Core::Timer@{Core::Timer}}
+
+
+{\ttfamily \#include $<$timer.\+h$>$}
+
+
+
+Inheritance diagram for Core\+::Timer\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=168pt]{classCore_1_1Timer__inherit__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classCore_1_1Timer_a391352f7be77128bd54787fbcdda95e3}{Timer}} ()
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classCore_1_1Timer_a3a0382dfd848c8da4b6e27214052fb1f}{set}} (float f\+Time)
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classCore_1_1Timer_a59aaa557616c6bc69b034035887e5d62}{start}} ()
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classCore_1_1Timer_af7c52ff9e1bf1c0943ff19401ae824a5}{stop}} ()
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classCore_1_1Timer_a3dcda637bc1cd4442b14ac1fc23ac758}{pause}} ()
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classCore_1_1Timer_a9bd17880228700da90a539422550c298}{unpause}} ()
+\item 
+int \mbox{\hyperlink{classCore_1_1Timer_aad974e854b799d25fc559383cc5a194b}{split}} ()
+\item 
+int \mbox{\hyperlink{classCore_1_1Timer_a3bbc54d3535a01d0a8f8b9749898c0c2}{get\+\_\+split}} ()
+\item 
+int \mbox{\hyperlink{classCore_1_1Timer_a1538fad4f566deb3e74dd1c5b4eda0b7}{get\+\_\+splitdiff}} ()
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classCore_1_1Timer_a7e185d45afa0381120dd87ff338e5931}{reset}} ()
+\item 
+int \mbox{\hyperlink{classCore_1_1Timer_a778cb9ce079fdb2c8cd02c0ef65259ff}{get\+\_\+ticks}} ()
+\item 
+bool \mbox{\hyperlink{classCore_1_1Timer_a7488265edcea5d79e1cd6b4136c3d3b0}{is\+\_\+started}} ()
+\item 
+bool \mbox{\hyperlink{classCore_1_1Timer_aeecfc36ffbc91948d813277e69baeb20}{is\+\_\+paused}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{classCore_1_1Timer_a96d4be402fc089ab4255caf4b010caa2}{start\+Ticks}}
+\item 
+int \mbox{\hyperlink{classCore_1_1Timer_a76266df5cea40be1fa0a861ae7b5006c}{rate}}
+\item 
+int \mbox{\hyperlink{classCore_1_1Timer_af9e7c901d0730fbd0dd005fcffa32691}{rate\+Mod}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{classCore_1_1Timer_a350c10d6d46d9ac73ce6dd240dca5a4c}{paused\+Ticks}}
+\item 
+bool \mbox{\hyperlink{classCore_1_1Timer_aa4841fe7671c0f3519f689d6b25aa8fc}{paused}}
+\item 
+bool \mbox{\hyperlink{classCore_1_1Timer_a9db6a81ef79c432d2871450fda4c9001}{started}}
+\item 
+int \mbox{\hyperlink{classCore_1_1Timer_a24bd1ad372b8e8f0b113a79a2698d8e1}{split\+Ticks}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classCore_1_1Timer_a391352f7be77128bd54787fbcdda95e3}\label{classCore_1_1Timer_a391352f7be77128bd54787fbcdda95e3}} 
+\index{Core::Timer@{Core::Timer}!Timer@{Timer}}
+\index{Timer@{Timer}!Core::Timer@{Core::Timer}}
+\doxysubsubsection{\texorpdfstring{Timer()}{Timer()}}
+{\footnotesize\ttfamily Core\+::\+Timer\+::\+Timer (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classCore_1_1Timer_a3bbc54d3535a01d0a8f8b9749898c0c2}\label{classCore_1_1Timer_a3bbc54d3535a01d0a8f8b9749898c0c2}} 
+\index{Core::Timer@{Core::Timer}!get\_split@{get\_split}}
+\index{get\_split@{get\_split}!Core::Timer@{Core::Timer}}
+\doxysubsubsection{\texorpdfstring{get\_split()}{get\_split()}}
+{\footnotesize\ttfamily int Core\+::\+Timer\+::get\+\_\+split (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classCore_1_1Timer_a1538fad4f566deb3e74dd1c5b4eda0b7}\label{classCore_1_1Timer_a1538fad4f566deb3e74dd1c5b4eda0b7}} 
+\index{Core::Timer@{Core::Timer}!get\_splitdiff@{get\_splitdiff}}
+\index{get\_splitdiff@{get\_splitdiff}!Core::Timer@{Core::Timer}}
+\doxysubsubsection{\texorpdfstring{get\_splitdiff()}{get\_splitdiff()}}
+{\footnotesize\ttfamily int Core\+::\+Timer\+::get\+\_\+splitdiff (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classCore_1_1Timer_a1538fad4f566deb3e74dd1c5b4eda0b7_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classCore_1_1Timer_a778cb9ce079fdb2c8cd02c0ef65259ff}\label{classCore_1_1Timer_a778cb9ce079fdb2c8cd02c0ef65259ff}} 
+\index{Core::Timer@{Core::Timer}!get\_ticks@{get\_ticks}}
+\index{get\_ticks@{get\_ticks}!Core::Timer@{Core::Timer}}
+\doxysubsubsection{\texorpdfstring{get\_ticks()}{get\_ticks()}}
+{\footnotesize\ttfamily int Core\+::\+Timer\+::get\+\_\+ticks (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classCore_1_1Timer_aeecfc36ffbc91948d813277e69baeb20}\label{classCore_1_1Timer_aeecfc36ffbc91948d813277e69baeb20}} 
+\index{Core::Timer@{Core::Timer}!is\_paused@{is\_paused}}
+\index{is\_paused@{is\_paused}!Core::Timer@{Core::Timer}}
+\doxysubsubsection{\texorpdfstring{is\_paused()}{is\_paused()}}
+{\footnotesize\ttfamily bool Core\+::\+Timer\+::is\+\_\+paused (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classCore_1_1Timer_a7488265edcea5d79e1cd6b4136c3d3b0}\label{classCore_1_1Timer_a7488265edcea5d79e1cd6b4136c3d3b0}} 
+\index{Core::Timer@{Core::Timer}!is\_started@{is\_started}}
+\index{is\_started@{is\_started}!Core::Timer@{Core::Timer}}
+\doxysubsubsection{\texorpdfstring{is\_started()}{is\_started()}}
+{\footnotesize\ttfamily bool Core\+::\+Timer\+::is\+\_\+started (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classCore_1_1Timer_a3dcda637bc1cd4442b14ac1fc23ac758}\label{classCore_1_1Timer_a3dcda637bc1cd4442b14ac1fc23ac758}} 
+\index{Core::Timer@{Core::Timer}!pause@{pause}}
+\index{pause@{pause}!Core::Timer@{Core::Timer}}
+\doxysubsubsection{\texorpdfstring{pause()}{pause()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Core\+::\+Timer\+::pause (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classCore_1_1Timer_a7e185d45afa0381120dd87ff338e5931}\label{classCore_1_1Timer_a7e185d45afa0381120dd87ff338e5931}} 
+\index{Core::Timer@{Core::Timer}!reset@{reset}}
+\index{reset@{reset}!Core::Timer@{Core::Timer}}
+\doxysubsubsection{\texorpdfstring{reset()}{reset()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Core\+::\+Timer\+::reset (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classCore_1_1Timer_a3a0382dfd848c8da4b6e27214052fb1f}\label{classCore_1_1Timer_a3a0382dfd848c8da4b6e27214052fb1f}} 
+\index{Core::Timer@{Core::Timer}!set@{set}}
+\index{set@{set}!Core::Timer@{Core::Timer}}
+\doxysubsubsection{\texorpdfstring{set()}{set()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Core\+::\+Timer\+::set (\begin{DoxyParamCaption}\item[{float}]{f\+Time }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classCore_1_1Timer_aad974e854b799d25fc559383cc5a194b}\label{classCore_1_1Timer_aad974e854b799d25fc559383cc5a194b}} 
+\index{Core::Timer@{Core::Timer}!split@{split}}
+\index{split@{split}!Core::Timer@{Core::Timer}}
+\doxysubsubsection{\texorpdfstring{split()}{split()}}
+{\footnotesize\ttfamily int Core\+::\+Timer\+::split (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classCore_1_1Timer_a59aaa557616c6bc69b034035887e5d62}\label{classCore_1_1Timer_a59aaa557616c6bc69b034035887e5d62}} 
+\index{Core::Timer@{Core::Timer}!start@{start}}
+\index{start@{start}!Core::Timer@{Core::Timer}}
+\doxysubsubsection{\texorpdfstring{start()}{start()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Core\+::\+Timer\+::start (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classCore_1_1Timer_af7c52ff9e1bf1c0943ff19401ae824a5}\label{classCore_1_1Timer_af7c52ff9e1bf1c0943ff19401ae824a5}} 
+\index{Core::Timer@{Core::Timer}!stop@{stop}}
+\index{stop@{stop}!Core::Timer@{Core::Timer}}
+\doxysubsubsection{\texorpdfstring{stop()}{stop()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Core\+::\+Timer\+::stop (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classCore_1_1Timer_a9bd17880228700da90a539422550c298}\label{classCore_1_1Timer_a9bd17880228700da90a539422550c298}} 
+\index{Core::Timer@{Core::Timer}!unpause@{unpause}}
+\index{unpause@{unpause}!Core::Timer@{Core::Timer}}
+\doxysubsubsection{\texorpdfstring{unpause()}{unpause()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Core\+::\+Timer\+::unpause (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classCore_1_1Timer_aa4841fe7671c0f3519f689d6b25aa8fc}\label{classCore_1_1Timer_aa4841fe7671c0f3519f689d6b25aa8fc}} 
+\index{Core::Timer@{Core::Timer}!paused@{paused}}
+\index{paused@{paused}!Core::Timer@{Core::Timer}}
+\doxysubsubsection{\texorpdfstring{paused}{paused}}
+{\footnotesize\ttfamily bool Core\+::\+Timer\+::paused\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classCore_1_1Timer_a350c10d6d46d9ac73ce6dd240dca5a4c}\label{classCore_1_1Timer_a350c10d6d46d9ac73ce6dd240dca5a4c}} 
+\index{Core::Timer@{Core::Timer}!pausedTicks@{pausedTicks}}
+\index{pausedTicks@{pausedTicks}!Core::Timer@{Core::Timer}}
+\doxysubsubsection{\texorpdfstring{pausedTicks}{pausedTicks}}
+{\footnotesize\ttfamily int Core\+::\+Timer\+::paused\+Ticks\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classCore_1_1Timer_a76266df5cea40be1fa0a861ae7b5006c}\label{classCore_1_1Timer_a76266df5cea40be1fa0a861ae7b5006c}} 
+\index{Core::Timer@{Core::Timer}!rate@{rate}}
+\index{rate@{rate}!Core::Timer@{Core::Timer}}
+\doxysubsubsection{\texorpdfstring{rate}{rate}}
+{\footnotesize\ttfamily int Core\+::\+Timer\+::rate}
+
+\mbox{\Hypertarget{classCore_1_1Timer_af9e7c901d0730fbd0dd005fcffa32691}\label{classCore_1_1Timer_af9e7c901d0730fbd0dd005fcffa32691}} 
+\index{Core::Timer@{Core::Timer}!rateMod@{rateMod}}
+\index{rateMod@{rateMod}!Core::Timer@{Core::Timer}}
+\doxysubsubsection{\texorpdfstring{rateMod}{rateMod}}
+{\footnotesize\ttfamily int Core\+::\+Timer\+::rate\+Mod}
+
+\mbox{\Hypertarget{classCore_1_1Timer_a24bd1ad372b8e8f0b113a79a2698d8e1}\label{classCore_1_1Timer_a24bd1ad372b8e8f0b113a79a2698d8e1}} 
+\index{Core::Timer@{Core::Timer}!splitTicks@{splitTicks}}
+\index{splitTicks@{splitTicks}!Core::Timer@{Core::Timer}}
+\doxysubsubsection{\texorpdfstring{splitTicks}{splitTicks}}
+{\footnotesize\ttfamily int Core\+::\+Timer\+::split\+Ticks\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classCore_1_1Timer_a9db6a81ef79c432d2871450fda4c9001}\label{classCore_1_1Timer_a9db6a81ef79c432d2871450fda4c9001}} 
+\index{Core::Timer@{Core::Timer}!started@{started}}
+\index{started@{started}!Core::Timer@{Core::Timer}}
+\doxysubsubsection{\texorpdfstring{started}{started}}
+{\footnotesize\ttfamily bool Core\+::\+Timer\+::started\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classCore_1_1Timer_a96d4be402fc089ab4255caf4b010caa2}\label{classCore_1_1Timer_a96d4be402fc089ab4255caf4b010caa2}} 
+\index{Core::Timer@{Core::Timer}!startTicks@{startTicks}}
+\index{startTicks@{startTicks}!Core::Timer@{Core::Timer}}
+\doxysubsubsection{\texorpdfstring{startTicks}{startTicks}}
+{\footnotesize\ttfamily int Core\+::\+Timer\+::start\+Ticks}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/bcthund/\+One\+Drive/\+Projects/\+Programming/\+Project\+\_\+\+Parsec/src/headers/core/\mbox{\hyperlink{timer_8h}{timer.\+h}}\item 
+/home/bcthund/\+One\+Drive/\+Projects/\+Programming/\+Project\+\_\+\+Parsec/src/headers/core/\mbox{\hyperlink{timer_8cpp}{timer.\+cpp}}\end{DoxyCompactItemize}

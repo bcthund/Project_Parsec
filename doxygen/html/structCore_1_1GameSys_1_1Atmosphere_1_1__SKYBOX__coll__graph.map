@@ -1,0 +1,18 @@
+<map id="Core::GameSys::Atmosphere::_SKYBOX" name="Core::GameSys::Atmosphere::_SKYBOX">
+<area shape="rect" id="node1" title=" " alt="" coords="177,306,372,347"/>
+<area shape="rect" id="node2" href="$structCore_1_1GameSys_1_1Atmosphere_1_1__SKYBOX_1_1__MESOSPHERE.html" title=" " alt="" coords="520,854,723,895"/>
+<area shape="rect" id="node5" href="$structCore_1_1GameSys_1_1Atmosphere_1_1__SKYBOX_1_1__STRATOSPHERE.html" title=" " alt="" coords="513,174,729,215"/>
+<area shape="rect" id="node6" href="$classCore_1_1GameSys_1_1Atmosphere.html" title=" " alt="" coords="524,103,719,129"/>
+<area shape="rect" id="node14" href="$structCore_1_1GameSys_1_1Atmosphere_1_1__SKYBOX_1_1__EXOSPHERE.html" title=" " alt="" coords="524,457,719,498"/>
+<area shape="rect" id="node15" href="$structCore_1_1GameSys_1_1Atmosphere_1_1__SKYBOX_1_1__THERMOSPHERE.html" title=" " alt="" coords="511,621,732,662"/>
+<area shape="rect" id="node16" href="$structCore_1_1GameSys_1_1Atmosphere_1_1__SKYBOX_1_1__TROPOSPHERE.html" title=" " alt="" coords="516,689,727,730"/>
+<area shape="rect" id="node3" href="$structCore_1_1Vector4f.html" title=" " alt="" coords="221,1264,328,1291"/>
+<area shape="rect" id="node8" href="$structCore_1_1GameSys_1_1__SatelliteData.html" title=" " alt="" coords="518,1592,725,1619"/>
+<area shape="rect" id="node13" href="$structCore_1_1__ParticleDataOld.html" title=" " alt="" coords="543,1388,700,1415"/>
+<area shape="rect" id="node4" href="$classCore_1_1VAO.html" title=" " alt="" coords="233,817,317,844"/>
+<area shape="rect" id="node7" href="$classCore_1_1GameSys_1_1__Satellite.html" title=" " alt="" coords="853,103,1032,129"/>
+<area shape="rect" id="node12" href="$classCore_1_1__Particles.html" title=" " alt="" coords="885,1016,1001,1043"/>
+<area shape="rect" id="node9" href="$structCore_1_1Vector3f.html" title=" " alt="" coords="221,1668,328,1695"/>
+<area shape="rect" id="node10" href="$structCore_1_1Degrees.html" title=" " alt="" coords="221,1755,328,1781"/>
+<area shape="rect" id="node11" href="$classCore_1_1Texture.html" title=" " alt="" coords="5,313,107,340"/>
+</map>

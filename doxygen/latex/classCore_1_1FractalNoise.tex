@@ -1,0 +1,116 @@
+\hypertarget{classCore_1_1FractalNoise}{}\doxysection{Core\+::Fractal\+Noise Class Reference}
+\label{classCore_1_1FractalNoise}\index{Core::FractalNoise@{Core::FractalNoise}}
+
+
+{\ttfamily \#include $<$Fractal\+Noise.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classCore_1_1FractalNoise_a5d9101c44a15c3bb8e0509a07d02eeaf}{Fractal\+Noise}} (unsigned seed=2016)
+\item 
+virtual \mbox{\hyperlink{classCore_1_1FractalNoise_a7487cefc2247d28bb901e1abd1e95a9a}{$\sim$\+Fractal\+Noise}} ()
+\item 
+float \mbox{\hyperlink{classCore_1_1FractalNoise_a960425a452f41284ad561538494e71da}{eval}} (\mbox{\hyperlink{structCore_1_1Vector2f}{Vector2f}} \&\mbox{\hyperlink{gl4__5_2glext_8h_aa5367c14d90f462230c2611b81b41d23}{p}}) const
+\item 
+double \mbox{\hyperlink{classCore_1_1FractalNoise_ad7c74c64f4258e8093450bd3d8f4b1ef}{get\+Noise}} (float \mbox{\hyperlink{gl4__5_2glcorearb_8h_a0cdec8e97a75ee9458b23d152bf962d4}{x}}, float \mbox{\hyperlink{gl4__5_2glcorearb_8h_a74d80fd479c0f6d0153c709949a089ef}{y}}, float frequency, float lacunarity, float multiplier, int \mbox{\hyperlink{gl4__5_2glext_8h_a9d6b7c6ae9c7f090b02fd8c147bbbfeb}{layers}})
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+float \mbox{\hyperlink{classCore_1_1FractalNoise_a0227601fe98567931bbcaf62efcdf642}{max\+Noise}}
+\item 
+float \mbox{\hyperlink{classCore_1_1FractalNoise_a6f1562da8e55affb2b4cea1409fa2c91}{r}} \mbox{[}\mbox{\hyperlink{classCore_1_1FractalNoise_a872285a640544d7d44de7a1729758e9e}{k\+Max\+Table\+Size}}\mbox{]}
+\item 
+unsigned \mbox{\hyperlink{classCore_1_1FractalNoise_a1041f7c6bdbd11515fabce333f45ab67}{permutation\+Table}} \mbox{[}\mbox{\hyperlink{classCore_1_1FractalNoise_a872285a640544d7d44de7a1729758e9e}{k\+Max\+Table\+Size}} $\ast$2\mbox{]}
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static const unsigned \mbox{\hyperlink{classCore_1_1FractalNoise_a872285a640544d7d44de7a1729758e9e}{k\+Max\+Table\+Size}} = 256
+\item 
+static const unsigned \mbox{\hyperlink{classCore_1_1FractalNoise_ac5d9355f7851105a3e71955bb571ed63}{k\+Max\+Table\+Size\+Mask}} = \mbox{\hyperlink{classCore_1_1FractalNoise_a872285a640544d7d44de7a1729758e9e}{k\+Max\+Table\+Size}} -\/ 1
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classCore_1_1FractalNoise_a5d9101c44a15c3bb8e0509a07d02eeaf}\label{classCore_1_1FractalNoise_a5d9101c44a15c3bb8e0509a07d02eeaf}} 
+\index{Core::FractalNoise@{Core::FractalNoise}!FractalNoise@{FractalNoise}}
+\index{FractalNoise@{FractalNoise}!Core::FractalNoise@{Core::FractalNoise}}
+\doxysubsubsection{\texorpdfstring{FractalNoise()}{FractalNoise()}}
+{\footnotesize\ttfamily Core\+::\+Fractal\+Noise\+::\+Fractal\+Noise (\begin{DoxyParamCaption}\item[{unsigned}]{seed = {\ttfamily 2016} }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classCore_1_1FractalNoise_a7487cefc2247d28bb901e1abd1e95a9a}\label{classCore_1_1FractalNoise_a7487cefc2247d28bb901e1abd1e95a9a}} 
+\index{Core::FractalNoise@{Core::FractalNoise}!````~FractalNoise@{$\sim$FractalNoise}}
+\index{````~FractalNoise@{$\sim$FractalNoise}!Core::FractalNoise@{Core::FractalNoise}}
+\doxysubsubsection{\texorpdfstring{$\sim$FractalNoise()}{~FractalNoise()}}
+{\footnotesize\ttfamily Core\+::\+Fractal\+Noise\+::$\sim$\+Fractal\+Noise (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classCore_1_1FractalNoise_a960425a452f41284ad561538494e71da}\label{classCore_1_1FractalNoise_a960425a452f41284ad561538494e71da}} 
+\index{Core::FractalNoise@{Core::FractalNoise}!eval@{eval}}
+\index{eval@{eval}!Core::FractalNoise@{Core::FractalNoise}}
+\doxysubsubsection{\texorpdfstring{eval()}{eval()}}
+{\footnotesize\ttfamily float Core\+::\+Fractal\+Noise\+::eval (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structCore_1_1Vector2f}{Vector2f}} \&}]{p }\end{DoxyParamCaption}) const}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=310pt]{classCore_1_1FractalNoise_a960425a452f41284ad561538494e71da_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classCore_1_1FractalNoise_ad7c74c64f4258e8093450bd3d8f4b1ef}\label{classCore_1_1FractalNoise_ad7c74c64f4258e8093450bd3d8f4b1ef}} 
+\index{Core::FractalNoise@{Core::FractalNoise}!getNoise@{getNoise}}
+\index{getNoise@{getNoise}!Core::FractalNoise@{Core::FractalNoise}}
+\doxysubsubsection{\texorpdfstring{getNoise()}{getNoise()}}
+{\footnotesize\ttfamily double Core\+::\+Fractal\+Noise\+::get\+Noise (\begin{DoxyParamCaption}\item[{float}]{x,  }\item[{float}]{y,  }\item[{float}]{frequency,  }\item[{float}]{lacunarity,  }\item[{float}]{multiplier,  }\item[{int}]{layers }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classCore_1_1FractalNoise_ad7c74c64f4258e8093450bd3d8f4b1ef_cgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classCore_1_1FractalNoise_a872285a640544d7d44de7a1729758e9e}\label{classCore_1_1FractalNoise_a872285a640544d7d44de7a1729758e9e}} 
+\index{Core::FractalNoise@{Core::FractalNoise}!kMaxTableSize@{kMaxTableSize}}
+\index{kMaxTableSize@{kMaxTableSize}!Core::FractalNoise@{Core::FractalNoise}}
+\doxysubsubsection{\texorpdfstring{kMaxTableSize}{kMaxTableSize}}
+{\footnotesize\ttfamily const unsigned Core\+::\+Fractal\+Noise\+::k\+Max\+Table\+Size = 256\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{classCore_1_1FractalNoise_ac5d9355f7851105a3e71955bb571ed63}\label{classCore_1_1FractalNoise_ac5d9355f7851105a3e71955bb571ed63}} 
+\index{Core::FractalNoise@{Core::FractalNoise}!kMaxTableSizeMask@{kMaxTableSizeMask}}
+\index{kMaxTableSizeMask@{kMaxTableSizeMask}!Core::FractalNoise@{Core::FractalNoise}}
+\doxysubsubsection{\texorpdfstring{kMaxTableSizeMask}{kMaxTableSizeMask}}
+{\footnotesize\ttfamily const unsigned Core\+::\+Fractal\+Noise\+::k\+Max\+Table\+Size\+Mask = \mbox{\hyperlink{classCore_1_1FractalNoise_a872285a640544d7d44de7a1729758e9e}{k\+Max\+Table\+Size}} -\/ 1\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{classCore_1_1FractalNoise_a0227601fe98567931bbcaf62efcdf642}\label{classCore_1_1FractalNoise_a0227601fe98567931bbcaf62efcdf642}} 
+\index{Core::FractalNoise@{Core::FractalNoise}!maxNoise@{maxNoise}}
+\index{maxNoise@{maxNoise}!Core::FractalNoise@{Core::FractalNoise}}
+\doxysubsubsection{\texorpdfstring{maxNoise}{maxNoise}}
+{\footnotesize\ttfamily float Core\+::\+Fractal\+Noise\+::max\+Noise}
+
+\mbox{\Hypertarget{classCore_1_1FractalNoise_a1041f7c6bdbd11515fabce333f45ab67}\label{classCore_1_1FractalNoise_a1041f7c6bdbd11515fabce333f45ab67}} 
+\index{Core::FractalNoise@{Core::FractalNoise}!permutationTable@{permutationTable}}
+\index{permutationTable@{permutationTable}!Core::FractalNoise@{Core::FractalNoise}}
+\doxysubsubsection{\texorpdfstring{permutationTable}{permutationTable}}
+{\footnotesize\ttfamily unsigned Core\+::\+Fractal\+Noise\+::permutation\+Table\mbox{[}\mbox{\hyperlink{classCore_1_1FractalNoise_a872285a640544d7d44de7a1729758e9e}{k\+Max\+Table\+Size}} $\ast$2\mbox{]}}
+
+\mbox{\Hypertarget{classCore_1_1FractalNoise_a6f1562da8e55affb2b4cea1409fa2c91}\label{classCore_1_1FractalNoise_a6f1562da8e55affb2b4cea1409fa2c91}} 
+\index{Core::FractalNoise@{Core::FractalNoise}!r@{r}}
+\index{r@{r}!Core::FractalNoise@{Core::FractalNoise}}
+\doxysubsubsection{\texorpdfstring{r}{r}}
+{\footnotesize\ttfamily float Core\+::\+Fractal\+Noise\+::r\mbox{[}\mbox{\hyperlink{classCore_1_1FractalNoise_a872285a640544d7d44de7a1729758e9e}{k\+Max\+Table\+Size}}\mbox{]}}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/bcthund/\+One\+Drive/\+Projects/\+Programming/\+Project\+\_\+\+Parsec/src/headers/core/\mbox{\hyperlink{FractalNoise_8h}{Fractal\+Noise.\+h}}\item 
+/home/bcthund/\+One\+Drive/\+Projects/\+Programming/\+Project\+\_\+\+Parsec/src/headers/core/\mbox{\hyperlink{FractalNoise_8cpp}{Fractal\+Noise.\+cpp}}\end{DoxyCompactItemize}

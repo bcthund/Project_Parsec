@@ -535,6 +535,7 @@
 	#include "./core/types.h"		// Always first
 	#include "./core/functions.h"	// Always second
 	#include "./core/gmath.h"
+	#include "./core/Groups.h"
 	#include "./core/timer.h"
 	#include "./core/ptimer.h"
 	#include "./core/FrameRate.h"
@@ -661,6 +662,8 @@
 		 */
 
 		//Ptr<Matrix_System> matrix(new Matrix_System());
+		_Debug				debug			= _Debug();
+		_Groups				groups			= _Groups();
 		_Mouse				*	mouse		= new _Mouse();
 		_State				*	state		= new _State();
 		GlInit_System		*	glinit		= new GlInit_System();

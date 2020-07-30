@@ -244,20 +244,26 @@ namespace Core {
 
 			struct _gui {
 				float f, f2;
-				bool b1;
-				std::shared_ptr<bool> b2;
-				bool b3;
+				bool b1,
+					 b2,
+					 b3,
+					 b4,
+					 b5;
 				bool bSkillButton;
+				bool bDrawTest;
 				int i;
 				std::string	s;
 				Vector4f colors[8];
 				std::shared_ptr<std::string> buffer;
 
 				_gui() {
+					bDrawTest	= false;
 					f = 1.123f;
 					b1 = false;
-					b2 = std::make_shared<bool>(false);
+					b2 = false;
 					b3 = false;
+					b4 = false;
+					b5 = true;
 					bSkillButton = false;
 					i = 456;
 					f2 = 1.0f;

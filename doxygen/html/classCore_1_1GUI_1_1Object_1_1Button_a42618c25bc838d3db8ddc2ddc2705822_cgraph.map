@@ -1,0 +1,16 @@
+<map id="Core::GUI::Object::Button::updateObjectState" name="Core::GUI::Object::Button::updateObjectState">
+<area shape="rect" id="node1" title=" " alt="" coords="5,325,181,366"/>
+<area shape="rect" id="node2" href="$classCore_1_1__Mouse.html#a639062065d0bbd3604b270eaafd60702" title=" " alt="" coords="245,5,421,32"/>
+<area shape="rect" id="node3" href="$classCore_1_1GUI_1_1Object_1_1Base_1_1Interactive.html#a0ee9b54ecaeff855b9d9087540247f69" title=" " alt="" coords="247,56,418,112"/>
+<area shape="rect" id="node4" href="$classCore_1_1GUI_1_1Object_1_1Base_1_1Generic.html#aef7983e3da071bb67c32ec1474a703a6" title=" " alt="" coords="257,136,408,192"/>
+<area shape="rect" id="node5" href="$classCore_1_1Timer.html#a1538fad4f566deb3e74dd1c5b4eda0b7" title=" " alt="" coords="249,216,416,243"/>
+<area shape="rect" id="node7" href="$classCore_1_1GUI_1_1Props.html#a58ddb52657f4d54eb3987ae0ed878a9d" title=" " alt="" coords="229,267,436,293"/>
+<area shape="rect" id="node8" href="$classCore_1_1GUI_1_1Object_1_1Base_1_1AudioFeedback.html#a23b46c6f4eb3fa20469eb0674c4c32aa" title=" " alt="" coords="257,317,408,373"/>
+<area shape="rect" id="node9" href="$classCore_1_1GUI_1_1Object_1_1Base_1_1AudioFeedback.html#a00a246b1b28a2484d6bb75ebe0a991c2" title=" " alt="" coords="257,397,408,453"/>
+<area shape="rect" id="node11" href="$classCore_1_1GUI_1_1Object_1_1Base_1_1AudioFeedback.html#a88028ae3a9be7a3087ddaa96d8d623fa" title=" " alt="" coords="257,477,408,533"/>
+<area shape="rect" id="node12" href="$classCore_1_1Timer.html#aad974e854b799d25fc559383cc5a194b" title=" " alt="" coords="271,557,394,584"/>
+<area shape="rect" id="node13" href="$classCore_1_1Timer.html#a59aaa557616c6bc69b034035887e5d62" title=" " alt="" coords="270,608,395,635"/>
+<area shape="rect" id="node14" href="$classCore_1_1GUI_1_1Object_1_1Base_1_1Interactive.html#aebac2895e2be17e0166a667247f9cbf6" title=" " alt="" coords="245,659,420,715"/>
+<area shape="rect" id="node6" href="$classCore_1_1Timer.html#a778cb9ce079fdb2c8cd02c0ef65259ff" title=" " alt="" coords="499,216,651,243"/>
+<area shape="rect" id="node10" href="$classCore_1_1AudioSys.html#a245cb350a9e5e9fecf2e214dd763df6a" title=" " alt="" coords="484,452,667,479"/>
+</map>

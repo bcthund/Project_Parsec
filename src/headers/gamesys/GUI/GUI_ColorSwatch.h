@@ -80,6 +80,7 @@ namespace Core {
 				bLocalCon		= true;
 				con				= new Props_ColorSwatch();
 				*con			= c;
+				if(con->text == "") con->text = n;
 
 				colorPtr		= ptr;
 				sliderR			= nullptr;
@@ -99,6 +100,7 @@ namespace Core {
 				bLocalCon		= true;
 				con				= new Props_ColorSwatch();
 				*con			= c;
+				if(con->text == "") con->text = n;
 
 				colorPtr		= ptr;
 				sliderR			= nullptr;
@@ -117,6 +119,7 @@ namespace Core {
 
 				bLocalCon		= false;
 				con				= c;
+				if(con->text == "") con->text = n;
 
 				colorPtr		= ptr;
 				sliderR			= nullptr;
@@ -135,6 +138,7 @@ namespace Core {
 
 				bLocalCon		= false;
 				con				= c;
+				if(con->text == "") con->text = n;
 
 				colorPtr		= ptr;
 				sliderR			= nullptr;
@@ -164,8 +168,8 @@ namespace Core {
 
 				if(bHasParent) swatch = Window(*parent, name, con);
 				else swatch = Window(name, con);
-				swatch.con->color.back().base = colorPtr;
-				swatch.con->color.back().highlight = colorPtr;
+				swatch.con->colorBack.base = colorPtr;
+				swatch.con->colorBack.highlight = colorPtr;
 				swatch.init();
 
 				if(con->bShowBackground) {
@@ -226,7 +230,7 @@ namespace Core {
 				if(eExternState!=STATE_NONE && !(eExternState&STATE_UPDATE)) {
 					eObjectState = eExternState;
 				}
-				else if (mState == Core::_Mouse::MOUSE_HOVER) {
+				else if (mState&Core::_Mouse::MOUSE_HOVER) {
 					eObjectState = STATE_HOVER;
 				}
 				else eObjectState = STATE_NONE;

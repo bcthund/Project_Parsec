@@ -1,0 +1,12 @@
+<map id="Core::GameSys::checkIcon" name="Core::GameSys::checkIcon">
+<area shape="rect" id="node1" title=" " alt="" coords="5,56,189,83"/>
+<area shape="rect" id="node2" href="$classCore_1_1__Mouse.html#a639062065d0bbd3604b270eaafd60702" title=" " alt="" coords="237,31,413,57"/>
+<area shape="rect" id="node3" href="$classCore_1_1__IconSys.html#a65f631f0729eb481294a8d4d6b541e78" title=" " alt="" coords="251,81,400,108"/>
+<area shape="rect" id="node4" href="$classCore_1_1VAO.html#a3072110ba182f2d5499a5c2b57b29916" title=" " alt="" coords="480,5,603,32"/>
+<area shape="rect" id="node5" href="$classCore_1_1__IconSys.html#aac037c3abe80c2e90144d0d7c1631d03" title=" " alt="" coords="468,56,615,83"/>
+<area shape="rect" id="node9" href="$classCore_1_1__IconSys.html#acd774815848327ad29ad88b6f0fc34c9" title=" " alt="" coords="468,107,615,133"/>
+<area shape="rect" id="node10" href="$classCore_1_1__IconSys.html#a4ec05e11330807b1583911e8d0a97138" title=" " alt="" coords="461,157,621,184"/>
+<area shape="rect" id="node6" href="$classCore_1_1__Colors.html#aff9ab6782564ddccf503866af0851e60" title=" " alt="" coords="669,56,837,83"/>
+<area shape="rect" id="node7" href="$classCore_1_1__Colors.html#a5ae391cfb1e59f68f09e92be0ad8a2c3" title=" " alt="" coords="886,31,1057,57"/>
+<area shape="rect" id="node8" href="$classCore_1_1__Colors.html#a7a38c0078d3998b09bd33c212705f479" title=" " alt="" coords="885,81,1057,108"/>
+</map>

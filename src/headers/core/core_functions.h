@@ -17,9 +17,12 @@
 #include <assert.h>
 #include <random>
 #include <memory>
+#include <variant>
 #include "types.h"
 #include "state.h"
+//#include "functions.h"
 #include "SimplexNoise.h"
+#include "Debug.h"
 
 namespace Core {
 //	class _CoreFunctions {

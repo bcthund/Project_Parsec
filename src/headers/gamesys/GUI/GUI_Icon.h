@@ -40,7 +40,7 @@
 namespace Core {
 	namespace GUI {
 		namespace Object {
-			class Icon : public Base::Interactive<Props_Icon, bool>, public Base::AudioFeedback {
+			class Icon : public Base::Interactive<Props_Icon>, public Base::AudioFeedback {
 				public:
 					Icon();
 					Icon(std::string n, bool b, Props_Icon c);
@@ -80,10 +80,11 @@ namespace Core {
 				bLocalCon		= true;
 				con				= new Props_Icon();
 				*con			= c;
+				if(con->text == "") con->text = n;
 				bIsGrouped		= (c.iGroup>0);
 
-				bLocalValue		= true;
-				valuePtr		= new bool(b);
+				bLocalState		= true;
+				statePtr		= new bool(b);
 				if(b) eObjectState	= STATE_ACTIVE;
 				else  eObjectState	= STATE_NONE;
 			}
@@ -98,10 +99,11 @@ namespace Core {
 				bLocalCon		= true;
 				con				= new Props_Icon();
 				*con			= c;
+				if(con->text == "") con->text = n;
 				bIsGrouped		= (c.iGroup>0);
 
-				bLocalValue		= true;
-				valuePtr		= new bool(b);
+				bLocalState		= true;
+				statePtr		= new bool(b);
 				if(b) eObjectState	= STATE_ACTIVE;
 				else  eObjectState	= STATE_NONE;
 			}
@@ -115,10 +117,11 @@ namespace Core {
 
 				bLocalCon		= false;
 				con				= c;
+				if(con->text == "") con->text = n;
 				bIsGrouped		= (c->iGroup>0);
 
-				bLocalValue		= true;
-				valuePtr		= new bool(b);
+				bLocalState		= true;
+				statePtr		= new bool(b);
 				if(b) eObjectState	= STATE_ACTIVE;
 				else  eObjectState	= STATE_NONE;
 			}
@@ -132,10 +135,11 @@ namespace Core {
 
 				bLocalCon		= false;
 				con				= c;
+				if(con->text == "") con->text = n;
 				bIsGrouped		= (c->iGroup>0);
 
-				bLocalValue		= true;
-				valuePtr		= new bool(b);
+				bLocalState		= true;
+				statePtr		= new bool(b);
 				if(b) eObjectState	= STATE_ACTIVE;
 				else  eObjectState	= STATE_NONE;
 			}
@@ -150,10 +154,11 @@ namespace Core {
 				bLocalCon		= true;
 				con				= new Props_Icon();
 				*con			= c;
+				if(con->text == "") con->text = n;
 				bIsGrouped		= (c.iGroup>0);
 
-				bLocalValue		= false;
-				valuePtr		= b;
+				bLocalState		= false;
+				statePtr		= b;
 				if(*b) eObjectState	= STATE_ACTIVE;
 				else  eObjectState	= STATE_NONE;
 			}
@@ -168,10 +173,11 @@ namespace Core {
 				bLocalCon		= true;
 				con				= new Props_Icon();
 				*con			= c;
+				if(con->text == "") con->text = n;
 				bIsGrouped		= (c.iGroup>0);
 
-				bLocalValue		= false;
-				valuePtr		= b;
+				bLocalState		= false;
+				statePtr		= b;
 				if(*b) eObjectState	= STATE_ACTIVE;
 				else  eObjectState	= STATE_NONE;
 			}
@@ -185,10 +191,11 @@ namespace Core {
 
 				bLocalCon		= false;
 				con				= c;
+				if(con->text == "") con->text = n;
 				bIsGrouped		= (c->iGroup>0);
 
-				bLocalValue		= false;
-				valuePtr		= b;
+				bLocalState		= false;
+				statePtr		= b;
 				if(*b) eObjectState	= STATE_ACTIVE;
 				else  eObjectState	= STATE_NONE;
 			}
@@ -202,17 +209,18 @@ namespace Core {
 
 				bLocalCon		= false;
 				con				= c;
+				if(con->text == "") con->text = n;
 				bIsGrouped		= (c->iGroup>0);
 
-				bLocalValue		= false;
-				valuePtr		= b;
+				bLocalState		= false;
+				statePtr		= b;
 				if(*b) eObjectState	= STATE_ACTIVE;
 				else  eObjectState	= STATE_NONE;
 			}
 
 			Icon::~Icon() {
 				if(bLocalCon && con != nullptr) delete con;
-				if(bLocalValue && valuePtr != nullptr) delete valuePtr;
+				if(bLocalState && statePtr != nullptr) delete statePtr;
 				if(label != nullptr) delete label;
 			}
 
@@ -220,8 +228,6 @@ namespace Core {
 			 *
 			 * ****************************************************************************************************************************** */
 			void Icon::init() {
-				Interactive::init(con);
-
 				// FIXME: Create SOUNDS enumeration
 				initSound(2, 5, 6, 0, 0, true, true);
 
@@ -252,12 +258,7 @@ namespace Core {
 			 * ****************************************************************************************************************************** */
 			void Icon::updateObjectState(iState eExternState) {
 				// Check for external state change, return early
-				if(*valuePtr && !(this->eObjectState&STATE_ACTIVE)) {
-					this->eObjectState = STATE_ACTIVE;
-				}
-				else if(*valuePtr==*returnState[0].off && (this->eObjectState&STATE_ACTIVE)) {
-					this->eObjectState = STATE_NONE;
-				}
+				checkStatePtr();
 
 				if(eExternState!=STATE_NONE && !(eExternState&STATE_UPDATE)) {
 					eObjectState = eExternState;
@@ -270,12 +271,12 @@ namespace Core {
 
 					if(enabled()) {
 						if(con->buttonType==BUTTON_ONESHOT)  {
-							if ( (mState == Core::_Mouse::MOUSE_LEFT) && !bRepeatStatus) {
+							if ( (mState&Core::_Mouse::MOUSE_LEFT) && !bRepeatStatus) {
 								eObjectState = STATE_ACTIVE;
 								bRepeatStatus = true;
 								Sound_PlayOn();
 							}
-							else if (mState == Core::_Mouse::MOUSE_HOVER) {
+							else if (mState&Core::_Mouse::MOUSE_HOVER) {
 								eObjectState = STATE_HOVER;
 								bRepeatStatus = false;
 							}
@@ -289,19 +290,19 @@ namespace Core {
 							}
 						}
 						else if(con->buttonType==BUTTON_TOGGLE) {
-							if(bIsGrouped && (eObjectState&STATE_ACTIVE) && (sGroupObject[con->iGroup]!=name && sGroupObject[con->iGroup]!="")) {
+							if(bIsGrouped && (eObjectState&STATE_ACTIVE) && (Core::groups[con->iGroup].object!=name && Core::groups[con->iGroup].object!="")) {
 								eObjectState = STATE_NONE;
 								Sound_AbortState();
 							}
-							else if (mState == Core::_Mouse::MOUSE_LEFT) {
+							else if (mState&Core::_Mouse::MOUSE_LEFT) {
 								if(eObjectState&STATE_ACTIVE) {
-									eObjectState = STATE_NONE;
-									if(sGroupObject[con->iGroup]==name) sGroupObject[con->iGroup] = "";
+									if (!bIsGrouped || (bIsGrouped && !Core::groups[con->iGroup].bExclusive)) eObjectState = STATE_NONE;
+									if(bIsGrouped && Core::groups[con->iGroup].object==name) Core::groups[con->iGroup].object = "";
 									Sound_PlayOff();
 								}
 								else if(eObjectState&STATE_HOVER) {
 									eObjectState = STATE_ACTIVE;
-									sGroupObject[con->iGroup] = name;
+									if(bIsGrouped) Core::groups[con->iGroup].object = name;
 									Sound_PlayOn();
 								}
 								else {
@@ -309,16 +310,16 @@ namespace Core {
 									mState = Core::_Mouse::MOUSE_NONE;
 								}
 							}
-							else if (!(eObjectState&STATE_ACTIVE) && mState == Core::_Mouse::MOUSE_HOVER) {
+							else if (!(eObjectState&STATE_ACTIVE) && (mState&Core::_Mouse::MOUSE_HOVER)) {
 								eObjectState = STATE_HOVER;
 							}
-							else if (!(eObjectState&STATE_ACTIVE) && mState == Core::_Mouse::MOUSE_NONE) {
+							else if (!(eObjectState&STATE_ACTIVE) && (mState == Core::_Mouse::MOUSE_NONE)) {
 								eObjectState = STATE_NONE;
 //								Sound_PlayOff();
 							}
 						}
 						else {
-							if (mState == Core::_Mouse::MOUSE_LEFT_DOWN && !bRepeatStatus) {
+							if ((mState&Core::_Mouse::MOUSE_LEFT_DOWN) && !bRepeatStatus) {
 								eObjectState = STATE_ACTIVE;
 								bRepeatStatus = true;
 								Sound_PlayOn();
@@ -327,13 +328,13 @@ namespace Core {
 									debounceTimer.start();
 								}
 							}
-							else if (mState == Core::_Mouse::MOUSE_LEFT_DOWN && bRepeatStatus) {
+							else if ((mState&Core::_Mouse::MOUSE_LEFT_DOWN) && bRepeatStatus) {
 								eObjectState = STATE_NONE;
 								if(con->buttonType==BUTTON_DEBOUNCE) {
 									if (debounceTimer.split() >= con->debounceTime) eObjectState = STATE_ACTIVE;
 								}
 							}
-							else if (mState == Core::_Mouse::MOUSE_HOVER) {
+							else if (mState&Core::_Mouse::MOUSE_HOVER) {
 								eObjectState = STATE_HOVER;
 								bRepeatStatus = false;
 							}
@@ -348,21 +349,21 @@ namespace Core {
 
 					// Allow mouse hover at any time (used for tooltips)
 					if(!(eExternState&STATE_UPDATE)) {
-						if(mState==Core::_Mouse::MOUSE_HOVER) eObjectState = eObjectState|STATE_HOVER;
+						if(mState&Core::_Mouse::MOUSE_HOVER) eObjectState = eObjectState|STATE_HOVER;
 						else eObjectState = eObjectState&~STATE_HOVER;
 					}
 				}
 
 				// Allow mouse hover when active
-				if( (this->eObjectState&STATE_ACTIVE) && (mState==Core::_Mouse::MOUSE_HOVER) ) {
+				if( (this->eObjectState&STATE_ACTIVE) && (mState&Core::_Mouse::MOUSE_HOVER) ) {
 					this->eObjectState = this->eObjectState | STATE_HOVER;
 				}
-				else if( (this->eObjectState&STATE_ACTIVE) && (this->eObjectState&STATE_HOVER) && (mState!=Core::_Mouse::MOUSE_HOVER) ) {
+				else if( (this->eObjectState&STATE_ACTIVE) && (this->eObjectState&STATE_HOVER) && !(mState&Core::_Mouse::MOUSE_HOVER) ) {
 					this->eObjectState = STATE_ACTIVE;
 				}
 
 				if(!enabled()) eObjectState |= STATE_DISABLED;
-				updateValuePtr();
+				updateStatePtr();
 			}
 
 			/** ******************************************************************************************************************************
@@ -415,7 +416,7 @@ namespace Core {
 			 */
 			void Icon::updateNoFocus() {
 				updateObjectState(STATE_UPDATE);
-				updateValuePtr();
+				updateStatePtr();
 			}
 
 		}

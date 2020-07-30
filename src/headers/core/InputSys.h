@@ -23,17 +23,19 @@ namespace Core {
 		public:
 			_Mouse();
 
-			enum MOUSE_STATE	{	MOUSE_NONE			= 0,
-									MOUSE_HOVER			= 1,
-									MOUSE_LEFT			= 2,
-									MOUSE_RIGHT			= 4,
-									MOUSE_MIDDLE		= 8,
-									MOUSE_DOUBLE		= 16,
-									MOUSE_LEFT_DOWN		= 32,
-									MOUSE_WHEEL_UP		= 64,
-									MOUSE_WHEEL_DOWN	= 128,
-									MOUSE_WHEEL_LEFT	= 256,
-									MOUSE_WHEEL_RIGHT	= 512
+			typedef int iMouseState;
+			enum MOUSE_STATE	{	MOUSE_NONE			= 1,
+									MOUSE_HOVER			= 2,
+									MOUSE_LEFT			= 4,
+									MOUSE_LEFT_DOWN		= 8,
+									MOUSE_RIGHT			= 16,
+									MOUSE_RIGHT_DOWN	= 32,
+									MOUSE_MIDDLE		= 64,
+									MOUSE_DOUBLE		= 128,
+									MOUSE_WHEEL_UP		= 256,
+									MOUSE_WHEEL_DOWN	= 512,
+									MOUSE_WHEEL_LEFT	= 1024,
+									MOUSE_WHEEL_RIGHT	= 2048
 								};
 
 			Vector3f	mouseRay;						// Final calculated mouse ray
@@ -91,7 +93,7 @@ namespace Core {
 			void ToggleMouse();
 			void ToggleMouse(SDL_bool bShow);
 			MOUSE_STATE checkWheel();
-			MOUSE_STATE checkInput(int x, int y, float w, float h, bool bCentered=true);		// Return mouse state for region (hover, clicked)
+			iMouseState checkInput(int x, int y, float w, float h, bool bCentered=true);		// Return mouse state for region (hover, clicked)
 			MOUSE_STATE checkOver(int x, int y, float w, float h, bool bCentered=true);			// Return hover state for region
 			MOUSE_STATE checkState();
 
@@ -346,10 +348,12 @@ namespace Core {
 	 * if mouse is hovering over region.
 	 *
 	 * ****************************************************************************************************************************** */
-	_Mouse::MOUSE_STATE _Mouse::checkInput(int x, int y, float w, float h, bool bCentered) {
+//	inline _Mouse::MOUSE_STATE _Mouse::checkInput(int x, int y, float w, float h, bool bCentered) {
+	_Mouse::iMouseState _Mouse::checkInput(int x, int y, float w, float h, bool bCentered) {
 		Vector2f vMouse = { float(this->x), float(this->y) };
 		Vector2f vP1;
 		Vector2f vP2;
+		_Mouse::iMouseState mReturn = MOUSE_NONE;
 
 		if(bCentered) {
 			vP1    = { (float)x-(w/2.0f), (float)y-(h/2.0f) };
@@ -360,23 +364,39 @@ namespace Core {
 			vP2    = { (float)x+w, (float)y+h };
 		}
 
-		// IDEA: Make mouse events stack (left+right mouse, left+scroll, etc)
-		if (button.pressed[SDL_BUTTON_LEFT] || button.held[SDL_BUTTON_LEFT]) {
-			if (Core::gmath.PointQuad2d(vMouse, vP1, vP2)) {
-				if (button.pressed[SDL_BUTTON_LEFT]) {
-					if (timer.get_ticks()>(fMouseDelay+fMouseDelayConst)) {
-						fMouseDelay = timer.get_ticks();
-						return MOUSE_LEFT;
-					}
-				}
-				else return MOUSE_LEFT_DOWN;
+		// Stacking mouse events (bitmask)
+		if (Core::gmath.PointQuad2d(vMouse, vP1, vP2)) {
+			//mReturn = mReturn | MOUSE_HOVER;
+			mReturn = MOUSE_HOVER;
+			if (button.pressed[SDL_BUTTON_LEFT]) mReturn |= MOUSE_LEFT;
+			else if (button.held[SDL_BUTTON_LEFT]) mReturn |= MOUSE_LEFT_DOWN;
 
-			}
+			if (button.pressed[SDL_BUTTON_RIGHT]) mReturn |= MOUSE_RIGHT;
+			else if (button.held[SDL_BUTTON_RIGHT]) mReturn |= MOUSE_RIGHT_DOWN;
+
 		}
-		else if (Core::gmath.PointQuad2d(vMouse, vP1, vP2)) {
-			return MOUSE_HOVER;
-		}
-		return MOUSE_NONE;
+		return mReturn;
+
+
+		// IDEA: Make mouse events stack (left+right mouse, left+scroll, etc)
+//		if (button.pressed[SDL_BUTTON_LEFT] || button.held[SDL_BUTTON_LEFT]) {
+//			if (Core::gmath.PointQuad2d(vMouse, vP1, vP2)) {
+//				if (button.pressed[SDL_BUTTON_LEFT]) {
+//
+//					// FIXME: This timer breaks input checks if they happen really fast, such as in GUI (Why is this here anyways? Debounce?)
+//					//if (timer.get_ticks()>(fMouseDelay+fMouseDelayConst)) {
+//					//	fMouseDelay = timer.get_ticks();
+//						return MOUSE_LEFT;
+//					//}
+//				}
+//				else return MOUSE_LEFT_DOWN;
+//
+//			}
+//		}
+//		else if (Core::gmath.PointQuad2d(vMouse, vP1, vP2)) {
+//			return MOUSE_HOVER;
+//		}
+//		return MOUSE_NONE;
 	}
 
 	/** ******************************************************************************************************************************
@@ -388,7 +408,7 @@ namespace Core {
 	 * @param bCentered
 	 * @return
 	 * ****************************************************************************************************************************** */
-	_Mouse::MOUSE_STATE _Mouse::checkOver(int x, int y, float w, float h, bool bCentered) {
+	inline _Mouse::MOUSE_STATE _Mouse::checkOver(int x, int y, float w, float h, bool bCentered) {
 		Vector2f vMouse = { float(this->x), float(this->y) };
 		Vector2f vP1;
 		Vector2f vP2;
@@ -413,7 +433,7 @@ namespace Core {
 	 * Check mouse button state regardless of position
 	 *
 	 * ****************************************************************************************************************************** */
-	_Mouse::MOUSE_STATE _Mouse::checkState() {
+	inline _Mouse::MOUSE_STATE _Mouse::checkState() {
 		if (button.pressed[SDL_BUTTON_LEFT] || button.held[SDL_BUTTON_LEFT]) {
 			if (button.pressed[SDL_BUTTON_LEFT]) {
 				if (timer.get_ticks()>(fMouseDelay+fMouseDelayConst)) {

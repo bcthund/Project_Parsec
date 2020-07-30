@@ -21,6 +21,8 @@ namespace Core {
 
 	//extern class GameSys::_GameTime	*	timeSys		= new GameSys::_GameTime();
 
+	extern class _Debug					debug;
+	extern class _Groups				groups;
 	extern class _Mouse					*	mouse;
 	extern class _State					*	state;
 	extern class GlInit_System			*	glinit;

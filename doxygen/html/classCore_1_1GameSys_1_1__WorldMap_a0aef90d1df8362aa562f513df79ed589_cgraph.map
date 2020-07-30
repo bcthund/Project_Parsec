@@ -1,0 +1,17 @@
+<map id="Core::GameSys::_WorldMap::calc" name="Core::GameSys::_WorldMap::calc">
+<area shape="rect" id="node1" title=" " alt="" coords="5,122,195,163"/>
+<area shape="rect" id="node2" href="$classCore_1_1__Lights.html#a210604732c623bd3dd345243ed94fd58" title=" " alt="" coords="274,5,406,32"/>
+<area shape="rect" id="node4" href="$classCore_1_1GameSys_1_1__O2D.html#a82bedd01ec3c4c33afde476a6fc700d8" title=" " alt="" coords="261,57,419,98"/>
+<area shape="rect" id="node5" href="$classCore_1_1GameSys_1_1__O3D.html#aafe6b40149a710975db067ce1536c4b7" title=" " alt="" coords="261,122,419,163"/>
+<area shape="rect" id="node9" href="$classCore_1_1GameSys_1_1Atmosphere.html#a10e9e415b9ea6cad37b24025673afa1b" title=" " alt="" coords="243,187,437,229"/>
+<area shape="rect" id="node12" href="$classCore_1_1GameSys_1_1MapSys.html#a79ce21e1acd917e1bd2feea110e59d76" title=" " alt="" coords="254,315,426,357"/>
+<area shape="rect" id="node3" href="$classCore_1_1__Lights.html#a5bce9742d1ed316f646555b5e0296b05" title=" " alt="" coords="495,5,654,32"/>
+<area shape="rect" id="node6" href="$classCore_1_1PLY__Loader.html#af9e2e8de3655d5e969c7f757bf0dd61a" title=" " alt="" coords="495,79,655,105"/>
+<area shape="rect" id="node8" href="$structCore_1_1Degrees.html#a9c218f476eea2a1c9761d59de91883ec" title=" " alt="" coords="487,129,662,156"/>
+<area shape="rect" id="node7" href="$namespaceCore.html#a350dceee109b9263b60e18165e63eeae" title=" " alt="" coords="712,79,795,105"/>
+<area shape="rect" id="node10" href="$classCore_1_1__Particles.html#ad3800cb2d0d3a8eb79e6dd083bb520d1" title=" " alt="" coords="501,180,649,207"/>
+<area shape="rect" id="node11" href="$classCore_1_1GameSys_1_1__Satellite.html#a55f61feb8c6cc45adca134a3df9ddc70" title=" " alt="" coords="485,231,664,273"/>
+<area shape="rect" id="node13" href="$classCore_1_1VAO.html#ab52714c21a0808befe18bf4ffcb6818d" title=" " alt="" coords="512,297,637,324"/>
+<area shape="rect" id="node14" href="$classCore_1_1VAO.html#a1edd061ba7d751e1a961d50ad1675eb5" title=" " alt="" coords="499,348,650,375"/>
+<area shape="rect" id="node15" href="$classCore_1_1VAO.html#ac78064ef22b641995e0ecdb20ee1abc0" title=" " alt="" coords="517,399,632,425"/>
+</map>

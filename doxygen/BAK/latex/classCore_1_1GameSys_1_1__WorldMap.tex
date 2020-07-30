@@ -1,0 +1,240 @@
+\hypertarget{classCore_1_1GameSys_1_1__WorldMap}{}\doxysection{Core\+::Game\+Sys\+::\+\_\+\+World\+Map Class Reference}
+\label{classCore_1_1GameSys_1_1__WorldMap}\index{Core::GameSys::\_WorldMap@{Core::GameSys::\_WorldMap}}
+
+
+{\ttfamily \#include $<$World\+Map.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classCore_1_1GameSys_1_1__WorldMap_a5b8dcbbae4e21f022b3480aa2774cde7}{\+\_\+\+World\+Map}} (\mbox{\hyperlink{classCore_1_1__Collision}{\+\_\+\+Collision}} \&in\+Collision, \mbox{\hyperlink{classCore_1_1__Helper}{\+\_\+\+Helper}} \&in\+Helper)
+\item 
+virtual \mbox{\hyperlink{classCore_1_1GameSys_1_1__WorldMap_a641c0554d4858a44677f97090d6e2d85}{$\sim$\+\_\+\+World\+Map}} ()
+\item 
+bool \mbox{\hyperlink{classCore_1_1GameSys_1_1__WorldMap_adc2be21fd60db33858266b6a61d505ed}{load}} ()
+\item 
+bool \mbox{\hyperlink{classCore_1_1GameSys_1_1__WorldMap_a0aef90d1df8362aa562f513df79ed589}{calc}} ()
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classCore_1_1GameSys_1_1__WorldMap_a11033c850c4e486b4b0af67f4d7b4ec8}{draw}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classCore_1_1GameSys_1_1__O2D}{\+\_\+\+O2D}} $\ast$ \mbox{\hyperlink{classCore_1_1GameSys_1_1__WorldMap_af2b39e67b3e5aed4fab18aed56c3b78d}{o2d}}
+\item 
+\mbox{\hyperlink{classCore_1_1GameSys_1_1__O3D}{\+\_\+\+O3D}} $\ast$ \mbox{\hyperlink{classCore_1_1GameSys_1_1__WorldMap_a85bb3265931ed0f8f84ee5d55e1a539b}{o3d}}
+\item 
+\mbox{\hyperlink{classCore_1_1__Lights}{\+\_\+\+Lights}} $\ast$ \mbox{\hyperlink{classCore_1_1GameSys_1_1__WorldMap_a2e1ec9b7da4a8c494ff9de4334851e19}{lights}}
+\item 
+\mbox{\hyperlink{classCore_1_1GameSys_1_1Atmosphere}{Atmosphere}} $\ast$ \mbox{\hyperlink{classCore_1_1GameSys_1_1__WorldMap_a19c8257495f666605ee21ef65c8505b1}{atmosphere}}
+\item 
+\mbox{\hyperlink{classCore_1_1GameSys_1_1MapSys}{Map\+Sys}} $\ast$ \mbox{\hyperlink{classCore_1_1GameSys_1_1__WorldMap_a0195489a419fb95d590886559fcc78f8}{map}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classCore_1_1__Collision}{\+\_\+\+Collision}} $\ast$ \mbox{\hyperlink{classCore_1_1GameSys_1_1__WorldMap_ad1e92e4b2a31d00e2b81bbb06ddb9e44}{collision}}
+\item 
+\mbox{\hyperlink{classCore_1_1__Helper}{\+\_\+\+Helper}} $\ast$ \mbox{\hyperlink{classCore_1_1GameSys_1_1__WorldMap_a6014f35d2e313868bdc76d16bedd2959}{helper}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+
+
+Definition at line 49 of file World\+Map.\+h.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classCore_1_1GameSys_1_1__WorldMap_a5b8dcbbae4e21f022b3480aa2774cde7}\label{classCore_1_1GameSys_1_1__WorldMap_a5b8dcbbae4e21f022b3480aa2774cde7}} 
+\index{Core::GameSys::\_WorldMap@{Core::GameSys::\_WorldMap}!\_WorldMap@{\_WorldMap}}
+\index{\_WorldMap@{\_WorldMap}!Core::GameSys::\_WorldMap@{Core::GameSys::\_WorldMap}}
+\doxysubsubsection{\texorpdfstring{\_WorldMap()}{\_WorldMap()}}
+{\footnotesize\ttfamily Core\+::\+Game\+Sys\+::\+\_\+\+World\+Map\+::\+\_\+\+World\+Map (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classCore_1_1__Collision}{\+\_\+\+Collision}} \&}]{in\+Collision,  }\item[{\mbox{\hyperlink{classCore_1_1__Helper}{\+\_\+\+Helper}} \&}]{in\+Helper }\end{DoxyParamCaption})}
+
+
+
+Definition at line 75 of file World\+Map.\+h.
+
+
+
+References atmosphere, collision, cout, helper, Core\+::\+\_\+\+Lights\+::init(), Core\+::\+Game\+Sys\+::\+Atmosphere\+::init(), Core\+::\+Game\+Sys\+::\+Map\+Sys\+::init(), lights, map, o2d, o3d, and Core\+::s\+Offset.
+
+\mbox{\Hypertarget{classCore_1_1GameSys_1_1__WorldMap_a641c0554d4858a44677f97090d6e2d85}\label{classCore_1_1GameSys_1_1__WorldMap_a641c0554d4858a44677f97090d6e2d85}} 
+\index{Core::GameSys::\_WorldMap@{Core::GameSys::\_WorldMap}!````~\_WorldMap@{$\sim$\_WorldMap}}
+\index{````~\_WorldMap@{$\sim$\_WorldMap}!Core::GameSys::\_WorldMap@{Core::GameSys::\_WorldMap}}
+\doxysubsubsection{\texorpdfstring{$\sim$\_WorldMap()}{~\_WorldMap()}}
+{\footnotesize\ttfamily Core\+::\+Game\+Sys\+::\+\_\+\+World\+Map\+::$\sim$\+\_\+\+World\+Map (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Definition at line 106 of file World\+Map.\+h.
+
+
+
+References atmosphere, cout, lights, map, o2d, o3d, and Core\+::s\+Offset.
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classCore_1_1GameSys_1_1__WorldMap_a0aef90d1df8362aa562f513df79ed589}\label{classCore_1_1GameSys_1_1__WorldMap_a0aef90d1df8362aa562f513df79ed589}} 
+\index{Core::GameSys::\_WorldMap@{Core::GameSys::\_WorldMap}!calc@{calc}}
+\index{calc@{calc}!Core::GameSys::\_WorldMap@{Core::GameSys::\_WorldMap}}
+\doxysubsubsection{\texorpdfstring{calc()}{calc()}}
+{\footnotesize\ttfamily bool Core\+::\+Game\+Sys\+::\+\_\+\+World\+Map\+::calc (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 133 of file World\+Map.\+h.
+
+
+
+References atmosphere, Core\+::\+\_\+\+Lights\+::calc(), Core\+::\+Game\+Sys\+::\+\_\+\+O2\+D\+::calc(), Core\+::\+Game\+Sys\+::\+\_\+\+O3\+D\+::calc(), Core\+::\+Game\+Sys\+::\+Atmosphere\+::calc(), Core\+::\+Game\+Sys\+::\+Map\+Sys\+::calc(), cout, Core\+::game\+Vars, lights, map, o2d, o3d, and Core\+::s\+Offset.
+
+
+
+Referenced by \+\_\+\+Game\+::load().
+
+\mbox{\Hypertarget{classCore_1_1GameSys_1_1__WorldMap_a11033c850c4e486b4b0af67f4d7b4ec8}\label{classCore_1_1GameSys_1_1__WorldMap_a11033c850c4e486b4b0af67f4d7b4ec8}} 
+\index{Core::GameSys::\_WorldMap@{Core::GameSys::\_WorldMap}!draw@{draw}}
+\index{draw@{draw}!Core::GameSys::\_WorldMap@{Core::GameSys::\_WorldMap}}
+\doxysubsubsection{\texorpdfstring{draw()}{draw()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Core\+::\+Game\+Sys\+::\+\_\+\+World\+Map\+::draw (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 149 of file World\+Map.\+h.
+
+
+
+References atmosphere, Core\+::\+Game\+Sys\+::\+\_\+\+O2\+D\+::draw(), Core\+::\+Game\+Sys\+::\+\_\+\+O3\+D\+::draw(), Core\+::\+Game\+Sys\+::\+Map\+Sys\+::draw(), Core\+::\+G\+L\+S\+\_\+\+P\+H\+O\+NG, Core\+::\+G\+L\+S\+\_\+\+P\+H\+O\+N\+G\+\_\+\+O2D, lights, map, Core\+::\+Game\+Sys\+::\+Atmosphere\+::\+M\+O\+D\+E\+\_\+\+F\+L\+O\+RA, Core\+::\+Game\+Sys\+::\+Atmosphere\+::\+M\+O\+D\+E\+\_\+\+S\+A\+T\+E\+L\+L\+I\+TE, o2d, o3d, and Core\+::\+Game\+Sys\+::\+Atmosphere\+::update().
+
+
+
+Referenced by \+\_\+\+Game\+::\+Update().
+
+\mbox{\Hypertarget{classCore_1_1GameSys_1_1__WorldMap_adc2be21fd60db33858266b6a61d505ed}\label{classCore_1_1GameSys_1_1__WorldMap_adc2be21fd60db33858266b6a61d505ed}} 
+\index{Core::GameSys::\_WorldMap@{Core::GameSys::\_WorldMap}!load@{load}}
+\index{load@{load}!Core::GameSys::\_WorldMap@{Core::GameSys::\_WorldMap}}
+\doxysubsubsection{\texorpdfstring{load()}{load()}}
+{\footnotesize\ttfamily bool Core\+::\+Game\+Sys\+::\+\_\+\+World\+Map\+::load (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 120 of file World\+Map.\+h.
+
+
+
+References atmosphere, cout, lights, Core\+::\+\_\+\+Lights\+::load(), Core\+::\+Game\+Sys\+::\+\_\+\+O2\+D\+::load(), Core\+::\+Game\+Sys\+::\+\_\+\+O3\+D\+::load(), Core\+::\+Game\+Sys\+::\+Atmosphere\+::load(), Core\+::\+Game\+Sys\+::\+Map\+Sys\+::load(), map, o2d, o3d, and Core\+::s\+Offset.
+
+
+
+Referenced by \+\_\+\+Game\+::load().
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classCore_1_1GameSys_1_1__WorldMap_a19c8257495f666605ee21ef65c8505b1}\label{classCore_1_1GameSys_1_1__WorldMap_a19c8257495f666605ee21ef65c8505b1}} 
+\index{Core::GameSys::\_WorldMap@{Core::GameSys::\_WorldMap}!atmosphere@{atmosphere}}
+\index{atmosphere@{atmosphere}!Core::GameSys::\_WorldMap@{Core::GameSys::\_WorldMap}}
+\doxysubsubsection{\texorpdfstring{atmosphere}{atmosphere}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classCore_1_1GameSys_1_1Atmosphere}{Atmosphere}}$\ast$ Core\+::\+Game\+Sys\+::\+\_\+\+World\+Map\+::atmosphere}
+
+
+
+Definition at line 62 of file World\+Map.\+h.
+
+
+
+Referenced by \+\_\+\+World\+Map(), calc(), draw(), load(), \+\_\+\+Game\+::\+Update(), and $\sim$\+\_\+\+World\+Map().
+
+\mbox{\Hypertarget{classCore_1_1GameSys_1_1__WorldMap_ad1e92e4b2a31d00e2b81bbb06ddb9e44}\label{classCore_1_1GameSys_1_1__WorldMap_ad1e92e4b2a31d00e2b81bbb06ddb9e44}} 
+\index{Core::GameSys::\_WorldMap@{Core::GameSys::\_WorldMap}!collision@{collision}}
+\index{collision@{collision}!Core::GameSys::\_WorldMap@{Core::GameSys::\_WorldMap}}
+\doxysubsubsection{\texorpdfstring{collision}{collision}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classCore_1_1__Collision}{\+\_\+\+Collision}}$\ast$ Core\+::\+Game\+Sys\+::\+\_\+\+World\+Map\+::collision\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line 71 of file World\+Map.\+h.
+
+
+
+Referenced by \+\_\+\+World\+Map().
+
+\mbox{\Hypertarget{classCore_1_1GameSys_1_1__WorldMap_a6014f35d2e313868bdc76d16bedd2959}\label{classCore_1_1GameSys_1_1__WorldMap_a6014f35d2e313868bdc76d16bedd2959}} 
+\index{Core::GameSys::\_WorldMap@{Core::GameSys::\_WorldMap}!helper@{helper}}
+\index{helper@{helper}!Core::GameSys::\_WorldMap@{Core::GameSys::\_WorldMap}}
+\doxysubsubsection{\texorpdfstring{helper}{helper}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classCore_1_1__Helper}{\+\_\+\+Helper}}$\ast$ Core\+::\+Game\+Sys\+::\+\_\+\+World\+Map\+::helper\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line 72 of file World\+Map.\+h.
+
+
+
+Referenced by \+\_\+\+World\+Map().
+
+\mbox{\Hypertarget{classCore_1_1GameSys_1_1__WorldMap_a2e1ec9b7da4a8c494ff9de4334851e19}\label{classCore_1_1GameSys_1_1__WorldMap_a2e1ec9b7da4a8c494ff9de4334851e19}} 
+\index{Core::GameSys::\_WorldMap@{Core::GameSys::\_WorldMap}!lights@{lights}}
+\index{lights@{lights}!Core::GameSys::\_WorldMap@{Core::GameSys::\_WorldMap}}
+\doxysubsubsection{\texorpdfstring{lights}{lights}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classCore_1_1__Lights}{\+\_\+\+Lights}}$\ast$ Core\+::\+Game\+Sys\+::\+\_\+\+World\+Map\+::lights}
+
+
+
+Definition at line 61 of file World\+Map.\+h.
+
+
+
+Referenced by \+\_\+\+World\+Map(), calc(), draw(), \+\_\+\+Admin\+::init(), \+\_\+\+Game\+::load(), load(), \+\_\+\+Game\+::\+Process\+Input(), \+\_\+\+Admin\+::run(), and $\sim$\+\_\+\+World\+Map().
+
+\mbox{\Hypertarget{classCore_1_1GameSys_1_1__WorldMap_a0195489a419fb95d590886559fcc78f8}\label{classCore_1_1GameSys_1_1__WorldMap_a0195489a419fb95d590886559fcc78f8}} 
+\index{Core::GameSys::\_WorldMap@{Core::GameSys::\_WorldMap}!map@{map}}
+\index{map@{map}!Core::GameSys::\_WorldMap@{Core::GameSys::\_WorldMap}}
+\doxysubsubsection{\texorpdfstring{map}{map}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classCore_1_1GameSys_1_1MapSys}{Map\+Sys}}$\ast$ Core\+::\+Game\+Sys\+::\+\_\+\+World\+Map\+::map}
+
+
+
+Definition at line 63 of file World\+Map.\+h.
+
+
+
+Referenced by \+\_\+\+World\+Map(), calc(), draw(), load(), \+\_\+\+Admin\+::run(), and $\sim$\+\_\+\+World\+Map().
+
+\mbox{\Hypertarget{classCore_1_1GameSys_1_1__WorldMap_af2b39e67b3e5aed4fab18aed56c3b78d}\label{classCore_1_1GameSys_1_1__WorldMap_af2b39e67b3e5aed4fab18aed56c3b78d}} 
+\index{Core::GameSys::\_WorldMap@{Core::GameSys::\_WorldMap}!o2d@{o2d}}
+\index{o2d@{o2d}!Core::GameSys::\_WorldMap@{Core::GameSys::\_WorldMap}}
+\doxysubsubsection{\texorpdfstring{o2d}{o2d}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classCore_1_1GameSys_1_1__O2D}{\+\_\+\+O2D}}$\ast$ Core\+::\+Game\+Sys\+::\+\_\+\+World\+Map\+::o2d}
+
+
+
+Definition at line 51 of file World\+Map.\+h.
+
+
+
+Referenced by \+\_\+\+World\+Map(), calc(), draw(), load(), and $\sim$\+\_\+\+World\+Map().
+
+\mbox{\Hypertarget{classCore_1_1GameSys_1_1__WorldMap_a85bb3265931ed0f8f84ee5d55e1a539b}\label{classCore_1_1GameSys_1_1__WorldMap_a85bb3265931ed0f8f84ee5d55e1a539b}} 
+\index{Core::GameSys::\_WorldMap@{Core::GameSys::\_WorldMap}!o3d@{o3d}}
+\index{o3d@{o3d}!Core::GameSys::\_WorldMap@{Core::GameSys::\_WorldMap}}
+\doxysubsubsection{\texorpdfstring{o3d}{o3d}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classCore_1_1GameSys_1_1__O3D}{\+\_\+\+O3D}}$\ast$ Core\+::\+Game\+Sys\+::\+\_\+\+World\+Map\+::o3d}
+
+
+
+Definition at line 52 of file World\+Map.\+h.
+
+
+
+Referenced by \+\_\+\+World\+Map(), calc(), draw(), \+\_\+\+Game\+::load(), load(), \+\_\+\+Game\+::\+Process\+Input(), \+\_\+\+Admin\+::run(), and $\sim$\+\_\+\+World\+Map().
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/headers/gamesys/\mbox{\hyperlink{WorldMap_8h}{World\+Map.\+h}}\end{DoxyCompactItemize}

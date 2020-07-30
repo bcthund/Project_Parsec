@@ -11,6 +11,7 @@
 #include <iostream>
 #include "../headers/core/core_functions.h"
 #include "../headers/core/types.h"
+#include "../headers/core/Groups.h"
 
 /** \class _Admin
  *
@@ -206,7 +207,7 @@ _Admin::_Admin(_Game *gamePtr) :
 	keyboard.calc(Core::_Keyboard::KEYTYPE_ONESHOT);
 }
 
-//#include "runAdmin/SkillTree.h"
+#include "runAdmin/SkillTree.h"
 //#include "runAdmin/Colors.h"
 
 /** ******************************************************************************************************************************
@@ -258,7 +259,9 @@ void _Admin::init() {
 		Core::gui["GameMenu"].add("Window 16", cMaster);
 		Core::gui["GameMenu"].add("Window 17", cMaster);
 		Core::gui["GameMenu"].add("Window 18", cMaster);
+		cMaster.setScrollable(true);
 		Core::gui["GameMenu"].add("Window 19", cMaster);
+		cMaster.setScrollable(false);
 		Core::gui["GameMenu"].add("Window 20", cMaster);
 		Core::gui["GameMenu"].add("Window 21", cMaster);
 
@@ -323,7 +326,7 @@ void _Admin::init() {
 		con.enablePadding(Core::GUI::PADDING_ALL);
 		con.setMinWidth(100);
 		con.showBackground();
-		con.color.back().base = &Core::colors[Core::colors().Gray_web];
+		con.colorBack.base = &Core::colors[Core::colors().Gray_web];
 //		con.setLabelAutoSize(true, true);
 		con.autoWidth(false);
 		con.autoHeight(true);
@@ -372,8 +375,17 @@ void _Admin::init() {
 		con_button.setAnchor(Core::GUI::CONSTRAIN_BOTTOM|Core::GUI::CONSTRAIN_LEFT);		// Center of button
 		con_button.setPos(5, 5);
 		con_button.setWidth(150, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);				// Exact button width
-		Core::gui["GameMenu"]["Window 3"].Button.add("Update Simplex", &Core::gameVars->debug.gui.b1, con_button);
-		Core::gui["GameMenu"]["Window 4"].Button.add("Update Fractal", &Core::gameVars->debug.gui.b1, con_button);
+		Core::gui["GameMenu"]["Window 3"].Button.add("Toggle Simplex", &Core::gameVars->debug.gui.b1, con_button);
+		Core::gui["GameMenu"]["Window 4"].Button.add("Toggle Fractal", &Core::gameVars->debug.gui.b2, con_button);
+
+		con_button.modPos(155, 0);
+		Core::gui["GameMenu"]["Window 3"].Button.add("Show Norms", &Core::gameVars->debug.gui.b5, con_button);
+		//Core::gui["GameMenu"]["Window 4"].Button.add("Update Fractal", &Core::gameVars->debug.gui.b4, con_button);
+
+		con_button.setButtonType(Core::GUI::BUTTON_ONESHOT);
+		con_button.modPos(155, 0);
+		Core::gui["GameMenu"]["Window 3"].Button.add("Update Simplex", &Core::gameVars->debug.gui.b3, con_button);
+		Core::gui["GameMenu"]["Window 4"].Button.add("Update Fractal", &Core::gameVars->debug.gui.b4, con_button);
 
 		// Navigation buttons
 		con_button.setButtonType(Core::GUI::BUTTON_TOGGLE);
@@ -383,7 +395,7 @@ void _Admin::init() {
 		con_button.setHeight(20, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
 		con_button.setBorder(1, true);
 		con_button.setRadius(10);
-		con_button.setGroup(1);
+		con_button.setGroup(Core::groups.add("Menu Buttons", true));
 		con_button.enablePadding(Core::GUI::PADDING_ALL);
 		con_button.enableToolTip();
 
@@ -425,7 +437,7 @@ void _Admin::init() {
 		con_button.setToolTip("Adjustment of window constraints\n"\
 							  "inclduing border style, and window\n"\
 							  "padding.");
-		con_button.setPos( -196, -40);	Core::gui["GameMenu"]["Window 2"].Button.add("Window",			false, con_button);
+		con_button.setPos( -196, -40);	Core::gui["GameMenu"]["Window 2"].Button.add("Settings",		false, con_button);
 		con_button.setToolTip("Simple icons that can be toggled.");
 		con_button.setPos(  -98, -40);	Core::gui["GameMenu"]["Window 2"].Button.add("Icons",			false, con_button);
 		con_button.setToolTip("Images that do not have interactive\n"\
@@ -446,7 +458,7 @@ void _Admin::init() {
 		con_button.setToolTip("None.");
 		con_button.setPos(  -98, -60);	Core::gui["GameMenu"]["Window 2"].Button.add("Progress Bar",	false, con_button);
 		con_button.setToolTip("None.");
-		con_button.setPos(    0, -60);	Core::gui["GameMenu"]["Window 2"].Button.add("Spare 3",			false, con_button);
+		con_button.setPos(    0, -60);	Core::gui["GameMenu"]["Window 2"].Button.add("ComboBox",		false, con_button);
 		con_button.setToolTip("None.");
 		con_button.setPos(   98, -60);	Core::gui["GameMenu"]["Window 2"].Button.add("Spare 4",			false, con_button);
 		con_button.setToolTip("None.");
@@ -497,85 +509,85 @@ void _Admin::init() {
 		//
 		con.setY(490);
 		con.setMinMax(0, 1);
-		con.setMinimumStep(1.0f);
+		con.setStep(1.0f, 2.0f, 10.0f);
 		Core::gui["GameMenu"]["Window 3"].Slider.add("Simplex Generator", &Core::gameVars->debug.noise.iCurrentSimplex, con);
 
 		//
 		con.setY(440);
 		con.setMinMax(8.0f, 2048.0f);
-		con.setMinimumStep(1.0f);
+		con.setStep(1.0f, 2.0f, 10.0f);
 		Core::gui["GameMenu"]["Window 3"].Slider.add("Resolution", &Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].res, con);
 
 		//
 		con.setY(410);
 		con.setMinMax(1.0f, 1000.0f);
-		con.setMinimumStep(1.0f);
+		con.setStep(1.0f, 2.0f, 10.0f);
 		Core::gui["GameMenu"]["Window 3"].Slider.add("Tex Scale", &Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].tex_scale, con);
 
 		//
 		con.setY(380);
 		con.setMinMax(1.0f, 100000.0f);
-		con.setMinimumStep(1.0f);
+		con.setStep(1.0f, 10.0f, 100.0f);
 		Core::gui["GameMenu"]["Window 3"].Slider.add("Terrain Size", &Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].terrain_size, con);
 
 		// Offset X
 		con.setY(350);
 		con.setMinMax(-10000.0f, 10000.0f);
-		con.setMinimumStep(1.0f);
+		con.setStep(1.0f, 10.0f, 100.0f);
 		Core::gui["GameMenu"]["Window 3"].Slider.add("Terrain Height", &Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].terrain_height_offset, con);
 
 		// Offset X
 		con.setY(300);
 		con.setMinMax(-10000.0f, 10000.0f);
-		con.setMinimumStep(1.0f);
+		con.setStep(1.0f, 10.0f, 100.0f);
 		Core::gui["GameMenu"]["Window 3"].Slider.add("Offset X", &Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].offset.x, con);
 
 		// Offset Y
 		con.setY(270);
 		con.setMinMax(-10000.0f, 10000.0f);
-		con.setMinimumStep(1.0f);
+		con.setStep(1.0f, 10.0f, 100.0f);
 		Core::gui["GameMenu"]["Window 3"].Slider.add("Offset Y", &Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].offset.y, con);
 
 		// Delta
 		con.setY(240);
 		con.setMinMax(1.0f, 100.0f);
-		con.setMinimumStep(1.0f);
+		con.setStep(1.0f, 2.0f, 10.0f);
 		Core::gui["GameMenu"]["Window 3"].Slider.add("Delta", &Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].delta, con);
 
 		// Frequency
 		con.setY(210);
 		con.setMinMax(-0.001f, 0.001f);
-		con.setMinimumStep(0.00001f);
+		con.setStep(0.00001f, 0.00005f, 0.0001f);
 		Core::gui["GameMenu"]["Window 3"].Slider.add("Frequency", &Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].frequency, con);
 
 		// Lacunarity
 		con.setY(180);
 		con.setMinMax(-10.0f, 10.0f);
-		con.setMinimumStep(0.01f);
+		con.setStep(0.01f, 0.1f, 1.0f);
 		Core::gui["GameMenu"]["Window 3"].Slider.add("Lacunarity", &Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].lacunarity, con);
 
 		// Persistance
 		con.setY(150);
 		con.setMinMax(-1.0f, 1.0f);
-		con.setMinimumStep(0.001f);
+		con.setStep(0.001f, 0.01f, 0.1f);
 		Core::gui["GameMenu"]["Window 3"].Slider.add("Persistance", &Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].persistance, con);
 
 		// Scale
 		con.setY(120);
 		con.setMinMax(0.1f, 5000.0f);
-		con.setMinimumStep(0.1f);
+		con.setStep(1.0f, 10.0f, 100.0f);
 		Core::gui["GameMenu"]["Window 3"].Slider.add("Scale", &Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].scale, con);
 
 		// Octaves
 		con.setY(90);
 		con.setMinMax(1.0f, 10.0f);
-		con.setMinimumStep(1.0f);
+		con.setStep(1.0f, 10.0f, 100.0f);
 		Core::gui["GameMenu"]["Window 3"].Slider.add("Octaves", &Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].octaves, con);
 
 		// World Scale
 		con.setY(40);
 		con.setMinMax(1.0f, 10.0f);
-		con.setMinimumStep(0.1f);
+		con.setStep(0.01f, 0.1f, 1.0f);
 		Core::gui["GameMenu"]["Window 3"].Slider.add("World Scale 1", &Core::gameVars->screen.fScale, con);
 
 		Core::gui["GameMenu"]["Window 3"].Slider["World Scale 1"].getF()->setEnableA(false, 0);
@@ -600,79 +612,79 @@ void _Admin::init() {
 		//
 		con.setY(440);
 		con.setMinMax(64.0f, 2048.0f);
-		con.setMinimumStep(1.0f);
+		con.setStep(1.0f, 10.0f, 100.0f);
 		Core::gui["GameMenu"]["Window 4"].Slider.add("Resolution", &Core::gameVars->debug.noise.fractal[Core::gameVars->debug.noise.iCurrentFractal].res, con);
 
 		//
 		con.setY(410);
 		con.setMinMax(1.0f, 1000.0f);
-		con.setMinimumStep(1.0f);
+		con.setStep(1.0f, 10.0f, 100.0f);
 		Core::gui["GameMenu"]["Window 4"].Slider.add("Tex Scale", &Core::gameVars->debug.noise.fractal[Core::gameVars->debug.noise.iCurrentFractal].tex_scale, con);
 
 		//
 		con.setY(380);
 		con.setMinMax(1.0f, 100000.0f);
-		con.setMinimumStep(1.0f);
+		con.setStep(1.0f, 10.0f, 100.0f);
 		Core::gui["GameMenu"]["Window 4"].Slider.add("Terrain Size", &Core::gameVars->debug.noise.fractal[Core::gameVars->debug.noise.iCurrentFractal].terrain_size, con);
 
 		// Offset X
 		con.setY(350);
 		con.setMinMax(-10000.0f, 10000.0f);
-		con.setMinimumStep(1.0f);
+		con.setStep(1.0f, 10.0f, 100.0f);
 		Core::gui["GameMenu"]["Window 4"].Slider.add("Terrain Height", &Core::gameVars->debug.noise.fractal[Core::gameVars->debug.noise.iCurrentFractal].terrain_height_offset, con);
 
 		// Offset X
 		con.setY(300);
 		con.setMinMax(-10000.0f, 10000.0f);
-		con.setMinimumStep(1.0f);
+		con.setStep(1.0f, 10.0f, 100.0f);
 		Core::gui["GameMenu"]["Window 4"].Slider.add("Offset X", &Core::gameVars->debug.noise.fractal[Core::gameVars->debug.noise.iCurrentFractal].offset.x, con);
 
 		// Offset Y
 		con.setY(270);
 		con.setMinMax(-10000.0f, 10000.0f);
-		con.setMinimumStep(1.0f);
+		con.setStep(1.0f, 10.0f, 100.0f);
 		Core::gui["GameMenu"]["Window 4"].Slider.add("Offset Y", &Core::gameVars->debug.noise.fractal[Core::gameVars->debug.noise.iCurrentFractal].offset.y, con);
 
 		// Delta
 		con.setY(240);
 		con.setMinMax(1.0f, 32.0f);
-		con.setMinimumStep(1.0f);
+		con.setStep(1.0f, 2.0f, 10.0f);
 		Core::gui["GameMenu"]["Window 4"].Slider.add("Delta", &Core::gameVars->debug.noise.fractal[Core::gameVars->debug.noise.iCurrentFractal].delta, con);
 
 		// Frequency
 		con.setY(210);
 		con.setMinMax(0.00001f, 0.00005f);
-		con.setMinimumStep(0.000001f);
+		con.setStep(0.000001f, 0.00001f, 0.0001f);
 		Core::gui["GameMenu"]["Window 4"].Slider.add("Frequency", &Core::gameVars->debug.noise.fractal[Core::gameVars->debug.noise.iCurrentFractal].frequency, con);
 
 		// Lacunarity
 		con.setY(180);
 		con.setMinMax(0.1f, 10.0f);
-		con.setMinimumStep(0.01f);
+		con.setStep(0.01f, 0.1f, 1.0f);
 		Core::gui["GameMenu"]["Window 4"].Slider.add("Lacunarity", &Core::gameVars->debug.noise.fractal[Core::gameVars->debug.noise.iCurrentFractal].lacunarity, con);
 
 		// Multiplier
 		con.setY(150);
 		con.setMinMax(0.1f, 1.0f);
-		con.setMinimumStep(0.01f);
+		con.setStep(0.001f, 0.01f, 0.1f);
 		Core::gui["GameMenu"]["Window 4"].Slider.add("Multiplier", &Core::gameVars->debug.noise.fractal[Core::gameVars->debug.noise.iCurrentFractal].multiplier, con);
 
 		// Scale
 		con.setY(120);
 		con.setMinMax(0.1f, 5000.0f);
-		con.setMinimumStep(0.1f);
+		con.setStep(1.0f, 10.0f, 100.0f);
 		Core::gui["GameMenu"]["Window 4"].Slider.add("Scale", &Core::gameVars->debug.noise.fractal[Core::gameVars->debug.noise.iCurrentFractal].scale, con);
 
 		// Octaves
 		con.setY(90);
 		con.setMinMax(1.0f, 10.0f);
-		con.setMinimumStep(1.0f);
+		con.setStep(1.0f, 1.0f, 1.0f);
 		Core::gui["GameMenu"]["Window 4"].Slider.add("Layers", &Core::gameVars->debug.noise.fractal[Core::gameVars->debug.noise.iCurrentFractal].layers, con);
 
 		// World Scale
 		con.setY(40);
 		con.setMinMax(1.0f, 10.0f);
-		con.setMinimumStep(0.1f);
+		con.setStep(0.01f, 0.1f, 1.0f);
 		Core::gui["GameMenu"]["Window 4"].Slider.add("World Scale 1", &Core::gameVars->screen.fScale, con);
 
 		bOneShot[23] = true;
@@ -695,7 +707,7 @@ void _Admin::init() {
 
 		con.setY(75);
 		con.setMinMax(0.0f, 2.0f);
-		con.setMinimumStep(1.0f);
+		con.setStep(1.0f);
 		con.setToolTip("Select active light source.");
 		Core::gui["GameMenu"]["Window 1"].Slider.add("DebugLight", &game->iDebugLight, con);
 
@@ -720,7 +732,7 @@ void _Admin::init() {
 
 		// Position
 		con.setToolTip("None");
-		con.setMinimumStep(1.0f);
+		con.setStep(1.0f, 10.0f, 100.0f);
 		con.setY(300);
 		con.setMinMax(-1000.0f, 1000.0f);
 		Core::gui["GameMenu"]["Window 1"].Slider.add("Light Pos X", &game->world->lights->GetPos(game->iDebugLight).x, con);
@@ -734,7 +746,7 @@ void _Admin::init() {
 		Core::gui["GameMenu"]["Window 1"].Slider.add("Light Pos Z", &game->world->lights->GetPos(game->iDebugLight).z, con);
 
 		// Direction
-		con.setMinimumStep(0.01f);
+		con.setStep(0.01f, 0.1f, 1.0f);
 		con.setY(200);
 		con.setMinMax(-1.0f, 1.0f);
 		Core::gui["GameMenu"]["Window 1"].Slider.add("Light Dir X", &game->world->lights->GetDir(game->iDebugLight).x, con);
@@ -763,7 +775,7 @@ void _Admin::init() {
 		con.showField();
 		con.showLabel();
 
-		con.setMinimumStep(1.0f);
+		con.setStep(1.0f, 10.0f, 100.0f);
 		con.setMinMax(-1000.0f, 1000.0f);
 
 		con.setPos(0, -70);
@@ -875,7 +887,7 @@ void _Admin::init() {
 		con.showLabel();
 		con.setMinMax(100.0f, 350.0f);
 		con.setPos(0, -40);
-		con.setMinimumStep(1.0f);
+		con.setStep(1.0f, 10.0f, 100.0f);
 		Core::gui["GameMenu"]["Window 6"].Slider.add("textArea Width", &Core::gui["GameMenu"]["Window 6"].TextEdit("TextArea 1").size.constraint.x, con);
 
 		con.setOrigin(Core::GUI::CONSTRAIN_RIGHT|Core::GUI::CONSTRAIN_CENTER);
@@ -903,7 +915,8 @@ void _Admin::init() {
 		Core::gui["GameMenu"]["Window 6"].Button.add("Scrolling", &Core::gui["GameMenu"]["Window 6"].TextEdit("TextArea 1").enableScrolling, cButton);
 		cButton.setPos(110, 5);
 		Core::gui["GameMenu"]["Window 6"].Button.add("Enable", true, cButton);
-		Core::gui["GameMenu"]["Window 6"].TextEdit["TextArea 1"].setEnableAPtr(Core::gui["GameMenu"]["Window 6"].Button["Enable"].getPointer(), 0);
+//		Core::gui["GameMenu"]["Window 6"].TextEdit["TextArea 1"].setEnableAPtr(Core::gui["GameMenu"]["Window 6"].Button["Enable"].getPointer(), 0);
+		Core::gui["GameMenu"]["Window 6"].TextEdit["TextArea 1"].setEnableAPtr(Core::gui["GameMenu"]["Window 6"].Button["Enable"].getStatePtr(), 0);
 
 //		cButton.setWidth(75, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
 		cButton.setPos(215, 5);
@@ -945,7 +958,6 @@ void _Admin::init() {
 	if (!bOneShot[34]) {
 		std::cout << "GUI: Loading #34: Checkbox ..................................... ";
 		//std::cout << "...............................................................";
-
 		// Objects to be controlled by checkbox
 		Core::GUI::Props_TextArea c1;
 		c1.setOrigin(Core::GUI::CONSTRAIN_TOP);
@@ -954,7 +966,7 @@ void _Admin::init() {
 		c1.setHeight(100, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
 		c1.setBorder(1, true);
 		c1.setRadius(10);
-		c1.setPadding(4);
+		c1.Props::setPadding(4);
 		c1.setVisibility(false);
 		c1.setPos(0, -150);
 
@@ -976,7 +988,8 @@ void _Admin::init() {
 		c.label.setAnchor(Core::GUI::CONSTRAIN_RIGHT);
 		c.setBorder(1, true);
 		c.setRadius(0);
-		c.setGroup(2);
+		//c.setGroup(2);
+		c.setGroup(Core::groups.add("Checkbox Sample", false));
 
 		c.setPos(0, -40);
 		Core::gui["GameMenu"]["Window 8"].CheckBox.add("Check 1", &Core::gui["GameMenu"]["Window 8"].TextArea["CheckText 1"].con->visibility, c);
@@ -991,24 +1004,29 @@ void _Admin::init() {
 		c.setPos(0, -100);
 		Core::gui["GameMenu"]["Window 8"].CheckBox.add("Check 3", &Core::gui["GameMenu"]["Window 8"].TextArea["CheckText 3"].con->visibility, c);
 
+		Core::GUI::Object::CheckBox *checkBox;
 		c.setOrigin(Core::GUI::CONSTRAIN_CENTER);
 		c.setAnchor(Core::GUI::CONSTRAIN_CENTER);
-		c.setGroup(0);
+		//c.setGroup(0);
 		c.setPos(0, -70);
 		c.label.disablePadding();
-//		c.label.setLabelAutoSize(true, true);
 		c.label.autoWidth();
 		c.label.autoHeight();
-		c.setOnState(Core::GUI::CONSTRAIN_CENTER, 0);
-		c.setOnState(Core::GUI::CONSTRAIN_CENTER, 1);
 		c.setWidth(40, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
 		c.setHeight(40, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
-		c.setOnState(0, 2);
-		c.setOnState(0, 3);
-		c.setGroup(3);
+//		c.setOnValue(Core::GUI::CONSTRAIN_CENTER, 0);
+//		c.setOnValue(Core::GUI::CONSTRAIN_CENTER, 1);
+//		c.setOnValue(0, 2);
+//		c.setOnValue(0, 3);
+		//c.setGroup(3);
+		c.setGroup(Core::groups.add("Check States Sample", true));
 		c.setRadius(20);
 		c.setPadding(-10);
-		Core::gui["GameMenu"]["Window 8"].CheckBox.add("Check Sample", false, c);
+		checkBox = &Core::gui["GameMenu"]["Window 8"].CheckBox.add("Check Sample", false, c);
+		checkBox->dataSet.addGroupState("ON", Core::GUI::CONSTRAIN_CENTER);
+		checkBox->dataSet.addGroupState("ON", Core::GUI::CONSTRAIN_CENTER);
+		checkBox->dataSet.addGroupState("ON", 0);
+		checkBox->dataSet.addGroupState("ON", 0);
 
 		Core::GUI::Props_CheckBox cLabelPos;
 		cLabelPos.setAnchor(Core::GUI::CONSTRAIN_CENTER);
@@ -1017,79 +1035,97 @@ void _Admin::init() {
 		cLabelPos.hideLabel();
 		cLabelPos.setBorder(1, true);
 		cLabelPos.setRadius(0);
-		cLabelPos.setGroup(3);
+		//cLabelPos.setGroup(3);
+		cLabelPos.setGroup(Core::groups["Check States Sample"]);
 
 		cLabelPos.setOrigin(Core::GUI::CONSTRAIN_TOP);
 		cLabelPos.setAnchor(Core::GUI::CONSTRAIN_CENTER);
 		cLabelPos.setPos(0, 0);
-		cLabelPos.setOnState(Core::GUI::CONSTRAIN_TOP, 0);
-		cLabelPos.setOnState(Core::GUI::CONSTRAIN_BOTTOM, 1);
-		cLabelPos.setOnState(0, 2);
-		cLabelPos.setOnState(10, 3);
-		Core::gui["GameMenu"]["Window 8"].CheckBox.add("CSAM T", false, cLabelPos, &Core::gui["GameMenu"]["Window 8"].CheckBox("Check Sample"));
+//		cLabelPos.setOnValue(Core::GUI::CONSTRAIN_TOP, 0);
+//		cLabelPos.setOnValue(Core::GUI::CONSTRAIN_BOTTOM, 1);
+//		cLabelPos.setOnValue(0, 2);
+//		cLabelPos.setOnValue(10, 3);
+		Core::gui["GameMenu"]["Window 8"].CheckBox.add("CSAM T", false, cLabelPos, &Core::gui["GameMenu"]["Window 8"].CheckBox("Check Sample")).dataSet.addGroupStates("ON", std::vector<Core::t_BIFS>{Core::GUI::CONSTRAIN_TOP, Core::GUI::CONSTRAIN_BOTTOM, 0, 10});
 
 		cLabelPos.setOrigin(Core::GUI::CONSTRAIN_BOTTOM);
 		cLabelPos.setAnchor(Core::GUI::CONSTRAIN_CENTER);
 		cLabelPos.setPos(0, 0);
-		cLabelPos.setOnState(Core::GUI::CONSTRAIN_BOTTOM, 0);
-		cLabelPos.setOnState(Core::GUI::CONSTRAIN_TOP, 1);
-		cLabelPos.setOnState(0, 2);
-		cLabelPos.setOnState(-10, 3);
-		Core::gui["GameMenu"]["Window 8"].CheckBox.add("CSAM B", false, cLabelPos, &Core::gui["GameMenu"]["Window 8"].CheckBox("Check Sample"));
+//		cLabelPos.setOnValue(Core::GUI::CONSTRAIN_BOTTOM, 0);
+//		cLabelPos.setOnValue(Core::GUI::CONSTRAIN_TOP, 1);
+//		cLabelPos.setOnValue(0, 2);
+//		cLabelPos.setOnValue(-10, 3);
+		Core::gui["GameMenu"]["Window 8"].CheckBox.add("CSAM B", false, cLabelPos, &Core::gui["GameMenu"]["Window 8"].CheckBox("Check Sample")).dataSet.addGroupStates("ON", std::vector<Core::t_BIFS>{Core::GUI::CONSTRAIN_BOTTOM, Core::GUI::CONSTRAIN_TOP, 0, -10});
 
 		cLabelPos.setOrigin(Core::GUI::CONSTRAIN_LEFT);
 		cLabelPos.setAnchor(Core::GUI::CONSTRAIN_CENTER);
 		cLabelPos.setPos(0, 0);
-		cLabelPos.setOnState(Core::GUI::CONSTRAIN_LEFT, 0);
-		cLabelPos.setOnState(Core::GUI::CONSTRAIN_RIGHT, 1);
-		cLabelPos.setOnState(-10, 2);
-		cLabelPos.setOnState(0, 3);
-		Core::gui["GameMenu"]["Window 8"].CheckBox.add("CSAM L", true, cLabelPos, &Core::gui["GameMenu"]["Window 8"].CheckBox("Check Sample"));
+//		cLabelPos.setOnValue(Core::GUI::CONSTRAIN_LEFT, 0);
+//		cLabelPos.setOnValue(Core::GUI::CONSTRAIN_RIGHT, 1);
+//		cLabelPos.setOnValue(-10, 2);
+//		cLabelPos.setOnValue(0, 3);
+		Core::gui["GameMenu"]["Window 8"].CheckBox.add("CSAM L", true, cLabelPos, &Core::gui["GameMenu"]["Window 8"].CheckBox("Check Sample")).dataSet.addGroupStates("ON", std::vector<Core::t_BIFS>{Core::GUI::CONSTRAIN_LEFT, Core::GUI::CONSTRAIN_RIGHT, -10, 0});
 
 		cLabelPos.setOrigin(Core::GUI::CONSTRAIN_RIGHT);
 		cLabelPos.setAnchor(Core::GUI::CONSTRAIN_CENTER);
 		cLabelPos.setPos(0, 0);
-		cLabelPos.setOnState(Core::GUI::CONSTRAIN_RIGHT, 0);
-		cLabelPos.setOnState(Core::GUI::CONSTRAIN_LEFT, 1);
-		cLabelPos.setOnState(10, 2);
-		cLabelPos.setOnState(0, 3);
-		Core::gui["GameMenu"]["Window 8"].CheckBox.add("CSAM R", false, cLabelPos, &Core::gui["GameMenu"]["Window 8"].CheckBox("Check Sample"));
+//		cLabelPos.setOnValue(Core::GUI::CONSTRAIN_RIGHT, 0);
+//		cLabelPos.setOnValue(Core::GUI::CONSTRAIN_LEFT, 1);
+//		cLabelPos.setOnValue(10, 2);
+//		cLabelPos.setOnValue(0, 3);
+		checkBox = &Core::gui["GameMenu"]["Window 8"].CheckBox.add("CSAM R", false, cLabelPos, &Core::gui["GameMenu"]["Window 8"].CheckBox("Check Sample"));
+		checkBox->dataSet.addGroupStates("ON", std::vector<Core::t_BIFS>{Core::GUI::CONSTRAIN_RIGHT, Core::GUI::CONSTRAIN_LEFT, 10, 0});
 
 		cLabelPos.setOrigin(Core::GUI::CONSTRAIN_TOP_LEFT);
 		cLabelPos.setAnchor(Core::GUI::CONSTRAIN_CENTER);
 		cLabelPos.setPos(0, 0);
-		cLabelPos.setOnState(Core::GUI::CONSTRAIN_TOP_LEFT, 0);
-		cLabelPos.setOnState(Core::GUI::CONSTRAIN_BOTTOM_RIGHT, 1);
-		cLabelPos.setOnState(-10, 2);
-		cLabelPos.setOnState(10, 3);
-		Core::gui["GameMenu"]["Window 8"].CheckBox.add("CSAM TL", false, cLabelPos, &Core::gui["GameMenu"]["Window 8"].CheckBox("Check Sample"));
+//		cLabelPos.setOnValue(Core::GUI::CONSTRAIN_TOP_LEFT, 0);
+//		cLabelPos.setOnValue(Core::GUI::CONSTRAIN_BOTTOM_RIGHT, 1);
+//		cLabelPos.setOnValue(-10, 2);
+//		cLabelPos.setOnValue(10, 3);
+		checkBox = &Core::gui["GameMenu"]["Window 8"].CheckBox.add("CSAM TL", false, cLabelPos, &Core::gui["GameMenu"]["Window 8"].CheckBox("Check Sample"));
+		checkBox->dataSet.addGroupState("ON", Core::GUI::CONSTRAIN_TOP_LEFT);
+		checkBox->dataSet.addGroupState("ON", Core::GUI::CONSTRAIN_BOTTOM_RIGHT);
+		checkBox->dataSet.addGroupState("ON", -10);
+		checkBox->dataSet.addGroupState("ON", 10);
 
 		cLabelPos.setOrigin(Core::GUI::CONSTRAIN_TOP_RIGHT);
 		cLabelPos.setAnchor(Core::GUI::CONSTRAIN_CENTER);
 		cLabelPos.setPos(0, 0);
-		cLabelPos.setOnState(Core::GUI::CONSTRAIN_TOP_RIGHT, 0);
-		cLabelPos.setOnState(Core::GUI::CONSTRAIN_BOTTOM_LEFT, 1);
-		cLabelPos.setOnState(10, 2);
-		cLabelPos.setOnState(10, 3);
-		Core::gui["GameMenu"]["Window 8"].CheckBox.add("CSAM TR", false, cLabelPos, &Core::gui["GameMenu"]["Window 8"].CheckBox("Check Sample"));
+//		cLabelPos.setOnValue(Core::GUI::CONSTRAIN_TOP_RIGHT, 0);
+//		cLabelPos.setOnValue(Core::GUI::CONSTRAIN_BOTTOM_LEFT, 1);
+//		cLabelPos.setOnValue(10, 2);
+//		cLabelPos.setOnValue(10, 3);
+		checkBox = &Core::gui["GameMenu"]["Window 8"].CheckBox.add("CSAM TR", false, cLabelPos, &Core::gui["GameMenu"]["Window 8"].CheckBox("Check Sample"));
+		checkBox->dataSet.addGroupState("ON", Core::GUI::CONSTRAIN_TOP_RIGHT);
+		checkBox->dataSet.addGroupState("ON", Core::GUI::CONSTRAIN_BOTTOM_LEFT);
+		checkBox->dataSet.addGroupState("ON", 10);
+		checkBox->dataSet.addGroupState("ON", 10);
 
 		cLabelPos.setOrigin(Core::GUI::CONSTRAIN_BOTTOM_LEFT);
 		cLabelPos.setAnchor(Core::GUI::CONSTRAIN_CENTER);
 		cLabelPos.setPos(0, 0);
-		cLabelPos.setOnState(Core::GUI::CONSTRAIN_BOTTOM_LEFT, 0);
-		cLabelPos.setOnState(Core::GUI::CONSTRAIN_TOP_RIGHT, 1);
-		cLabelPos.setOnState(-10, 2);
-		cLabelPos.setOnState(-10, 3);
-		Core::gui["GameMenu"]["Window 8"].CheckBox.add("CSAM BL", false, cLabelPos, &Core::gui["GameMenu"]["Window 8"].CheckBox("Check Sample"));
+//		cLabelPos.setOnValue(Core::GUI::CONSTRAIN_BOTTOM_LEFT, 0);
+//		cLabelPos.setOnValue(Core::GUI::CONSTRAIN_TOP_RIGHT, 1);
+//		cLabelPos.setOnValue(-10, 2);
+//		cLabelPos.setOnValue(-10, 3);
+		checkBox = &Core::gui["GameMenu"]["Window 8"].CheckBox.add("CSAM BL", false, cLabelPos, &Core::gui["GameMenu"]["Window 8"].CheckBox("Check Sample"));
+		checkBox->dataSet.addGroupState("ON", Core::GUI::CONSTRAIN_BOTTOM_LEFT);
+		checkBox->dataSet.addGroupState("ON", Core::GUI::CONSTRAIN_TOP_RIGHT);
+		checkBox->dataSet.addGroupState("ON", -10);
+		checkBox->dataSet.addGroupState("ON", -10);
 
 		cLabelPos.setOrigin(Core::GUI::CONSTRAIN_BOTTOM_RIGHT);
 		cLabelPos.setAnchor(Core::GUI::CONSTRAIN_CENTER);
 		cLabelPos.setPos(0, 0);
-		cLabelPos.setOnState(Core::GUI::CONSTRAIN_BOTTOM_RIGHT, 0);
-		cLabelPos.setOnState(Core::GUI::CONSTRAIN_TOP_LEFT, 1);
-		cLabelPos.setOnState(10, 2);
-		cLabelPos.setOnState(-10, 3);
-		Core::gui["GameMenu"]["Window 8"].CheckBox.add("CSAM BR", false, cLabelPos, &Core::gui["GameMenu"]["Window 8"].CheckBox("Check Sample"));
+//		cLabelPos.setOnValue(Core::GUI::CONSTRAIN_BOTTOM_RIGHT, 0);
+//		cLabelPos.setOnValue(Core::GUI::CONSTRAIN_TOP_LEFT, 1);
+//		cLabelPos.setOnValue(10, 2);
+//		cLabelPos.setOnValue(-10, 3);
+		checkBox = &Core::gui["GameMenu"]["Window 8"].CheckBox.add("CSAM BR", false, cLabelPos, &Core::gui["GameMenu"]["Window 8"].CheckBox("Check Sample"));
+		checkBox->dataSet.addGroupState("ON", Core::GUI::CONSTRAIN_BOTTOM_RIGHT);
+		checkBox->dataSet.addGroupState("ON", Core::GUI::CONSTRAIN_TOP_LEFT);
+		checkBox->dataSet.addGroupState("ON", 10);
+		checkBox->dataSet.addGroupState("ON", -10);
 
 		Core::GUI::Props_Slider con;
 		con.setOrigin(Core::GUI::CONSTRAIN_BOTTOM);
@@ -1108,17 +1144,17 @@ void _Admin::init() {
 
 		con.setPos(0, 90);
 		con.setMinMax(8, 100);
-		con.setMinimumStep(2.0f);
+		con.setStep(2.0f, 4.0f, 8.0f);
 		Core::gui["GameMenu"]["Window 8"].Slider.add("Width", &Core::gui["GameMenu"]["Window 8"].CheckBox("Check Sample").size.constraint.x, con);
 
 		con.setPos(0, 60);
 		con.setMinMax(8, 100);
-		con.setMinimumStep(2.0f);
+		con.setStep(2.0f, 4.0f, 8.0f);
 		Core::gui["GameMenu"]["Window 8"].Slider.add("Height", &Core::gui["GameMenu"]["Window 8"].CheckBox("Check Sample").size.constraint.y, con);
 
 		con.setPos(0, 30);
 		con.setMinMax(0, 100);
-		con.setMinimumStep(1.0f);
+		con.setStep(1.0f, 2.0f, 4.0f);
 		Core::gui["GameMenu"]["Window 8"].Slider.add("Radius", &Core::gui["GameMenu"]["Window 8"].CheckBox("Check Sample").radius, con);
 
 		bOneShot[34] = true;
@@ -1143,52 +1179,65 @@ void _Admin::init() {
 		con.showField();
 		con.showLabel();
 		con.setMinMax(100.0f, 1000.0f);
-		con.setPos(0, -20);
+		con.setPos(0, -40);
 		con.label.setOrigin(Core::GUI::CONSTRAIN_TOP_LEFT);
 		con.label.setAnchor(Core::GUI::CONSTRAIN_BOTTOM_LEFT);
 		con.label.setPos(0, 0);
 		con.field.setAnchor(Core::GUI::CONSTRAIN_TOP_RIGHT);
 		con.field.setOrigin(Core::GUI::CONSTRAIN_BOTTOM_RIGHT);
 		con.field.setPos(0, 0);
-		con.setMinimumStep(2.0f);
+		con.setStep(2.0f, 10.0f, 100.0f);
 		Core::gui["GameMenu"]["Window 9"].Slider.add("Window Width", &Core::gui["GameMenu"]["Window 9"].con->size.constraint.x, con);
 
-		con.setPos(-50, -100);
-		con.setWidth(50, Core::GUI::SIZE_CONSTRAINT_RELATIVE);
+		con.label.setOrigin(Core::GUI::CONSTRAIN_LEFT);
+		con.label.setAnchor(Core::GUI::CONSTRAIN_RIGHT);
+		con.field.setOrigin(Core::GUI::CONSTRAIN_RIGHT);
+		con.field.setAnchor(Core::GUI::CONSTRAIN_LEFT);
+		con.setPos(-50, -120);
+		con.setWidth(40, Core::GUI::SIZE_CONSTRAINT_RELATIVE);
 		con.setMinMax(0, 100);
-		con.setMinimumStep(1.0f);
-		Core::gui["GameMenu"]["Window 9"].Slider.add("Radius", &Core::gui["GameMenu"]["Window 9"].con->radius, con);
+		con.setStep(1.0f, 5.0f, 10.0f);
+		Core::gui["GameMenu"]["Window 9"].Slider.add("Font", &Core::gameVars->font.iPointSize, con);
 
-		con.setPos(-50, -150);
+		con.modPos(0, -25);
 		con.setMinMax(2, 100);
-		con.setMinimumStep(2.0f);
-		Core::gui["GameMenu"]["Window 9"].Slider.add("Font Size", &Core::gameVars->font.iPointSize, con);
+		con.setStep(1.0f, 5.0f, 10.0f);
+		Core::gui["GameMenu"]["Window 9"].Slider.add("Radius", Core::gui["GameMenu"]["Window 9"].con->radius, con);
 
-		con.setPos(-50, -200);
+		con.modPos(0, -25);
 		con.setMinMax(0, 100);
-		con.setMinimumStep(1.0f);
-		Core::gui["GameMenu"]["Window 9"].Slider.add("Border Size", &Core::gui["GameMenu"]["Window 9"].con->borderNormal, con);
+		con.setStep(1.0f, 5.0f, 10.0f);
+		Core::gui["GameMenu"]["Window 9"].Slider.add("Border", Core::gui["GameMenu"]["Window 9"].con->borderNormal, con);
 
-		con.setPos(-50, -250);
+		con.modPos(0, -25);
 		con.setMinMax(0, 100);
-		con.setMinimumStep(1.0f);
-		Core::gui["GameMenu"]["Window 9"].Slider.add("Padding - Top", &Core::gui["GameMenu"]["Window 9"].con->vPadding.top, con);
+		con.setStep(1.0f, 5.0f, 10.0f);
+		Core::gui["GameMenu"]["Window 9"].Slider.add("Pad: T", Core::gui["GameMenu"]["Window 9"].con->vPadding.top, con);
 
-		con.setPos(-50, -300);
+		con.modPos(0, -25);
 		con.setMinMax(0, 100);
-		con.setMinimumStep(1.0f);
-		Core::gui["GameMenu"]["Window 9"].Slider.add("Padding - Bottom", &Core::gui["GameMenu"]["Window 9"].con->vPadding.bottom, con);
+		con.setStep(1.0f, 5.0f, 10.0f);
+		Core::gui["GameMenu"]["Window 9"].Slider.add("Pad: B", Core::gui["GameMenu"]["Window 9"].con->vPadding.bottom, con);
 
-		con.setPos(-50, -350);
+		con.modPos(0, -25);
 		con.setMinMax(0, 100);
-		con.setMinimumStep(1.0f);
-		Core::gui["GameMenu"]["Window 9"].Slider.add("Padding - Left", &Core::gui["GameMenu"]["Window 9"].con->vPadding.left, con);
+		con.setStep(1.0f, 5.0f, 10.0f);
+		Core::gui["GameMenu"]["Window 9"].Slider.add("Pad: L", Core::gui["GameMenu"]["Window 9"].con->vPadding.left, con);
 
-		con.setPos(-50, -400);
+		con.modPos(0, -25);
 		con.setMinMax(0, 100);
-		con.setMinimumStep(1.0f);
-		Core::gui["GameMenu"]["Window 9"].Slider.add("Padding - Right", &Core::gui["GameMenu"]["Window 9"].con->vPadding.right, con);
+		con.setStep(1.0f, 5.0f, 10.0f);
+		Core::gui["GameMenu"]["Window 9"].Slider.add("Pad: R", Core::gui["GameMenu"]["Window 9"].con->vPadding.right, con);
 
+		con.modPos(0, -25);
+		con.setMinMax(0, 10000);
+		con.setStep(10.0f, 100.0f, 1000.0f);
+		Core::gui["GameMenu"]["Window 9"].Slider.add("Show Tip", &Core::GUI::Props::ToolTip::showDelay, con);
+
+		con.modPos(0, -25);
+		con.setMinMax(0, 30000);
+		con.setStep(10.0f, 100.0f, 1000.0f);
+		Core::gui["GameMenu"]["Window 9"].Slider.add("Hide Tip", &Core::GUI::Props::ToolTip::hideDelay, con);
 
 		con.setOrigin(Core::GUI::CONSTRAIN_RIGHT|Core::GUI::CONSTRAIN_CENTER);
 		con.setAnchor(Core::GUI::CONSTRAIN_RIGHT);
@@ -1200,19 +1249,34 @@ void _Admin::init() {
 		con.label.setAnchor(Core::GUI::CONSTRAIN_BOTTOM);
 		con.field.setOrigin(Core::GUI::CONSTRAIN_BOTTOM);
 		con.field.setAnchor(Core::GUI::CONSTRAIN_TOP);
-		con.setMinimumStep(2.0f);
+		con.setStep(1.0f, 5.0f, 10.0f);
 		Core::gui["GameMenu"]["Window 9"].Slider.add("Window Height", &Core::gui["GameMenu"]["Window 9"].con->size.constraint.y, con);
 
 		Core::GUI::Props_Button cButton;
 		cButton.setOrigin(Core::GUI::CONSTRAIN_BOTTOM);
 		cButton.setAnchor(Core::GUI::CONSTRAIN_BOTTOM);
-		cButton.setWidth(150, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+		cButton.setWidth(130, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
 		cButton.setHeight(20, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
 		cButton.setBorder(1, true);
 		cButton.setRadius(10);
 		cButton.setButtonType(Core::GUI::BUTTON_TOGGLE);
 		cButton.setPos(5, 5);
 		Core::gui["GameMenu"]["Window 9"].Button.add("Round Border", &Core::gui["GameMenu"]["Window 9"].con->roundBorder, cButton);
+		cButton.modPos(130, 0);
+		Core::gui["GameMenu"]["Window 9"].Button.add("Tooltips", &Core::GUI::Props::ToolTip::bShowGlobal, cButton);
+		cButton.modPos(-260, 0);
+		Core::gui["GameMenu"]["Window 9"].Button.add("Enable Settings", &Core::GUI::Props::bGlobalSettings, cButton);
+
+//		Core::GUI::Props_Button cButton2;
+//		cButton2.setOrigin(Core::GUI::CONSTRAIN_BOTTOM);
+//		cButton2.setAnchor(Core::GUI::CONSTRAIN_BOTTOM);
+//		cButton2.setWidth(150, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+//		cButton2.setHeight(20, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+//		cButton2.setBorder(1, true);
+//		cButton2.setRadius(10);
+//		cButton2.setButtonType(Core::GUI::BUTTON_TOGGLE);
+//		cButton2.setPos(165, 5);
+//		Core::gui["GameMenu"]["Window 9"].Button.add("Tooltips", &Core::GUI::Props::ToolTip::bShowGlobal, cButton2);
 
 		bOneShot[35] = true;
 		std::cout << "Done" << std::endl;
@@ -1302,22 +1366,22 @@ void _Admin::init() {
 
 		con.setPos(-10, 80);
 		con.setMinMax(0, 100);
-		con.setMinimumStep(1.0f);
+		con.setStep(1.0f, 5.0f, 10.0f);
 		Core::gui["GameMenu"]["Window 11"].Slider.add("Top", &Core::gui["GameMenu"]["Window 11"].con->vPadding.top, con);
 
 		con.modPos(0, -20);
 		con.setMinMax(0, 100);
-		con.setMinimumStep(1.0f);
+		con.setStep(1.0f, 5.0f, 10.0f);
 		Core::gui["GameMenu"]["Window 11"].Slider.add("Bottom", &Core::gui["GameMenu"]["Window 11"].con->vPadding.bottom, con);
 
 		con.modPos(0, -20);
 		con.setMinMax(0, 100);
-		con.setMinimumStep(1.0f);
+		con.setStep(1.0f, 5.0f, 10.0f);
 		Core::gui["GameMenu"]["Window 11"].Slider.add("Left", &Core::gui["GameMenu"]["Window 11"].con->vPadding.left, con);
 
 		con.modPos(0, -20);
 		con.setMinMax(0, 100);
-		con.setMinimumStep(1.0f);
+		con.setStep(1.0f, 5.0f, 10.0f);
 		Core::gui["GameMenu"]["Window 11"].Slider.add("Right", &Core::gui["GameMenu"]["Window 11"].con->vPadding.right, con);
 
 
@@ -1343,52 +1407,58 @@ void _Admin::init() {
 		c.label.showBackground();
 		c.setBorder(1, true);
 		c.setRadius(10);
-		c.setGroup(2);
+		//c.setGroup(2);
+		c.setGroup(Core::groups.add("Stipple Group"));
 
-		c.setPos(0, -22);		c.setOnState(1);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_ANSI31, false, c);
-		c.setPos(0, -44);		c.setOnState(2);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_ANGLE_THICK, false, c);
-		c.setPos(0, -66);		c.setOnState(3);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_ANGLE, false, c);
-		c.setPos(0, -88);		c.setOnState(4);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_BLOCKS, false, c);
-		c.setPos(0, -110);		c.setOnState(5);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_CHECKERBOARD, false, c);
-		c.setPos(0, -132);		c.setOnState(6);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_SAND, false, c);
-		c.setPos(0, -154);		c.setOnState(7);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_INSULATION, false, c);
-		c.setPos(0, -176);		c.setOnState(8);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_BOARD, false, c);
-		c.setPos(0, -198);		c.setOnState(9);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_ZIGZAG, false, c);
-		c.setPos(0, -220);		c.setOnState(10);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_WATER, false, c);
-		c.setPos(0, -242);		c.setOnState(11);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_GRASS, false, c);
-		c.setPos(0, -264);		c.setOnState(12);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_CHECKER, false, c);
-		c.setPos(0, -286);		c.setOnState(13);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_OCTAGONS, false, c);
-		c.setPos(0, -308);		c.setOnState(14);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_WAFFLE, false, c);
-		c.setPos(0, -330);		c.setOnState(15);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_PLUSSES, false, c);
-		c.setPos(0, -352);		c.setOnState(16);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_SHAKES, false, c);
-		c.setPos(0, -374);		c.setOnState(17);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_EARTH, false, c);
-		c.setPos(0, -396);		c.setOnState(18);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_HERRING, false, c);
-		c.setPos(0, -418);		c.setOnState(19);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_DOTS, false, c);
+
+
+
+		c.setPos(0, -22);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_ANSI31, false, c).dataSet.addGroupState("ON",			1);
+		c.setPos(0, -44);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_ANGLE_THICK, false, c).dataSet.addGroupState("ON",	2);
+		c.setPos(0, -66);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_ANGLE, false, c).dataSet.addGroupState("ON", 			3);
+		c.setPos(0, -88);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_BLOCKS, false, c).dataSet.addGroupState("ON", 		4);
+		c.setPos(0, -110);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_CHECKERBOARD, false, c).dataSet.addGroupState("ON",	5);
+		c.setPos(0, -132);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_SAND, false, c).dataSet.addGroupState("ON", 			6);
+		c.setPos(0, -154);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_INSULATION, false, c).dataSet.addGroupState("ON", 	7);
+		c.setPos(0, -176);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_BOARD, false, c).dataSet.addGroupState("ON", 			8);
+		c.setPos(0, -198);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_ZIGZAG, false, c).dataSet.addGroupState("ON", 		9);
+		c.setPos(0, -220);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_WATER, false, c).dataSet.addGroupState("ON", 			10);
+		c.setPos(0, -242);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_GRASS, false, c).dataSet.addGroupState("ON", 			11);
+		c.setPos(0, -264);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_CHECKER, false, c).dataSet.addGroupState("ON",		12);
+		c.setPos(0, -286);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_OCTAGONS, false, c).dataSet.addGroupState("ON",	 	13);
+		c.setPos(0, -308);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_WAFFLE, false, c).dataSet.addGroupState("ON", 		14);
+		c.setPos(0, -330);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_PLUSSES, false, c).dataSet.addGroupState("ON", 		15);
+		c.setPos(0, -352);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_SHAKES, false, c).dataSet.addGroupState("ON", 		16);
+		c.setPos(0, -374);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_EARTH, false, c).dataSet.addGroupState("ON", 			17);
+		c.setPos(0, -396);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_HERRING, false, c).dataSet.addGroupState("ON",		18);
+		c.setPos(0, -418);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_DOTS, false, c).dataSet.addGroupState("ON", 			19);
 
 		c.setOrigin(Core::GUI::CONSTRAIN_TOP_RIGHT);
 		c.setAnchor(Core::GUI::CONSTRAIN_TOP_RIGHT);
 		c.label.setOrigin(Core::GUI::CONSTRAIN_LEFT);
 		c.label.setAnchor(Core::GUI::CONSTRAIN_RIGHT);
 		c.label.setPos(-10, 0);
-		c.setPos(0, -22);	c.setOnState(20);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_GROUT, false, c);
-		c.setPos(0, -44);	c.setOnState(21);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_CROSSES, false, c);
-		c.setPos(0, -66);	c.setOnState(22);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_TILEPAT1, false, c);
-		c.setPos(0, -88);	c.setOnState(23);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_WOOD, false, c);
-		c.setPos(0, -110);	c.setOnState(24);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_GRADIENT_V, false, c);
-		c.setPos(0, -132);	c.setOnState(25);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_GRADIENT_H, false, c);
-		c.setPos(0, -154);	c.setOnState(26);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_SHADE_125, false, c);
-		c.setPos(0, -176);	c.setOnState(27);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_SHADE_25, false, c);
-		c.setPos(0, -198);	c.setOnState(28);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_SHADE_50, false, c);
-		c.setPos(0, -220);	c.setOnState(29);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_SHADE_75, false, c);
-		c.setPos(0, -242);	c.setOnState(30);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_SHINGLE, false, c);
-		c.setPos(0, -264);	c.setOnState(31);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_TILE_OFFSET, false, c);
-		c.setPos(0, -286);	c.setOnState(32);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_FENCE, false, c);
-		c.setPos(0, -308);	c.setOnState(33);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_SHALE, false, c);
-		c.setPos(0, -330);	c.setOnState(34);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_SANDSTONE, false, c);
-		c.setPos(0, -352);	c.setOnState(35);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_SLOT, false, c);
-		c.setPos(0, -374);	c.setOnState(36);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_LIMESTONE, false, c);
-		c.setPos(0, -396);	c.setOnState(37);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_SALT, false, c);
-		c.setPos(0, -418);	c.setOnState(38);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_PUMICE, false, c);
+		c.setPos(0, -22);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_GROUT, false, c).dataSet.addGroupState("ON", 			20);
+		c.setPos(0, -44);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_CROSSES, false, c).dataSet.addGroupState("ON", 		21);
+		c.setPos(0, -66);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_TILEPAT1, false, c).dataSet.addGroupState("ON", 		22);
+		c.setPos(0, -88);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_WOOD, false, c).dataSet.addGroupState("ON", 			23);
+		c.setPos(0, -110);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_GRADIENT_V, false, c).dataSet.addGroupState("ON", 	24);
+		c.setPos(0, -132);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_GRADIENT_H, false, c).dataSet.addGroupState("ON", 	25);
+		c.setPos(0, -154);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_SHADE_125, false, c).dataSet.addGroupState("ON", 		26);
+		c.setPos(0, -176);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_SHADE_25, false, c).dataSet.addGroupState("ON", 		27);
+		c.setPos(0, -198);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_SHADE_50, false, c).dataSet.addGroupState("ON", 		28);
+		c.setPos(0, -220);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_SHADE_75, false, c).dataSet.addGroupState("ON", 		29);
+		c.setPos(0, -242);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_SHINGLE, false, c).dataSet.addGroupState("ON", 		30);
+		c.setPos(0, -264);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_TILE_OFFSET, false, c).dataSet.addGroupState("ON", 	31);
+		c.setPos(0, -286);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_FENCE, false, c).dataSet.addGroupState("ON", 			32);
+		c.setPos(0, -308);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_SHALE, false, c).dataSet.addGroupState("ON", 			33);
+		c.setPos(0, -330);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_SANDSTONE, false, c).dataSet.addGroupState("ON", 		34);
+		c.setPos(0, -352);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_SLOT, false, c).dataSet.addGroupState("ON", 			35);
+		c.setPos(0, -374);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_LIMESTONE, false, c).dataSet.addGroupState("ON", 		36);
+		c.setPos(0, -396);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_SALT, false, c).dataSet.addGroupState("ON", 			37);
+		c.setPos(0, -418);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_PUMICE, false, c).dataSet.addGroupState("ON", 		38);
+
+
 
 
 
@@ -1427,7 +1497,7 @@ void _Admin::init() {
 	 * Color Boxes
 	 */
 	if (!bOneShot[39]) {
-		std::cout << "GUI: Loading #39: Colors ........................................ ";
+		std::cout << "GUI: Loading #39: Colors ....................................... ";
 
 		//initColors();
 
@@ -1439,7 +1509,7 @@ void _Admin::init() {
 	 * Color Boxes
 	 */
 	if (!bOneShot[40]) {
-		std::cout << "GUI: Loading #40: Colors 2....................................... ";
+		std::cout << "GUI: Loading #40: Colors 2...................................... ";
 //		//std::cout << "...............................................................";
 //
 		bOneShot[40] = true;
@@ -1450,7 +1520,7 @@ void _Admin::init() {
 		std::cout << "GUI: Loading #41: Skill Tree ................................... ";
 		//std::cout << "...............................................................";
 
-		//initSkillTree();
+		initSkillTree();
 
 		bOneShot[41] = true;
 		std::cout << "Done" << std::endl;
@@ -1514,13 +1584,13 @@ void _Admin::init() {
 			con.showLabel();
 			con.showField();
 
-			con.setPos(0, 0);		con.setMinMax(-500, 500);		con.setMinimumStep(1.0f);
+			con.setPos(0, 0);		con.setMinMax(-500, 500);		con.setStep(1.0f, 10.0f, 100.0f);
 			Core::gui["GameMenu"]["Window 17"]["Position"].Slider.add("TextArea: X", &Core::gui["GameMenu"]["Window 17"].TextArea("TextArea").pos.constraint.x, con);
-			con.modPos(0, -20);		con.setMinMax(-500, 500);		con.setMinimumStep(1.0f);
+			con.modPos(0, -20);		con.setMinMax(-500, 500);		con.setStep(1.0f, 10.0f, 100.0f);
 			Core::gui["GameMenu"]["Window 17"]["Position"].Slider.add("TextArea: Y", &Core::gui["GameMenu"]["Window 17"].TextArea("TextArea").pos.constraint.y, con);
-			con.modPos(0, -20);		con.setMinMax(-500, 500);		con.setMinimumStep(1.0f);
+			con.modPos(0, -20);		con.setMinMax(-500, 500);		con.setStep(1.0f, 10.0f, 100.0f);
 			Core::gui["GameMenu"]["Window 17"]["Position"].Slider.add("Sprite: X", &Core::gui["GameMenu"]["Window 17"].Sprite("Sprite").pos.constraint.x, con);
-			con.modPos(0, -20);		con.setMinMax(-500, 500);		con.setMinimumStep(1.0f);
+			con.modPos(0, -20);		con.setMinMax(-500, 500);		con.setStep(1.0f, 10.0f, 100.0f);
 			Core::gui["GameMenu"]["Window 17"]["Position"].Slider.add("Sprite: Y", &Core::gui["GameMenu"]["Window 17"].Sprite("Sprite").pos.constraint.y, con);
 
 			// Padding adjustment
@@ -1531,13 +1601,13 @@ void _Admin::init() {
 //			Slider_Window.enableScissor();
 			Core::gui["GameMenu"]["Window 17"].add("Padding", Slider_Window);
 
-			con.setPos(0, 0);		con.setMinMax(-100, 100);		con.setMinimumStep(1.0f);
+			con.setPos(0, 0);		con.setMinMax(-100, 100);		con.setStep(1.0f, 10.0f, 100.0f);
 			Core::gui["GameMenu"]["Window 17"]["Padding"].Slider.add("Padding: T", &Core::gui["GameMenu"]["Window 17"].con->vPadding.top, con);
-			con.modPos(0, -20);		con.setMinMax(-100, 100);		con.setMinimumStep(1.0f);
+			con.modPos(0, -20);		con.setMinMax(-100, 100);		con.setStep(1.0f, 10.0f, 100.0f);
 			Core::gui["GameMenu"]["Window 17"]["Padding"].Slider.add("Padding: B", &Core::gui["GameMenu"]["Window 17"].con->vPadding.bottom, con);
-			con.modPos(0, -20);		con.setMinMax(-100, 100);		con.setMinimumStep(1.0f);
+			con.modPos(0, -20);		con.setMinMax(-100, 100);		con.setStep(1.0f, 10.0f, 100.0f);
 			Core::gui["GameMenu"]["Window 17"]["Padding"].Slider.add("Padding: L", &Core::gui["GameMenu"]["Window 17"].con->vPadding.left, con);
-			con.modPos(0, -20);		con.setMinMax(-100, 100);		con.setMinimumStep(1.0f);
+			con.modPos(0, -20);		con.setMinMax(-100, 100);		con.setStep(1.0f, 10.0f, 100.0f);
 			Core::gui["GameMenu"]["Window 17"]["Padding"].Slider.add("Padding: R", &Core::gui["GameMenu"]["Window 17"].con->vPadding.right, con);
 		}
 
@@ -1549,8 +1619,22 @@ void _Admin::init() {
 		std::cout << "GUI: Loading #43: Progress Bar ................................. ";
 		//std::cout << "...............................................................";
 
-		Core::GUI::Props_ProgressBar prop;
+		// Standalone slider (internal value)
+		Core::GUI::Props_Slider con;
+		con.setOrigin(Core::GUI::CONSTRAIN_BOTTOM);
+		con.setAnchor(Core::GUI::CONSTRAIN_BOTTOM);
+		con.setWidth(60, Core::GUI::SIZE_CONSTRAINT_RELATIVE);
+		con.setHeight(10, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+		con.control.setHeight(20, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+		con.showLabel();
+		con.showField();
+		con.setPos(0, 10);		con.setMinMax(0, 100);		con.setStep(1.0f, 2.0f, 10.0f);
+		con.setToolTip("This slider is using an internal value and not tied\n"\
+					   "to a value directly. The Progress Bars are tied to this\n"\
+					   "Sliders internal value instead.");
+		Core::gui["GameMenu"]["Window 18"].Slider.add("Progress", 25, con);
 
+		Core::GUI::Props_ProgressBar prop;
 		prop.setOrigin(Core::GUI::CONSTRAIN_TOP);
 		prop.setAnchor(Core::GUI::CONSTRAIN_TOP);
 		prop.setWidth(100, Core::GUI::SIZE_CONSTRAINT_RELATIVE);
@@ -1558,7 +1642,10 @@ void _Admin::init() {
 		prop.setPos(0, -40);
 		prop.setPadding(5);
 		prop.disableScissor();
-		Core::gui["GameMenu"]["Window 18"].ProgressBar.add("Progress Bar 1", 25, prop);
+		prop.setToolTip("This is a standard progress bar using only\n"\
+						"the most basic setup.");
+//		Core::gui["GameMenu"]["Window 18"].ProgressBar.add("Progress Bar 1", 25, prop);
+		Core::gui["GameMenu"]["Window 18"].ProgressBar.add("Progress Bar 1", &Core::gui["GameMenu"]["Window 18"].Slider["Progress"].getI()->getValuePtr(), prop);
 
 		prop.setOrigin(Core::GUI::CONSTRAIN_TOP);
 		prop.setAnchor(Core::GUI::CONSTRAIN_TOP);
@@ -1572,33 +1659,151 @@ void _Admin::init() {
 		prop.empty.setRadius(10);
 		prop.empty.setPadding(0);
 		prop.empty.setStipplePattern(&Core::stipple[Core::stipple.STIPPLE_DOTS]);
-		prop.empty.color.back().base = &Core::colors[Core::colors().Red];
+		prop.empty.colorBack.base = &Core::colors[Core::colors().Red];
+		prop.empty.colorBack.highlight = &Core::colors[Core::colors().Pink];
+		prop.empty.colorBack.active = &Core::colors[Core::colors().Red];
 		prop.fill.setBorder(1, 1);
 		prop.fill.setRadius(10);
-		prop.fill.color.back().base = &Core::colors[Core::colors().Green];
-
-		prop.field.color.border().base = &Core::colors[Core::colors().White];
-		prop.field.color.border().highlight = &Core::colors[Core::colors().White];
-		prop.field.color.border().active = &Core::colors[Core::colors().White];
-		prop.field.color.back().base = &Core::colors[Core::colors().White];
-		prop.field.color.back().highlight = &Core::colors[Core::colors().White];
-		prop.field.color.back().active = &Core::colors[Core::colors().White];
-		Core::gui["GameMenu"]["Window 18"].ProgressBar.add("Progress Bar 2", Core::gui["GameMenu"]["Window 18"].ProgressBar["Progress Bar 1"].getPointer(), prop);
+		prop.fill.colorBack.base = &Core::colors[Core::colors().Green];
+		prop.fill.colorBack.highlight = &Core::colors[Core::colors().Light_green];
+		prop.fill.colorBack.active = &Core::colors[Core::colors().Green];
+		prop.field.colorBorder.base = &Core::colors[Core::colors().White];
+		prop.field.colorBorder.highlight = &Core::colors[Core::colors().White];
+		prop.field.colorBorder.active = &Core::colors[Core::colors().White];
+		prop.field.colorBack.base = &Core::colors[Core::colors().White];
+		prop.field.colorBack.highlight = &Core::colors[Core::colors().White];
+		prop.field.colorBack.active = &Core::colors[Core::colors().White];
+		prop.setToolTip("This progress bar is using custom colors and\n"\
+						"modifications to the slider style. The stipple\n"\
+						"pattern has been changed and the fill bar has\n"\
+						"been given a border. To do this the padding on\n"\
+						"the empty bar has been reduced to 0 so the fill\n"\
+						"bar is being drawn on top of the empty bar.");
+//		Core::gui["GameMenu"]["Window 18"].ProgressBar.add("Progress Bar 2", Core::gui["GameMenu"]["Window 18"].ProgressBar["Progress Bar 1"].getPointer(), prop);
+		Core::gui["GameMenu"]["Window 18"].ProgressBar.add("Progress Bar 2", &Core::gui["GameMenu"]["Window 18"].Slider["Progress"].getI()->getValuePtr(), prop);
 
 		// TODO: Add a slider to set progress amount
-		Core::GUI::Props_Slider con;
-		con.setOrigin(Core::GUI::CONSTRAIN_BOTTOM);
-		con.setAnchor(Core::GUI::CONSTRAIN_BOTTOM);
-		con.setWidth(60, Core::GUI::SIZE_CONSTRAINT_RELATIVE);
-		con.setHeight(10, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
-		con.control.setHeight(20, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
-		con.showLabel();
-		con.showField();
-		con.setPos(0, 10);		con.setMinMax(0, 100);		con.setMinimumStep(1.0f);
-		Core::gui["GameMenu"]["Window 18"].Slider.add("Progress", Core::gui["GameMenu"]["Window 18"].ProgressBar["Progress Bar 1"].getPointer(), con);
-//		Core::gui["GameMenu"]["Window 18"].Slider.add("Progress", &Core::gui["GameMenu"]["Window 18"].ProgressBar["Progress Bar"].valuePtr, con);
+//		Core::GUI::Props_Slider con;
+//		con.setOrigin(Core::GUI::CONSTRAIN_BOTTOM);
+//		con.setAnchor(Core::GUI::CONSTRAIN_BOTTOM);
+//		con.setWidth(60, Core::GUI::SIZE_CONSTRAINT_RELATIVE);
+//		con.setHeight(10, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+//		con.control.setHeight(20, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+//		con.showLabel();
+//		con.showField();
+//		con.setPos(0, 10);		con.setMinMax(0, 100);		con.setStep(1.0f);
+//		Core::gui["GameMenu"]["Window 18"].Slider.add("Progress", Core::gui["GameMenu"]["Window 18"].ProgressBar["Progress Bar 1"].getPointer(), con);
 
 		bOneShot[43] = true;
+		std::cout << "Done" << std::endl;
+	}
+
+
+	if (!bOneShot[44]) {
+		std::cout << "GUI: Loading #44: ComboBox ..................................... ";
+		//std::cout << "...............................................................";
+
+		Core::GUI::Props_ComboBox prop;
+		prop.setOrigin(Core::GUI::CONSTRAIN_TOP_LEFT);
+		prop.setAnchor(Core::GUI::CONSTRAIN_TOP_LEFT);
+		//prop.setWidth(100, Core::GUI::SIZE_CONSTRAINT_RELATIVE);
+		//prop.setHeight(100, Core::GUI::SIZE_CONSTRAINT_RELATIVE);
+		prop.setPos(0, -40);
+		prop.setToolTip("This is a ComboBox test that should show the\n"\
+						"currently selected item and also when a button\n"\
+						"is pressed a list is shown with alternate options\n"\
+						"to choose from. This combo box uses default\n"\
+						"settings which include an auto-hide of the item\n"\
+						"list when the mouse leaves the combo box area.");
+
+		using namespace Core::GUI::Object;
+		using namespace std;
+		using namespace Core;
+
+		Core::gui["GameMenu"]["Window 19"].ComboBox.add("ComboBox1", prop).addItems(t_ComboBoxItems{make_pair("Item 0",1),
+																								    make_pair("Item 1",2),
+																									make_pair("Item 2",4),
+																									make_pair("Item 3",8),
+																									make_pair("Item 4",16),
+																									make_pair("Item 5",32) });
+
+		//Core::gui["GameMenu"]["Window 19"].ComboBox.add("ComboBox1", prop);
+
+		//Core::gui["GameMenu"]["Window 19"].ComboBox.add("ComboBox1", prop).addItems(std::vector{std::pair<std::string, Core::t_BIFS>("test", 1)});
+
+//		Core::gui["GameMenu"]["Window 19"].ComboBox.add("ComboBox1", prop);
+		//Core::gui["GameMenu"]["Window 19"].ComboBox["ComboBox1"].addItem("Item 1", 2);
+		//Core::gui["GameMenu"]["Window 19"].ComboBox["ComboBox1"].addItem("Item 2", 4);
+		//Core::gui["GameMenu"]["Window 19"].ComboBox["ComboBox1"].addItem("Item 3", 8);
+		//Core::gui["GameMenu"]["Window 19"].ComboBox["ComboBox1"].addItem("Item 4", 16);
+		//Core::gui["GameMenu"]["Window 19"].ComboBox["ComboBox1"].addItem("Item 5", 32);
+
+
+		prop.setOrigin(Core::GUI::CONSTRAIN_TOP_RIGHT);
+		prop.setAnchor(Core::GUI::CONSTRAIN_TOP_RIGHT);
+		prop.setWidth(200, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+		prop.itemList.setPadding(1);
+		//prop.setHeight(100, Core::GUI::SIZE_CONSTRAINT_RELATIVE);
+		prop.setPos(0, -40);
+		//prop.setPadding(0);
+		prop.setToolTip("This is another combo box to showcase a larger\n"\
+						"list of items with scrolling capability. This\n"\
+						"combo box also has:\n\n"\
+						" - Two different methods of adding items to the list\n"\
+						" - Uses auto width/height\n"\
+						" - Doesn't auto hide item list\n"\
+						" - itemList padding set to 1 (border size)\n"\
+						" - No border on up/down buttons");
+
+		prop.autoWidth();
+		prop.autoHeight();
+		prop.setAutoHide(false);
+		prop.scroll.setBorder(0, 0);
+		//prop.item.autoHeight();	// FIXME: Doesn't work, likely because itemList sets height first and never updates after autoheight calculated
+
+		// Adding some initial items at ComboBox creation
+		Core::gui["GameMenu"]["Window 19"].ComboBox.add("ComboBox2", prop).addItems(t_ComboBoxItems{make_pair("Test Object 1", 1),
+																									make_pair("Test Object 2", 2),
+																									make_pair("Test Object 3", 3),
+																									make_pair("Test Object 4", 4),
+																									make_pair("Test Object 5", 5) });
+
+		// Adding additional list items after ComboBox creation
+		Core::gui["GameMenu"]["Window 19"].ComboBox["ComboBox2"].addItem("Test Object 6", 6);
+		Core::gui["GameMenu"]["Window 19"].ComboBox["ComboBox2"].addItem("Test Object 7", 7);
+		Core::gui["GameMenu"]["Window 19"].ComboBox["ComboBox2"].addItem("Test Object 8", 8);
+		Core::gui["GameMenu"]["Window 19"].ComboBox["ComboBox2"].addItem("Test Object 9", 9);
+		Core::gui["GameMenu"]["Window 19"].ComboBox["ComboBox2"].addItem("Test Object 10", 10);
+		Core::gui["GameMenu"]["Window 19"].ComboBox["ComboBox2"].addItem("Test Object 11", 11);
+		Core::gui["GameMenu"]["Window 19"].ComboBox["ComboBox2"].addItem("Test Object 12", 12);
+		Core::gui["GameMenu"]["Window 19"].ComboBox["ComboBox2"].addItem("Test Object 13", 13);
+		Core::gui["GameMenu"]["Window 19"].ComboBox["ComboBox2"].addItem("Test Object 14", 14);
+		Core::gui["GameMenu"]["Window 19"].ComboBox["ComboBox2"].addItem("Test Object 15", 15);
+
+
+		// Config/test buttons
+		Core::GUI::Props_Button cButton;
+		cButton.setOrigin(Core::GUI::CONSTRAIN_BOTTOM);
+		cButton.setAnchor(Core::GUI::CONSTRAIN_BOTTOM);
+		cButton.setWidth(200, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+		cButton.setHeight(20, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+		cButton.setBorder(1, true);
+		cButton.setRadius(10);
+		cButton.setButtonType(Core::GUI::BUTTON_ONESHOT);
+		cButton.setPos(5, 5);
+		cButton.setText("Erase Test Object 5");
+		cButton.setToolTip("This button test the following two steps:\n"\
+						   "  - First the button will remove the item named 'Test Object 5'\n"\
+						   "  - Pressing a second time will call a fault reporting that the item doesn't exist");
+		Core::gui["GameMenu"]["Window 19"].Button.add("Erase Test", false, cButton);
+		//cButton.modPos(130, 0);
+		//cButton.text = "WTF 2";
+		//Core::gui["GameMenu"]["Window 19"].Button.add("NOP 2", false, cButton);
+		//cButton.modPos(-260, 0);
+		//cButton.text = "WTF 3";
+		//Core::gui["GameMenu"]["Window 19"].Button.add("NOP 1", false, cButton);
+
+		bOneShot[44] = true;
 		std::cout << "Done" << std::endl;
 	}
 
@@ -1620,18 +1825,104 @@ void _Admin::run() {
 		GetInput();
 		Core::gui.exec("GameMenu");
 
+		if(Core::gui["GameMenu"]["Window 19"].Button["Erase Test"].getState()) {
+			Core::debug.log("ERASE");
+			Core::gui["GameMenu"]["Window 19"].ComboBox["ComboBox2"].removeItem("Test Object 5");
+		}
+
+		// TESTING: Variant example and type deduction
+//		std::variant<int, float, std::string> intFloatString;
+//		intFloatString = "test";
+//		std::cout << "intFloatString index = " << intFloatString.index() << "\n";
+
+		// Draw Mouse State
+		//Core::debug.log("  Check: "+std::to_string(Core::mouse->button.check[SDL_BUTTON_LEFT]));
+		//Core::debug.log("Pressed: "+std::to_string(Core::mouse->button.pressed[SDL_BUTTON_LEFT]));
+		//Core::debug.log(" Repeat: "+std::to_string(Core::mouse->button.repeat[SDL_BUTTON_LEFT]));
+		//Core::debug.log("   Held: "+std::to_string(Core::mouse->button.held[SDL_BUTTON_LEFT]));
+
+		// Draw ComboBox current values
+//		Core::debug.log(Core::from_variant(Core::gui["GameMenu"]["Window 19"].ComboBox["ComboBox1"].getDataSetValue()), Core::debug.consoleColors.RED);
+//		Core::debug.log(Core::from_variant(Core::gui["GameMenu"]["Window 19"].ComboBox["ComboBox2"].getDataSetValue()), Core::debug.consoleColors.RED);
+
+		//Core::debug.log("Slider State: "+std::to_string(Core::gui["GameMenu"]["Window 5"].Slider["X - Vertical M"].getF()->getState()), Core::debug.consoleColors.RED);
+
+		//Core::debug.log(std::to_string(Core::gui["GameMenu"]["Window 19"].ComboBox["ComboBox1"].getItem()), Core::debug.consoleColors.RED);
+		//Core::debug.log(std::to_string(Core::gui["GameMenu"]["Window 19"].ComboBox["ComboBox2"].getItem()), Core::debug.consoleColors.RED);
+
+//		Core::debug.log(std::to_string(Core::gui["GameMenu"]["Window 2"].Button["Simplex"].getState()), Core::debug.consoleColors.GREEN);
+//		Core::debug.log(std::to_string(Core::gui["GameMenu"]["Window 2"].Button["Fractal"].getState()), Core::debug.consoleColors.GREEN);
+//		Core::debug.log(std::to_string(Core::gui["GameMenu"]["Window 2"].Button["Sliders"].getState()), Core::debug.consoleColors.GREEN);
+//		Core::debug.log(std::to_string(Core::gui["GameMenu"]["Window 2"].Button["Text Boxes"].getState()), Core::debug.consoleColors.GREEN);
+//		Core::debug.log(std::to_string(Core::gui["GameMenu"]["Window 2"].Button["Colors"].getState()), Core::debug.consoleColors.GREEN);
+//		Core::debug.log(std::to_string(Core::gui["GameMenu"]["Window 2"].Button["CheckBox"].getState()), Core::debug.consoleColors.GREEN);
+//		Core::debug.log(std::to_string(Core::gui["GameMenu"]["Window 2"].Button["Settings"].getState()), Core::debug.consoleColors.GREEN);
+//		Core::debug.log(std::to_string(Core::gui["GameMenu"]["Window 2"].Button["Icons"].getState()), Core::debug.consoleColors.GREEN);
+//		Core::debug.log(std::to_string(Core::gui["GameMenu"]["Window 2"].Button["Images"].getState()), Core::debug.consoleColors.GREEN);
+//		Core::debug.log(std::to_string(Core::gui["GameMenu"]["Window 2"].Button["Stipple"].getState()), Core::debug.consoleColors.GREEN);
+//		Core::debug.log(std::to_string(Core::gui["GameMenu"]["Window 2"].Button["Labels"].getState()), Core::debug.consoleColors.GREEN);
+//		Core::debug.log(std::to_string(Core::gui["GameMenu"]["Window 2"].Button["ColorBox"].getState()), Core::debug.consoleColors.GREEN);
+//		Core::debug.log(std::to_string(Core::gui["GameMenu"]["Window 2"].Button["ColorPicker"].getState()), Core::debug.consoleColors.GREEN);
+//		Core::debug.log(std::to_string(Core::gui["GameMenu"]["Window 2"].Button["Scissor"].getState()), Core::debug.consoleColors.GREEN);
+//		Core::debug.log(std::to_string(Core::gui["GameMenu"]["Window 2"].Button["Progress Bar"].getState()), Core::debug.consoleColors.GREEN);
+//		Core::debug.log(std::to_string(Core::gui["GameMenu"]["Window 2"].Button["ComboBox"].getState()), Core::debug.consoleColors.GREEN);
+//		Core::debug.log(std::to_string(Core::gui["GameMenu"]["Window 2"].Button["Lighting"].getState()), Core::debug.consoleColors.GREEN);
+//		Core::debug.log(std::to_string(Core::gui["GameMenu"]["Window 2"].Button["Skill Tree"].getState()), Core::debug.consoleColors.GREEN);
+
+
+		// DEBUG: Print all groups and active objects to console
+//		for(int n=0; n<Core::groups.count(); n++) {
+//			Core::debug.log(Core::groups[n].name, Core::debug.consoleColors.GREEN);
+//			//if(Core::groups[n].name == "Menu Buttons") {
+//				Core::debug.log("  "+Core::groups[n].object, Core::debug.consoleColors.green);
+//			//}
+//		}
+
+		/*
+		 * Tie Window Properties to Settings Sliders
+		 */
+		if(Core::GUI::Props::bGlobalSettings) {
+			for(int n=0; n<=21; n++) {
+				if( n != 2 ) {
+					std::string sWindow = "Window "+std::to_string(n);
+					//std::cout << "sWindow = " << sWindow << "\n";
+					Core::gui["GameMenu"][sWindow].con->radius			= Core::gui["GameMenu"]["Window 9"].Slider["Radius"].getI()->getValuePtr();
+					Core::gui["GameMenu"][sWindow].con->borderNormal	= Core::gui["GameMenu"]["Window 9"].Slider["Border"].getI()->getValuePtr();
+					Core::gui["GameMenu"][sWindow].con->vPadding.top	= Core::gui["GameMenu"]["Window 9"].Slider["Pad: T"].getI()->getValuePtr();
+					Core::gui["GameMenu"][sWindow].con->vPadding.bottom	= Core::gui["GameMenu"]["Window 9"].Slider["Pad: B"].getI()->getValuePtr();
+					Core::gui["GameMenu"][sWindow].con->vPadding.left	= Core::gui["GameMenu"]["Window 9"].Slider["Pad: L"].getI()->getValuePtr();
+					Core::gui["GameMenu"][sWindow].con->vPadding.right	= Core::gui["GameMenu"]["Window 9"].Slider["Pad: R"].getI()->getValuePtr();
+				}
+			}
+		}
+
 		/*
 		 * Group states
 		 */
-		Core::gui["GameMenu"]["Window 12"].con->setStipplePattern(&Core::stipple[Core::gui["GameMenu"]["Window 12"].CheckBox.groupState(2)]);
-		Core::gui["GameMenu"]["Window 8"].CheckBox("Check Sample").label.setOrigin(Core::gui["GameMenu"]["Window 8"].CheckBox.groupState(3, 0));
-		Core::gui["GameMenu"]["Window 8"].CheckBox("Check Sample").label.setAnchor(Core::gui["GameMenu"]["Window 8"].CheckBox.groupState(3, 1));
-		Core::gui["GameMenu"]["Window 8"].CheckBox("Check Sample").label.setPos(Core::gui["GameMenu"]["Window 8"].CheckBox.groupState(3, 2), Core::gui["GameMenu"]["Window 8"].CheckBox.groupState(3, 3));
+		// Stipple Pattern
+		Core::gui["GameMenu"]["Window 12"].con->setStipplePattern( &Core::stipple[std::get<int>(Core::gui["GameMenu"]["Window 12"].CheckBox.groupState("Stipple Group"))] );
+
+		// Checkbox Sample
+		//Core::gui["GameMenu"]["Window 8"].CheckBox("Check Sample").label.setOrigin(Core::gui["GameMenu"]["Window 8"].CheckBox.groupState("Check States Sample", 0));
+		Core::gui["GameMenu"]["Window 8"].CheckBox("Check Sample").label.setOrigin(
+				std::get<int>(Core::gui["GameMenu"]["Window 8"].CheckBox.groupState("Check States Sample", 0))
+		);
+
+		//Core::gui["GameMenu"]["Window 8"].CheckBox("Check Sample").label.setAnchor(Core::gui["GameMenu"]["Window 8"].CheckBox.groupState("Check States Sample", 1));
+		Core::gui["GameMenu"]["Window 8"].CheckBox("Check Sample").label.setAnchor(
+			std::get<int>(Core::gui["GameMenu"]["Window 8"].CheckBox.groupState("Check States Sample", 1))
+		);
+
+		//Core::gui["GameMenu"]["Window 8"].CheckBox("Check Sample").label.setPos(Core::gui["GameMenu"]["Window 8"].CheckBox.groupState("Check States Sample", 2), Core::gui["GameMenu"]["Window 8"].CheckBox.groupState(3, 3));
+		Core::gui["GameMenu"]["Window 8"].CheckBox("Check Sample").label.setPos(
+			std::get<int>(Core::gui["GameMenu"]["Window 8"].CheckBox.groupState("Check States Sample", 2)),
+			std::get<int>(Core::gui["GameMenu"]["Window 8"].CheckBox.groupState("Check States Sample", 3))
+		);
 
 		/*
 		 * Update pointers for simplex noise generator selectionc
 		 */
-		if(Core::gui["GameMenu"]["Window 3"].Slider["Simplex Generator"].valueChanged()) {
+		if(Core::gui["GameMenu"]["Window 3"].Slider["Simplex Generator"].stateChanged()) {
 			Core::gui["GameMenu"]["Window 3"].Slider["Resolution"]		.setPointer(&Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].res);
 			Core::gui["GameMenu"]["Window 3"].Slider["Tex Scale"]		.setPointer(&Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].tex_scale);
 			Core::gui["GameMenu"]["Window 3"].Slider["Terrain Size"]	.setPointer(&Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].terrain_size);
@@ -1650,7 +1941,7 @@ void _Admin::run() {
 		 * Change slider pointers for lighting
 		 */
 //		if(Core::gui["GameMenu"]["Window 5"].Slider["DebugLight"].state()==Core::_Mouse::MOUSE_LEFT_DOWN || Core::gui["GameMenu"]["Window 5"].Slider["DebugLight"].state()==Core::_Mouse::MOUSE_LEFT) {
-		if(Core::gui["GameMenu"]["Window 1"].Slider["DebugLight"].valueChanged()) {
+		if(Core::gui["GameMenu"]["Window 1"].Slider["DebugLight"].stateChanged()) {
 			Core::gui["GameMenu"]["Window 1"].Slider["Light Pos X"].setPointer(&game->world->lights->GetPos(game->iDebugLight).x);
 			Core::gui["GameMenu"]["Window 1"].Slider["Light Pos Y"].setPointer(&game->world->lights->GetPos(game->iDebugLight).y);
 			Core::gui["GameMenu"]["Window 1"].Slider["Light Pos Z"].setPointer(&game->world->lights->GetPos(game->iDebugLight).z);
@@ -1662,7 +1953,7 @@ void _Admin::run() {
 		game->world->o3d->data.items[game->iDebugObject].rotMod = game->world->lights->GetDir(game->iDebugLight);
 
 		// Update map noise
-		if(Core::gameVars->debug.gui.b1) {
+		if(Core::gameVars->debug.gui.b1 || Core::gameVars->debug.gui.b2 || Core::gameVars->debug.gui.b3 || Core::gameVars->debug.gui.b4) {
 			game->world->map->update();
 		}
 
@@ -1711,7 +2002,7 @@ void _Admin::run() {
 		else if(Core::gui["GameMenu"]["Window 2"].Button["Text Boxes"].getState())		Core::gui["GameMenu"]["Window 6"].show();
 		else if(Core::gui["GameMenu"]["Window 2"].Button["Colors"].getState())			Core::gui["GameMenu"]["Window 7"].show();
 		else if(Core::gui["GameMenu"]["Window 2"].Button["CheckBox"].getState())		Core::gui["GameMenu"]["Window 8"].show();
-		else if(Core::gui["GameMenu"]["Window 2"].Button["Window"].getState())			Core::gui["GameMenu"]["Window 9"].show();
+		else if(Core::gui["GameMenu"]["Window 2"].Button["Settings"].getState())		Core::gui["GameMenu"]["Window 9"].show();
 		else if(Core::gui["GameMenu"]["Window 2"].Button["Icons"].getState())			Core::gui["GameMenu"]["Window 10"].show();
 		else if(Core::gui["GameMenu"]["Window 2"].Button["Images"].getState())			Core::gui["GameMenu"]["Window 11"].show();
 		else if(Core::gui["GameMenu"]["Window 2"].Button["Stipple"].getState())			Core::gui["GameMenu"]["Window 12"].show();
@@ -1720,6 +2011,7 @@ void _Admin::run() {
 		else if(Core::gui["GameMenu"]["Window 2"].Button["ColorPicker"].getState())		Core::gui["GameMenu"]["Window 16"].show();
 		else if(Core::gui["GameMenu"]["Window 2"].Button["Scissor"].getState())			Core::gui["GameMenu"]["Window 17"].show();
 		else if(Core::gui["GameMenu"]["Window 2"].Button["Progress Bar"].getState())	Core::gui["GameMenu"]["Window 18"].show();
+		else if(Core::gui["GameMenu"]["Window 2"].Button["ComboBox"].getState())		Core::gui["GameMenu"]["Window 19"].show();
 		else if(Core::gui["GameMenu"]["Window 2"].Button["Lighting"].getState())		Core::gui["GameMenu"]["Window 1"].show();
 		else if(Core::gui["GameMenu"]["Window 2"].Button["Skill Tree"].getState()) {
 			Core::gui["GameMenu"]["Window 14"].show();

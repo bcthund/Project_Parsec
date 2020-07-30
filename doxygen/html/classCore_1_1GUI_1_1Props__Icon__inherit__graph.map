@@ -1,0 +1,8 @@
+<map id="Core::GUI::Props_Icon" name="Core::GUI::Props_Icon">
+<area shape="rect" id="node1" title=" " alt="" coords="221,129,377,156"/>
+<area shape="rect" id="node2" href="$classCore_1_1GUI_1_1Props.html" title="General Props used for all objects." alt="" coords="27,5,151,32"/>
+<area shape="rect" id="node3" href="$classCore_1_1GUI_1_1Props__Addon__Background.html" title=" " alt="" coords="5,57,173,98"/>
+<area shape="rect" id="node4" href="$classCore_1_1GUI_1_1Props__Addon__Label.html" title=" " alt="" coords="5,122,173,163"/>
+<area shape="rect" id="node5" href="$classCore_1_1GUI_1_1Props__Addon__Group.html" title="Allow object to be part of a group with restricted usage." alt="" coords="5,187,173,229"/>
+<area shape="rect" id="node6" href="$classCore_1_1GUI_1_1Props__Addon__Toggle.html" title="Object can be toggled." alt="" coords="5,253,173,294"/>
+</map>

@@ -16,8 +16,36 @@
 
 namespace Core {
 
+	std::string from_variant(Core::t_BIFS v) {
+		switch (v.index()) {
+			case 0:
+				return std::to_string(std::get<bool>(v));
+				break;
+			case 1:
+				return std::to_string(std::get<int>(v));
+				break;
+			case 2:
+				return std::to_string(std::get<float>(v));
+				break;
+			case 3:
+				return std::get<std::string>(v);
+				break;
+		}
+		return "[Undefined Type]";
+	}
 
+	template <typename T>
+	inline bool inRange(T value, T a, T b, bool aExclusive=false, bool bExclusive=false) {
+		bool aResult;
+		if(aExclusive) aResult = (value>a);
+		else aResult = (value>=a);
 
+		bool bResult;
+		if(bExclusive) bResult = (value<b);
+		else bResult = (value<=b);
+
+		return (aResult && bResult);
+	}
 
 
 	// ===========================================================================================================

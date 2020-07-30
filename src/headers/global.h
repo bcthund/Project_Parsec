@@ -11,6 +11,7 @@
 #include <iostream>
 #include <iomanip>
 #include <algorithm>
+#include "./core/types.h"
 
 // A generic smart pointer class
 template <class T>
@@ -65,5 +66,23 @@ template <typename T> std::string to_string(T tValue, int precision=3) {
 	buffer = stream.str();
 	return buffer;
 }
+
+//std::string from_variant(Core::t_BIFS v) {
+//	switch (v.index()) {
+//		case 0:
+//			return std::to_string(std::get<bool>(v));
+//			break;
+//		case 1:
+//			return std::to_string(std::get<int>(v));
+//			break;
+//		case 2:
+//			return std::to_string(std::get<float>(v));
+//			break;
+//		case 3:
+//			return std::get<std::string>(v);
+//			break;
+//	}
+//	return "[Undefined Type]";
+//}
 
 #endif /* HEADERS_GLOBAL_H_ */

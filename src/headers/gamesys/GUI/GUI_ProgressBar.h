@@ -32,8 +32,10 @@ namespace Core {
 					ProgressBar(Props &p, std::string n, int *progress, Props_ProgressBar *c);
 					virtual ~ProgressBar();
 
+					ToolTip toolTip;
 					void init();
 					void exec(iState eExternState=STATE_NONE);
+					void execToolTip();
 					void setPointer(int *ptr) {
 						if(bLocalValue && valuePtr != nullptr) delete valuePtr;
 						bLocalValue = false;
@@ -67,6 +69,7 @@ namespace Core {
 				bLocalCon		= true;
 				con				= new Props_ProgressBar();
 				*con			= c;
+				if(con->text == "") con->text = n;
 
 				bLocalValue		= true;
 				valuePtr		= new int(progress);
@@ -82,6 +85,7 @@ namespace Core {
 				bLocalCon		= true;
 				con				= new Props_ProgressBar();
 				*con			= c;
+				if(con->text == "") con->text = n;
 
 				bLocalValue		= true;
 				valuePtr		= new int(progress);
@@ -96,6 +100,7 @@ namespace Core {
 
 				bLocalCon		= false;
 				con				= c;
+				if(con->text == "") con->text = n;
 
 				bLocalValue		= true;
 				valuePtr		= new int(progress);
@@ -110,6 +115,7 @@ namespace Core {
 
 				bLocalCon		= false;
 				con				= c;
+				if(con->text == "") con->text = n;
 
 				bLocalValue		= true;
 				valuePtr		= new int(progress);
@@ -125,6 +131,7 @@ namespace Core {
 				bLocalCon		= true;
 				con				= new Props_ProgressBar();
 				*con			= c;
+				if(con->text == "") con->text = n;
 
 				bLocalValue		= false;
 				valuePtr		= progress;
@@ -140,6 +147,7 @@ namespace Core {
 				bLocalCon		= true;
 				con				= new Props_ProgressBar();
 				*con			= c;
+				if(con->text == "") con->text = n;
 
 				bLocalValue		= false;
 				valuePtr		= progress;
@@ -154,6 +162,7 @@ namespace Core {
 
 				bLocalCon		= false;
 				con				= c;
+				if(con->text == "") con->text = n;
 
 				bLocalValue		= false;
 				valuePtr		= progress;
@@ -168,6 +177,7 @@ namespace Core {
 
 				bLocalCon		= false;
 				con				= c;
+				if(con->text == "") con->text = n;
 
 				bLocalValue		= false;
 				valuePtr		= progress;
@@ -245,20 +255,29 @@ namespace Core {
 					field.init();
 				}
 
+				toolTip.init(*con, name);
+
 				bInit = true;
 			}
 
 			void ProgressBar::updateObjectState(iState eExternState) {
-				if(eExternState!=STATE_NONE && !(eExternState&STATE_UPDATE)) {
-					eObjectState = eExternState;
+				if(!(eExternState&STATE_UPDATE)) {
+					mState = Core::mouse->checkInput(gameVars->screen.half.x+con->pos.x, gameVars->screen.half.y-con->pos.y, con->size.x, con->size.y);
 				}
+				else this->mState = Core::_Mouse::MOUSE_NONE;
+
+				if(eExternState!=STATE_NONE && !(eExternState&STATE_UPDATE)) eObjectState = eExternState;
+				else if (mState&Core::_Mouse::MOUSE_HOVER) eObjectState = STATE_HOVER;
 				else eObjectState = STATE_NONE;
+
 				if(!enabled()) eObjectState |= STATE_DISABLED;
 			}
 
 			void ProgressBar::exec(iState eExternState) {
 				if(bInit && con->visibility && ((parent!=nullptr && parent->visibility) || (parent==nullptr))) {
 					updateObjectState(eExternState);
+					if(con->toolTip.bShow) toolTip.updateObjectState(eObjectState);
+					else toolTip.updateObjectState(STATE_NONE);
 
 					// Update constraints
 					if(bHasParent) con->exec(*parent);
@@ -272,6 +291,14 @@ namespace Core {
 					field.exec(eObjectState);
 				}
 			}
+
+			void ProgressBar::execToolTip() {
+				toolTip.exec();
+			}
+
+
+
+
 		}
 	}
 } /* namespace Core */

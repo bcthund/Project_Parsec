@@ -1130,7 +1130,8 @@ namespace Core {
 //			for (int x=0; x<data.iSize; x++) {
 //				for (int z=0; z<data.iSize; z++) {
 //					std::cout << "[" << x << "," << z << "]";
-					glDisable(GL_CULL_FACE);
+//					glDisable(GL_CULL_FACE);
+					glEnable(GL_CULL_FACE);
 					Core::matrix->Push();
 						// Center World
 
@@ -1158,10 +1159,12 @@ namespace Core {
 						mapData[0][0].Draw(GLM_DRAW_ELEMENTS);
 
 						// Draw vertex normals (~6fps drop)
-						glLineWidth(1.0f);
-						shader->use(GLS_NORMAL_LINE2);
-						shader->getUniform(GLS_NORMAL_LINE2);
-						mapData[0][0].Draw(GLM_DRAW_ELEMENTS);
+						if(Core::gameVars->debug.gui.b5) {
+							glLineWidth(1.0f);
+							shader->use(GLS_NORMAL_LINE2);
+							shader->getUniform(GLS_NORMAL_LINE2);
+							mapData[0][0].Draw(GLM_DRAW_ELEMENTS);
+						}
 
 						//glActiveTexture(GL_TEXTURE0);	Core::sysTex->set(Core::sysTex->TEX_WATER);
 						//mapData[0][1].Draw(GLM_DRAW_ELEMENTS);
@@ -1174,7 +1177,8 @@ namespace Core {
 
 						glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 					Core::matrix->Pop();
-					glEnable(GL_CULL_FACE);
+//					glEnable(GL_CULL_FACE);
+//					glDisable(GL_CULL_FACE);
 //				}
 //			}
 

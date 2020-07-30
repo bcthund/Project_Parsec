@@ -1,0 +1,8 @@
+<map id="Core::GameSys::_WinSys" name="Core::GameSys::_WinSys">
+<area shape="rect" id="node1" title=" " alt="" coords="316,153,493,179"/>
+<area shape="rect" id="node2" href="$structCore_1_1GameSys_1_1__WinSys_1_1Coords.html" title=" " alt="" coords="5,5,183,47"/>
+<area shape="rect" id="node3" href="$structCore_1_1GameSys_1_1__WinSys_1_1__DRAWMODE.html" title=" " alt="" coords="5,71,183,112"/>
+<area shape="rect" id="node4" href="$structCore_1_1Vector4f.html" title=" " alt="" coords="41,150,147,177"/>
+<area shape="rect" id="node5" href="$classCore_1_1Texture.html" title=" " alt="" coords="43,201,145,227"/>
+<area shape="rect" id="node6" href="$classCore_1_1VAO.html" title=" " alt="" coords="52,251,136,278"/>
+</map>

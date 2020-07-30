@@ -29,7 +29,7 @@
             			
             <storageModule moduleId="cdtBuildSystem" version="4.0.0">
                 				
-                <configuration artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug" cleanCommand="rm -rf" description="" id="cdt.managedbuild.config.gnu.exe.debug.1077997268" name="Debug" optionalBuildProperties="org.eclipse.cdt.docker.launcher.containerbuild.property.volumes=,org.eclipse.cdt.docker.launcher.containerbuild.property.selectedvolumes=" parent="cdt.managedbuild.config.gnu.exe.debug">
+                <configuration artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug" cleanCommand="rm -rf" description="" id="cdt.managedbuild.config.gnu.exe.debug.1077997268" name="Debug" optionalBuildProperties="org.eclipse.cdt.docker.launcher.containerbuild.property.selectedvolumes=,org.eclipse.cdt.docker.launcher.containerbuild.property.volumes=" parent="cdt.managedbuild.config.gnu.exe.debug">
                     					
                     <folderInfo id="cdt.managedbuild.config.gnu.exe.debug.1077997268." name="/" resourcePath="">
                         						
@@ -61,15 +61,17 @@
                                     								
                                 </option>
                                 								
-                                <option id="gnu.cpp.compiler.option.dialect.std.54882539" name="Language standard" superClass="gnu.cpp.compiler.option.dialect.std" useByScannerDiscovery="true" value="gnu.cpp.compiler.dialect.default" valueType="enumerated"/>
+                                <option id="gnu.cpp.compiler.option.dialect.std.54882539" name="Language standard" superClass="gnu.cpp.compiler.option.dialect.std" useByScannerDiscovery="true" value="gnu.cpp.compiler.dialect.c++17" valueType="enumerated"/>
                                 								
-                                <option id="gnu.cpp.compiler.option.other.other.1731665389" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" useByScannerDiscovery="false" value="-c -fmessage-length=0 -std=c++14" valueType="string"/>
+                                <option id="gnu.cpp.compiler.option.other.other.1731665389" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" useByScannerDiscovery="false" value="-c -fmessage-length=0 -std=gnu++17" valueType="string"/>
                                 								
                                 <option id="gnu.cpp.compiler.option.warnings.allwarn.1534938466" name="All warnings (-Wall)" superClass="gnu.cpp.compiler.option.warnings.allwarn" useByScannerDiscovery="false" value="false" valueType="boolean"/>
                                 								
                                 <option id="gnu.cpp.compiler.option.warnings.nowarn.1790481009" name="Inhibit all warnings (-w)" superClass="gnu.cpp.compiler.option.warnings.nowarn" useByScannerDiscovery="false" value="false" valueType="boolean"/>
                                 								
-                                <option id="gnu.cpp.compiler.option.dialect.flags.834711994" name="Other dialect flags" superClass="gnu.cpp.compiler.option.dialect.flags" useByScannerDiscovery="true" value="-std=c++1z" valueType="string"/>
+                                <option id="gnu.cpp.compiler.option.dialect.flags.834711994" name="Other dialect flags" superClass="gnu.cpp.compiler.option.dialect.flags" useByScannerDiscovery="true" value="" valueType="string"/>
+                                								
+                                <option id="gnu.cpp.compiler.option.other.verbose.446687097" name="Verbose (-v)" superClass="gnu.cpp.compiler.option.other.verbose" useByScannerDiscovery="false" value="false" valueType="boolean"/>
                                 								
                                 <inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.452861491" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
                                 							

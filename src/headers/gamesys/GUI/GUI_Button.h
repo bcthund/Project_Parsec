@@ -23,7 +23,8 @@
  */
 
 #include <iostream>
-//#include "../../core/InputSys.h"
+#include "../../core/Groups.h"
+#include "../../core/InputSys.h"
 #include "../../core/Colors.h"
 #include "../../gamesys/gameVars.h"
 #include "GUI_Constraint.h"
@@ -34,7 +35,7 @@
 namespace Core {
 	namespace GUI {
 		namespace Object {
-			class Button : public Base::Interactive<Props_Button, bool>, public Base::AudioFeedback {
+			class Button : virtual public Base::Interactive<Props_Button>, public Base::AudioFeedback {
 				public:
 					Button();
 					Button(std::string n, bool b, Props_Button c);
@@ -56,15 +57,19 @@ namespace Core {
 					void updateNoFocus();
 
 				private:
-					Window win;
+//					Window win;
+					//mState			= Core::_Mouse::MOUSE_NONE;
 				public:
+					Window win;
 					void updateObjectState(iState eExternState);
+					void updateScroll();
 			};
 
 			Button::Button() {}
 
 			Button::Button(std::string n, bool b, Props_Button c) {
 				name			= n;
+
 				bRepeatStatus	= false;
 				bIsGrouped		= (c.iGroup>0);
 
@@ -74,9 +79,10 @@ namespace Core {
 				bLocalCon		= true;
 				con				= new Props_Button();
 				*con			= c;
+				if(con->text == "") con->text = n;
 
-				bLocalValue		= true;
-				valuePtr		= new bool(b);
+				bLocalState		= true;
+				statePtr		= new bool(b);
 				if(b) eObjectState	= STATE_ACTIVE;
 				else  eObjectState	= STATE_NONE;
 			}
@@ -92,9 +98,10 @@ namespace Core {
 				bLocalCon		= true;
 				con				= new Props_Button();
 				*con			= c;
+				if(con->text == "") con->text = n;
 
-				bLocalValue		= true;
-				valuePtr		= new bool(b);
+				bLocalState		= true;
+				statePtr		= new bool(b);
 				if(b) eObjectState	= STATE_ACTIVE;
 				else  eObjectState	= STATE_NONE;
 			}
@@ -109,9 +116,10 @@ namespace Core {
 
 				bLocalCon		= false;
 				con				= c;
+				if(con->text == "") con->text = n;
 
-				bLocalValue		= true;
-				valuePtr		= new bool(b);
+				bLocalState		= true;
+				statePtr		= new bool(b);
 				if(b) eObjectState	= STATE_ACTIVE;
 				else  eObjectState	= STATE_NONE;
 			}
@@ -127,8 +135,8 @@ namespace Core {
 				bLocalCon		= false;
 				con				= c;
 
-				bLocalValue		= true;
-				valuePtr		= new bool(b);
+				bLocalState		= true;
+				statePtr		= new bool(b);
 				if(b) eObjectState	= STATE_ACTIVE;
 				else  eObjectState	= STATE_NONE;
 			}
@@ -144,9 +152,10 @@ namespace Core {
 				bLocalCon		= true;
 				con				= new Props_Button();
 				*con			= c;
+				if(con->text == "") con->text = n;
 
-				bLocalValue		= false;
-				valuePtr		= b;
+				bLocalState		= false;
+				statePtr		= b;
 				if(*b) eObjectState	= STATE_ACTIVE;
 				else  eObjectState	= STATE_NONE;
 			}
@@ -163,9 +172,10 @@ namespace Core {
 				bLocalCon		= true;
 				con				= new Props_Button();
 				*con			= c;
+				if(con->text == "") con->text = n;
 
-				bLocalValue		= false;
-				valuePtr		= b;
+				bLocalState		= false;
+				statePtr		= b;
 				if(*b) eObjectState	= STATE_ACTIVE;
 				else  eObjectState	= STATE_NONE;
 			}
@@ -180,9 +190,10 @@ namespace Core {
 
 				bLocalCon		= false;
 				con				= c;
+				if(con->text == "") con->text = n;
 
-				bLocalValue		= false;
-				valuePtr		= b;
+				bLocalState		= false;
+				statePtr		= b;
 				if(*b) eObjectState	= STATE_ACTIVE;
 				else  eObjectState	= STATE_NONE;
 			}
@@ -197,9 +208,10 @@ namespace Core {
 
 				bLocalCon		= false;
 				con				= c;
+				if(con->text == "") con->text = n;
 
-				bLocalValue		= false;
-				valuePtr		= b;
+				bLocalState		= false;
+				statePtr		= b;
 				if(*b) eObjectState	= STATE_ACTIVE;
 				else  eObjectState	= STATE_NONE;
 			}
@@ -209,8 +221,6 @@ namespace Core {
 			}
 
 			void Button::init() {
-				Interactive::init(con);
-
 				// FIXME: Create SOUNDS enumeration
 				initSound(0, 1, 2, 0, 0, true, true);
 
@@ -223,35 +233,37 @@ namespace Core {
 				if(bHasParent) con->exec(*parent);
 				else con->exec();
 
+				// Other items
+				timeFocusDebounce.start();
 				toolTip.init(*con, name);
 
 				bInit = true;
 			}
 
 			void Button::updateObjectState(iState eExternState) {
-				// Check for external state change, return early
-				if(*valuePtr && !(this->eObjectState&STATE_ACTIVE))
-					this->eObjectState = STATE_ACTIVE;
-				else if(*valuePtr==*returnState[0].off && (this->eObjectState&STATE_ACTIVE))
-					this->eObjectState = STATE_NONE;
+				// Check for external state change
+				checkStatePtr();
 
+				// Check external object state or update button state
 				if(eExternState!=STATE_NONE && !(eExternState&STATE_UPDATE)) {
 					eObjectState = eExternState;
 				}
 				else {
 					if(!(eExternState&STATE_UPDATE)) {
-						mState = Core::mouse->checkInput(gameVars->screen.half.x+con->pos.x, gameVars->screen.half.y-con->pos.y, con->size.x, con->size.y);
+						Vector2f vPos = con->getScrollPos();
+						mState = Core::mouse->checkInput(gameVars->screen.half.x+vPos.x, gameVars->screen.half.y-vPos.y, con->size.x, con->size.y);
+						//mState = Core::mouse->checkInput(gameVars->screen.half.x+con->pos.x, gameVars->screen.half.y-con->pos.y, con->size.x, con->size.y);
 					}
-					else this->mState = Core::_Mouse::MOUSE_NONE;
+					else mState = Core::_Mouse::MOUSE_NONE;
 
 					if(enabled()) {
 						if(con->buttonType==BUTTON_ONESHOT)  {
-							if ( (mState == Core::_Mouse::MOUSE_LEFT) && !bRepeatStatus) {
+							if ( (mState&Core::_Mouse::MOUSE_LEFT) && !bRepeatStatus) {
 								eObjectState = STATE_ACTIVE;
 								bRepeatStatus = true;
 								Sound_PlayOn();
 							}
-							else if (mState == Core::_Mouse::MOUSE_HOVER) {
+							else if (mState&Core::_Mouse::MOUSE_HOVER) {
 								eObjectState = STATE_HOVER;
 								bRepeatStatus = false;
 							}
@@ -265,19 +277,19 @@ namespace Core {
 							}
 						}
 						else if(con->buttonType==BUTTON_TOGGLE) {
-							if(bIsGrouped && (eObjectState&STATE_ACTIVE) && (sGroupObject[con->iGroup]!=name && sGroupObject[con->iGroup]!="")) {
+							if(bIsGrouped && (eObjectState&STATE_ACTIVE) && (Core::groups[con->iGroup].object!=name && Core::groups[con->iGroup].object!="")) {
 								eObjectState = STATE_NONE;
 								Sound_AbortState();
 							}
-							else if (mState == Core::_Mouse::MOUSE_LEFT) {
+							else if (mState&Core::_Mouse::MOUSE_LEFT) {
 								if(eObjectState&STATE_ACTIVE) {
-									eObjectState = STATE_NONE;
-									if(sGroupObject[con->iGroup]==name) sGroupObject[con->iGroup] = "";
+									if (!bIsGrouped || (bIsGrouped && !Core::groups[con->iGroup].bExclusive)) eObjectState = STATE_NONE;
+									if(bIsGrouped && Core::groups[con->iGroup].object==name) Core::groups[con->iGroup].object = "";
 									Sound_PlayOff();
 								}
-								else if(eObjectState&STATE_HOVER) {
+								else if(!(eObjectState&STATE_ACTIVE)) {
 									eObjectState = STATE_ACTIVE;
-									sGroupObject[con->iGroup] = name;
+									if(bIsGrouped) Core::groups[con->iGroup].object = name;
 									Sound_PlayOn();
 								}
 								else {
@@ -285,15 +297,15 @@ namespace Core {
 									mState = Core::_Mouse::MOUSE_NONE;
 								}
 							}
-							else if (!(eObjectState&STATE_ACTIVE) && mState == Core::_Mouse::MOUSE_HOVER) {
+							else if (!(eObjectState&STATE_ACTIVE) && (mState&Core::_Mouse::MOUSE_HOVER)) {
 								eObjectState = STATE_HOVER;
 							}
-							else if (!(eObjectState&STATE_ACTIVE) && mState == Core::_Mouse::MOUSE_NONE) {
+							else if (!(eObjectState&STATE_ACTIVE) && (mState == Core::_Mouse::MOUSE_NONE)) {
 								eObjectState = STATE_NONE;
 							}
 						}
 						else {
-							if (mState == Core::_Mouse::MOUSE_LEFT_DOWN && !bRepeatStatus) {
+							if ((mState&Core::_Mouse::MOUSE_LEFT_DOWN) && !bRepeatStatus) {
 								eObjectState = STATE_ACTIVE;
 								bRepeatStatus = true;
 								Sound_PlayOn();
@@ -302,13 +314,13 @@ namespace Core {
 									debounceTimer.start();
 								}
 							}
-							else if (mState == Core::_Mouse::MOUSE_LEFT_DOWN && bRepeatStatus) {
+							else if ((mState&Core::_Mouse::MOUSE_LEFT_DOWN) && bRepeatStatus) {
 								eObjectState = STATE_NONE;
 								if(con->buttonType==BUTTON_DEBOUNCE) {
 									if (debounceTimer.split() >= con->debounceTime) eObjectState = STATE_ACTIVE;
 								}
 							}
-							else if (mState == Core::_Mouse::MOUSE_HOVER) {
+							else if (mState&Core::_Mouse::MOUSE_HOVER) {
 								eObjectState = STATE_HOVER;
 								bRepeatStatus = false;
 							}
@@ -318,30 +330,43 @@ namespace Core {
 							}
 						}
 					}
-					else this->eObjectState = STATE_NONE;
+					else {
+						eObjectState = STATE_NONE;
+					}
 
 					// Allow mouse hover at any time (used for tooltips)
 					if(!(eExternState&STATE_UPDATE)) {
-						if(mState==Core::_Mouse::MOUSE_HOVER) eObjectState = eObjectState|STATE_HOVER;
+						if(mState&Core::_Mouse::MOUSE_HOVER) eObjectState = eObjectState|STATE_HOVER;
 						else eObjectState = eObjectState&~STATE_HOVER;
 					}
 
-//					// Allow mouse hover when active	TODO: ADD TO ALL OBJECTS
-//					if( (this->eObjectState&STATE_ACTIVE) && (mState==Core::_Mouse::MOUSE_HOVER) ) {
-//						this->eObjectState = this->eObjectState | STATE_HOVER;
-//					}
-//					else if( (this->eObjectState&STATE_ACTIVE) && (this->eObjectState&STATE_HOVER) && (mState!=Core::_Mouse::MOUSE_HOVER) ) {
-//						this->eObjectState = STATE_ACTIVE;
-//					}
+					// Report if mouse is in button space (debounce turning off)
+					if(!(mState&Core::_Mouse::MOUSE_NONE)) { eObjectState = eObjectState|STATE_FOCUS; timeFocusDebounce.split(); }
+					else if (timeFocusDebounce.get_splitdiff() > iFocusDebounce) eObjectState = eObjectState&~STATE_FOCUS;
 				}
 
 				if(!enabled()) eObjectState |= STATE_DISABLED;
-				updateValuePtr();
+
+				updateStatePtr();
+			}
+
+			/**
+			 * @brief Update all children according to parent scroll state
+			 *
+			 */
+			void Button::updateScroll() {
+				if(parent!=nullptr) {
+					con->bEnableScroll = parent->bEnableScroll;
+					con->pos.yOffset = parent->pos.yOffset;
+					win.con->pos.yOffset = parent->pos.yOffset;
+				}
 			}
 
 			void Button::exec(iState eExternState) {
 				if(bInit) {
 					if(con->visibility && ((parent!=nullptr && parent->visibility) || (parent==nullptr))) {
+						updateScroll();
+
 						// Update constraints
 						if(bHasParent) con->exec(*parent);
 						else con->exec();
@@ -360,11 +385,12 @@ namespace Core {
 							if(eObjectState&STATE_HOVER)	colors.PushFront(gameVars->pallette.gui.disabled.text.hover);
 							else							colors.PushFront(gameVars->pallette.gui.disabled.text.base);
 						}
-						else if(eObjectState&STATE_ACTIVE) colors.PushFront(*con->color.text().active);
-						else if(eObjectState&STATE_HOVER) colors.PushFront(*con->color.text().highlight);
-						else colors.PushFront(*con->color.text().base);
+						else if(eObjectState&STATE_ACTIVE) colors.PushFront(*con->colorText.active);
+						else if(eObjectState&STATE_HOVER) colors.PushFront(*con->colorText.highlight);
+						else colors.PushFront(*con->colorText.base);
 
-						textSys->draw(con, name, con->eLabelAnchor);
+//						textSys->draw(con, name, con->eLabelAnchor);
+						textSys->draw(con, con->text, con->eLabelAnchor);
 						colors.PopFront();
 					}
 				}
@@ -377,12 +403,10 @@ namespace Core {
 			/***
 			 * \brief Calls to run when object not visible/not in focus. This function is especially
 			 * 		  important for Buttons because of the call to updateValuePtr();
-			 * @tparam T
-			 * @tparam T
 			 */
 			void Button::updateNoFocus() {
 				updateObjectState(STATE_UPDATE);
-				updateValuePtr();
+				updateStatePtr();
 			}
 
 		}

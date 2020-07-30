@@ -49,7 +49,8 @@ namespace Core {
 			 *  \brief A copy of TextArea with cursor tracking and editing capability.
 			 *
 			 */
-			class TextEdit : public Base::Interactive<Props_TextArea, std::string>, public TextEditBase {
+//			class TextEdit : public Base::Interactive<Props_TextArea, std::string>, public TextEditBase {
+			class TextEdit : public Base::Interactive<Props_TextArea>, public TextEditBase {
 				public:
 					TextEdit();
 					TextEdit(std::string n, Props_TextArea c);
@@ -57,6 +58,11 @@ namespace Core {
 					TextEdit(std::string n, Props_TextArea *c);
 					TextEdit(Props &p, std::string n, Props_TextArea *c);
 					virtual ~TextEdit();
+
+//					T *valuePtr;
+//					bool bLocalValue;
+//					void setValuePtr(T *ptr);
+//					T * getValuePtr();
 
 					void init();
 					void exec(iState eExternState=STATE_NONE);
@@ -98,6 +104,10 @@ namespace Core {
 				bLocalCon			= true;
 				con					= new Props_TextArea();
 				*con				= c;
+//				if(con->text == "") con->text = n;
+
+				bLocalState			= true;
+				statePtr			= new bool(false);
 
 				sEditBuffer			= "";
 				bHasFocus			= false;
@@ -118,6 +128,10 @@ namespace Core {
 				bLocalCon			= true;
 				con					= new Props_TextArea();
 				*con				= c;
+//				if(con->text == "") con->text = n;
+
+				bLocalState			= true;
+				statePtr			= new bool(false);
 
 				sEditBuffer			= "";
 				bHasFocus			= false;
@@ -137,6 +151,10 @@ namespace Core {
 
 				bLocalCon			= false;
 				con					= c;
+//				if(con->text == "") con->text = n;
+
+				bLocalState			= true;
+				statePtr			= new bool(false);
 
 				sEditBuffer			= "";
 				bHasFocus			= false;
@@ -156,6 +174,10 @@ namespace Core {
 
 				bLocalCon			= false;
 				con					= c;
+//				if(con->text == "") con->text = n;
+
+				bLocalState			= true;
+				statePtr			= new bool(false);
 
 				sEditBuffer			= "";
 				bHasFocus			= false;
@@ -209,7 +231,7 @@ namespace Core {
 					cWin.disablePadding();
 					cWin.setBorder(0, false);
 					cWin.setRadius(0);
-					cWin.color.back().base = &colors[colors().Tan];
+					cWin.colorBack.base = &colors[colors().Tan];
 					scrollBarContainer = new Window(*con, name, cWin);
 					scrollBarContainer->init();
 
@@ -220,17 +242,17 @@ namespace Core {
 					cButton.setRadius(3);
 					cButton.setButtonType(Core::GUI::BUTTON_DEBOUNCE);
 
-					cButton.color.back().base			= &Core::gameVars->pallette.gui.textArea.scroll.base;
-					cButton.color.back().highlight		= &Core::gameVars->pallette.gui.textArea.scroll.hover;
-					cButton.color.back().active			= &Core::gameVars->pallette.gui.textArea.scroll.active;
+					cButton.colorBack.base			= &Core::gameVars->pallette.gui.textArea.scroll.base;
+					cButton.colorBack.highlight		= &Core::gameVars->pallette.gui.textArea.scroll.hover;
+					cButton.colorBack.active		= &Core::gameVars->pallette.gui.textArea.scroll.active;
 
-					cButton.color.border().base			= &Core::gameVars->pallette.gui.textArea.scrollBorder.base;
-					cButton.color.border().highlight	= &Core::gameVars->pallette.gui.textArea.scrollBorder.hover;
-					cButton.color.border().active		= &Core::gameVars->pallette.gui.textArea.scrollBorder.active;
+					cButton.colorBorder.base		= &Core::gameVars->pallette.gui.textArea.scrollBorder.base;
+					cButton.colorBorder.highlight	= &Core::gameVars->pallette.gui.textArea.scrollBorder.hover;
+					cButton.colorBorder.active		= &Core::gameVars->pallette.gui.textArea.scrollBorder.active;
 
-					cButton.color.text().base			= &Core::gameVars->pallette.gui.textArea.scrollText.base;
-					cButton.color.text().highlight		= &Core::gameVars->pallette.gui.textArea.scrollText.hover;
-					cButton.color.text().active			= &Core::gameVars->pallette.gui.textArea.scrollText.active;
+					cButton.colorText.base			= &Core::gameVars->pallette.gui.textArea.scrollText.base;
+					cButton.colorText.highlight		= &Core::gameVars->pallette.gui.textArea.scrollText.hover;
+					cButton.colorText.active		= &Core::gameVars->pallette.gui.textArea.scrollText.active;
 
 					cButton.setPos(0, 0);
 					cButton.setOrigin(CONSTRAIN_TOP);
@@ -315,6 +337,8 @@ namespace Core {
 			}
 
 			void TextEdit::updateObjectState(iState eExternState) {
+				checkStatePtr();
+
 				if(eExternState!=STATE_NONE && !(eExternState&STATE_UPDATE)) {
 					eObjectState = eExternState;
 				}
@@ -327,7 +351,7 @@ namespace Core {
 					else this->mState = Core::_Mouse::MOUSE_NONE;
 
 					if(enabled()) {
-						if(!bFocusPresent && mState==Core::_Mouse::MOUSE_LEFT) {
+						if(!bFocusPresent && (mState&Core::_Mouse::MOUSE_LEFT)) {
 							bHasFocus = true;
 							bFocusPresent = true;
 							sActiveObject = this->name;
@@ -344,13 +368,15 @@ namespace Core {
 
 					// Allow mouse hover at any time (used for tooltips)
 					if(!(eExternState&STATE_UPDATE)) {
-						if(mState==Core::_Mouse::MOUSE_HOVER) eObjectState = eObjectState|STATE_HOVER;
+						if((mState&Core::_Mouse::MOUSE_HOVER)) eObjectState = eObjectState|STATE_HOVER;
 						else eObjectState = eObjectState&~STATE_HOVER;
 					}
 
 				}
 
 				if(!enabled()) eObjectState |= STATE_DISABLED;
+
+				updateStatePtr();
 			}
 
 			void TextEdit::exec(iState eExternState) {

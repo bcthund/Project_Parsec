@@ -1,0 +1,9 @@
+<map id="Core::GUI::Props" name="Core::GUI::Props">
+<area shape="rect" id="node1" title="General Props used for all objects." alt="" coords="768,83,892,109"/>
+<area shape="rect" id="node2" href="$structCore_1_1GUI_1_1Props_1_1ToolTip.html" title=" " alt="" coords="487,5,661,32"/>
+<area shape="rect" id="node3" href="$structCore_1_1GUI_1_1Props_1_1__Size.html" title=" " alt="" coords="491,56,657,83"/>
+<area shape="rect" id="node4" href="$structCore_1_1Vector2f.html" title=" " alt="" coords="5,72,112,99"/>
+<area shape="rect" id="node5" href="$structCore_1_1GUI_1_1Props_1_1__Size_1_1__SizeConstraint.html" title=" " alt="" coords="221,49,377,90"/>
+<area shape="rect" id="node6" href="$structCore_1_1GUI_1_1Props_1_1__Position.html" title=" " alt="" coords="233,114,365,155"/>
+<area shape="rect" id="node7" href="$structCore_1_1Vector4i.html" title=" " alt="" coords="521,169,627,196"/>
+</map>

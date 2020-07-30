@@ -64,6 +64,7 @@ namespace Core {
 				bLocalCon			= true;
 				con					= new Props_TextArea();
 				*con				= c;
+//				if(con->text == "") con->text = n;
 
 				scrollBarContainer	= nullptr;
 				scrollUp			= nullptr;
@@ -82,6 +83,7 @@ namespace Core {
 				bLocalCon			= true;
 				con					= new Props_TextArea();
 				*con				= c;
+//				if(con->text == "") con->text = n;
 
 				scrollBarContainer	= nullptr;
 				scrollUp			= nullptr;
@@ -99,6 +101,7 @@ namespace Core {
 
 				bLocalCon			= false;
 				con					= c;
+//				if(con->text == "") con->text = n;
 
 				scrollBarContainer	= nullptr;
 				scrollUp			= nullptr;
@@ -116,6 +119,7 @@ namespace Core {
 
 				bLocalCon			= false;
 				con					= c;
+//				if(con->text == "") con->text = n;
 
 				scrollBarContainer	= nullptr;
 				scrollUp			= nullptr;
@@ -169,7 +173,7 @@ namespace Core {
 					cWin.disablePadding();
 					cWin.setBorder(0, false);
 					cWin.setRadius(0);
-					cWin.color.back().base = &colors[colors().Tan];
+					cWin.colorBack.base = &colors[colors().Tan];
 					scrollBarContainer = new Window(*con, name, cWin);
 					scrollBarContainer->init();
 
@@ -180,17 +184,17 @@ namespace Core {
 					cButton.setRadius(3);
 					cButton.setButtonType(Core::GUI::BUTTON_DEBOUNCE);
 
-					cButton.color.back().base			= &Core::gameVars->pallette.gui.textArea.scroll.base;
-					cButton.color.back().highlight		= &Core::gameVars->pallette.gui.textArea.scroll.hover;
-					cButton.color.back().active			= &Core::gameVars->pallette.gui.textArea.scroll.active;
+					cButton.colorBack.base			= &Core::gameVars->pallette.gui.textArea.scroll.base;
+					cButton.colorBack.highlight		= &Core::gameVars->pallette.gui.textArea.scroll.hover;
+					cButton.colorBack.active		= &Core::gameVars->pallette.gui.textArea.scroll.active;
 
-					cButton.color.border().base			= &Core::gameVars->pallette.gui.textArea.scrollBorder.base;
-					cButton.color.border().highlight	= &Core::gameVars->pallette.gui.textArea.scrollBorder.hover;
-					cButton.color.border().active		= &Core::gameVars->pallette.gui.textArea.scrollBorder.active;
+					cButton.colorBorder.base		= &Core::gameVars->pallette.gui.textArea.scrollBorder.base;
+					cButton.colorBorder.highlight	= &Core::gameVars->pallette.gui.textArea.scrollBorder.hover;
+					cButton.colorBorder.active		= &Core::gameVars->pallette.gui.textArea.scrollBorder.active;
 
-					cButton.color.text().base			= &Core::gameVars->pallette.gui.textArea.scrollText.base;
-					cButton.color.text().highlight		= &Core::gameVars->pallette.gui.textArea.scrollText.hover;
-					cButton.color.text().active			= &Core::gameVars->pallette.gui.textArea.scrollText.active;
+					cButton.colorText.base			= &Core::gameVars->pallette.gui.textArea.scrollText.base;
+					cButton.colorText.highlight		= &Core::gameVars->pallette.gui.textArea.scrollText.hover;
+					cButton.colorText.active		= &Core::gameVars->pallette.gui.textArea.scrollText.active;
 
 					cButton.setPos(0, 0);
 					cButton.setOrigin(CONSTRAIN_TOP);
@@ -238,12 +242,12 @@ namespace Core {
 				if(!(eExternState&STATE_UPDATE)) {
 					mState = Core::mouse->checkInput(gameVars->screen.half.x+con->pos.x, gameVars->screen.half.y-con->pos.y, con->size.x, con->size.y);
 				}
-				else this->mState = Core::_Mouse::MOUSE_NONE;
+				else mState = Core::_Mouse::MOUSE_NONE;
 
 				if(eExternState!=STATE_NONE && !(eExternState&STATE_UPDATE)) {
 					eObjectState = eExternState;
 				}
-				else if (mState == Core::_Mouse::MOUSE_HOVER) {
+				else if (mState&Core::_Mouse::MOUSE_HOVER) {
 					eObjectState = STATE_HOVER;
 				}
 				else eObjectState = STATE_NONE;

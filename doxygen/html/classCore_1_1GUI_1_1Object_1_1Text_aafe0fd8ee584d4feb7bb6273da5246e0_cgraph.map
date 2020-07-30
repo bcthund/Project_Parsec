@@ -1,0 +1,15 @@
+<map id="Core::GUI::Object::Text::exec" name="Core::GUI::Object::Text::exec">
+<area shape="rect" id="node1" title=" " alt="" coords="5,201,141,242"/>
+<area shape="rect" id="node2" href="$classCore_1_1__TextSys.html#a04e9d5ab09ab6c1cec0c5f80753caea6" title=" " alt="" coords="189,132,367,159"/>
+<area shape="rect" id="node4" href="$classCore_1_1GUI_1_1Props.html#ac63140cff6a09c23271020c9c0365b91" title=" " alt="" coords="429,31,589,57"/>
+<area shape="rect" id="node7" href="$structCore_1_1GUI_1_1Props_1_1__Size.html#a7ddb94694f67369f206f355f89f6fcfa" title=" " alt="" coords="443,234,575,275"/>
+<area shape="rect" id="node10" href="$classCore_1_1__Colors.html#aa7624cbbd0c1b94247efff11d9f7e742" title=" " alt="" coords="196,233,360,260"/>
+<area shape="rect" id="node11" href="$classCore_1_1__Colors.html#a80ce9c5980115ce42c071d99b5404689" title=" " alt="" coords="193,284,363,311"/>
+<area shape="rect" id="node12" href="$classCore_1_1GUI_1_1Object_1_1Text.html#a98f5769c4553b2af66ab7ca1cc3ef62c" title=" " alt="" coords="197,335,359,377"/>
+<area shape="rect" id="node3" href="$classCore_1_1__TextSys.html#a13fd9fe30d9312c5c3a4764734eb1a34" title=" " alt="" coords="434,81,583,108"/>
+<area shape="rect" id="node8" href="$classCore_1_1GUI_1_1Props.html#aafe82aa213ee23d32ff3fc8a18488ef2" title=" " alt="" coords="415,132,603,159"/>
+<area shape="rect" id="node9" href="$classCore_1_1GUI_1_1Props.html#a1bfee9aa16f7ebc426ac5ff8ef8feced" title=" " alt="" coords="417,183,601,209"/>
+<area shape="rect" id="node5" href="$classCore_1_1GUI_1_1Props.html#af3a3b1b7cb0079433c19bb9a53ba7173" title=" " alt="" coords="653,5,835,32"/>
+<area shape="rect" id="node6" href="$classCore_1_1GUI_1_1Props.html#a7cef5233d7371d6621d005f1a5a7e2cf" title=" " alt="" coords="651,56,837,83"/>
+<area shape="rect" id="node13" href="$classCore_1_1GUI_1_1Object_1_1Base_1_1Generic.html#aef7983e3da071bb67c32ec1474a703a6" title=" " alt="" coords="433,328,584,384"/>
+</map>

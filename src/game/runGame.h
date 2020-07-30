@@ -633,21 +633,31 @@ void _Game::Update() {
 	Core::textSys->drawVar2<float>(21, -17, "", Core::mouse->rays[1].dir.y, 3, Core::GUI::CONSTRAIN_LEFT);
 	Core::textSys->drawVar2<float>(32, -17, "", Core::mouse->rays[1].dir.z, 3, Core::GUI::CONSTRAIN_LEFT);
 
-	Core::textSys->drawVar2<float>(1,  -18, "mousePos: ", Core::mouse->x, 3, Core::GUI::CONSTRAIN_LEFT);
-	Core::textSys->drawVar2<float>(21, -18, "", Core::gameVars->screen.res.y-Core::mouse->y, 3, Core::GUI::CONSTRAIN_LEFT);
+	//Core::textSys->drawVar2<float>(1,  -18, "mousePos: ", Core::mouse->x, 3, Core::GUI::CONSTRAIN_LEFT);
+	//Core::textSys->drawVar2<float>(21, -18, "", Core::gameVars->screen.res.y-Core::mouse->y, 3, Core::GUI::CONSTRAIN_LEFT);
 
-	Core::textSys->drawVar2<float>(1,  -19, "mousePos: ", Core::mouse->x-Core::gameVars->screen.half.x, 3, Core::GUI::CONSTRAIN_LEFT);
-	Core::textSys->drawVar2<float>(21, -19, "", -Core::mouse->y+Core::gameVars->screen.half.y, 3, Core::GUI::CONSTRAIN_LEFT);
+	Core::textSys->drawVar2<float>(1,  -19, "mousePos: ", Core::mouse->x, 3, Core::GUI::CONSTRAIN_LEFT);
+	Core::textSys->drawVar2<float>(21, -19, "", Core::mouse->y, 3, Core::GUI::CONSTRAIN_LEFT);
 
-	Core::textSys->drawVar2<int>(1,  -21,   "Terrain Quads: ", Core::gameVars->debug.noise.simplex[0].res*2, 3, Core::GUI::CONSTRAIN_LEFT);
-	Core::textSys->drawVar2<int>(1,  -22,   " Terrain Tris: ", Core::gameVars->debug.noise.simplex[0].res*2*2, 3, Core::GUI::CONSTRAIN_LEFT);
-	Core::textSys->drawVar2<int>(1,  -23,   "Terrain Verts: ", Core::gameVars->debug.noise.simplex[0].res*2*2*3, 3, Core::GUI::CONSTRAIN_LEFT);
+	//Core::textSys->drawVar2<float>(1,  -20, "mousePos: ", Core::mouse->x-Core::gameVars->screen.half.x, 3, Core::GUI::CONSTRAIN_LEFT);
+	//Core::textSys->drawVar2<float>(21, -20, "", -Core::mouse->y+Core::gameVars->screen.half.y, 3, Core::GUI::CONSTRAIN_LEFT);
+
+
+
+
+	Core::textSys->drawVar2<int>(1,  -21,   "Terrain Quads: ", std::pow(Core::gameVars->debug.noise.simplex[0].res, 2), 3, Core::GUI::CONSTRAIN_LEFT);
+	Core::textSys->drawVar2<int>(1,  -22,   " Terrain Tris: ", std::pow(Core::gameVars->debug.noise.simplex[0].res, 2) * 2, 3, Core::GUI::CONSTRAIN_LEFT);
+	Core::textSys->drawVar2<int>(1,  -23,   "Terrain Verts: ", std::pow(Core::gameVars->debug.noise.simplex[0].res, 2) * 6, 3, Core::GUI::CONSTRAIN_LEFT);
+
+//	Core::textSys->drawVar2<int>(1,  -21,   "Terrain Quads: ", Core::gameVars->debug.noise.simplex[0].res*2, 3, Core::GUI::CONSTRAIN_LEFT);
+//	Core::textSys->drawVar2<int>(1,  -22,   " Terrain Tris: ", Core::gameVars->debug.noise.simplex[0].res*2*2, 3, Core::GUI::CONSTRAIN_LEFT);
+//	Core::textSys->drawVar2<int>(1,  -23,   "Terrain Verts: ", Core::gameVars->debug.noise.simplex[0].res*2*2*3, 3, Core::GUI::CONSTRAIN_LEFT);
 
 	/*
 	 * Draw FPS and Standard Deviation
 	 * using special plus-minus character
 	 */
-	Core::winSys->draw(95, 0, 30, 3, true, Core::colors[Core::colors().Blue], Core::winSys->DRAWMODE.NORMAL);
+	//Core::winSys->draw(95, 0, 30, 3, true, Core::colors[Core::colors().Blue], Core::winSys->DRAWMODE.NORMAL);
 	float fFPS = Core::framerate->getFPS<float>();
 	int ticks = Core::framerate->getSplitTicks();
 	float fStdDev = Core::framerate->getStdDev();

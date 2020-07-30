@@ -14,15 +14,15 @@ namespace Core {
 	class Timer
 	{
 		private:
-			float pausedTicks;	//The ticks stored when the timer was paused
+			int pausedTicks;	//The ticks stored when the timer was paused
 
 			bool paused;		//The timer status
 			bool started;		//The timer status
-			float splitTicks;	//Stores the split time marker
+			int splitTicks;	//Stores the split time marker
 
 		public:
-			float startTicks;	//The clock time when the timer started
-			float rate, rateMod;
+			int startTicks;	//The clock time when the timer started
+			int rate, rateMod;
 
 			//Initializes variables
 			Timer();
@@ -33,13 +33,13 @@ namespace Core {
 			void stop();
 			void pause();
 			void unpause();
-			float split();
-			float get_split();
-			float get_splitdiff();
+			int split();
+			int get_split();
+			int get_splitdiff();
 			void reset();
 
 			//Gets the timer's time
-			float	get_ticks();
+			int	get_ticks();
 	//		uint	get_MilliSeconds() {
 	//			uint uiCurrentTicks = get_ticks();
 	//

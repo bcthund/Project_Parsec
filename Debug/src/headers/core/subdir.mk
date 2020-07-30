@@ -5,8 +5,10 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
 ../src/headers/core/Colors.cpp \
+../src/headers/core/Debug.cpp \
 ../src/headers/core/FractalNoise.cpp \
 ../src/headers/core/FrameRate.cpp \
+../src/headers/core/Groups.cpp \
 ../src/headers/core/ParticleEmitter.cpp \
 ../src/headers/core/Particles.cpp \
 ../src/headers/core/RunningStat.cpp \
@@ -34,8 +36,10 @@ CPP_SRCS += \
 
 OBJS += \
 ./src/headers/core/Colors.o \
+./src/headers/core/Debug.o \
 ./src/headers/core/FractalNoise.o \
 ./src/headers/core/FrameRate.o \
+./src/headers/core/Groups.o \
 ./src/headers/core/ParticleEmitter.o \
 ./src/headers/core/Particles.o \
 ./src/headers/core/RunningStat.o \
@@ -63,8 +67,10 @@ OBJS += \
 
 CPP_DEPS += \
 ./src/headers/core/Colors.d \
+./src/headers/core/Debug.d \
 ./src/headers/core/FractalNoise.d \
 ./src/headers/core/FrameRate.d \
+./src/headers/core/Groups.d \
 ./src/headers/core/ParticleEmitter.d \
 ./src/headers/core/Particles.d \
 ./src/headers/core/RunningStat.d \
@@ -95,7 +101,7 @@ CPP_DEPS += \
 src/headers/core/%.o: ../src/headers/core/%.cpp
 	@echo 'Building file: $<'
 	@echo 'Invoking: GCC C++ Compiler'
-	g++-8 -std=c++1z -D__GXX_EXPERIMENTAL_CXX0X__ -DGL_GLEXT_PROTOTYPES -I"/home/bcthund/OneDrive/Projects/Programming/Project_Parsec/src/headers" -O0 -g3 -c -fmessage-length=0 -std=c++14 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
+	g++-8 -std=c++17 -D__GXX_EXPERIMENTAL_CXX0X__ -DGL_GLEXT_PROTOTYPES -I"/home/bcthund/OneDrive/Projects/Programming/Project_Parsec/src/headers" -O0 -g3 -c -fmessage-length=0 -std=gnu++17 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 

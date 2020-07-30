@@ -105,6 +105,7 @@ namespace Core {
 //			Stipple_Pattern &operator[](std::string name)		{	if(map.count(name)>0) return *colors[map[name]]; else throw std::runtime_error("Invalid Color: "+name);	}
 			Stipple_Pattern &operator[](std::string name)		{	if(map.count(name)>0) return stipples[map[name]]; else throw std::runtime_error("Invalid Stipple Pattern Name: "+name);	}
 			Stipple_Pattern &operator[](int id)					{	if(id<stipples.size()) return stipples[id]; else throw std::runtime_error("Invalid Stipple Pattern ID: "+id);	}
+			//Stipple_Pattern &operator[](t_BIFS id)				{	if(id<stipples.size()) return stipples[id]; else throw std::runtime_error("Invalid Stipple Pattern ID: "+id);	}
 //			Stipple_Pattern *operator[](std::string name)		{	if(map.count(name)>0) return &stipples[map[name]]; else throw std::runtime_error("Invalid Stipple Pattern: "+name);	}
 
 	};
@@ -112,3 +113,59 @@ namespace Core {
 } /* namespace Core */
 
 #endif /* HEADERS_CORE_STIPPLE_H_ */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

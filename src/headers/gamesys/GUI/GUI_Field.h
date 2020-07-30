@@ -13,7 +13,7 @@
 //#include "../core/vao.h"
 //#include "../core/matrix.h"
 //#include "../core/shader.h"
-#include "../../core/InputSys.h"
+//#include "../../core/InputSys.h"
 #include "../../core/Colors.h"
 #include "../../gamesys/gameVars.h"
 #include "GUI_Constraint.h"
@@ -41,20 +41,28 @@ namespace Core {
 			bool FieldBase::bKeyboardInit		= false;
 
 			template <class T>
-			class Field : public FieldBase, public Base::Interactive<Props_Field, T> {
+//			class Field : public FieldBase, public Base::Interactive<Props_Field, T> {
+			class Field : public FieldBase, public Base::Interactive<Props_Field> {
 					friend class AnyField;
 				public:
 					Field();
 					Field(std::string n, T *tPtr, Props_Field c);
-					Field(Props &p, std::string n, T *tPtr, Props_Field c);
 					Field(std::string n, T *tPtr, Props_Field *c);
+					Field(Props &p, std::string n, T *tPtr, Props_Field c);
 					Field(Props &p, std::string n, T *tPtr, Props_Field *c);
 
-//					Field(std::string n, std::shared_ptr<T> tPtr, Props_Field c);
-//					Field(Props &p, std::string n, std::shared_ptr<T> tPtr, Props_Field c);
-//					Field(std::string n, std::shared_ptr<T> tPtr, Props_Field *c);
-//					Field(Props &p, std::string n, std::shared_ptr<T> tPtr, Props_Field *c);
+					Field(std::string n, T t, Props_Field c);
+					Field(std::string n, T t, Props_Field *c);
+					Field(Props &p, std::string n, T t, Props_Field c);
+					Field(Props &p, std::string n, T t, Props_Field *c);
+
 					virtual ~Field();
+
+					T *valuePtr;
+					bool bLocalValue;
+					void setValuePtr(T *ptr);
+					T * getValuePtr();
+					T getValue();
 
 					ToolTip toolTip;
 					void init();
@@ -78,6 +86,8 @@ namespace Core {
 
 			template <class T> Field<T>::Field() {
 				bHasFocus		= false;
+				valuePtr		= nullptr;
+				bLocalValue		= true;
 			}
 
 			template <class T> Field<T>::Field(std::string n, T *tPtr, Props_Field c) {
@@ -87,20 +97,8 @@ namespace Core {
 				this->bHasParent		= false;
 				this->parent			= nullptr;
 
-				this->bLocalValue		= false;
-				this->valuePtr			= tPtr;
-
-				this->bLocalCon			= true;
-				this->con				= new Props_Field();
-				*this->con				= c;
-			}
-
-			template <class T> Field<T>::Field(Props &p, std::string n, T *tPtr, Props_Field c) {
-				bHasFocus				= false;
-				this->name				= n;
-
-				this->bHasParent		= true;
-				this->parent			= &p;
+				this->bLocalState		= true;
+				this->statePtr			= new bool(false);
 
 				this->bLocalValue		= false;
 				this->valuePtr			= tPtr;
@@ -108,6 +106,7 @@ namespace Core {
 				this->bLocalCon			= true;
 				this->con				= new Props_Field();
 				*this->con				= c;
+				if(this->con->text == "") this->con->text = n;
 			}
 
 			template <class T> Field<T>::Field(std::string n, T *tPtr, Props_Field *c) {
@@ -117,11 +116,34 @@ namespace Core {
 				this->bHasParent		= false;
 				this->parent			= nullptr;
 
+				this->bLocalState		= true;
+				this->statePtr			= new bool(false);
+
 				this->bLocalValue		= false;
 				this->valuePtr			= tPtr;
 
 				this->bLocalCon			= false;
 				this->con				= c;
+				if(this->con->text == "") this->con->text = n;
+			}
+
+			template <class T> Field<T>::Field(Props &p, std::string n, T *tPtr, Props_Field c) {
+				bHasFocus				= false;
+				this->name				= n;
+
+				this->bHasParent		= true;
+				this->parent			= &p;
+
+				this->bLocalState		= true;
+				this->statePtr			= new bool(false);
+
+				this->bLocalValue		= false;
+				this->valuePtr			= tPtr;
+
+				this->bLocalCon			= true;
+				this->con				= new Props_Field();
+				*this->con				= c;
+				if(this->con->text == "") this->con->text = n;
 			}
 
 			template <class T> Field<T>::Field(Props &p, std::string n, T *tPtr, Props_Field *c) {
@@ -131,23 +153,121 @@ namespace Core {
 				this->bHasParent		= true;
 				this->parent			= &p;
 
+				this->bLocalState		= true;
+				this->statePtr			= new bool(false);
+
 				this->bLocalValue		= false;
 				this->valuePtr			= tPtr;
 
 				this->bLocalCon			= false;
 				this->con				= c;
+				if(this->con->text == "") this->con->text = n;
+			}
+
+			template <class T> Field<T>::Field(std::string n, T t, Props_Field c) {
+				bHasFocus				= false;
+				this->name				= n;
+
+				this->bHasParent		= false;
+				this->parent			= nullptr;
+
+				this->bLocalState		= true;
+				this->statePtr			= new bool(false);
+
+				this->bLocalValue		= true;
+				this->valuePtr			= new T(t);
+
+				this->bLocalCon			= true;
+				this->con				= new Props_Field();
+				*this->con				= c;
+				if(this->con->text == "") this->con->text = n;
+			}
+
+			template <class T> Field<T>::Field(std::string n, T t, Props_Field *c) {
+				bHasFocus				= false;
+				this->name				= n;
+
+				this->bHasParent		= false;
+				this->parent			= nullptr;
+
+				this->bLocalState		= true;
+				this->statePtr			= new bool(false);
+
+				this->bLocalValue		= true;
+				this->valuePtr			= new T(t);
+
+				this->bLocalCon			= false;
+				this->con				= c;
+				if(this->con->text == "") this->con->text = n;
+			}
+
+			template <class T> Field<T>::Field(Props &p, std::string n, T t, Props_Field c) {
+				bHasFocus				= false;
+				this->name				= n;
+
+				this->bHasParent		= true;
+				this->parent			= &p;
+
+				this->bLocalState		= true;
+				this->statePtr			= new bool(false);
+
+				this->bLocalValue		= true;
+				this->valuePtr			= new T(t);
+
+				this->bLocalCon			= true;
+				this->con				= new Props_Field();
+				*this->con				= c;
+				if(this->con->text == "") this->con->text = n;
+			}
+
+			template <class T> Field<T>::Field(Props &p, std::string n, T t, Props_Field *c) {
+				bHasFocus				= false;
+				this->name				= n;
+
+				this->bHasParent		= true;
+				this->parent			= &p;
+
+				this->bLocalState		= true;
+				this->statePtr			= new bool(false);
+
+				this->bLocalValue		= true;
+				this->valuePtr			= new T(t);
+
+				this->bLocalCon			= false;
+				this->con				= c;
+				if(this->con->text == "") this->con->text = n;
 			}
 
 			template <class T> Field<T>::~Field() {
 				if(this->bLocalCon && this->con != nullptr) delete this->con;
 			}
 
+			template <class T> void Field<T>::setValuePtr(T *ptr)	{
+				if(bLocalValue && valuePtr != nullptr) delete valuePtr;
+				bLocalValue = false;
+				valuePtr = ptr;
+			}
+
+			template <class T> T * Field<T>::getValuePtr()	{
+				return valuePtr;
+			}
+
+			template <class T> T Field<T>::getValue()	{
+				return *valuePtr;
+			}
+
 			/*
 			 * Initialize required data, create pointer
 			 */
 			template <class T> void Field<T>::init() {
-				if (this->bHasParent) win = Object::Window(*this->parent, this->name, this->con);
-				else win = Object::Window(this->name, this->con);
+				if (this->bHasParent) {
+					this->con->exec(*this->parent);
+					win = Object::Window(*this->parent, this->name, this->con);
+				}
+				else {
+					this->con->exec();
+					win = Object::Window(this->name, this->con);
+				}
 				win.init();
 
 				this->con->exec(*win.con);
@@ -255,6 +375,7 @@ namespace Core {
 			}
 
 			template <class T> void Field<T>::updateObjectState(iState eExternState) {
+				checkStatePtr();
 
 				if(eExternState!=STATE_NONE && !(eExternState&STATE_UPDATE)) this->eObjectState = eExternState;
 				else {
@@ -265,7 +386,7 @@ namespace Core {
 					else this->mState = Core::_Mouse::MOUSE_NONE;
 
 					if(this->enabled() && this->con->bEditable && !(eExternState&STATE_ACTIVE)) {
-						if(!this->bFocusPresent && this->mState==Core::_Mouse::MOUSE_LEFT) {
+						if(!this->bFocusPresent && (this->mState&Core::_Mouse::MOUSE_LEFT)) {
 							bHasFocus = true;
 							this->bFocusPresent = true;
 							this->sActiveObject = this->name;
@@ -283,11 +404,12 @@ namespace Core {
 
 				// Allow mouse hover at any time (used for tooltips)
 				if(!(eExternState&STATE_UPDATE)) {
-					if(this->mState==Core::_Mouse::MOUSE_HOVER) this->eObjectState = this->eObjectState|STATE_HOVER;
+					if(this->mState&Core::_Mouse::MOUSE_HOVER) this->eObjectState = this->eObjectState|STATE_HOVER;
 					else this->eObjectState = this->eObjectState&~STATE_HOVER;
 				}
 
 				if(!this->enabled()) this->eObjectState |= STATE_DISABLED;
+				updateStatePtr();
 			}
 
 			/*
@@ -314,13 +436,13 @@ namespace Core {
 						win.exec(this->eObjectState);
 
 						// Check if value has changed FIXME: This should be in Interactive class in a function somehow
-						if(lastValue != vBuffer) this->bValueChanged = true;
+						if(lastValue != vBuffer) this->bStateChanged = true;
 						lastValue = vBuffer;
 
 						// Draw button text
-						if((this->eObjectState&STATE_HOVER) && !bHasFocus)	colors.PushFront(*this->con->color.text().highlight);
-						else if(this->eObjectState&STATE_ACTIVE)			colors.PushFront(*this->con->color.text().active);
-						else												colors.PushFront(*this->con->color.text().base);
+						if((this->eObjectState&STATE_HOVER) && !bHasFocus)	colors.PushFront(*this->con->colorText.highlight);
+						else if(this->eObjectState&STATE_ACTIVE)			colors.PushFront(*this->con->colorText.active);
+						else												colors.PushFront(*this->con->colorText.base);
 
 						textSys->draw(this->con, vBuffer, CONSTRAIN_CENTER);
 						colors.PopFront();
@@ -379,16 +501,24 @@ namespace Core {
 					AnyField() {	tag=NONE;	}
 					void set(std::string n, float * fPtr, Props_Field c)					{	tag = FLOAT;	c.bNumeric = true;		f = new Object::Field<float>(n, fPtr, c);	}
 					void set(std::string n, float * fPtr, Props_Field *c)					{	tag = FLOAT;	c->bNumeric = true;		f = new Object::Field<float>(n, fPtr, c);	}
+					void set(std::string n, float fVal, Props_Field *c)						{	tag = FLOAT;	c->bNumeric = true;		f = new Object::Field<float>(n, fVal, c);	}
 					void set(std::string n, int * iPtr, Props_Field c)						{	tag = INT;		c.bNumeric = true;		i = new Object::Field<int>(n, iPtr, c);	}
 					void set(std::string n, int * iPtr, Props_Field *c)						{	tag = INT;		c->bNumeric = true;		i = new Object::Field<int>(n, iPtr, c);	}
+					void set(std::string n, int iVal, Props_Field *c)						{	tag = INT;		c->bNumeric = true;		i = new Object::Field<int>(n, iVal, c);	}
 					void set(std::string n, std::string * sPtr, Props_Field c)				{	tag = STRING;	c.bNumeric = false;		s = new Object::Field<std::string>(n, sPtr, c);	}
 					void set(std::string n, std::string * sPtr, Props_Field *c)				{	tag = STRING;	c->bNumeric = false;	s = new Object::Field<std::string>(n, sPtr, c);	}
+					void set(std::string n, std::string sVal, Props_Field *c)				{	tag = STRING;	c->bNumeric = false;	s = new Object::Field<std::string>(n, sVal, c);	}
+
+
 					void set(Props &p, std::string n, float * fPtr, Props_Field c)			{	tag = FLOAT;	c.bNumeric = true;		f = new Object::Field<float>(p, n, fPtr, c);	}
 					void set(Props &p, std::string n, float * fPtr, Props_Field *c)			{	tag = FLOAT;	c->bNumeric = true;		f = new Object::Field<float>(p, n, fPtr, c);	}
+					void set(Props &p, std::string n, float fVal, Props_Field *c)			{	tag = FLOAT;	c->bNumeric = true;		f = new Object::Field<float>(p, n, fVal, c);	}
 					void set(Props &p, std::string n, int * iPtr, Props_Field c)			{	tag = INT;		c.bNumeric = true;		i = new Object::Field<int>(p, n, iPtr, c);	}
 					void set(Props &p, std::string n, int * iPtr, Props_Field *c)			{	tag = INT;		c->bNumeric = true;		i = new Object::Field<int>(p, n, iPtr, c);	}
+					void set(Props &p, std::string n, int iVal, Props_Field *c)				{	tag = INT;		c->bNumeric = true;		i = new Object::Field<int>(p, n, iVal, c);	}
 					void set(Props &p, std::string n, std::string * sPtr, Props_Field c)	{	tag = STRING;	c.bNumeric = false;		s = new Object::Field<std::string>(p, n, sPtr, c);	}
 					void set(Props &p, std::string n, std::string * sPtr, Props_Field *c)	{	tag = STRING;	c->bNumeric = false;	s = new Object::Field<std::string>(p, n, sPtr, c);	}
+					void set(Props &p, std::string n, std::string sVal, Props_Field *c)		{	tag = STRING;	c->bNumeric = false;	s = new Object::Field<std::string>(p, n, sVal, c);	}
 
 					Object::Field<float> * getF() { if(tag==FLOAT) return f; else return nullptr; }
 					Object::Field<int> * getI() { if(tag==INT) return i; else return nullptr; }
@@ -435,13 +565,15 @@ namespace Core {
 
 					void setPointer(float * fPtr) {
 						tag = FLOAT;
-						f->valuePtr = fPtr;
+						f->setValuePtr(fPtr);
+						//f->valuePtr = fPtr;
 //						f->setPointer(fPtr);
 					}
 
 					void setPointer(int * iPtr) {
 						tag = INT;
-						i->valuePtr = iPtr;
+						i->setValuePtr(iPtr);
+						//i->valuePtr = iPtr;
 //						i->setPointer(iPtr);
 					}
 
@@ -467,8 +599,8 @@ namespace Core {
 								break;
 						}
 					}
-
 			};
+
 		}
 	}
 } /* namespace Core */

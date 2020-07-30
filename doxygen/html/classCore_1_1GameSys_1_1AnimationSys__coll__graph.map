@@ -1,0 +1,13 @@
+<map id="Core::GameSys::AnimationSys" name="Core::GameSys::AnimationSys">
+<area shape="rect" id="node1" title=" " alt="" coords="604,129,809,156"/>
+<area shape="rect" id="node2" href="$classCore_1_1Timer.html" title=" " alt="" coords="358,5,449,32"/>
+<area shape="rect" id="node3" href="$structCore_1_1GameSys_1_1AnimationSys_1_1__RunningAnimations.html" title=" " alt="" coords="312,57,495,98"/>
+<area shape="rect" id="node4" href="$structCore_1_1Vector3f.html" title=" " alt="" coords="49,21,155,48"/>
+<area shape="rect" id="node5" href="$structCore_1_1Vector2f.html" title=" " alt="" coords="49,72,155,99"/>
+<area shape="rect" id="node6" href="$structCore_1_1GameSys_1_1AnimationSys_1_1__AnimationList.html" title=" " alt="" coords="312,122,495,163"/>
+<area shape="rect" id="node7" href="$classCore_1_1VAO.html" title=" " alt="" coords="60,129,144,156"/>
+<area shape="rect" id="node8" href="$classCore_1_1AudioSys.html" title=" " alt="" coords="346,188,461,215"/>
+<area shape="rect" id="node9" href="$structCore_1_1AudioSys_1_1__MusicItem.html" title=" " alt="" coords="7,184,197,211"/>
+<area shape="rect" id="node10" href="$structCore_1_1AudioSys_1_1__ChunkItem.html" title=" " alt="" coords="5,235,199,261"/>
+<area shape="rect" id="node11" href="$classCore_1_1Texture.html" title=" " alt="" coords="353,239,454,265"/>
+</map>

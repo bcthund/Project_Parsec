@@ -32,10 +32,10 @@ void _Admin::initSkillTree() {
 	con_button.setPos( -75, y);	Core::gui["GameMenu"][sWin].Button.add("A-0100", false, con_button);
 	con_button.setPos(  75, y);	Core::gui["GameMenu"][sWin].Button.add("A-0010", false, con_button);
 	con_button.setPos( 225, y);	Core::gui["GameMenu"][sWin].Button.add("A-0001", false, con_button);
-	Core::gui["GameMenu"][sWin].Button["A-1000"].setEnableAPtr(Core::gui["GameMenu"][sWin].Button["Button A"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["A-0100"].setEnableAPtr(Core::gui["GameMenu"][sWin].Button["Button A"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["A-0010"].setEnableAPtr(Core::gui["GameMenu"][sWin].Button["Button A"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["A-0001"].setEnableAPtr(Core::gui["GameMenu"][sWin].Button["Button A"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["A-1000"].setEnableAPtr(Core::gui["GameMenu"][sWin].Button["Button A"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["A-0100"].setEnableAPtr(Core::gui["GameMenu"][sWin].Button["Button A"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["A-0010"].setEnableAPtr(Core::gui["GameMenu"][sWin].Button["Button A"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["A-0001"].setEnableAPtr(Core::gui["GameMenu"][sWin].Button["Button A"].getStatePtr());
 
 	y += 40;
 	con_button.setWidth(150, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
@@ -44,10 +44,10 @@ void _Admin::initSkillTree() {
 	con_button.setPos( -75, y);	Core::gui["GameMenu"][sWin].Button.add("A-0200", false, con_button);
 	con_button.setPos(  75, y);	Core::gui["GameMenu"][sWin].Button.add("A-0020", false, con_button);
 	con_button.setPos( 225, y);	Core::gui["GameMenu"][sWin].Button.add("A-0002", false, con_button);
-	Core::gui["GameMenu"][sWin].Button["A-2000"].setEnableAPtr(Core::gui["GameMenu"][sWin].Button["A-1000"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["A-0200"].setEnableAPtr(Core::gui["GameMenu"][sWin].Button["A-0100"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["A-0020"].setEnableAPtr(Core::gui["GameMenu"][sWin].Button["A-0010"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["A-0002"].setEnableAPtr(Core::gui["GameMenu"][sWin].Button["A-0001"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["A-2000"].setEnableAPtr(Core::gui["GameMenu"][sWin].Button["A-1000"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["A-0200"].setEnableAPtr(Core::gui["GameMenu"][sWin].Button["A-0100"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["A-0020"].setEnableAPtr(Core::gui["GameMenu"][sWin].Button["A-0010"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["A-0002"].setEnableAPtr(Core::gui["GameMenu"][sWin].Button["A-0001"].getStatePtr());
 
 	y += 40;
 	con_button.setWidth(150, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
@@ -56,10 +56,10 @@ void _Admin::initSkillTree() {
 	con_button.setPos( -75, y);	Core::gui["GameMenu"][sWin].Button.add("A-0300", false, con_button);
 	con_button.setPos(  75, y);	Core::gui["GameMenu"][sWin].Button.add("A-0030", false, con_button);
 	con_button.setPos( 225, y);	Core::gui["GameMenu"][sWin].Button.add("A-0003", false, con_button);
-	Core::gui["GameMenu"][sWin].Button["A-3000"].setEnableAPtr(Core::gui["GameMenu"][sWin].Button["A-2000"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["A-0300"].setEnableAPtr(Core::gui["GameMenu"][sWin].Button["A-0200"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["A-0030"].setEnableAPtr(Core::gui["GameMenu"][sWin].Button["A-0020"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["A-0003"].setEnableAPtr(Core::gui["GameMenu"][sWin].Button["A-0002"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["A-3000"].setEnableAPtr(Core::gui["GameMenu"][sWin].Button["A-2000"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["A-0300"].setEnableAPtr(Core::gui["GameMenu"][sWin].Button["A-0200"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["A-0030"].setEnableAPtr(Core::gui["GameMenu"][sWin].Button["A-0020"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["A-0003"].setEnableAPtr(Core::gui["GameMenu"][sWin].Button["A-0002"].getStatePtr());
 
 	y += 40;
 	con_button.setWidth(75, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
@@ -90,35 +90,35 @@ void _Admin::initSkillTree() {
 	con_button.setPos( 225, y);	Core::gui["GameMenu"][sWin].Button.add("C-0002", false, con_button);
 
 	// Enable Pointers for B-1000 to C-0001
-	Core::gui["GameMenu"][sWin].Button["B-1000"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["A-3000"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["B-1000"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0200"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["B-1000"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["A-3000"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["B-1000"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0200"].getStatePtr());
 
-	Core::gui["GameMenu"][sWin].Button["B-0100"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["A-3000"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["B-0100"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-2000"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["B-0100"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0020"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["B-0100"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["A-3000"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["B-0100"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-2000"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["B-0100"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0020"].getStatePtr());
 
-	Core::gui["GameMenu"][sWin].Button["B-0010"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["A-0300"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["B-0010"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0200"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["B-0010"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0002"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["B-0010"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["A-0300"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["B-0010"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0200"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["B-0010"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0002"].getStatePtr());
 
-	Core::gui["GameMenu"][sWin].Button["B-0001"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["A-0300"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["B-0001"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0020"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["B-0001"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-2000"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["B-0001"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["A-0300"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["B-0001"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0020"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["B-0001"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-2000"].getStatePtr());
 
-	Core::gui["GameMenu"][sWin].Button["C-1000"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["A-0030"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["C-1000"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0002"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["C-1000"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0200"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["C-1000"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["A-0030"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["C-1000"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0002"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["C-1000"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0200"].getStatePtr());
 
-	Core::gui["GameMenu"][sWin].Button["C-0100"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["A-0030"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["C-0100"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-2000"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["C-0100"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0020"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["C-0100"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["A-0030"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["C-0100"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-2000"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["C-0100"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0020"].getStatePtr());
 
-	Core::gui["GameMenu"][sWin].Button["C-0010"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["A-0003"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["C-0010"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0200"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["C-0010"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0002"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["C-0010"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["A-0003"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["C-0010"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0200"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["C-0010"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0002"].getStatePtr());
 
-	Core::gui["GameMenu"][sWin].Button["C-0001"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["A-0003"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["C-0001"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0020"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["C-0001"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["A-0003"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["C-0001"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0020"].getStatePtr());
 
 	y += 40;
 	con_button.setWidth(75, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
@@ -135,35 +135,35 @@ void _Admin::initSkillTree() {
 	con_button.setPos( 225, y);	Core::gui["GameMenu"][sWin].Button.add("C-0003", false, con_button);
 
 	// Enable Pointers for B-2000 to C-0002
-	Core::gui["GameMenu"][sWin].Button["B-2000"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-1000"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["B-2000"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0300"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["B-2000"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-1000"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["B-2000"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0300"].getStatePtr());
 
-	Core::gui["GameMenu"][sWin].Button["B-0200"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0100"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["B-0200"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-3000"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["B-0200"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0030"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["B-0200"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0100"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["B-0200"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-3000"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["B-0200"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0030"].getStatePtr());
 
-	Core::gui["GameMenu"][sWin].Button["B-0020"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0010"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["B-0020"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0300"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["B-0020"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0003"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["B-0020"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0010"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["B-0020"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0300"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["B-0020"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0003"].getStatePtr());
 
-	Core::gui["GameMenu"][sWin].Button["B-0002"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0001"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["B-0002"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0030"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["B-0002"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-3000"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["B-0002"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0001"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["B-0002"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0030"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["B-0002"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-3000"].getStatePtr());
 
-	Core::gui["GameMenu"][sWin].Button["C-2000"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-1000"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["C-2000"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0003"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["C-2000"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0300"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["C-2000"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-1000"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["C-2000"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0003"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["C-2000"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0300"].getStatePtr());
 
-	Core::gui["GameMenu"][sWin].Button["C-0200"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0100"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["C-0200"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-3000"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["C-0200"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0030"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["C-0200"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0100"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["C-0200"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-3000"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["C-0200"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0030"].getStatePtr());
 
-	Core::gui["GameMenu"][sWin].Button["C-0020"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0010"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["C-0020"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0300"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["C-0020"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0003"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["C-0020"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0010"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["C-0020"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0300"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["C-0020"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0003"].getStatePtr());
 
-	Core::gui["GameMenu"][sWin].Button["C-0002"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0001"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["C-0002"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0030"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["C-0002"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0001"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["C-0002"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0030"].getStatePtr());
 
 	y += 40;
 	con_button.setWidth(75, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
@@ -180,35 +180,35 @@ void _Admin::initSkillTree() {
 	con_button.setPos( 225, y);	Core::gui["GameMenu"][sWin].Button.add("C-0004", false, con_button);
 
 	// Enable Pointers for B-3000 to C-0003
-	Core::gui["GameMenu"][sWin].Button["B-3000"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-2000"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["B-3000"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0400"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["B-3000"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-2000"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["B-3000"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0400"].getStatePtr());
 
-	Core::gui["GameMenu"][sWin].Button["B-0300"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0200"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["B-0300"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-4000"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["B-0300"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0040"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["B-0300"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0200"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["B-0300"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-4000"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["B-0300"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0040"].getStatePtr());
 
-	Core::gui["GameMenu"][sWin].Button["B-0030"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0020"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["B-0030"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0400"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["B-0030"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0004"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["B-0030"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0020"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["B-0030"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0400"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["B-0030"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0004"].getStatePtr());
 
-	Core::gui["GameMenu"][sWin].Button["B-0003"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0002"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["B-0003"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0040"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["B-0003"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-4000"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["B-0003"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0002"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["B-0003"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0040"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["B-0003"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-4000"].getStatePtr());
 
-	Core::gui["GameMenu"][sWin].Button["C-3000"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-2000"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["C-3000"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0004"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["C-3000"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0400"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["C-3000"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-2000"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["C-3000"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0004"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["C-3000"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0400"].getStatePtr());
 
-	Core::gui["GameMenu"][sWin].Button["C-0300"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0200"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["C-0300"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-4000"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["C-0300"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0040"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["C-0300"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0200"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["C-0300"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-4000"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["C-0300"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0040"].getStatePtr());
 
-	Core::gui["GameMenu"][sWin].Button["C-0030"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0020"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["C-0030"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0400"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["C-0030"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0004"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["C-0030"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0020"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["C-0030"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0400"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["C-0030"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0004"].getStatePtr());
 
-	Core::gui["GameMenu"][sWin].Button["C-0003"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0002"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["C-0003"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0040"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["C-0003"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0002"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["C-0003"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0040"].getStatePtr());
 
 	y += 40;
 	con_button.setWidth(75, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
@@ -225,35 +225,35 @@ void _Admin::initSkillTree() {
 	con_button.setPos( 225, y);	Core::gui["GameMenu"][sWin].Button.add("C-0005", false, con_button);
 
 	// Enable Pointers for B-4000 to C-0004
-	Core::gui["GameMenu"][sWin].Button["B-4000"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-3000"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["B-4000"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0500"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["B-4000"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-3000"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["B-4000"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0500"].getStatePtr());
 
-	Core::gui["GameMenu"][sWin].Button["B-0400"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0300"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["B-0400"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-5000"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["B-0400"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0050"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["B-0400"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0300"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["B-0400"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-5000"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["B-0400"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0050"].getStatePtr());
 
-	Core::gui["GameMenu"][sWin].Button["B-0040"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0030"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["B-0040"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0500"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["B-0040"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0005"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["B-0040"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0030"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["B-0040"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0500"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["B-0040"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0005"].getStatePtr());
 
-	Core::gui["GameMenu"][sWin].Button["B-0004"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0003"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["B-0004"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0050"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["B-0004"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-5000"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["B-0004"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0003"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["B-0004"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0050"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["B-0004"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-5000"].getStatePtr());
 
-	Core::gui["GameMenu"][sWin].Button["C-4000"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-3000"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["C-4000"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0005"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["C-4000"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0500"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["C-4000"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-3000"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["C-4000"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0005"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["C-4000"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0500"].getStatePtr());
 
-	Core::gui["GameMenu"][sWin].Button["C-0400"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0300"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["C-0400"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-5000"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["C-0400"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0050"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["C-0400"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0300"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["C-0400"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-5000"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["C-0400"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0050"].getStatePtr());
 
-	Core::gui["GameMenu"][sWin].Button["C-0040"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0030"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["C-0040"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0500"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["C-0040"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0005"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["C-0040"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0030"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["C-0040"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0500"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["C-0040"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0005"].getStatePtr());
 
-	Core::gui["GameMenu"][sWin].Button["C-0004"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0003"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["C-0004"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0050"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["C-0004"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0003"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["C-0004"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0050"].getStatePtr());
 
 	y += 40;
 	con_button.setWidth(75, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
@@ -263,50 +263,50 @@ void _Admin::initSkillTree() {
 	con_button.setPos(-150, y);	Core::gui["GameMenu"][sWin].Button.add("B-0600", false, con_button);
 	con_button.setPos( -75, y);	Core::gui["GameMenu"][sWin].Button.add("B-0060", false, con_button);
 	con_button.setPos(   0, y);	Core::gui["GameMenu"][sWin].Button.add("B-0006", false, con_button);
-	Core::gui["GameMenu"][sWin].Button["B-6000"].setEnableAPtr(Core::gui["GameMenu"][sWin].Button["B-5000"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["B-0600"].setEnableAPtr(Core::gui["GameMenu"][sWin].Button["B-0500"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["B-0060"].setEnableAPtr(Core::gui["GameMenu"][sWin].Button["B-0050"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["B-0006"].setEnableAPtr(Core::gui["GameMenu"][sWin].Button["B-0005"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["B-6000"].setEnableAPtr(Core::gui["GameMenu"][sWin].Button["B-5000"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["B-0600"].setEnableAPtr(Core::gui["GameMenu"][sWin].Button["B-0500"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["B-0060"].setEnableAPtr(Core::gui["GameMenu"][sWin].Button["B-0050"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["B-0006"].setEnableAPtr(Core::gui["GameMenu"][sWin].Button["B-0005"].getStatePtr());
 	con_button.setAnchor(Core::GUI::CONSTRAIN_BOTTOM_LEFT);
 	con_button.setPos(   0, y);	Core::gui["GameMenu"][sWin].Button.add("C-6000", false, con_button);
 	con_button.setPos(  75, y);	Core::gui["GameMenu"][sWin].Button.add("C-0600", false, con_button);
 	con_button.setPos( 150, y);	Core::gui["GameMenu"][sWin].Button.add("C-0060", false, con_button);
 	con_button.setPos( 225, y);	Core::gui["GameMenu"][sWin].Button.add("C-0006", false, con_button);
-	Core::gui["GameMenu"][sWin].Button["C-6000"].setEnableAPtr(Core::gui["GameMenu"][sWin].Button["C-5000"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["C-0600"].setEnableAPtr(Core::gui["GameMenu"][sWin].Button["C-0500"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["C-0060"].setEnableAPtr(Core::gui["GameMenu"][sWin].Button["C-0050"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["C-0006"].setEnableAPtr(Core::gui["GameMenu"][sWin].Button["C-0005"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["C-6000"].setEnableAPtr(Core::gui["GameMenu"][sWin].Button["C-5000"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["C-0600"].setEnableAPtr(Core::gui["GameMenu"][sWin].Button["C-0500"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["C-0060"].setEnableAPtr(Core::gui["GameMenu"][sWin].Button["C-0050"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["C-0006"].setEnableAPtr(Core::gui["GameMenu"][sWin].Button["C-0005"].getStatePtr());
 
 	// Enable Pointers for B-5000 to C-0005
-	Core::gui["GameMenu"][sWin].Button["B-5000"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-4000"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["B-5000"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0600"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["B-5000"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-4000"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["B-5000"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0600"].getStatePtr());
 
-	Core::gui["GameMenu"][sWin].Button["B-0500"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0400"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["B-0500"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-6000"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["B-0500"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0060"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["B-0500"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0400"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["B-0500"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-6000"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["B-0500"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0060"].getStatePtr());
 
-	Core::gui["GameMenu"][sWin].Button["B-0050"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0040"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["B-0050"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0600"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["B-0050"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0006"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["B-0050"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0040"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["B-0050"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0600"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["B-0050"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0006"].getStatePtr());
 
-	Core::gui["GameMenu"][sWin].Button["B-0005"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0004"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["B-0005"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0060"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["B-0005"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-6000"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["B-0005"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0004"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["B-0005"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0060"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["B-0005"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-6000"].getStatePtr());
 
-	Core::gui["GameMenu"][sWin].Button["C-5000"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-4000"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["C-5000"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0006"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["C-5000"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0600"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["C-5000"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-4000"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["C-5000"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["B-0006"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["C-5000"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0600"].getStatePtr());
 
-	Core::gui["GameMenu"][sWin].Button["C-0500"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0400"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["C-0500"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-6000"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["C-0500"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0060"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["C-0500"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0400"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["C-0500"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-6000"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["C-0500"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0060"].getStatePtr());
 
-	Core::gui["GameMenu"][sWin].Button["C-0050"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0040"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["C-0050"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0600"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["C-0050"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0006"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["C-0050"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0040"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["C-0050"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0600"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["C-0050"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0006"].getStatePtr());
 
-	Core::gui["GameMenu"][sWin].Button["C-0005"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0004"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["C-0005"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0060"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["C-0005"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0004"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["C-0005"].setEnableOPtr(Core::gui["GameMenu"][sWin].Button["C-0060"].getStatePtr());
 
 	y += 40;
 	con_button.setButtonType(Core::GUI::BUTTON_ONESHOT);
@@ -344,19 +344,19 @@ void _Admin::initSkillTree() {
 	con_button.setPos(-150, y);	Core::gui["GameMenu"][sWin].Button.add("D-0100", false, con_button);
 	con_button.setPos( -75, y);	Core::gui["GameMenu"][sWin].Button.add("D-0010", false, con_button);
 	con_button.setPos(   0, y);	Core::gui["GameMenu"][sWin].Button.add("D-0001", false, con_button);
-	Core::gui["GameMenu"][sWin].Button["D-1000"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-6000"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["D-0100"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-6000"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["D-0010"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-6000"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["D-0001"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-6000"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["D-1000"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-6000"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["D-0100"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-6000"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["D-0010"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-6000"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["D-0001"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-6000"].getStatePtr());
 	con_button.setAnchor(Core::GUI::CONSTRAIN_BOTTOM_LEFT);
 	con_button.setPos(   0, y);	Core::gui["GameMenu"][sWin].Button.add("E-1000", false, con_button);
 	con_button.setPos(  75, y);	Core::gui["GameMenu"][sWin].Button.add("E-0100", false, con_button);
 	con_button.setPos( 150, y);	Core::gui["GameMenu"][sWin].Button.add("E-0010", false, con_button);
 	con_button.setPos( 225, y);	Core::gui["GameMenu"][sWin].Button.add("E-0001", false, con_button);
-	Core::gui["GameMenu"][sWin].Button["E-1000"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-6000"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["E-0100"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-6000"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["E-0010"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-6000"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["E-0001"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-6000"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["E-1000"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-6000"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["E-0100"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-6000"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["E-0010"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-6000"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["E-0001"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-6000"].getStatePtr());
 
 	// ========================
 	//	WINDOW 14-2 : Class 2
@@ -379,19 +379,19 @@ void _Admin::initSkillTree() {
 	con_button.setPos(-150, y);	Core::gui["GameMenu"][sWin].Button.add("D-0100", false, con_button);
 	con_button.setPos( -75, y);	Core::gui["GameMenu"][sWin].Button.add("D-0010", false, con_button);
 	con_button.setPos(   0, y);	Core::gui["GameMenu"][sWin].Button.add("D-0001", false, con_button);
-	Core::gui["GameMenu"][sWin].Button["D-1000"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-0600"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["D-0100"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-0600"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["D-0010"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-0600"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["D-0001"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-0600"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["D-1000"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-0600"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["D-0100"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-0600"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["D-0010"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-0600"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["D-0001"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-0600"].getStatePtr());
 	con_button.setAnchor(Core::GUI::CONSTRAIN_BOTTOM_LEFT);
 	con_button.setPos(   0, y);	Core::gui["GameMenu"][sWin].Button.add("E-1000", false, con_button);
 	con_button.setPos(  75, y);	Core::gui["GameMenu"][sWin].Button.add("E-0100", false, con_button);
 	con_button.setPos( 150, y);	Core::gui["GameMenu"][sWin].Button.add("E-0010", false, con_button);
 	con_button.setPos( 225, y);	Core::gui["GameMenu"][sWin].Button.add("E-0001", false, con_button);
-	Core::gui["GameMenu"][sWin].Button["E-1000"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-0600"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["E-0100"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-0600"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["E-0010"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-0600"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["E-0001"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-0600"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["E-1000"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-0600"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["E-0100"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-0600"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["E-0010"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-0600"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["E-0001"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-0600"].getStatePtr());
 
 	// ========================
 	//	WINDOW 14-3 : Class 3
@@ -414,19 +414,19 @@ void _Admin::initSkillTree() {
 	con_button.setPos(-150, y);	Core::gui["GameMenu"][sWin].Button.add("D-0100", false, con_button);
 	con_button.setPos( -75, y);	Core::gui["GameMenu"][sWin].Button.add("D-0010", false, con_button);
 	con_button.setPos(   0, y);	Core::gui["GameMenu"][sWin].Button.add("D-0001", false, con_button);
-	Core::gui["GameMenu"][sWin].Button["D-1000"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-0060"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["D-0100"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-0060"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["D-0010"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-0060"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["D-0001"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-0060"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["D-1000"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-0060"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["D-0100"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-0060"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["D-0010"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-0060"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["D-0001"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-0060"].getStatePtr());
 	con_button.setAnchor(Core::GUI::CONSTRAIN_BOTTOM_LEFT);
 	con_button.setPos(   0, y);	Core::gui["GameMenu"][sWin].Button.add("E-1000", false, con_button);
 	con_button.setPos(  75, y);	Core::gui["GameMenu"][sWin].Button.add("E-0100", false, con_button);
 	con_button.setPos( 150, y);	Core::gui["GameMenu"][sWin].Button.add("E-0010", false, con_button);
 	con_button.setPos( 225, y);	Core::gui["GameMenu"][sWin].Button.add("E-0001", false, con_button);
-	Core::gui["GameMenu"][sWin].Button["E-1000"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-0060"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["E-0100"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-0060"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["E-0010"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-0060"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["E-0001"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-0060"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["E-1000"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-0060"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["E-0100"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-0060"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["E-0010"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-0060"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["E-0001"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-0060"].getStatePtr());
 
 	// ========================
 	//	WINDOW 14-4 : Class 4
@@ -449,19 +449,19 @@ void _Admin::initSkillTree() {
 	con_button.setPos(-150, y);	Core::gui["GameMenu"][sWin].Button.add("D-0100", false, con_button);
 	con_button.setPos( -75, y);	Core::gui["GameMenu"][sWin].Button.add("D-0010", false, con_button);
 	con_button.setPos(   0, y);	Core::gui["GameMenu"][sWin].Button.add("D-0001", false, con_button);
-	Core::gui["GameMenu"][sWin].Button["D-1000"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-0006"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["D-0100"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-0006"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["D-0010"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-0006"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["D-0001"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-0006"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["D-1000"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-0006"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["D-0100"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-0006"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["D-0010"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-0006"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["D-0001"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-0006"].getStatePtr());
 	con_button.setAnchor(Core::GUI::CONSTRAIN_BOTTOM_LEFT);
 	con_button.setPos(   0, y);	Core::gui["GameMenu"][sWin].Button.add("E-1000", false, con_button);
 	con_button.setPos(  75, y);	Core::gui["GameMenu"][sWin].Button.add("E-0100", false, con_button);
 	con_button.setPos( 150, y);	Core::gui["GameMenu"][sWin].Button.add("E-0010", false, con_button);
 	con_button.setPos( 225, y);	Core::gui["GameMenu"][sWin].Button.add("E-0001", false, con_button);
-	Core::gui["GameMenu"][sWin].Button["E-1000"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-0006"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["E-0100"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-0006"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["E-0010"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-0006"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["E-0001"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-0006"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["E-1000"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-0006"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["E-0100"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-0006"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["E-0010"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-0006"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["E-0001"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["B-0006"].getStatePtr());
 
 	// ========================
 	//	WINDOW 14-5 : Class 5
@@ -484,19 +484,19 @@ void _Admin::initSkillTree() {
 	con_button.setPos(-150, y);	Core::gui["GameMenu"][sWin].Button.add("D-0100", false, con_button);
 	con_button.setPos( -75, y);	Core::gui["GameMenu"][sWin].Button.add("D-0010", false, con_button);
 	con_button.setPos(   0, y);	Core::gui["GameMenu"][sWin].Button.add("D-0001", false, con_button);
-	Core::gui["GameMenu"][sWin].Button["D-1000"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-6000"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["D-0100"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-6000"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["D-0010"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-6000"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["D-0001"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-6000"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["D-1000"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-6000"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["D-0100"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-6000"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["D-0010"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-6000"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["D-0001"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-6000"].getStatePtr());
 	con_button.setAnchor(Core::GUI::CONSTRAIN_BOTTOM_LEFT);
 	con_button.setPos(   0, y);	Core::gui["GameMenu"][sWin].Button.add("E-1000", false, con_button);
 	con_button.setPos(  75, y);	Core::gui["GameMenu"][sWin].Button.add("E-0100", false, con_button);
 	con_button.setPos( 150, y);	Core::gui["GameMenu"][sWin].Button.add("E-0010", false, con_button);
 	con_button.setPos( 225, y);	Core::gui["GameMenu"][sWin].Button.add("E-0001", false, con_button);
-	Core::gui["GameMenu"][sWin].Button["E-1000"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-6000"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["E-0100"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-6000"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["E-0010"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-6000"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["E-0001"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-6000"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["E-1000"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-6000"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["E-0100"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-6000"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["E-0010"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-6000"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["E-0001"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-6000"].getStatePtr());
 
 	// ========================
 	//	WINDOW 14-6 : Class 6
@@ -519,19 +519,19 @@ void _Admin::initSkillTree() {
 	con_button.setPos(-150, y);	Core::gui["GameMenu"][sWin].Button.add("D-0100", false, con_button);
 	con_button.setPos( -75, y);	Core::gui["GameMenu"][sWin].Button.add("D-0010", false, con_button);
 	con_button.setPos(   0, y);	Core::gui["GameMenu"][sWin].Button.add("D-0001", false, con_button);
-	Core::gui["GameMenu"][sWin].Button["D-1000"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-0600"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["D-0100"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-0600"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["D-0010"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-0600"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["D-0001"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-0600"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["D-1000"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-0600"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["D-0100"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-0600"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["D-0010"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-0600"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["D-0001"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-0600"].getStatePtr());
 	con_button.setAnchor(Core::GUI::CONSTRAIN_BOTTOM_LEFT);
 	con_button.setPos(   0, y);	Core::gui["GameMenu"][sWin].Button.add("E-1000", false, con_button);
 	con_button.setPos(  75, y);	Core::gui["GameMenu"][sWin].Button.add("E-0100", false, con_button);
 	con_button.setPos( 150, y);	Core::gui["GameMenu"][sWin].Button.add("E-0010", false, con_button);
 	con_button.setPos( 225, y);	Core::gui["GameMenu"][sWin].Button.add("E-0001", false, con_button);
-	Core::gui["GameMenu"][sWin].Button["E-1000"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-0600"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["E-0100"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-0600"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["E-0010"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-0600"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["E-0001"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-0600"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["E-1000"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-0600"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["E-0100"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-0600"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["E-0010"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-0600"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["E-0001"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-0600"].getStatePtr());
 
 	// ========================
 	//	WINDOW 14-7 : Class 7
@@ -554,19 +554,19 @@ void _Admin::initSkillTree() {
 	con_button.setPos(-150, y);	Core::gui["GameMenu"][sWin].Button.add("D-0100", false, con_button);
 	con_button.setPos( -75, y);	Core::gui["GameMenu"][sWin].Button.add("D-0010", false, con_button);
 	con_button.setPos(   0, y);	Core::gui["GameMenu"][sWin].Button.add("D-0001", false, con_button);
-	Core::gui["GameMenu"][sWin].Button["D-1000"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-0060"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["D-0100"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-0060"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["D-0010"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-0060"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["D-0001"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-0060"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["D-1000"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-0060"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["D-0100"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-0060"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["D-0010"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-0060"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["D-0001"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-0060"].getStatePtr());
 	con_button.setAnchor(Core::GUI::CONSTRAIN_BOTTOM_LEFT);
 	con_button.setPos(   0, y);	Core::gui["GameMenu"][sWin].Button.add("E-1000", false, con_button);
 	con_button.setPos(  75, y);	Core::gui["GameMenu"][sWin].Button.add("E-0100", false, con_button);
 	con_button.setPos( 150, y);	Core::gui["GameMenu"][sWin].Button.add("E-0010", false, con_button);
 	con_button.setPos( 225, y);	Core::gui["GameMenu"][sWin].Button.add("E-0001", false, con_button);
-	Core::gui["GameMenu"][sWin].Button["E-1000"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-0060"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["E-0100"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-0060"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["E-0010"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-0060"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["E-0001"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-0060"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["E-1000"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-0060"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["E-0100"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-0060"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["E-0010"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-0060"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["E-0001"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-0060"].getStatePtr());
 
 	// ========================
 	//	WINDOW 14-8 : Class 8
@@ -589,19 +589,19 @@ void _Admin::initSkillTree() {
 	con_button.setPos(-150, y);	Core::gui["GameMenu"][sWin].Button.add("D-0100", false, con_button);
 	con_button.setPos( -75, y);	Core::gui["GameMenu"][sWin].Button.add("D-0010", false, con_button);
 	con_button.setPos(   0, y);	Core::gui["GameMenu"][sWin].Button.add("D-0001", false, con_button);
-	Core::gui["GameMenu"][sWin].Button["D-1000"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-0006"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["D-0100"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-0006"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["D-0010"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-0006"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["D-0001"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-0006"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["D-1000"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-0006"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["D-0100"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-0006"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["D-0010"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-0006"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["D-0001"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-0006"].getStatePtr());
 	con_button.setAnchor(Core::GUI::CONSTRAIN_BOTTOM_LEFT);
 	con_button.setPos(   0, y);	Core::gui["GameMenu"][sWin].Button.add("E-1000", false, con_button);
 	con_button.setPos(  75, y);	Core::gui["GameMenu"][sWin].Button.add("E-0100", false, con_button);
 	con_button.setPos( 150, y);	Core::gui["GameMenu"][sWin].Button.add("E-0010", false, con_button);
 	con_button.setPos( 225, y);	Core::gui["GameMenu"][sWin].Button.add("E-0001", false, con_button);
-	Core::gui["GameMenu"][sWin].Button["E-1000"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-0006"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["E-0100"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-0006"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["E-0010"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-0006"].getPointer());
-	Core::gui["GameMenu"][sWin].Button["E-0001"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-0006"].getPointer());
+	Core::gui["GameMenu"][sWin].Button["E-1000"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-0006"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["E-0100"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-0006"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["E-0010"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-0006"].getStatePtr());
+	Core::gui["GameMenu"][sWin].Button["E-0001"].setEnableAPtr(Core::gui["GameMenu"]["Window 14-0"].Button["C-0006"].getStatePtr());
 }
 
 

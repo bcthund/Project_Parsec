@@ -54,6 +54,7 @@ namespace Core {
 				bLocalCon		= true;
 				con				= new Props_Label();
 				*con			= c;
+				if(con->text == "") con->text = n;
 			}
 
 			Label::Label(Props &p, std::string n, Props_Label c) {
@@ -66,6 +67,7 @@ namespace Core {
 				bLocalCon		= true;
 				con				= new Props_Label();
 				*con			= c;
+				if(con->text == "") con->text = n;
 			}
 
 			Label::Label(std::string n, Props_Label *c) {
@@ -77,6 +79,7 @@ namespace Core {
 
 				bLocalCon		= false;
 				con				= c;
+				if(con->text == "") con->text = n;
 			}
 
 			Label::Label(Props &p, std::string n, Props_Label *c) {
@@ -88,6 +91,7 @@ namespace Core {
 
 				bLocalCon		= false;
 				con				= c;
+				if(con->text == "") con->text = n;
 			}
 
 			Label::~Label() {
@@ -131,13 +135,13 @@ namespace Core {
 							if(eObjectState&STATE_HOVER)	colors.PushFront(gameVars->pallette.gui.disabled.text.hover);
 							else							colors.PushFront(gameVars->pallette.gui.disabled.text.base);
 						}
-						else if(eObjectState&STATE_HOVER) 		colors.PushFront(*con->color.text().highlight);
-						else if(eObjectState&STATE_ACTIVE)		colors.PushFront(*con->color.text().highlight);
-						else 									colors.PushFront(*con->color.text().base);
-						textSys->draw(con, name, CONSTRAIN_CENTER);
+						else if(eObjectState&STATE_HOVER) 		colors.PushFront(*con->colorText.highlight);
+						else if(eObjectState&STATE_ACTIVE)		colors.PushFront(*con->colorText.highlight);
+						else 									colors.PushFront(*con->colorText.base);
+						textSys->draw(con, con->text, CONSTRAIN_CENTER);
 						colors.PopFront();
 					}
-					else textSys->draw(con, name, CONSTRAIN_CENTER);
+					else textSys->draw(con, con->text, CONSTRAIN_CENTER);
 
 					// Autosize
 					if(con->size.constraint.xAuto) {

@@ -1,0 +1,13 @@
+<map id="Core::GameSys::_WinSys::drawSingle" name="Core::GameSys::_WinSys::drawSingle">
+<area shape="rect" id="node1" title=" " alt="" coords="5,149,183,190"/>
+<area shape="rect" id="node2" href="$classCore_1_1GameSys_1_1__WinSys.html#a008c8c37ef73b6d983d8c779ba913996" title=" " alt="" coords="231,90,408,131"/>
+<area shape="rect" id="node10" href="$classCore_1_1__Colors.html#aa7624cbbd0c1b94247efff11d9f7e742" title=" " alt="" coords="237,156,401,183"/>
+<area shape="rect" id="node11" href="$classCore_1_1__Colors.html#a80ce9c5980115ce42c071d99b5404689" title=" " alt="" coords="234,207,405,233"/>
+<area shape="rect" id="node3" href="$classCore_1_1VAO.html#a3072110ba182f2d5499a5c2b57b29916" title=" " alt="" coords="483,5,606,32"/>
+<area shape="rect" id="node4" href="$classCore_1_1GameSys_1_1__WinSys.html#aa791497ed76667f11e0303c94a162d4d" title=" " alt="" coords="456,57,633,98"/>
+<area shape="rect" id="node8" href="$classCore_1_1GameSys_1_1__WinSys.html#a7d1015b57ce724a6641b0cefc676991b" title=" " alt="" coords="456,122,633,163"/>
+<area shape="rect" id="node9" href="$classCore_1_1GameSys_1_1__WinSys.html#a7de2fc905e8057a483dd636915879996" title=" " alt="" coords="456,187,633,229"/>
+<area shape="rect" id="node5" href="$classCore_1_1__Colors.html#aff9ab6782564ddccf503866af0851e60" title=" " alt="" coords="681,64,849,91"/>
+<area shape="rect" id="node6" href="$classCore_1_1__Colors.html#a5ae391cfb1e59f68f09e92be0ad8a2c3" title=" " alt="" coords="898,39,1069,65"/>
+<area shape="rect" id="node7" href="$classCore_1_1__Colors.html#a7a38c0078d3998b09bd33c212705f479" title=" " alt="" coords="897,89,1069,116"/>
+</map>

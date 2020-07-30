@@ -1,0 +1,7 @@
+<map id="Core::GameVars::_Debug::_Noise" name="Core::GameVars::_Debug::_Noise">
+<area shape="rect" id="node1" title=" " alt="" coords="467,71,639,112"/>
+<area shape="rect" id="node2" href="$structCore_1_1GameVars_1_1__Debug_1_1__Noise_1_1__Simplex.html" title=" " alt="" coords="197,5,369,47"/>
+<area shape="rect" id="node3" href="$structCore_1_1Vector2f.html" title=" " alt="" coords="5,46,112,73"/>
+<area shape="rect" id="node5" href="$structCore_1_1GameVars_1_1__Debug_1_1__Noise_1_1__Fractal.html" title=" " alt="" coords="197,71,369,112"/>
+<area shape="rect" id="node4" href="$structCore_1_1GameVars_1_1__Debug_1_1__Noise_1_1__Perlin.html" title=" " alt="" coords="197,136,369,177"/>
+</map>

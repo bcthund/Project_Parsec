@@ -9,8 +9,11 @@
 #define SRC_HEADERS_CORE_TYPES_H_
 
 #include <iostream>
+#include <cstdio>
 #include <map>
 #include <cmath>
+#include <vector>
+#include <variant>
 
 namespace Core {
 	//#define RADIAN (0.017453292519943296)
@@ -618,6 +621,8 @@ namespace Core {
 		float		sudoLength()	{	return (x*x)+(y*y)+(z*z);	}
 		Vector4i	normal()		{	Vector4i r;	r = *this * (1.0/length());	return r; }
 		Vector4i	invert()		{	Vector4i r;	r = *this * -1;				return r; }
+		int			top_bottom()	{	return x+y; }
+		int			left_right()	{	return z+w; }
 
 		friend Vector4i operator+(Vector4i lhs, const Vector4i& rhs)	{	Vector4i r;		r.x = lhs.x + rhs.x;	r.y = lhs.y + rhs.y;	r.z = lhs.z + rhs.z;	r.w = lhs.w + rhs.w;	return r;	}
 		friend Vector4i operator+(Vector4i lhs, const int& rhs)			{	Vector4i r;		r.x = lhs.x + rhs;		r.y = lhs.y + rhs;		r.z = lhs.z + rhs;		r.w = lhs.w + rhs;		return r;	}
@@ -886,6 +891,16 @@ namespace Core {
 //		Color		normal()		{	Color r;	r = *this * (1.0/length());	return r; }
 		Color		invert()		{	Color r;	r = *this * -1;				return r; }
 
+//		friend Color operator-(const Color& in)					{	Color r;		r.r = -in.r;			r.g = -in.g;			r.b = -in.b;			r.a = -in.a;			return r;	}
+//		friend Color operator+(Color lhs, const Color& rhs)		{	Color r;		r.r = lhs.r + rhs.r;	r.g = lhs.g + rhs.g;	r.b = lhs.b + rhs.b;	r.a = lhs.a + rhs.a;	return r;	}
+//		friend Color operator-(Color lhs, const Color& rhs)		{	Color r;		r.r = lhs.r - rhs.r;	r.g = lhs.g - rhs.g;	r.b = lhs.b - rhs.b;	r.a = lhs.a - rhs.a;	return r;	}
+//		friend Color operator*(Color lhs, const Color& rhs)		{	Color r;		r.r = lhs.r * rhs.r;	r.g = lhs.g * rhs.g;	r.b = lhs.b * rhs.b;	r.a = lhs.a * rhs.a;	return r;	}
+//		friend Color operator/(Color lhs, const Color& rhs)		{	Color r;		r.r = lhs.r / rhs.r;	r.g = lhs.g / rhs.g;	r.b = lhs.b / rhs.b;	r.a = lhs.a / rhs.a;	return r;	}
+//		friend Color operator+(Color lhs, const float& rhs)		{	Color r;		r.r = lhs.r + rhs;		r.g = lhs.g + rhs;		r.b = lhs.b + rhs;		r.a = lhs.a + rhs;		return r;	}
+//		friend Color operator-(Color lhs, const float& rhs)		{	Color r;		r.r = lhs.r - rhs;		r.g = lhs.g - rhs;		r.b = lhs.b - rhs;		r.a = lhs.a - rhs;		return r;	}
+//		friend Color operator*(Color lhs, const float& rhs)		{	Color r;		r.r = lhs.r * rhs;		r.g = lhs.g * rhs;		r.b = lhs.b * rhs;		r.a = lhs.a * rhs;		return r;	}
+//		friend Color operator/(Color lhs, const float& rhs)		{	Color r;		r.r = lhs.r / rhs;		r.g = lhs.g / rhs;		r.b = lhs.b / rhs;		r.a = lhs.a / rhs;		return r;	}
+
 		friend Color operator-(const Color& in)					{	Color r;		r.r = -in.r;			r.g = -in.g;			r.b = -in.b;			r.a = -in.a;			return r;	}
 		friend Color operator+(Color lhs, const Color& rhs)		{	Color r;		r.r = lhs.r + rhs.r;	r.g = lhs.g + rhs.g;	r.b = lhs.b + rhs.b;	r.a = lhs.a + rhs.a;	return r;	}
 		friend Color operator-(Color lhs, const Color& rhs)		{	Color r;		r.r = lhs.r - rhs.r;	r.g = lhs.g - rhs.g;	r.b = lhs.b - rhs.b;	r.a = lhs.a - rhs.a;	return r;	}
@@ -896,16 +911,52 @@ namespace Core {
 		friend Color operator*(Color lhs, const float& rhs)		{	Color r;		r.r = lhs.r * rhs;		r.g = lhs.g * rhs;		r.b = lhs.b * rhs;		r.a = lhs.a * rhs;		return r;	}
 		friend Color operator/(Color lhs, const float& rhs)		{	Color r;		r.r = lhs.r / rhs;		r.g = lhs.g / rhs;		r.b = lhs.b / rhs;		r.a = lhs.a / rhs;		return r;	}
 
-		Color operator= (const Color& rhs)		{	r = rhs.r;		g = rhs.g;		b = rhs.b;		a = rhs.a;		return *this;	}
-		Color operator+=(const Color& rhs)		{	r += rhs.r;		g += rhs.g;		b += rhs.b;		a += rhs.a;		return *this;	}
-		Color operator-=(const Color& rhs)		{	r -= rhs.r;		g -= rhs.g;		b -= rhs.b;		a -= rhs.a;		return *this;	}
-		Color operator*=(const Color& rhs)		{	r *= rhs.r;		g *= rhs.g;		b *= rhs.b;		a *= rhs.a;		return *this;	}
-		Color operator= (const float& rhs)		{	r = rhs;		g = rhs;		b = rhs;		a = rhs;		return *this;	}
-		Color operator+=(const float& rhs) 		{	r += rhs;		g += rhs;		b += rhs;		a += rhs;		return *this;	}
-		Color operator-=(const float& rhs) 		{	r -= rhs;		g -= rhs;		b -= rhs;		a -= rhs;		return *this;	}
-		Color operator*=(const float& rhs) 		{	r *= rhs;		g *= rhs;		b *= rhs;		a *= rhs;		return *this;	}
-		Color operator++()						{	r++;			g ++;			b ++;			a ++;			return *this;	}
-		Color operator--()						{	r--;			g --;			b --;			a --;			return *this;	}
+//		Color operator= (const Color& rhs)		{	r = rhs.r;		g = rhs.g;		b = rhs.b;		a = rhs.a;		return *this;	}
+//		Color operator+=(const Color& rhs)		{	r += rhs.r;		g += rhs.g;		b += rhs.b;		a += rhs.a;		return *this;	}
+//		Color operator-=(const Color& rhs)		{	r -= rhs.r;		g -= rhs.g;		b -= rhs.b;		a -= rhs.a;		return *this;	}
+//		Color operator*=(const Color& rhs)		{	r *= rhs.r;		g *= rhs.g;		b *= rhs.b;		a *= rhs.a;		return *this;	}
+//		Color operator= (const float& rhs)		{	r = rhs;		g = rhs;		b = rhs;		a = rhs;		return *this;	}
+//		Color operator+=(const float& rhs) 		{	r += rhs;		g += rhs;		b += rhs;		a += rhs;		return *this;	}
+//		Color operator-=(const float& rhs) 		{	r -= rhs;		g -= rhs;		b -= rhs;		a -= rhs;		return *this;	}
+//		Color operator*=(const float& rhs) 		{	r *= rhs;		g *= rhs;		b *= rhs;		a *= rhs;		return *this;	}
+//		Color operator++()						{	r++;			g ++;			b ++;			a ++;			return *this;	}
+//		Color operator--()						{	r--;			g --;			b --;			a --;			return *this;	}
+
+//		Color operator= (const Color *rhs)		{
+//			std::cout << "Assign Base: (" << std::to_string(rhs.r) << ","
+//										  << std::to_string(rhs.g) << ","
+//										  << std::to_string(rhs.b) << ","
+//										  << std::to_string(rhs.a) << "); ("
+//										  << std::to_string(data[0]) << ","
+//										  << std::to_string(data[1]) << ","
+//										  << std::to_string(data[2]) << ","
+//										  << std::to_string(data[3]) << ")";
+//		}
+
+		Color operator= (const Color& rhs)		{
+			data[0] = rhs.r;	data[1] = rhs.g;	data[2] = rhs.b;	data[3] = rhs.a;
+
+
+//			std::cout << "Assign Base: (" << std::to_string(rhs.r) << ","
+//										  << std::to_string(rhs.g) << ","
+//										  << std::to_string(rhs.b) << ","
+//										  << std::to_string(rhs.a) << "); ("
+//										  << std::to_string(data[0]) << ","
+//										  << std::to_string(data[1]) << ","
+//										  << std::to_string(data[2]) << ","
+//										  << std::to_string(data[3]) << ")\n";
+
+			return *this;
+		}
+		Color operator+=(const Color& rhs)		{	data[0] += rhs.r;	data[1] += rhs.g;	data[2] += rhs.b;	data[3] += rhs.a;	return *this;	}
+		Color operator-=(const Color& rhs)		{	data[0] -= rhs.r;	data[1] -= rhs.g;	data[2] -= rhs.b;	data[3] -= rhs.a;	return *this;	}
+		Color operator*=(const Color& rhs)		{	data[0] *= rhs.r;	data[1] *= rhs.g;	data[2] *= rhs.b;	data[3] *= rhs.a;	return *this;	}
+		Color operator= (const float& rhs)		{	data[0] = rhs;		data[1] = rhs;		data[2] = rhs;		data[3] = rhs;		return *this;	}
+		Color operator+=(const float& rhs) 		{	data[0] += rhs;		data[1] += rhs;		data[2] += rhs;		data[3] += rhs;		return *this;	}
+		Color operator-=(const float& rhs) 		{	data[0] -= rhs;		data[1] -= rhs;		data[2] -= rhs;		data[3] -= rhs;		return *this;	}
+		Color operator*=(const float& rhs) 		{	data[0] *= rhs;		data[1] *= rhs;		data[2] *= rhs;		data[3] *= rhs;		return *this;	}
+		Color operator++()						{	r++;				data[1] ++;			data[2] ++;			data[3] ++;			return *this;	}
+		Color operator--()						{	r--;				data[1] --;			data[2] --;			data[3] --;			return *this;	}
 		float	&operator[](int i)				{	if(i>last) i=last;					return data[i]; }
 
 		Color() {
@@ -914,6 +965,27 @@ namespace Core {
 			data[2] = 0;
 			data[3] = 0;
 		}
+
+		Color(Color *c) {
+			data[0] = c->data[0];
+			data[1] = c->data[1];
+			data[2] = c->data[2];
+			data[3] = c->data[3];
+		}
+
+		Color(const Color &c) {
+			data[0] = c.data[0];
+			data[1] = c.data[1];
+			data[2] = c.data[2];
+			data[3] = c.data[3];
+		}
+
+//		Color(const Color c) {
+//			data[0] = c[0];
+//			data[1] = c[1];
+//			data[2] = c[2];
+//			data[3] = c[3];
+//		}
 
 		Color(Data4f d) {
 			data[0] = d[0];
@@ -1486,6 +1558,245 @@ namespace Core {
 			data[12] = m;		data[13] = n;		data[14] = o;		data[15] = p;
 		}
 	} Matrix44f;
+
+
+	typedef std::variant<bool, int, float, std::string> t_BIFS;
+	typedef std::variant<bool, int, float> t_BIF;
+
+
+//	typedef struct _t_BIFS : public std::variant<bool, int, float, std::string> {
+//		std::string to_string() {
+//			switch (this->index()) {
+//				case 0:
+//					return std::to_string(std::get<bool>(*this));
+//					break;
+//				case 1:
+//					return std::to_string(std::get<int>(*this));
+//					break;
+//				case 2:
+//					return std::to_string(std::get<float>(*this));
+//					break;
+//				case 3:
+//					return std::get<std::string>(*this);
+//					break;
+//			}
+//			return "[Undefined Type]";
+//		}
+//	} t_BIFS;
+
+
+	// TODO: Implement copy constructor
+	template <typename T>
+	class t_Vector {
+		private:
+			std::vector<T> typeList;
+			Map_si map;
+
+		public:
+			t_Vector() {}
+			virtual ~t_Vector() {}
+
+			bool checkName(std::string name, bool bThrow=true) {
+				if(map.count(name)>0) return true;
+				else {
+					if (bThrow) throw std::runtime_error("Invalid Item Name: '"+name+"'");
+					else return false;
+				}
+			}
+
+			bool checkID(int id, bool bThrow=true) {
+				if(id >= 0 && id < typeList.size()) return true;
+				else {
+					if (bThrow) throw std::runtime_error("Invalid ID: '"+std::to_string(id)+"'");
+					else return false;
+				}
+			}
+
+			virtual T & operator[](std::string name)	{
+				checkName(name);
+				return typeList[map[name]];
+			}
+
+			virtual T & operator[](int id)	{
+				checkID(id);
+				return typeList[id];
+			}
+
+//			int	operator()(std::string name) {
+//				checkName(name);
+//				return groups[map[name]].index;
+//			}
+//
+//			int	operator()(int id) {
+//				checkID(id);
+//				return groups[id].index;
+//			}
+
+			virtual T & add(std::string name, T t, bool bThrow=true) {
+				if(!checkName(name, false)) {
+					//typeList.emplace_back(t);
+					typeList.push_back(t);
+					int id = typeList.size() - 1;
+					map.insert(make_pair(name, id));
+					return typeList[map[name]];
+				}
+				else {
+					if(bThrow) throw std::runtime_error("Duplicate name in t_Vector: '"+name+"'");
+					else return typeList[map[name]];
+				}
+
+			}
+
+			virtual void remove(std::string name, bool bThrow=true) {
+				if(checkName(name, false)) {
+					typeList.erase(typeList.begin() + map[name]);
+					map.erase(name);
+				}
+				else {
+					if(bThrow) throw std::runtime_error("Name in t_Vector doesn't exist: '"+name+"'");
+				}
+
+			}
+
+			virtual T & get(std::string name)	{
+				checkName(name);
+				return typeList[map[name]];
+			}
+
+			virtual T & get(int id)	{
+				checkID(id);
+				return typeList[id];
+			}
+
+			int getID(std::string name) {
+				return map[name];
+			}
+
+			int size() {
+				return typeList.size();
+			}
+
+			/*
+			 * Allow Iteration
+			 *
+			 * Example:
+			 * 	t_Vector<T> items;
+			 * 	for(auto item : items) {
+			 * 		// Work with 'item'
+			 * 	}
+			 */
+			typedef T* iterator;
+			typedef const T* const_iterator;
+			iterator begin() 		{ return &typeList[0]; }
+			iterator end() 			{ return &typeList[typeList.size()]; }
+			const_iterator begin() 	const	{ return &typeList[0]; }
+			const_iterator end() 	const	{ return &typeList[typeList.size()]; }
+
+	};
+
+	typedef std::pair<std::string, Core::t_BIFS> t_ComboBoxItem;
+	typedef std::vector<t_ComboBoxItem> t_ComboBoxItems;
+
+	/**
+	 * \brief Allows an object to return multiple different states
+	 *
+	 * @tparam T
+	 */
+	class t_DataSet {
+		public:
+			t_Vector< std::vector<t_BIFS> > states;
+			t_DataSet() {}
+
+			std::vector<t_BIFS> & operator[](std::string name)	{ return states[name]; }
+			std::vector<t_BIFS> & operator[](int n)	{ return states[n]; }
+
+			/**
+			 * @brief Create a new group but do not add any values to it
+			 *
+			 * @param name Name of the group
+			 */
+			void addGroup(std::string name) {
+				std::vector<t_BIFS> base;
+				states.add(name, base);
+			}
+
+			/**
+			 * @brief Create a group name or use the existing one with the given name and add a value at the next index.
+			 * 		  The index cannot be chosen, so group items with a pattern to the index values must be constructed
+			 * 		  in the same order.
+			 *
+			 * @param name The name of the group to create or use if already existing
+			 * @param value The variant value to add to the group
+			 */
+			void addGroupState(std::string name, t_BIFS value) {
+				std::vector<t_BIFS> base;
+				states.add(name, base, false);	// Do not throw error, just continue...
+				states[name].push_back(value);	//  and add element to existing group
+			}
+
+			/**
+			 * @brief Create a group name or use the existing one with the given name and add a list of values starting
+			 * 		  at the next available index.
+			 * 		  The index cannot be chosen, so group items with a pattern to the index values must be constructed
+			 * 		  in the same order.
+			 *
+			 * @param name The name of the group to create or use if already existing
+			 * @param base A vector of variants to add to the group
+			 */
+			void addGroupStates(std::string name, std::vector<t_BIFS> base) { states.add(name, base); }
+			void addState(std::string name, t_BIFS value) { states[name].push_back(value); }
+	};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	//	cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=  settings.h   =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << endl;
 	//	cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << endl;

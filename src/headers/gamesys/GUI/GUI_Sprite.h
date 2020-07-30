@@ -27,7 +27,7 @@
 //#include "../core/vao.h"
 //#include "../core/matrix.h"
 //#include "../core/shader.h"
-//#include "../../core/InputSys.h"
+#include "../../core/InputSys.h"
 #include "../../core/Colors.h"
 #include "../../gamesys/gameVars.h"
 #include "../../gamesys/SpriteSys.h"
@@ -69,6 +69,7 @@ namespace Core {
 				bLocalCon		= true;
 				con				= new Props_Sprite();
 				*con			= c;
+				if(con->text == "") con->text = n;
 			}
 
 			Sprite::Sprite(Props &p, std::string n, Props_Sprite c) {
@@ -80,6 +81,7 @@ namespace Core {
 				bLocalCon		= true;
 				con				= new Props_Sprite();
 				*con			= c;
+				if(con->text == "") con->text = n;
 			}
 
 			Sprite::Sprite(std::string n, Props_Sprite *c) {
@@ -89,7 +91,8 @@ namespace Core {
 				parent			= nullptr;
 
 				bLocalCon		= false;
-				con			= c;
+				con				= c;
+				if(con->text == "") con->text = n;
 			}
 
 			Sprite::Sprite(Props &p, std::string n, Props_Sprite *c) {
@@ -100,6 +103,7 @@ namespace Core {
 
 				bLocalCon		= false;
 				con				= c;
+				if(con->text == "") con->text = n;
 			}
 
 			Sprite::~Sprite() {
@@ -129,10 +133,10 @@ namespace Core {
 				if(!(eExternState&STATE_UPDATE)) {
 					mState = Core::mouse->checkInput(gameVars->screen.half.x+con->pos.x, gameVars->screen.half.y-con->pos.y, con->size.x, con->size.y);
 				}
-				else this->mState = Core::_Mouse::MOUSE_NONE;
+				else mState = Core::_Mouse::MOUSE_NONE;
 
 				if(eExternState!=STATE_NONE && !(eExternState&STATE_UPDATE)) eObjectState = eExternState;
-				else if (mState == Core::_Mouse::MOUSE_HOVER) eObjectState = STATE_HOVER;
+				else if (mState&Core::_Mouse::MOUSE_HOVER) eObjectState = STATE_HOVER;
 				else eObjectState = STATE_NONE;
 
 				if(!enabled()) eObjectState |= STATE_DISABLED;
@@ -160,7 +164,7 @@ namespace Core {
 						if(eObjectState&STATE_HOVER)	colors.PushFront(gameVars->pallette.gui.disabled.base.hover);
 						else							colors.PushFront(gameVars->pallette.gui.disabled.base.base);
 					}
-					else 								colors.PushFront(*con->color.sprite().base);
+					else 								colors.PushFront(*con->colorSprite.base);
 					spriteSys->draw(con, con->spriteImage);
 					colors.PopFront();
 				}

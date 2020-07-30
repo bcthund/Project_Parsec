@@ -86,7 +86,7 @@ namespace Core {
 		}
 	}
 
-	float Timer::get_ticks() {
+	int Timer::get_ticks() {
 		//If the timer is running
 		if( started == true ) {
 			//If the timer is paused
@@ -112,16 +112,16 @@ namespace Core {
 		return paused;
 	}
 
-	float Timer::split() {
+	int Timer::split() {
 		splitTicks=SDL_GetTicks() - startTicks;
 		return splitTicks;
 	}
 
-	float Timer::get_split() {
+	int Timer::get_split() {
 		return splitTicks;
 	}
 
-	float Timer::get_splitdiff() {
+	int Timer::get_splitdiff() {
 		return (Timer::get_ticks()-splitTicks);
 	}
 

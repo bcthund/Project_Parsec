@@ -10,6 +10,7 @@
 
 #include <iostream>
 //#include "../core/core_functions.h"
+#include "../../core/InputSys.h"
 //#include "../core/vao.h"
 //#include "../core/matrix.h"
 //#include "../core/shader.h"
@@ -22,7 +23,7 @@
 namespace Core {
 	namespace GUI {
 		namespace Object {
-			class CheckBox : public Base::Interactive<Props_CheckBox, bool>, public Base::AudioFeedback {
+			class CheckBox : public Base::Interactive<Props_CheckBox>, public Base::AudioFeedback {
 				public:
 					CheckBox();
 					CheckBox(std::string n, bool b, Props_CheckBox c);
@@ -62,14 +63,15 @@ namespace Core {
 				bHasParent		= false;
 				parent			= nullptr;
 
-				bLocalValue		= true;
-				valuePtr		= new bool(b);
+				bLocalState		= true;
+				statePtr		= new bool(b);
 				if(b) eObjectState	= STATE_ACTIVE;
 				else  eObjectState	= STATE_NONE;
 
 				bLocalCon		= true;
 				con				= new Props_CheckBox();
 				*con			= c;
+				if(con->text == "") con->text = n;
 			}
 
 			CheckBox::CheckBox(Props &p, std::string n, bool b, Props_CheckBox c) {
@@ -80,14 +82,15 @@ namespace Core {
 				bHasParent		= true;
 				parent			= &p;
 
-				bLocalValue		= true;
-				valuePtr		= new bool(b);
+				bLocalState		= true;
+				statePtr		= new bool(b);
 				if(b) eObjectState	= STATE_ACTIVE;
 				else  eObjectState	= STATE_NONE;
 
 				bLocalCon		= true;
 				con				= new Props_CheckBox();
 				*con			= c;
+				if(con->text == "") con->text = n;
 			}
 
 			CheckBox::CheckBox(std::string n, bool b, Props_CheckBox *c) {
@@ -98,13 +101,14 @@ namespace Core {
 				bHasParent		= false;
 				parent			= nullptr;
 
-				bLocalValue		= true;
-				valuePtr		= new bool(b);
+				bLocalState		= true;
+				statePtr		= new bool(b);
 				if(b) eObjectState	= STATE_ACTIVE;
 				else  eObjectState	= STATE_NONE;
 
 				bLocalCon		= false;
 				con				= c;
+				if(con->text == "") con->text = n;
 			}
 
 			CheckBox::CheckBox(Props &p, std::string n, bool b, Props_CheckBox *c) {
@@ -115,13 +119,14 @@ namespace Core {
 				bHasParent		= true;
 				parent			= &p;
 
-				bLocalValue		= true;
-				valuePtr		= new bool(b);
+				bLocalState		= true;
+				statePtr		= new bool(b);
 				if(b) eObjectState	= STATE_ACTIVE;
 				else  eObjectState	= STATE_NONE;
 
 				bLocalCon		= false;
 				con				= c;
+				if(con->text == "") con->text = n;
 			}
 
 			CheckBox::CheckBox(std::string n, bool *b, Props_CheckBox c) {
@@ -132,14 +137,15 @@ namespace Core {
 				bHasParent		= false;
 				parent			= nullptr;
 
-				bLocalValue		= false;
-				valuePtr		= b;
+				bLocalState		= false;
+				statePtr		= b;
 				if(*b) eObjectState	= STATE_ACTIVE;
 				else  eObjectState	= STATE_NONE;
 
 				bLocalCon		= true;
 				con				= new Props_CheckBox();
 				*con			= c;
+				if(con->text == "") con->text = n;
 			}
 
 			CheckBox::CheckBox(Props &p, std::string n, bool *b, Props_CheckBox c) {
@@ -150,14 +156,15 @@ namespace Core {
 				bHasParent		= true;
 				parent			= &p;
 
-				bLocalValue		= false;
-				valuePtr		= b;
+				bLocalState		= false;
+				statePtr		= b;
 				if(*b) eObjectState	= STATE_ACTIVE;
 				else  eObjectState	= STATE_NONE;
 
 				bLocalCon		= true;
 				con				= new Props_CheckBox();
 				*con			= c;
+				if(con->text == "") con->text = n;
 			}
 
 			CheckBox::CheckBox(std::string n, bool *b, Props_CheckBox *c) {
@@ -168,13 +175,14 @@ namespace Core {
 				bHasParent		= false;
 				parent			= nullptr;
 
-				bLocalValue		= true;
-				valuePtr		= b;
+				bLocalState		= true;
+				statePtr		= b;
 				if(b) eObjectState	= STATE_ACTIVE;
 				else  eObjectState	= STATE_NONE;
 
 				bLocalCon		= false;
 				con				= c;
+				if(con->text == "") con->text = n;
 			}
 
 			CheckBox::CheckBox(Props &p, std::string n, bool *b, Props_CheckBox *c) {
@@ -185,24 +193,24 @@ namespace Core {
 				bHasParent		= true;
 				parent			= &p;
 
-				bLocalValue		= true;
-				valuePtr		= b;
+				bLocalState		= true;
+				statePtr		= b;
 				if(b) eObjectState	= STATE_ACTIVE;
 				else  eObjectState	= STATE_NONE;
 
 				bLocalCon		= false;
 				con				= c;
+				if(con->text == "") con->text = n;
 			}
 
 			CheckBox::~CheckBox() {
 				if(bLocalCon && con != nullptr) delete con;
-				if(bLocalValue && valuePtr != nullptr) delete valuePtr;
+				if(bLocalState && statePtr != nullptr) delete statePtr;
 				if(label != nullptr) delete label;
 			}
 
 			void CheckBox::init() {
 				con->exec();
-				Interactive::init(con);
 				update();
 
 				// FIXME: Create SOUNDS enumeration
@@ -243,12 +251,7 @@ namespace Core {
 
 			void CheckBox::updateObjectState(iState eExternState) {
 				// Check for external state change, return early
-				if(*valuePtr && !(this->eObjectState&STATE_ACTIVE)) {
-					this->eObjectState = STATE_ACTIVE;
-				}
-				else if(*valuePtr==*returnState[0].off && (this->eObjectState&STATE_ACTIVE)) {
-					this->eObjectState = STATE_NONE;
-				}
+				checkStatePtr();
 
 				if(eExternState!=STATE_NONE && !(eExternState&STATE_UPDATE)) {
 					eObjectState = eExternState;
@@ -261,19 +264,19 @@ namespace Core {
 
 					if(enabled()) {
 						if(con->bToggle) {
-							if(bIsGrouped && (eObjectState&STATE_ACTIVE) && (sGroupObject[con->iGroup]!=name && sGroupObject[con->iGroup]!="")) {
+							if(bIsGrouped && (eObjectState&STATE_ACTIVE) && (Core::groups[con->iGroup].object!=name && Core::groups[con->iGroup].object!="")) {
 								eObjectState = STATE_NONE;
 								Sound_AbortState();
 							}
-							else if (mState == Core::_Mouse::MOUSE_LEFT) {
+							else if (mState&Core::_Mouse::MOUSE_LEFT) {
 								if(eObjectState&STATE_ACTIVE) {
-									eObjectState = STATE_NONE;
-									if(sGroupObject[con->iGroup]==name) sGroupObject[con->iGroup] = "";
+									if (!bIsGrouped || (bIsGrouped && !Core::groups[con->iGroup].bExclusive)) eObjectState = STATE_NONE;
+									if(bIsGrouped && Core::groups[con->iGroup].object==name) Core::groups[con->iGroup].object = "";
 									Sound_PlayOff();
 								}
 								else if(eObjectState&STATE_HOVER) {
 									eObjectState = STATE_ACTIVE;
-									sGroupObject[con->iGroup] = name;
+									if(bIsGrouped) Core::groups[con->iGroup].object = name;
 									Sound_PlayOn();
 								}
 								else {
@@ -281,7 +284,7 @@ namespace Core {
 									mState = Core::_Mouse::MOUSE_NONE;
 								}
 							}
-							else if (!(eObjectState&STATE_ACTIVE) && mState == Core::_Mouse::MOUSE_NONE) {
+							else if (!(eObjectState&STATE_ACTIVE) && (mState&Core::_Mouse::MOUSE_NONE)) {
 								eObjectState = STATE_NONE;
 							}
 						}
@@ -290,12 +293,13 @@ namespace Core {
 
 					// Allow mouse hover at any time (used for tooltips)
 					if(!(eExternState&STATE_UPDATE)) {
-						if(mState==Core::_Mouse::MOUSE_HOVER) eObjectState = eObjectState|STATE_HOVER;
+						if(mState&Core::_Mouse::MOUSE_HOVER) eObjectState = eObjectState|STATE_HOVER;
 						else eObjectState = eObjectState&~STATE_HOVER;
 					}
 				}
 
 				if(!enabled()) eObjectState |= STATE_DISABLED;
+				updateStatePtr();
 			}
 
 			void CheckBox::exec(iState eExternState) {
@@ -309,8 +313,8 @@ namespace Core {
 					update();
 
 					// Always set the toggle state
-					if(eObjectState&STATE_ACTIVE) *valuePtr = true;
-					else *valuePtr = false;
+					if(eObjectState&STATE_ACTIVE) *statePtr = true;
+					else *statePtr = false;
 
 					box.exec(eObjectState);
 					if(eObjectState&STATE_ACTIVE) check.exec(STATE_ACTIVE);
@@ -330,7 +334,7 @@ namespace Core {
 			 */
 			void CheckBox::updateNoFocus() {
 				updateObjectState(STATE_UPDATE);
-				updateValuePtr();
+				updateStatePtr();
 			}
 
 		}

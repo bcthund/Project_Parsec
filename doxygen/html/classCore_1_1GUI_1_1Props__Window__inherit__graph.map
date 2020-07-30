@@ -1,0 +1,15 @@
+<map id="Core::GUI::Props_Window" name="Core::GUI::Props_Window">
+<area shape="rect" id="node1" title=" " alt="" coords="221,208,400,235"/>
+<area shape="rect" id="node4" href="$classCore_1_1GUI_1_1Props__Button.html" title=" " alt="" coords="467,5,636,32"/>
+<area shape="rect" id="node6" href="$classCore_1_1GUI_1_1Props__CheckBox.html" title=" " alt="" coords="455,56,647,83"/>
+<area shape="rect" id="node7" href="$classCore_1_1GUI_1_1Props__ColorSwatch.html" title=" " alt="" coords="448,107,655,133"/>
+<area shape="rect" id="node8" href="$classCore_1_1GUI_1_1Props__Field.html" title=" " alt="" coords="472,157,631,184"/>
+<area shape="rect" id="node9" href="$classCore_1_1GUI_1_1Props__Label.html" title=" " alt="" coords="470,208,633,235"/>
+<area shape="rect" id="node10" href="$classCore_1_1GUI_1_1Props__ProgressBar.html" title=" " alt="" coords="450,259,653,285"/>
+<area shape="rect" id="node11" href="$classCore_1_1GUI_1_1Props__Slider.html" title=" " alt="" coords="469,309,633,336"/>
+<area shape="rect" id="node12" href="$classCore_1_1GUI_1_1Props__Sprite.html" title=" " alt="" coords="469,360,634,387"/>
+<area shape="rect" id="node13" href="$classCore_1_1GUI_1_1Props__TextArea.html" title=" " alt="" coords="460,411,643,437"/>
+<area shape="rect" id="node2" href="$classCore_1_1GUI_1_1Props.html" title="General Props used for all objects." alt="" coords="27,179,151,205"/>
+<area shape="rect" id="node3" href="$classCore_1_1GUI_1_1Props__Addon__Stipple.html" title="Create a new group but do not add any values to it." alt="" coords="5,230,173,271"/>
+<area shape="rect" id="node5" href="$classCore_1_1GUI_1_1Props__ComboBox.html" title=" " alt="" coords="703,5,899,32"/>
+</map>

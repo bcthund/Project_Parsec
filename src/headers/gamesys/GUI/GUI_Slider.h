@@ -9,10 +9,8 @@
 #define HEADERS_GAMESYS_GUI_SLIDER_H_
 
 #include <iostream>
-//#include "../core/core_functions.h"
-//#include "../core/vao.h"
-//#include "../core/matrix.h"
-//#include "../core/shader.h"
+#include "../../core/Colors.h"
+#include "../../gamesys/gameVars.h"
 #include "GUI_Constraint.h"
 #include "GUI_ToolTip.h"
 #include "GUI_Window.h"
@@ -32,7 +30,8 @@ namespace Core {
 	namespace GUI {
 		namespace Object {
 			template <typename T>
-			class Slider : public Base::Interactive<Props_Slider, T>, public Base::AudioFeedback {
+//			class Slider : public Base::Interactive<Props_Slider, T>, public Base::AudioFeedback {
+			class Slider : public Base::Interactive<Props_Slider>, public Base::AudioFeedback {
 					friend class AnySlider;
 				public:
 					Slider();
@@ -46,6 +45,12 @@ namespace Core {
 					Slider(Props &p, std::string n, T t, Props_Slider c);
 					Slider(Props &p, std::string n, T t, Props_Slider *c);
 					virtual ~Slider();
+
+					T *valuePtr;
+					bool bLocalValue;
+					void setValuePtr(T *ptr);
+					T & getValuePtr();
+					T getValue();
 
 					ToolTip toolTip;
 					void init();
@@ -84,6 +89,8 @@ namespace Core {
 				bHasFocus			= false;
 				field				= nullptr;
 				label				= nullptr;
+				valuePtr		= nullptr;
+				bLocalValue		= true;
 			}
 
 			template <class T> Slider<T>::Slider(std::string n, T *ptr, Props_Slider c) {
@@ -100,12 +107,16 @@ namespace Core {
 				this->bHasParent	= false;
 				this->parent		= nullptr;
 
+				this->bLocalState	= true;
+				this->statePtr		= new bool(false);
+
 				this->bLocalValue	= false;
 				this->valuePtr		= ptr;
 
 				this->bLocalCon		= true;
 				this->con			= new Props_Slider();
 				*this->con			= c;
+				if(this->con->text == "") this->con->text = n;
 			}
 
 			template <class T> Slider<T>::Slider(std::string n, T *ptr, Props_Slider *c) {
@@ -122,11 +133,15 @@ namespace Core {
 				this->bHasParent	= false;
 				this->parent		= nullptr;
 
+				this->bLocalState	= true;
+				this->statePtr		= new bool(false);
+
 				this->bLocalValue	= false;
 				this->valuePtr		= ptr;
 
 				this->bLocalCon		= false;
 				this->con			= c;
+				if(this->con->text == "") this->con->text = n;
 			}
 
 			template <class T> Slider<T>::Slider(Props &p, std::string n, T *ptr, Props_Slider c) {
@@ -143,12 +158,16 @@ namespace Core {
 				this->bHasParent	= true;
 				this->parent		= &p;
 
+				this->bLocalState	= true;
+				this->statePtr		= new bool(false);
+
 				this->bLocalValue	= false;
 				this->valuePtr		= ptr;
 
 				this->bLocalCon		= true;
 				this->con			= new Props_Slider();
 				*this->con			= c;
+				if(this->con->text == "") this->con->text = n;
 			}
 
 			template <class T> Slider<T>::Slider(Props &p, std::string n, T *ptr, Props_Slider *c) {
@@ -165,28 +184,18 @@ namespace Core {
 				this->bHasParent	= true;
 				this->parent		= &p;
 
+				this->bLocalState	= true;
+				this->statePtr		= new bool(false);
+
 				this->bLocalValue	= false;
 				this->valuePtr		= ptr;
 
 				this->bLocalCon		= false;
 				this->con			= c;
+				if(this->con->text == "") this->con->text = n;
 			}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-			template <class T> Slider<T>::Slider(std::string n, T *ptr, Props_Slider c) {
+			template <class T> Slider<T>::Slider(std::string n, T t, Props_Slider c) {
 				currentPos			= Vector2f(0.0f);
 				bHasFocus			= false;
 				minPos				= 0.0f;
@@ -200,15 +209,19 @@ namespace Core {
 				this->bHasParent	= false;
 				this->parent		= nullptr;
 
-				this->bLocalValue	= false;
-				this->valuePtr		= ptr;
+				this->bLocalState	= true;
+				this->statePtr		= new bool(false);
+
+				this->bLocalValue	= true;
+				this->valuePtr		= new T(t);
 
 				this->bLocalCon		= true;
 				this->con			= new Props_Slider();
 				*this->con			= c;
+				if(this->con->text == "") this->con->text = n;
 			}
 
-			template <class T> Slider<T>::Slider(std::string n, T *ptr, Props_Slider *c) {
+			template <class T> Slider<T>::Slider(std::string n, T t, Props_Slider *c) {
 				currentPos			= Vector2f(0.0f);
 				bHasFocus			= false;
 				minPos				= 0.0f;
@@ -222,14 +235,18 @@ namespace Core {
 				this->bHasParent	= false;
 				this->parent		= nullptr;
 
-				this->bLocalValue	= false;
-				this->valuePtr		= ptr;
+				this->bLocalState	= true;
+				this->statePtr		= new bool(false);
+
+				this->bLocalValue	= true;
+				this->valuePtr		= new T(t);
 
 				this->bLocalCon		= false;
 				this->con			= c;
+				if(this->con->text == "") this->con->text = n;
 			}
 
-			template <class T> Slider<T>::Slider(Props &p, std::string n, T *ptr, Props_Slider c) {
+			template <class T> Slider<T>::Slider(Props &p, std::string n, T t, Props_Slider c) {
 				currentPos			= Vector2f(0.0f);
 				bHasFocus			= false;
 				minPos				= 0.0f;
@@ -243,15 +260,19 @@ namespace Core {
 				this->bHasParent	= true;
 				this->parent		= &p;
 
-				this->bLocalValue	= false;
-				this->valuePtr		= ptr;
+				this->bLocalState	= true;
+				this->statePtr		= new bool(false);
+
+				this->bLocalValue	= true;
+				this->valuePtr		= new T(t);
 
 				this->bLocalCon		= true;
 				this->con			= new Props_Slider();
 				*this->con			= c;
+				if(this->con->text == "") this->con->text = n;
 			}
 
-			template <class T> Slider<T>::Slider(Props &p, std::string n, T *ptr, Props_Slider *c) {
+			template <class T> Slider<T>::Slider(Props &p, std::string n, T t, Props_Slider *c) {
 				currentPos			= Vector2f(0.0f);
 				bHasFocus			= false;
 				minPos				= 0.0f;
@@ -265,32 +286,36 @@ namespace Core {
 				this->bHasParent	= true;
 				this->parent		= &p;
 
-				this->bLocalValue	= false;
-				this->valuePtr		= ptr;
+				this->bLocalState	= true;
+				this->statePtr		= new bool(false);
+
+				this->bLocalValue	= true;
+				this->valuePtr		= new T(t);
 
 				this->bLocalCon		= false;
 				this->con			= c;
+				if(this->con->text == "") this->con->text = n;
 			}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 			template <class T> Slider<T>::~Slider() {
 				if(this->bLocalCon && this->con != nullptr) delete this->con;
+				if(this->bLocalValue && this->valuePtr != nullptr) delete this->valuePtr;
 				if(label != nullptr) delete label;
 				if(field != nullptr) delete field;
+			}
+
+			template <class T> void Slider<T>::setValuePtr(T *ptr)	{
+				if(bLocalValue && valuePtr != nullptr) delete valuePtr;
+				bLocalValue = false;
+				valuePtr = ptr;
+			}
+
+			template <class T> T & Slider<T>::getValuePtr()	{
+				return *valuePtr;
+			}
+
+			template <class T> T Slider<T>::getValue()	{
+				return *valuePtr;
 			}
 
 			template <class T> void Slider<T>::init() {
@@ -340,7 +365,7 @@ namespace Core {
 					}
 
 					this->con->field.setHeight(Core::gameVars->font.vSize.y+(this->con->field.vPadding.top+this->con->field.vPadding.bottom), SIZE_CONSTRAINT_ABSOLUTE);
-					this->con->field.setToolTip(this->con->toolTip.Text);
+					if(this->con->toolTip.bShow) this->con->field.setToolTip(this->con->toolTip.Text);
 
 					this->con->field.enablePadding(PADDING_POSITION);
 					field = new Object::Field<T>(*this->con, this->name+"_Field", this->valuePtr, this->con->field);	// Must add "_Field" or conflict occurs with active object states
@@ -414,7 +439,8 @@ namespace Core {
 				f4 = 0.0f;
 				f5 = f1 * f2 + f3 - f4;
 
-				return int(f5/this->con->fMinimumStep)*this->con->fMinimumStep;
+//				return int(f5/this->con->fMinimumStep)*this->con->fMinimumStep;		// Constrain value to minimum step size
+				return int(f5/this->con->vStep[0])*this->con->vStep[0];		// Constrain value to minimum step size
 			}
 
 			template <class T> float Slider<T>::getPosFromValue(T f) {
@@ -477,17 +503,31 @@ namespace Core {
 				Core::_Mouse::MOUSE_STATE wheel = Core::mouse->checkWheel();
 
 				if(wheel != Core::_Mouse::MOUSE_NONE) {
-					T modVal = (spanValue/spanPos);		// Default, move by 1 pixel worth of value
+//					T modVal = (spanValue/spanPos);		// Default, move by 1 pixel worth of value
+//
+//					const Uint8 *keyState = SDL_GetKeyboardState(NULL);
+//					if (keyState[SDL_SCANCODE_LSHIFT] || keyState[SDL_SCANCODE_RSHIFT])		modVal *= 10;
+//					else if (keyState[SDL_SCANCODE_LCTRL] || keyState[SDL_SCANCODE_RCTRL])	modVal /= 10;
+//
+//					modVal *= this->con->scrollSpeed;
+//					modVal = int(modVal/this->con->fMinimumStep)*this->con->fMinimumStep;
+//
+//					if(modVal < this->con->fMinimumStep)		modVal = this->con->fMinimumStep;
+//					if(this->con->minValue > this->con->maxValue)	modVal = -modVal;
+
+					T modVal = this->con->vStep[1];
 
 					const Uint8 *keyState = SDL_GetKeyboardState(NULL);
-					if (keyState[SDL_SCANCODE_LSHIFT] || keyState[SDL_SCANCODE_RSHIFT])		modVal *= 10;
-					else if (keyState[SDL_SCANCODE_LCTRL] || keyState[SDL_SCANCODE_RCTRL])	modVal /= 10;
+					if (keyState[SDL_SCANCODE_LSHIFT] || keyState[SDL_SCANCODE_RSHIFT])		modVal = this->con->vStep[2];
+					else if (keyState[SDL_SCANCODE_LCTRL] || keyState[SDL_SCANCODE_RCTRL])	modVal = this->con->vStep[0];
 
-					modVal *= this->con->scrollSpeed;
-					modVal = int(modVal/this->con->fMinimumStep)*this->con->fMinimumStep;
+					//modVal *= this->con->scrollSpeed;
+					//modVal = int(modVal/this->con->fMinimumStep)*this->con->fMinimumStep;
 
-					if(modVal < this->con->fMinimumStep)		modVal = this->con->fMinimumStep;
-					if(this->con->minValue > this->con->maxValue)	modVal = -modVal;
+					//if(modVal < this->con->fMinimumStep)		modVal = this->con->fMinimumStep;
+					//if(this->con->minValue > this->con->maxValue)	modVal = -modVal;
+
+					if(this->con->minValue > this->con->maxValue) 	modVal = -modVal;
 
 					switch(wheel) {
 						case Core::_Mouse::MOUSE_WHEEL_UP:		*this->valuePtr += modVal;	break;
@@ -496,19 +536,24 @@ namespace Core {
 				}
 			}
 
-			template <> void Slider<int>::updateScrollMouse() {
-				int modVal = std::fmax(spanValue/spanPos, 1.0f);
-
-				const Uint8 *keyState = SDL_GetKeyboardState(NULL);
-				if (keyState[SDL_SCANCODE_LSHIFT] || keyState[SDL_SCANCODE_RSHIFT])		modVal *= 10;
-				else if (keyState[SDL_SCANCODE_LCTRL] || keyState[SDL_SCANCODE_RCTRL])	modVal /= 10;
-
-				if(con->minValue>con->maxValue) 	modVal = -modVal;
-
-				Core::_Mouse::MOUSE_STATE wheel = Core::mouse->checkWheel();
-				if(wheel == Core::_Mouse::MOUSE_WHEEL_UP)		*valuePtr += (modVal*con->scrollSpeed);
-				if(wheel == Core::_Mouse::MOUSE_WHEEL_DOWN)		*valuePtr -= (modVal*con->scrollSpeed);
-			}
+//			template <> void Slider<int>::updateScrollMouse() {
+////				int modVal = std::fmax(spanValue/spanPos, 1.0f);
+////
+////				const Uint8 *keyState = SDL_GetKeyboardState(NULL);
+////				if (keyState[SDL_SCANCODE_LSHIFT] || keyState[SDL_SCANCODE_RSHIFT])		modVal *= 10;
+////				else if (keyState[SDL_SCANCODE_LCTRL] || keyState[SDL_SCANCODE_RCTRL])	modVal /= 10;
+//
+//				int modVal = this->con->vStep[1];
+//				const Uint8 *keyState = SDL_GetKeyboardState(NULL);
+//				if (keyState[SDL_SCANCODE_LSHIFT] || keyState[SDL_SCANCODE_RSHIFT])		modVal = this->con->vStep[2];
+//				else if (keyState[SDL_SCANCODE_LCTRL] || keyState[SDL_SCANCODE_RCTRL])	modVal = this->con->vStep[0];
+//
+//				if(con->minValue>con->maxValue) 	modVal = -modVal;
+//
+//				Core::_Mouse::MOUSE_STATE wheel = Core::mouse->checkWheel();
+//				if(wheel == Core::_Mouse::MOUSE_WHEEL_UP)		*valuePtr += (modVal*con->scrollSpeed);
+//				if(wheel == Core::_Mouse::MOUSE_WHEEL_DOWN)		*valuePtr -= (modVal*con->scrollSpeed);
+//			}
 
 			template <class T> void Slider<T>::updateObjectState(iState eExternState) {
 				if(eExternState!=STATE_NONE && !(eExternState&STATE_UPDATE)) {
@@ -522,11 +567,11 @@ namespace Core {
 
 					if(this->enabled()) {
 						// Modify slider value by mouse wheel
-						if(this->mState == Core::_Mouse::MOUSE_HOVER) {
+						if(this->mState&Core::_Mouse::MOUSE_HOVER) {
 							updateScrollMouse();
 						}
 
-						if(!this->bHasFocus && (this->mState==Core::_Mouse::MOUSE_LEFT || this->mState==Core::_Mouse::MOUSE_LEFT_DOWN)) {
+						if(!this->bHasFocus && ((this->mState&Core::_Mouse::MOUSE_LEFT) || (this->mState&Core::_Mouse::MOUSE_LEFT_DOWN))) {
 							bHasFocus = true;
 							this->bFocusPresent = true;
 							this->sActiveObject = this->name;
@@ -540,7 +585,7 @@ namespace Core {
 							this->eObjectState = STATE_NONE;
 							Sound_PlayOff();
 						}
-						else if(!bHasFocus && !(this->eObjectState&STATE_ACTIVE) && this->mState==Core::_Mouse::MOUSE_HOVER) {
+						else if(!bHasFocus && !(this->eObjectState&STATE_ACTIVE) && (this->mState&Core::_Mouse::MOUSE_HOVER)) {
 							this->eObjectState = STATE_HOVER;
 						}
 						else if (!(this->eObjectState&STATE_ACTIVE) || ((this->eObjectState&STATE_ACTIVE) && !this->bFocusPresent) ) {
@@ -551,12 +596,14 @@ namespace Core {
 
 					// Allow mouse hover at any time (used for tooltips)
 					if(!(eExternState&STATE_UPDATE)) {
-						if(this->mState==Core::_Mouse::MOUSE_HOVER) this->eObjectState = this->eObjectState|STATE_HOVER;
+						if(this->mState&Core::_Mouse::MOUSE_HOVER) this->eObjectState = this->eObjectState|STATE_HOVER;
 						else this->eObjectState = this->eObjectState&~STATE_HOVER;
 					}
 				}
 
 				if(!this->enabled()) this->eObjectState |= STATE_DISABLED;
+
+				updateStatePtr();
 			}
 
 			template <class T> void Slider<T>::exec(iState eExternState) {
@@ -592,7 +639,7 @@ namespace Core {
 
 					// Check if value has changed
 					if(lastValue != *this->valuePtr) {
-						this->bValueChanged = true;
+						this->bStateChanged = true;
 					}
 					lastValue = *this->valuePtr;
 
@@ -657,17 +704,34 @@ namespace Core {
 
 				public:
 					// FIXME: Make these private somehow?
-					void set(std::string n, float * fPtr, Props_Slider c)						{	tag = FLOAT;	f = new Object::Slider<float>(n, fPtr, c);		}
-					void set(std::string n, float * fPtr, Props_Slider *c)					{	tag = FLOAT;	f = new Object::Slider<float>(n, fPtr, c);		}
-					void set(std::string n, int * iPtr, Props_Slider c)						{	tag = INT;		i = new Object::Slider<int>(n, iPtr, c);		}
-					void set(std::string n, int * iPtr, Props_Slider *c)						{	tag = INT;		i = new Object::Slider<int>(n, iPtr, c);		}
+					void set(std::string n, float * fPtr, Props_Slider c)				{	tag = FLOAT;	f = new Object::Slider<float>(n, fPtr, c);		}
+					void set(std::string n, float * fPtr, Props_Slider *c)				{	tag = FLOAT;	f = new Object::Slider<float>(n, fPtr, c);		}
+					void set(std::string n, int * iPtr, Props_Slider c)					{	tag = INT;		i = new Object::Slider<int>(n, iPtr, c);		}
+					void set(std::string n, int * iPtr, Props_Slider *c)				{	tag = INT;		i = new Object::Slider<int>(n, iPtr, c);		}
+
+					void set(std::string n, float fVal, Props_Slider c)					{	tag = FLOAT;	f = new Object::Slider<float>(n, fVal, c);			}
+					void set(std::string n, float fVal, Props_Slider *c)				{	tag = FLOAT;	f = new Object::Slider<float>(n, fVal, c);			}
+					void set(std::string n, int iVal, Props_Slider c)					{	tag = INT;		i = new Object::Slider<int>(n, iVal, c);			}
+					void set(std::string n, int iVal, Props_Slider *c)					{	tag = INT;		i = new Object::Slider<int>(n, iVal, c);			}
+
 					void set(Props &p, std::string n, float * fPtr, Props_Slider c)		{	tag = FLOAT;	f = new Object::Slider<float>(p, n, fPtr, c);	}
 					void set(Props &p, std::string n, float * fPtr, Props_Slider *c)	{	tag = FLOAT;	f = new Object::Slider<float>(p, n, fPtr, c);	}
 					void set(Props &p, std::string n, int * iPtr, Props_Slider c)		{	tag = INT;		i = new Object::Slider<int>(p, n, iPtr, c);		}
 					void set(Props &p, std::string n, int * iPtr, Props_Slider *c)		{	tag = INT;		i = new Object::Slider<int>(p, n, iPtr, c);		}
 
-					Object::Slider<float>	* getF() { if(tag==FLOAT) return f; else return nullptr; }
-					Object::Slider<int>		* getI() { if(tag==INT) return i; else return nullptr; }
+					void set(Props &p, std::string n, float fVal, Props_Slider c)		{	tag = FLOAT;	f = new Object::Slider<float>(p, n, fVal, c);		}
+					void set(Props &p, std::string n, float fVal, Props_Slider *c)		{	tag = FLOAT;	f = new Object::Slider<float>(p, n, fVal, c);		}
+					void set(Props &p, std::string n, int iVal, Props_Slider c)			{	tag = INT;		i = new Object::Slider<int>(p, n, iVal, c);		}
+					void set(Props &p, std::string n, int iVal, Props_Slider *c)		{	tag = INT;		i = new Object::Slider<int>(p, n, iVal, c);		}
+
+					Object::Slider<float>	* getF() {
+						if(tag==FLOAT) return f;
+						else throw std::runtime_error("Slider is not defined as float, did you mean to use getI()?");
+					}
+					Object::Slider<int>		* getI() {
+						if(tag==INT) return i;
+						else throw std::runtime_error("Slider is not defined as int, did you mean to use getF()?");
+					}
 
 //					std::any * get() {
 //						switch(tag) {
@@ -692,13 +756,13 @@ namespace Core {
 					void setPointer(float * fPtr) {
 						tag = FLOAT;
 						f->valuePtr = fPtr;
-						f->field->setPointer(fPtr);
+						f->field->setValuePtr(fPtr);
 					}
 
 					void setPointer(int * iPtr) {
 						tag = INT;
 						i->valuePtr = iPtr;
-						i->field->setPointer(iPtr);
+						i->field->setValuePtr(iPtr);
 					}
 
 					void init() {
@@ -729,7 +793,7 @@ namespace Core {
 						}
 					}
 
-					Core::_Mouse::MOUSE_STATE state() {
+					Core::_Mouse::iMouseState state() {
 						switch(tag) {
 							case FLOAT:	return f->mState; break;
 							case INT:	return i->mState; break;
@@ -737,10 +801,10 @@ namespace Core {
 						return Core::_Mouse::MOUSE_NONE;
 					}
 
-					bool valueChanged() {
+					bool stateChanged() {
 						switch(tag) {
-							case FLOAT: return f->valueChanged(); break;
-							case INT: return i->valueChanged(); break;
+							case FLOAT: return f->stateChanged(); break;
+							case INT: return i->stateChanged(); break;
 						}
 						return false;
 					}

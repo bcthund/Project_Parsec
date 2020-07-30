@@ -50,6 +50,7 @@ namespace Core {
 				bLocalCon		= true;
 				con				= new Props_Text();
 				*con			= c;
+				if(con->text == "") con->text = n;
 			}
 
 			Text::Text(Window &p, std::string n, Props_Text c) {
@@ -61,6 +62,7 @@ namespace Core {
 				bLocalCon		= true;
 				con				= new Props_Text();
 				*con			= c;
+				if(con->text == "") con->text = n;
 			}
 
 			Text::Text(std::string n, Props_Text *c) {
@@ -71,6 +73,7 @@ namespace Core {
 
 				bLocalCon		= false;
 				con				= c;
+				if(con->text == "") con->text = n;
 			}
 
 			Text::Text(Window &p, std::string n, Props_Text *c) {
@@ -81,6 +84,7 @@ namespace Core {
 
 				bLocalCon		= false;
 				con				= c;
+				if(con->text == "") con->text = n;
 			}
 
 			Text::~Text() {

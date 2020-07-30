@@ -1831,7 +1831,8 @@ namespace Core {
 				if(anchor&GUI::CONSTRAIN_TOP)		vAnchor.y -= (vSize.y/2.0f)+con->vPadding.top;
 				if(anchor&GUI::CONSTRAIN_BOTTOM)	vAnchor.y += (vSize.y/2.0f)+con->vPadding.bottom;
 
-				matrix->Translate(int(con->pos.x+vAnchor.x), int(con->pos.y+vAnchor.y), 0.0f);
+				Vector2f vPos = con->getScrollPos();
+				matrix->Translate(int(vPos.x+vAnchor.x), int(vPos.y+vAnchor.y), 0.0f);
 				glActiveTexture(0);
 				texture.Set(Core::gameVars->font.iTexNum);
 				colors.SetActive(Core::_Colors::COLOR_FRONT);

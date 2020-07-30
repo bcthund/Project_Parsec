@@ -1,0 +1,6 @@
+<map id="Core::GameVars::Timers" name="Core::GameVars::Timers">
+<area shape="rect" id="node1" title=" " alt="" coords="15,184,182,211"/>
+<area shape="rect" id="node2" href="$classCore_1_1Timer.html" title=" " alt="" coords="5,95,96,121"/>
+<area shape="rect" id="node3" href="$classCore_1_1PTimer.html" title=" " alt="" coords="121,95,221,121"/>
+<area shape="rect" id="node4" href="$classCore_1_1RunningStat.html" title=" " alt="" coords="105,5,236,32"/>
+</map>
