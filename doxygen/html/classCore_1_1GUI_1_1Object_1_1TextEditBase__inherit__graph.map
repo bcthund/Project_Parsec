@@ -1,0 +1,4 @@
+<map id="Core::GUI::Object::TextEditBase" name="Core::GUI::Object::TextEditBase">
+<area shape="rect" id="node1" title="Keyboard control and TextEdit object focus tracking." alt="" coords="5,5,141,47"/>
+<area shape="rect" id="node2" href="$classCore_1_1GUI_1_1Object_1_1TextEdit.html" title="A copy of TextArea with cursor tracking and editing capability." alt="" coords="5,95,141,136"/>
+</map>

@@ -1,0 +1,91 @@
+\hypertarget{classCore_1_1GUI_1_1Object_1_1TextEditBase}{}\doxysection{Core\+::G\+UI\+::Object\+::Text\+Edit\+Base Class Reference}
+\label{classCore_1_1GUI_1_1Object_1_1TextEditBase}\index{Core::GUI::Object::TextEditBase@{Core::GUI::Object::TextEditBase}}
+
+
+Keyboard control and \mbox{\hyperlink{classCore_1_1GUI_1_1Object_1_1TextEdit}{Text\+Edit}} object focus tracking.  
+
+
+
+
+{\ttfamily \#include $<$G\+U\+I\+\_\+\+Text\+Edit.\+h$>$}
+
+Inheritance diagram for Core\+::G\+UI\+::Object\+::Text\+Edit\+Base\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classCore_1_1GUI_1_1Object_1_1TextEditBase}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classCore_1_1GUI_1_1Object_1_1TextEditBase_af122d2f9e193f43a6d564efe63ec01ea}{Text\+Edit\+Base}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{classCore_1_1__Keyboard}{Core\+::\+\_\+\+Keyboard}} \mbox{\hyperlink{classCore_1_1GUI_1_1Object_1_1TextEditBase_a35cda2a6e1efae116a54a00a5c659b75}{keyboard}} = \mbox{\hyperlink{classCore_1_1__Keyboard}{Core\+::\+\_\+\+Keyboard}}()
+\item 
+static bool \mbox{\hyperlink{classCore_1_1GUI_1_1Object_1_1TextEditBase_a6f506f799502254977b31cf3252f1b0a}{b\+Keyboard\+Init}} = false
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Keyboard control and \mbox{\hyperlink{classCore_1_1GUI_1_1Object_1_1TextEdit}{Text\+Edit}} object focus tracking. 
+
+Creates a keyboard object to allow input while editing that is used across all instances of \mbox{\hyperlink{classCore_1_1GUI_1_1Object_1_1TextEdit}{Text\+Edit}} objects. Also keeps track of if any \mbox{\hyperlink{classCore_1_1GUI_1_1Object_1_1TextEdit}{Text\+Edit}} objects are currently active preventing others from also being edited at the same time. 
+
+Definition at line 33 of file G\+U\+I\+\_\+\+Text\+Edit.\+h.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classCore_1_1GUI_1_1Object_1_1TextEditBase_af122d2f9e193f43a6d564efe63ec01ea}\label{classCore_1_1GUI_1_1Object_1_1TextEditBase_af122d2f9e193f43a6d564efe63ec01ea}} 
+\index{Core::GUI::Object::TextEditBase@{Core::GUI::Object::TextEditBase}!TextEditBase@{TextEditBase}}
+\index{TextEditBase@{TextEditBase}!Core::GUI::Object::TextEditBase@{Core::GUI::Object::TextEditBase}}
+\doxysubsubsection{\texorpdfstring{TextEditBase()}{TextEditBase()}}
+{\footnotesize\ttfamily Core\+::\+G\+U\+I\+::\+Object\+::\+Text\+Edit\+Base\+::\+Text\+Edit\+Base (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 38 of file G\+U\+I\+\_\+\+Text\+Edit.\+h.
+
+
+
+References b\+Keyboard\+Init, Core\+::\+\_\+\+Keyboard\+::calc(), keyboard, and Core\+::\+\_\+\+Keyboard\+::\+K\+E\+Y\+T\+Y\+P\+E\+\_\+\+D\+E\+B\+O\+U\+N\+CE.
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classCore_1_1GUI_1_1Object_1_1TextEditBase_a6f506f799502254977b31cf3252f1b0a}\label{classCore_1_1GUI_1_1Object_1_1TextEditBase_a6f506f799502254977b31cf3252f1b0a}} 
+\index{Core::GUI::Object::TextEditBase@{Core::GUI::Object::TextEditBase}!bKeyboardInit@{bKeyboardInit}}
+\index{bKeyboardInit@{bKeyboardInit}!Core::GUI::Object::TextEditBase@{Core::GUI::Object::TextEditBase}}
+\doxysubsubsection{\texorpdfstring{bKeyboardInit}{bKeyboardInit}}
+{\footnotesize\ttfamily bool Core\+::\+G\+U\+I\+::\+Object\+::\+Text\+Edit\+Base\+::b\+Keyboard\+Init = false\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Definition at line 36 of file G\+U\+I\+\_\+\+Text\+Edit.\+h.
+
+
+
+Referenced by Text\+Edit\+Base().
+
+\mbox{\Hypertarget{classCore_1_1GUI_1_1Object_1_1TextEditBase_a35cda2a6e1efae116a54a00a5c659b75}\label{classCore_1_1GUI_1_1Object_1_1TextEditBase_a35cda2a6e1efae116a54a00a5c659b75}} 
+\index{Core::GUI::Object::TextEditBase@{Core::GUI::Object::TextEditBase}!keyboard@{keyboard}}
+\index{keyboard@{keyboard}!Core::GUI::Object::TextEditBase@{Core::GUI::Object::TextEditBase}}
+\doxysubsubsection{\texorpdfstring{keyboard}{keyboard}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classCore_1_1__Keyboard}{Core\+::\+\_\+\+Keyboard}} Core\+::\+G\+U\+I\+::\+Object\+::\+Text\+Edit\+Base\+::keyboard = \mbox{\hyperlink{classCore_1_1__Keyboard}{Core\+::\+\_\+\+Keyboard}}()\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Definition at line 35 of file G\+U\+I\+\_\+\+Text\+Edit.\+h.
+
+
+
+Referenced by Core\+::\+G\+U\+I\+::\+Object\+::\+Text\+Edit\+::exec\+Edit(), and Text\+Edit\+Base().
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/headers/gamesys/\+G\+U\+I/\mbox{\hyperlink{GUI__TextEdit_8h}{G\+U\+I\+\_\+\+Text\+Edit.\+h}}\end{DoxyCompactItemize}

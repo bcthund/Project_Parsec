@@ -1,0 +1,388 @@
+\hypertarget{classWater}{}\doxysection{Water Class Reference}
+\label{classWater}\index{Water@{Water}}
+
+
+{\ttfamily \#include $<$water.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{classWater_a4b777f60eb23351c1a2e072ee2b5f1f2}{init}} ()
+\item 
+bool \mbox{\hyperlink{classWater_a0266a9aa360a4a1a8ac8fc077b17f54c}{init}} (int \mbox{\hyperlink{gl4__5_2glcorearb_8h_a0cdec8e97a75ee9458b23d152bf962d4}{x}}, int \mbox{\hyperlink{gl4__5_2glcorearb_8h_aee38b51639b577753f6a92029fb92000}{z}})
+\item 
+bool \mbox{\hyperlink{classWater_afb98a80f1db5321d790efea4e07a8c34}{init}} (int \mbox{\hyperlink{gl4__5_2glcorearb_8h_a0cdec8e97a75ee9458b23d152bf962d4}{x}}, int \mbox{\hyperlink{gl4__5_2glcorearb_8h_a74d80fd479c0f6d0153c709949a089ef}{y}}, int \mbox{\hyperlink{gl4__5_2glcorearb_8h_aee38b51639b577753f6a92029fb92000}{z}})
+\item 
+bool \mbox{\hyperlink{classWater_af50270b9c01274cd1875b2d2028550a4}{init}} (\mbox{\hyperlink{gl4__old_2glext_8h_ab4ccfaa8ab0e1afaae94dc96ef52dde1}{std\+::string}} tex, \mbox{\hyperlink{gl4__old_2glext_8h_ab4ccfaa8ab0e1afaae94dc96ef52dde1}{std\+::string}} bump, \mbox{\hyperlink{gl4__old_2glext_8h_ab4ccfaa8ab0e1afaae94dc96ef52dde1}{std\+::string}} spec, int \mbox{\hyperlink{gl4__5_2glcorearb_8h_adb12a0d439f32ca388b2c806150cc54d}{w}}, int \mbox{\hyperlink{gl4__5_2glcorearb_8h_afa0fb1b5e976920c0abeff2dca3ed774}{h}})
+\item 
+bool \mbox{\hyperlink{classWater_a64c1d0a2d3793b866585431ccf0c2c86}{load}} ()
+\item 
+bool \mbox{\hyperlink{classWater_ae61a261aa7e8b63e807e3c9bce5d33aa}{calc}} (bool b\+Update)
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classWater_af4b7ffff035d9a14de3e9e15a6e7e6e4}{update}} (float f\+Time, float f\+Speed, float f\+Scale)
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classWater_aadc802a09805f5bf3fb50dfe4a178596}{draw}} ()
+\item 
+\mbox{\hyperlink{classWater_aa9aba8fb8e8c213f32415cc629b222e8}{Water}} (Atmosphere \&\mbox{\hyperlink{gl4__5_2glcorearb_8h_a3309789fc188587d666cda5ece79cf82}{a}})
+\item 
+\mbox{\hyperlink{classWater_aa613ad181694d2d0e18059f3822415fe}{$\sim$\+Water}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{classWater_a62c3647542e85aed2e4d199d615b7310}{i\+Height}}
+\item 
+int \mbox{\hyperlink{classWater_ab4cead183957a1e03a8474de90dad387}{iX}}
+\item 
+int \mbox{\hyperlink{classWater_a6cf1b3e3d894c12ddb0ad1037ad52772}{iZ}}
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_ab4ccfaa8ab0e1afaae94dc96ef52dde1}{std\+::string}} \mbox{\hyperlink{classWater_a05834cce80067083c4c98757de26cbff}{s\+Texture}}
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_ab4ccfaa8ab0e1afaae94dc96ef52dde1}{std\+::string}} \mbox{\hyperlink{classWater_a9c62c4e9d9d81bafbdcacf99b3967d64}{s\+Bump}}
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_ab4ccfaa8ab0e1afaae94dc96ef52dde1}{std\+::string}} \mbox{\hyperlink{classWater_aa5e14c3c9d4813dbe209695f4f6b3fdf}{s\+Spec}}
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_ab4ccfaa8ab0e1afaae94dc96ef52dde1}{std\+::string}} \mbox{\hyperlink{classWater_af901641e6dfc024536e8ba260ec0fe21}{s\+World}}
+\item 
+bool \mbox{\hyperlink{classWater_a8b58d6e04a4a9cb997d6050a81119ecc}{b\+High\+Res}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+Atmosphere \& \mbox{\hyperlink{classWater_aa4fb463136a6e0c764918b5aa4e70c34}{atmosphere}}
+\item 
+float \mbox{\hyperlink{classWater_a88443c1da04d82f50e82224ea3bf95df}{f\+Wave}}
+\item 
+V\+AO \mbox{\hyperlink{classWater_a22ee27804e92921a94c9d9b0448f7045}{vao}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+
+
+Definition at line 11 of file water.\+h.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classWater_aa9aba8fb8e8c213f32415cc629b222e8}\label{classWater_aa9aba8fb8e8c213f32415cc629b222e8}} 
+\index{Water@{Water}!Water@{Water}}
+\index{Water@{Water}!Water@{Water}}
+\doxysubsubsection{\texorpdfstring{Water()}{Water()}}
+{\footnotesize\ttfamily Water\+::\+Water (\begin{DoxyParamCaption}\item[{Atmosphere \&}]{a }\end{DoxyParamCaption})}
+
+
+
+Definition at line 44 of file water.\+h.
+
+
+
+References b\+High\+Res, f\+Wave, Core\+::game\+Vars, i\+Height, iX, iZ, s\+Bump, and s\+Texture.
+
+\mbox{\Hypertarget{classWater_aa613ad181694d2d0e18059f3822415fe}\label{classWater_aa613ad181694d2d0e18059f3822415fe}} 
+\index{Water@{Water}!````~Water@{$\sim$Water}}
+\index{````~Water@{$\sim$Water}!Water@{Water}}
+\doxysubsubsection{\texorpdfstring{$\sim$Water()}{~Water()}}
+{\footnotesize\ttfamily Water\+::$\sim$\+Water (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 38 of file water.\+h.
+
+
+
+References cout.
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classWater_ae61a261aa7e8b63e807e3c9bce5d33aa}\label{classWater_ae61a261aa7e8b63e807e3c9bce5d33aa}} 
+\index{Water@{Water}!calc@{calc}}
+\index{calc@{calc}!Water@{Water}}
+\doxysubsubsection{\texorpdfstring{calc()}{calc()}}
+{\footnotesize\ttfamily bool Water\+::calc (\begin{DoxyParamCaption}\item[{bool}]{b\+Update = {\ttfamily false} }\end{DoxyParamCaption})}
+
+
+
+Definition at line 169 of file water.\+h.
+
+
+
+References cout, Core\+::\+Game\+Vars\+::debug, and Core\+::game\+Vars.
+
+
+
+Referenced by Run\+Dungeon\+::load().
+
+\mbox{\Hypertarget{classWater_aadc802a09805f5bf3fb50dfe4a178596}\label{classWater_aadc802a09805f5bf3fb50dfe4a178596}} 
+\index{Water@{Water}!draw@{draw}}
+\index{draw@{draw}!Water@{Water}}
+\doxysubsubsection{\texorpdfstring{draw()}{draw()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Water\+::draw (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 264 of file water.\+h.
+
+
+
+References atmosphere, b\+High\+Res, Core\+::game\+Vars, G\+L\+\_\+\+C\+U\+L\+L\+\_\+\+F\+A\+CE, G\+L\+\_\+\+T\+E\+X\+T\+U\+R\+E0, G\+L\+\_\+\+T\+E\+X\+T\+U\+R\+E1, G\+L\+\_\+\+T\+E\+X\+T\+U\+R\+E2, G\+L\+\_\+\+T\+E\+X\+T\+U\+R\+E3, Core\+::\+G\+L\+M\+\_\+\+D\+R\+A\+W\+\_\+\+E\+L\+E\+M\+E\+N\+TS, i\+Height, iX, iZ, s\+Bump, s\+Spec, s\+Texture, s\+World, and vao.
+
+
+
+Referenced by Run\+Dungeon\+::update().
+
+\mbox{\Hypertarget{classWater_a4b777f60eb23351c1a2e072ee2b5f1f2}\label{classWater_a4b777f60eb23351c1a2e072ee2b5f1f2}} 
+\index{Water@{Water}!init@{init}}
+\index{init@{init}!Water@{Water}}
+\doxysubsubsection{\texorpdfstring{init()}{init()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily bool Water\+::init (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 117 of file water.\+h.
+
+
+
+References cout, Core\+::\+Game\+Vars\+::debug, Core\+::game\+Vars, i\+Height, iX, iZ, s\+Bump, Core\+::\+Game\+Vars\+::screen, s\+Spec, s\+Texture, and s\+World.
+
+
+
+Referenced by Run\+Dungeon\+::load().
+
+\mbox{\Hypertarget{classWater_afb98a80f1db5321d790efea4e07a8c34}\label{classWater_afb98a80f1db5321d790efea4e07a8c34}} 
+\index{Water@{Water}!init@{init}}
+\index{init@{init}!Water@{Water}}
+\doxysubsubsection{\texorpdfstring{init()}{init()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily bool Water\+::init (\begin{DoxyParamCaption}\item[{int}]{x,  }\item[{int}]{y,  }\item[{int}]{z }\end{DoxyParamCaption})}
+
+
+
+Definition at line 96 of file water.\+h.
+
+
+
+References cout, Core\+::\+Game\+Vars\+::debug, Core\+::game\+Vars, i\+Height, iX, iZ, s\+Bump, s\+Spec, s\+Texture, s\+World, x, y, and z.
+
+\mbox{\Hypertarget{classWater_a0266a9aa360a4a1a8ac8fc077b17f54c}\label{classWater_a0266a9aa360a4a1a8ac8fc077b17f54c}} 
+\index{Water@{Water}!init@{init}}
+\index{init@{init}!Water@{Water}}
+\doxysubsubsection{\texorpdfstring{init()}{init()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily bool Water\+::init (\begin{DoxyParamCaption}\item[{int}]{x,  }\item[{int}]{z }\end{DoxyParamCaption})}
+
+
+
+Definition at line 75 of file water.\+h.
+
+
+
+References cout, Core\+::\+Game\+Vars\+::debug, Core\+::game\+Vars, i\+Height, iX, iZ, s\+Bump, s\+Spec, s\+Texture, s\+World, x, and z.
+
+\mbox{\Hypertarget{classWater_af50270b9c01274cd1875b2d2028550a4}\label{classWater_af50270b9c01274cd1875b2d2028550a4}} 
+\index{Water@{Water}!init@{init}}
+\index{init@{init}!Water@{Water}}
+\doxysubsubsection{\texorpdfstring{init()}{init()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily bool Water\+::init (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{gl4__old_2glext_8h_ab4ccfaa8ab0e1afaae94dc96ef52dde1}{std\+::string}}}]{tex,  }\item[{\mbox{\hyperlink{gl4__old_2glext_8h_ab4ccfaa8ab0e1afaae94dc96ef52dde1}{std\+::string}}}]{bump,  }\item[{\mbox{\hyperlink{gl4__old_2glext_8h_ab4ccfaa8ab0e1afaae94dc96ef52dde1}{std\+::string}}}]{spec,  }\item[{int}]{w,  }\item[{int}]{h }\end{DoxyParamCaption})}
+
+
+
+Definition at line 55 of file water.\+h.
+
+
+
+References cout, Core\+::\+Game\+Vars\+::debug, Core\+::game\+Vars, h, i\+Height, iX, iZ, s\+Bump, s\+Spec, s\+Texture, and w.
+
+\mbox{\Hypertarget{classWater_a64c1d0a2d3793b866585431ccf0c2c86}\label{classWater_a64c1d0a2d3793b866585431ccf0c2c86}} 
+\index{Water@{Water}!load@{load}}
+\index{load@{load}!Water@{Water}}
+\doxysubsubsection{\texorpdfstring{load()}{load()}}
+{\footnotesize\ttfamily bool Water\+::load (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 138 of file water.\+h.
+
+
+
+References cout, Core\+::\+Game\+Vars\+::debug, Core\+::game\+Vars, G\+L\+\_\+\+T\+R\+I\+A\+N\+G\+L\+ES, Core\+::\+G\+L\+A\+\_\+\+I\+N\+D\+EX, Core\+::\+G\+L\+A\+\_\+\+N\+O\+R\+M\+AL, Core\+::\+G\+L\+A\+\_\+\+T\+E\+X\+T\+U\+RE, Core\+::\+G\+L\+A\+\_\+\+V\+E\+R\+T\+EX, and vao.
+
+
+
+Referenced by Run\+Dungeon\+::load().
+
+\mbox{\Hypertarget{classWater_af4b7ffff035d9a14de3e9e15a6e7e6e4}\label{classWater_af4b7ffff035d9a14de3e9e15a6e7e6e4}} 
+\index{Water@{Water}!update@{update}}
+\index{update@{update}!Water@{Water}}
+\doxysubsubsection{\texorpdfstring{update()}{update()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} Water\+::update (\begin{DoxyParamCaption}\item[{float}]{f\+Time,  }\item[{float}]{f\+Speed = {\ttfamily 10.0},  }\item[{float}]{f\+Scale = {\ttfamily 1.0} }\end{DoxyParamCaption})}
+
+
+
+Definition at line 252 of file water.\+h.
+
+
+
+References f\+Wave.
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classWater_aa4fb463136a6e0c764918b5aa4e70c34}\label{classWater_aa4fb463136a6e0c764918b5aa4e70c34}} 
+\index{Water@{Water}!atmosphere@{atmosphere}}
+\index{atmosphere@{atmosphere}!Water@{Water}}
+\doxysubsubsection{\texorpdfstring{atmosphere}{atmosphere}}
+{\footnotesize\ttfamily Atmosphere\& Water\+::atmosphere\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line 13 of file water.\+h.
+
+
+
+Referenced by draw().
+
+\mbox{\Hypertarget{classWater_a8b58d6e04a4a9cb997d6050a81119ecc}\label{classWater_a8b58d6e04a4a9cb997d6050a81119ecc}} 
+\index{Water@{Water}!bHighRes@{bHighRes}}
+\index{bHighRes@{bHighRes}!Water@{Water}}
+\doxysubsubsection{\texorpdfstring{bHighRes}{bHighRes}}
+{\footnotesize\ttfamily bool Water\+::b\+High\+Res}
+
+
+
+Definition at line 28 of file water.\+h.
+
+
+
+Referenced by draw(), and Water().
+
+\mbox{\Hypertarget{classWater_a88443c1da04d82f50e82224ea3bf95df}\label{classWater_a88443c1da04d82f50e82224ea3bf95df}} 
+\index{Water@{Water}!fWave@{fWave}}
+\index{fWave@{fWave}!Water@{Water}}
+\doxysubsubsection{\texorpdfstring{fWave}{fWave}}
+{\footnotesize\ttfamily float Water\+::f\+Wave\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line 14 of file water.\+h.
+
+
+
+Referenced by update(), and Water().
+
+\mbox{\Hypertarget{classWater_a62c3647542e85aed2e4d199d615b7310}\label{classWater_a62c3647542e85aed2e4d199d615b7310}} 
+\index{Water@{Water}!iHeight@{iHeight}}
+\index{iHeight@{iHeight}!Water@{Water}}
+\doxysubsubsection{\texorpdfstring{iHeight}{iHeight}}
+{\footnotesize\ttfamily int Water\+::i\+Height}
+
+
+
+Definition at line 21 of file water.\+h.
+
+
+
+Referenced by draw(), init(), and Water().
+
+\mbox{\Hypertarget{classWater_ab4cead183957a1e03a8474de90dad387}\label{classWater_ab4cead183957a1e03a8474de90dad387}} 
+\index{Water@{Water}!iX@{iX}}
+\index{iX@{iX}!Water@{Water}}
+\doxysubsubsection{\texorpdfstring{iX}{iX}}
+{\footnotesize\ttfamily int Water\+::iX}
+
+
+
+Definition at line 22 of file water.\+h.
+
+
+
+Referenced by draw(), init(), and Water().
+
+\mbox{\Hypertarget{classWater_a6cf1b3e3d894c12ddb0ad1037ad52772}\label{classWater_a6cf1b3e3d894c12ddb0ad1037ad52772}} 
+\index{Water@{Water}!iZ@{iZ}}
+\index{iZ@{iZ}!Water@{Water}}
+\doxysubsubsection{\texorpdfstring{iZ}{iZ}}
+{\footnotesize\ttfamily int Water\+::iZ}
+
+
+
+Definition at line 23 of file water.\+h.
+
+
+
+Referenced by draw(), init(), and Water().
+
+\mbox{\Hypertarget{classWater_a9c62c4e9d9d81bafbdcacf99b3967d64}\label{classWater_a9c62c4e9d9d81bafbdcacf99b3967d64}} 
+\index{Water@{Water}!sBump@{sBump}}
+\index{sBump@{sBump}!Water@{Water}}
+\doxysubsubsection{\texorpdfstring{sBump}{sBump}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_ab4ccfaa8ab0e1afaae94dc96ef52dde1}{std\+::string}} Water\+::s\+Bump}
+
+
+
+Definition at line 25 of file water.\+h.
+
+
+
+Referenced by draw(), init(), and Water().
+
+\mbox{\Hypertarget{classWater_aa5e14c3c9d4813dbe209695f4f6b3fdf}\label{classWater_aa5e14c3c9d4813dbe209695f4f6b3fdf}} 
+\index{Water@{Water}!sSpec@{sSpec}}
+\index{sSpec@{sSpec}!Water@{Water}}
+\doxysubsubsection{\texorpdfstring{sSpec}{sSpec}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_ab4ccfaa8ab0e1afaae94dc96ef52dde1}{std\+::string}} Water\+::s\+Spec}
+
+
+
+Definition at line 26 of file water.\+h.
+
+
+
+Referenced by draw(), and init().
+
+\mbox{\Hypertarget{classWater_a05834cce80067083c4c98757de26cbff}\label{classWater_a05834cce80067083c4c98757de26cbff}} 
+\index{Water@{Water}!sTexture@{sTexture}}
+\index{sTexture@{sTexture}!Water@{Water}}
+\doxysubsubsection{\texorpdfstring{sTexture}{sTexture}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_ab4ccfaa8ab0e1afaae94dc96ef52dde1}{std\+::string}} Water\+::s\+Texture}
+
+
+
+Definition at line 24 of file water.\+h.
+
+
+
+Referenced by draw(), init(), and Water().
+
+\mbox{\Hypertarget{classWater_af901641e6dfc024536e8ba260ec0fe21}\label{classWater_af901641e6dfc024536e8ba260ec0fe21}} 
+\index{Water@{Water}!sWorld@{sWorld}}
+\index{sWorld@{sWorld}!Water@{Water}}
+\doxysubsubsection{\texorpdfstring{sWorld}{sWorld}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_ab4ccfaa8ab0e1afaae94dc96ef52dde1}{std\+::string}} Water\+::s\+World}
+
+
+
+Definition at line 27 of file water.\+h.
+
+
+
+Referenced by draw(), and init().
+
+\mbox{\Hypertarget{classWater_a22ee27804e92921a94c9d9b0448f7045}\label{classWater_a22ee27804e92921a94c9d9b0448f7045}} 
+\index{Water@{Water}!vao@{vao}}
+\index{vao@{vao}!Water@{Water}}
+\doxysubsubsection{\texorpdfstring{vao}{vao}}
+{\footnotesize\ttfamily V\+AO Water\+::vao\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line 15 of file water.\+h.
+
+
+
+Referenced by draw(), and load().
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/headers/gamesys/ref/\mbox{\hyperlink{headers_2gamesys_2ref_2water_8h}{water.\+h}}\end{DoxyCompactItemize}

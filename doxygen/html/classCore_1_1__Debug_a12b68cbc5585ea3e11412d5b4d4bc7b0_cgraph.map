@@ -1,0 +1,5 @@
+<map id="Core::_Debug::log" name="Core::_Debug::log">
+<area shape="rect" id="node1" title="Print a message to console with a timestamp in ticks and an automatic newline." alt="" coords="5,31,133,57"/>
+<area shape="rect" id="node2" href="$classCore_1_1Timer.html#a778cb9ce079fdb2c8cd02c0ef65259ff" title=" " alt="" coords="181,5,333,32"/>
+<area shape="rect" id="node3" href="$global_8h.html#af332de083e9b77330ebe67b0054e774b" title=" " alt="" coords="221,56,293,83"/>
+</map>

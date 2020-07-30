@@ -1,0 +1,6 @@
+<map id="Core::GameSys::_MenuSys::draw" name="Core::GameSys::_MenuSys::draw">
+<area shape="rect" id="node1" title=" " alt="" coords="5,35,192,76"/>
+<area shape="rect" id="node2" href="$classCore_1_1GameSys_1_1__MenuSys.html#a854010d5917c30d7cce2147ae4c27457" title=" " alt="" coords="240,5,427,47"/>
+<area shape="rect" id="node4" href="$classCore_1_1__TextSys.html#a13fd9fe30d9312c5c3a4764734eb1a34" title=" " alt="" coords="259,71,408,98"/>
+<area shape="rect" id="node3" href="$classCore_1_1Timer.html#a778cb9ce079fdb2c8cd02c0ef65259ff" title=" " alt="" coords="475,13,627,39"/>
+</map>

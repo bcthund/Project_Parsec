@@ -1,0 +1,7 @@
+<map id="Core::GameSys::drawTextWindow" name="Core::GameSys::drawTextWindow">
+<area shape="rect" id="node1" title=" " alt="" coords="5,31,229,57"/>
+<area shape="rect" id="node2" href="$classCore_1_1__Mouse.html#a639062065d0bbd3604b270eaafd60702" title=" " alt="" coords="278,5,454,32"/>
+<area shape="rect" id="node3" href="$namespaceCore_1_1GameSys.html#a1ce10cd6f0486d44458c9fc6c164e0f5" title=" " alt="" coords="277,56,455,83"/>
+<area shape="rect" id="node4" href="$classCore_1_1__Colors.html#aa7624cbbd0c1b94247efff11d9f7e742" title=" " alt="" coords="506,31,670,57"/>
+<area shape="rect" id="node5" href="$classCore_1_1__Colors.html#a80ce9c5980115ce42c071d99b5404689" title=" " alt="" coords="503,81,673,108"/>
+</map>

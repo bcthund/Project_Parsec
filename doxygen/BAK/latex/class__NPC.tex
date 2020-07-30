@@ -1,0 +1,346 @@
+\hypertarget{class__NPC}{}\doxysection{\+\_\+\+N\+PC Class Reference}
+\label{class__NPC}\index{\_NPC@{\_NPC}}
+
+
+{\ttfamily \#include $<$N\+P\+C.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class__NPC_a4257d5561d1c9318e912840a3bdc5157}{\+\_\+\+N\+PC}} (\mbox{\hyperlink{classWorldMap}{World\+Map}} \&\mbox{\hyperlink{gl4__5_2glcorearb_8h_af593500c283bf1a787a6f947f503a5c2}{m}})
+\item 
+bool \mbox{\hyperlink{class__NPC_a6fd380f94c9db2ff9e4f1fe6f5ee9ce1}{init}} ()
+\item 
+bool \mbox{\hyperlink{class__NPC_a53830901c64bf11d92d8316f3c65ddf2}{load}} ()
+\item 
+bool \mbox{\hyperlink{class__NPC_a6262e8de3481f56e639da89e3ec7c3fe}{calc}} ()
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{class__NPC_a66b08d85b8568e7318e1d78d9153db27}{draw}} (Atmosphere \&\mbox{\hyperlink{gl4__5_2glcorearb_8h_a3309789fc188587d666cda5ece79cf82}{a}})
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{class__NPC_a4846c6ea42f4732061df1cdf8b90c5bf}{draw}} (Atmosphere \&\mbox{\hyperlink{gl4__5_2glcorearb_8h_a3309789fc188587d666cda5ece79cf82}{a}}, Char\+Sheet \&sheet, bool b\+Card)
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{class__NPC_a8459d6cfdeeaf6ee4ba15e8dbbbbaa5a}{draw}} (Atmosphere \&\mbox{\hyperlink{gl4__5_2glcorearb_8h_a3309789fc188587d666cda5ece79cf82}{a}}, Char\+Sheet \&sheet, Char\+Sheet \&look\+At, bool b\+Card)
+\begin{DoxyCompactList}\small\item\em 
+\begin{DoxyItemize}
+\item 
+\end{DoxyItemize}\end{DoxyCompactList}\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{class__NPC_af593aa03206acb00cfa1ff75f971f9c2}{update}} ()
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{class__NPC_a8b33f14f6a1a9573406a7ffc1ab36edd}{reload}} ()
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{class__NPC_a41725e42e69986c86010adef0899dbbf}{reload}} (int \mbox{\hyperlink{gl4__5_2glcorearb_8h_a0cdec8e97a75ee9458b23d152bf962d4}{x}}, int \mbox{\hyperlink{gl4__5_2glcorearb_8h_aee38b51639b577753f6a92029fb92000}{z}})
+\item 
+float \mbox{\hyperlink{class__NPC_af6c7499f6fc20062824647b5e52d8a49}{height}} (float iX, float iZ, int gX, int gZ)
+\item 
+int \mbox{\hyperlink{class__NPC_a2dbae9a838b4ff90c609a38b32e35345}{Apply\+Stat\+Mod}} (int i)
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{class__NPC_a27a753de4b1a9a170cc0bb90fea1ae05}{Load\+Npc}} (int \mbox{\hyperlink{gl4__5_2glcorearb_8h_a0cdec8e97a75ee9458b23d152bf962d4}{x}}, int \mbox{\hyperlink{gl4__5_2glcorearb_8h_aee38b51639b577753f6a92029fb92000}{z}}, int \mbox{\hyperlink{gl4__5_2glcorearb_8h_ae52362b10d585638f5b96140e90f1b7a}{id}})
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classWorldMap}{World\+Map}} \& \mbox{\hyperlink{class__NPC_a437efcdad1bd3e6450e8d721b3a36b84}{map}}
+\item 
+N\+P\+C\+Sheet \mbox{\hyperlink{class__NPC_a3bf1fb892bb48e0c74e5bdcab87a0d53}{data}} \mbox{[}9\mbox{]}\mbox{[}9\mbox{]}
+\item 
+bool \mbox{\hyperlink{class__NPC_a7a2f31c7b9dce99934e3ba7f1fae3c3b}{b\+Load}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+float \mbox{\hyperlink{class__NPC_ac0b521842d8cd40c839b27de94a5ac08}{init\+\_\+sx}}
+\item 
+float \mbox{\hyperlink{class__NPC_a61eff36e8d82ab3e2eed29526fb02e20}{init\+\_\+sz}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+
+
+Definition at line 11 of file N\+P\+C.\+h.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class__NPC_a4257d5561d1c9318e912840a3bdc5157}\label{class__NPC_a4257d5561d1c9318e912840a3bdc5157}} 
+\index{\_NPC@{\_NPC}!\_NPC@{\_NPC}}
+\index{\_NPC@{\_NPC}!\_NPC@{\_NPC}}
+\doxysubsubsection{\texorpdfstring{\_NPC()}{\_NPC()}}
+{\footnotesize\ttfamily \+\_\+\+N\+P\+C\+::\+\_\+\+N\+PC (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classWorldMap}{World\+Map}} \&}]{m }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 19 of file N\+P\+C.\+h.
+
+
+
+References b\+Load, init\+\_\+sx, and init\+\_\+sz.
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class__NPC_a2dbae9a838b4ff90c609a38b32e35345}\label{class__NPC_a2dbae9a838b4ff90c609a38b32e35345}} 
+\index{\_NPC@{\_NPC}!ApplyStatMod@{ApplyStatMod}}
+\index{ApplyStatMod@{ApplyStatMod}!\_NPC@{\_NPC}}
+\doxysubsubsection{\texorpdfstring{ApplyStatMod()}{ApplyStatMod()}}
+{\footnotesize\ttfamily int \+\_\+\+N\+P\+C\+::\+Apply\+Stat\+Mod (\begin{DoxyParamCaption}\item[{int}]{i }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 87 of file N\+P\+C.\+h.
+
+
+
+Referenced by Load\+Npc().
+
+\mbox{\Hypertarget{class__NPC_a6262e8de3481f56e639da89e3ec7c3fe}\label{class__NPC_a6262e8de3481f56e639da89e3ec7c3fe}} 
+\index{\_NPC@{\_NPC}!calc@{calc}}
+\index{calc@{calc}!\_NPC@{\_NPC}}
+\doxysubsubsection{\texorpdfstring{calc()}{calc()}}
+{\footnotesize\ttfamily bool \+\_\+\+N\+P\+C\+::calc (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 1519 of file N\+P\+C.\+h.
+
+
+
+References cout, Core\+::game\+Vars, World\+Map\+::get\+Height(), G\+L\+\_\+\+T\+R\+I\+A\+N\+G\+L\+ES, Core\+::\+G\+L\+A\+\_\+\+T\+E\+X\+T\+U\+RE, Core\+::\+G\+L\+A\+\_\+\+V\+E\+R\+T\+EX, map, Core\+::\+Game\+Vars\+::screen, x, and z.
+
+
+
+Referenced by reload().
+
+\mbox{\Hypertarget{class__NPC_a66b08d85b8568e7318e1d78d9153db27}\label{class__NPC_a66b08d85b8568e7318e1d78d9153db27}} 
+\index{\_NPC@{\_NPC}!draw@{draw}}
+\index{draw@{draw}!\_NPC@{\_NPC}}
+\doxysubsubsection{\texorpdfstring{draw()}{draw()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \+\_\+\+N\+P\+C\+::draw (\begin{DoxyParamCaption}\item[{Atmosphere \&}]{a }\end{DoxyParamCaption})}
+
+
+
+Definition at line 1615 of file N\+P\+C.\+h.
+
+
+
+References Core\+::\+Game\+Vars\+::\+Player\+::active, Core\+::game\+Vars, G\+L\+\_\+\+C\+U\+L\+L\+\_\+\+F\+A\+CE, Core\+::\+G\+L\+S\+\_\+\+F\+O\+NT, init(), Core\+::\+Game\+Vars\+::player, Core\+::\+Game\+Sys\+::\+Char\+Sheet\+::\+Transform\+::pos, Core\+::\+Game\+Vars\+::screen, Core\+::\+Game\+Sys\+::\+Char\+Sheet\+::transform, x, and z.
+
+
+
+Referenced by \+\_\+\+The\+Void\+::\+Draw(), and Run\+Battle\+::draw().
+
+\mbox{\Hypertarget{class__NPC_a4846c6ea42f4732061df1cdf8b90c5bf}\label{class__NPC_a4846c6ea42f4732061df1cdf8b90c5bf}} 
+\index{\_NPC@{\_NPC}!draw@{draw}}
+\index{draw@{draw}!\_NPC@{\_NPC}}
+\doxysubsubsection{\texorpdfstring{draw()}{draw()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \+\_\+\+N\+P\+C\+::draw (\begin{DoxyParamCaption}\item[{Atmosphere \&}]{a,  }\item[{Char\+Sheet \&}]{sheet,  }\item[{bool}]{b\+Card = {\ttfamily false} }\end{DoxyParamCaption})}
+
+
+
+Definition at line 1685 of file N\+P\+C.\+h.
+
+
+
+References Core\+::\+Game\+Vars\+::font, Core\+::\+Game\+Vars\+::\+Timers\+::frame\+Rate, Core\+::game\+Vars, Core\+::\+Timer\+::get\+\_\+ticks(), G\+L\+\_\+\+C\+U\+L\+L\+\_\+\+F\+A\+CE, G\+L\+\_\+\+P\+O\+L\+Y\+G\+O\+N\+\_\+\+O\+F\+F\+S\+E\+T\+\_\+\+F\+I\+LL, Core\+::\+G\+L\+S\+\_\+\+F\+O\+NT, Core\+::\+Game\+Vars\+::screen, and Core\+::\+Game\+Vars\+::timer.
+
+\mbox{\Hypertarget{class__NPC_a8459d6cfdeeaf6ee4ba15e8dbbbbaa5a}\label{class__NPC_a8459d6cfdeeaf6ee4ba15e8dbbbbaa5a}} 
+\index{\_NPC@{\_NPC}!draw@{draw}}
+\index{draw@{draw}!\_NPC@{\_NPC}}
+\doxysubsubsection{\texorpdfstring{draw()}{draw()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \+\_\+\+N\+P\+C\+::draw (\begin{DoxyParamCaption}\item[{Atmosphere \&}]{a,  }\item[{Char\+Sheet \&}]{sheet,  }\item[{Char\+Sheet \&}]{look\+At,  }\item[{bool}]{b\+Card = {\ttfamily true} }\end{DoxyParamCaption})}
+
+
+
+
+\begin{DoxyItemize}
+\item 
+\end{DoxyItemize}
+
+
+
+Definition at line 1823 of file N\+P\+C.\+h.
+
+
+
+References Core\+::\+Game\+Vars\+::\+Player\+::active, cout, Core\+::\+Game\+Vars\+::\+Timers\+::frame\+Rate, Core\+::game\+Vars, Core\+::\+Timer\+::get\+\_\+ticks(), G\+L\+\_\+\+C\+U\+L\+L\+\_\+\+F\+A\+CE, G\+L\+\_\+\+D\+E\+P\+T\+H\+\_\+\+T\+E\+ST, Core\+::\+G\+L\+S\+\_\+\+F\+O\+NT, Core\+::\+Game\+Vars\+::player, Core\+::\+Game\+Sys\+::\+Char\+Sheet\+::\+Transform\+::rot, Core\+::\+Game\+Vars\+::timer, and Core\+::\+Game\+Sys\+::\+Char\+Sheet\+::transform.
+
+\mbox{\Hypertarget{class__NPC_af6c7499f6fc20062824647b5e52d8a49}\label{class__NPC_af6c7499f6fc20062824647b5e52d8a49}} 
+\index{\_NPC@{\_NPC}!height@{height}}
+\index{height@{height}!\_NPC@{\_NPC}}
+\doxysubsubsection{\texorpdfstring{height()}{height()}}
+{\footnotesize\ttfamily float \+\_\+\+N\+P\+C\+::height (\begin{DoxyParamCaption}\item[{float}]{iX,  }\item[{float}]{iZ,  }\item[{int}]{gX,  }\item[{int}]{gZ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{class__NPC_a6fd380f94c9db2ff9e4f1fe6f5ee9ce1}\label{class__NPC_a6fd380f94c9db2ff9e4f1fe6f5ee9ce1}} 
+\index{\_NPC@{\_NPC}!init@{init}}
+\index{init@{init}!\_NPC@{\_NPC}}
+\doxysubsubsection{\texorpdfstring{init()}{init()}}
+{\footnotesize\ttfamily bool \+\_\+\+N\+P\+C\+::init (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 81 of file N\+P\+C.\+h.
+
+
+
+References init\+\_\+sx, and init\+\_\+sz.
+
+
+
+Referenced by draw().
+
+\mbox{\Hypertarget{class__NPC_a53830901c64bf11d92d8316f3c65ddf2}\label{class__NPC_a53830901c64bf11d92d8316f3c65ddf2}} 
+\index{\_NPC@{\_NPC}!load@{load}}
+\index{load@{load}!\_NPC@{\_NPC}}
+\doxysubsubsection{\texorpdfstring{load()}{load()}}
+{\footnotesize\ttfamily bool \+\_\+\+N\+P\+C\+::load (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 1482 of file N\+P\+C.\+h.
+
+
+
+References b\+Load, Core\+::game\+Vars, init\+\_\+sx, init\+\_\+sz, Load\+Npc(), and Core\+::\+Game\+Vars\+::screen.
+
+
+
+Referenced by reload().
+
+\mbox{\Hypertarget{class__NPC_a27a753de4b1a9a170cc0bb90fea1ae05}\label{class__NPC_a27a753de4b1a9a170cc0bb90fea1ae05}} 
+\index{\_NPC@{\_NPC}!LoadNpc@{LoadNpc}}
+\index{LoadNpc@{LoadNpc}!\_NPC@{\_NPC}}
+\doxysubsubsection{\texorpdfstring{LoadNpc()}{LoadNpc()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \+\_\+\+N\+P\+C\+::\+Load\+Npc (\begin{DoxyParamCaption}\item[{int}]{x,  }\item[{int}]{z,  }\item[{int}]{id }\end{DoxyParamCaption})}
+
+
+
+Definition at line 94 of file N\+P\+C.\+h.
+
+
+
+References Apply\+Stat\+Mod(), id, t, x, and z.
+
+
+
+Referenced by load().
+
+\mbox{\Hypertarget{class__NPC_a8b33f14f6a1a9573406a7ffc1ab36edd}\label{class__NPC_a8b33f14f6a1a9573406a7ffc1ab36edd}} 
+\index{\_NPC@{\_NPC}!reload@{reload}}
+\index{reload@{reload}!\_NPC@{\_NPC}}
+\doxysubsubsection{\texorpdfstring{reload()}{reload()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \+\_\+\+N\+P\+C\+::reload (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 1582 of file N\+P\+C.\+h.
+
+
+
+References calc(), Core\+::game\+Vars, load(), Core\+::\+Game\+Vars\+::screen, x, and z.
+
+
+
+Referenced by \+\_\+\+The\+Void\+::load(), and \+\_\+\+The\+Void\+::\+Process\+Input().
+
+\mbox{\Hypertarget{class__NPC_a41725e42e69986c86010adef0899dbbf}\label{class__NPC_a41725e42e69986c86010adef0899dbbf}} 
+\index{\_NPC@{\_NPC}!reload@{reload}}
+\index{reload@{reload}!\_NPC@{\_NPC}}
+\doxysubsubsection{\texorpdfstring{reload()}{reload()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \+\_\+\+N\+P\+C\+::reload (\begin{DoxyParamCaption}\item[{int}]{x,  }\item[{int}]{z }\end{DoxyParamCaption})}
+
+
+
+Definition at line 1598 of file N\+P\+C.\+h.
+
+
+
+References calc(), load(), x, and z.
+
+\mbox{\Hypertarget{class__NPC_af593aa03206acb00cfa1ff75f971f9c2}\label{class__NPC_af593aa03206acb00cfa1ff75f971f9c2}} 
+\index{\_NPC@{\_NPC}!update@{update}}
+\index{update@{update}!\_NPC@{\_NPC}}
+\doxysubsubsection{\texorpdfstring{update()}{update()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \+\_\+\+N\+P\+C\+::update (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 1578 of file N\+P\+C.\+h.
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{class__NPC_a7a2f31c7b9dce99934e3ba7f1fae3c3b}\label{class__NPC_a7a2f31c7b9dce99934e3ba7f1fae3c3b}} 
+\index{\_NPC@{\_NPC}!bLoad@{bLoad}}
+\index{bLoad@{bLoad}!\_NPC@{\_NPC}}
+\doxysubsubsection{\texorpdfstring{bLoad}{bLoad}}
+{\footnotesize\ttfamily bool \+\_\+\+N\+P\+C\+::b\+Load}
+
+
+
+Definition at line 65 of file N\+P\+C.\+h.
+
+
+
+Referenced by \+\_\+\+N\+P\+C(), and load().
+
+\mbox{\Hypertarget{class__NPC_a3bf1fb892bb48e0c74e5bdcab87a0d53}\label{class__NPC_a3bf1fb892bb48e0c74e5bdcab87a0d53}} 
+\index{\_NPC@{\_NPC}!data@{data}}
+\index{data@{data}!\_NPC@{\_NPC}}
+\doxysubsubsection{\texorpdfstring{data}{data}}
+{\footnotesize\ttfamily N\+P\+C\+Sheet \+\_\+\+N\+P\+C\+::data\mbox{[}9\mbox{]}\mbox{[}9\mbox{]}}
+
+
+
+Definition at line 63 of file N\+P\+C.\+h.
+
+
+
+Referenced by \+\_\+\+The\+Void\+::\+Process\+Input().
+
+\mbox{\Hypertarget{class__NPC_ac0b521842d8cd40c839b27de94a5ac08}\label{class__NPC_ac0b521842d8cd40c839b27de94a5ac08}} 
+\index{\_NPC@{\_NPC}!init\_sx@{init\_sx}}
+\index{init\_sx@{init\_sx}!\_NPC@{\_NPC}}
+\doxysubsubsection{\texorpdfstring{init\_sx}{init\_sx}}
+{\footnotesize\ttfamily float \+\_\+\+N\+P\+C\+::init\+\_\+sx\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line 13 of file N\+P\+C.\+h.
+
+
+
+Referenced by \+\_\+\+N\+P\+C(), init(), and load().
+
+\mbox{\Hypertarget{class__NPC_a61eff36e8d82ab3e2eed29526fb02e20}\label{class__NPC_a61eff36e8d82ab3e2eed29526fb02e20}} 
+\index{\_NPC@{\_NPC}!init\_sz@{init\_sz}}
+\index{init\_sz@{init\_sz}!\_NPC@{\_NPC}}
+\doxysubsubsection{\texorpdfstring{init\_sz}{init\_sz}}
+{\footnotesize\ttfamily float \+\_\+\+N\+P\+C\+::init\+\_\+sz\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line 13 of file N\+P\+C.\+h.
+
+
+
+Referenced by \+\_\+\+N\+P\+C(), init(), and load().
+
+\mbox{\Hypertarget{class__NPC_a437efcdad1bd3e6450e8d721b3a36b84}\label{class__NPC_a437efcdad1bd3e6450e8d721b3a36b84}} 
+\index{\_NPC@{\_NPC}!map@{map}}
+\index{map@{map}!\_NPC@{\_NPC}}
+\doxysubsubsection{\texorpdfstring{map}{map}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classWorldMap}{World\+Map}}\& \+\_\+\+N\+P\+C\+::map}
+
+
+
+Definition at line 18 of file N\+P\+C.\+h.
+
+
+
+Referenced by calc().
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/headers/gamesys/ref/\mbox{\hyperlink{headers_2gamesys_2ref_2NPC_8h}{N\+P\+C.\+h}}\end{DoxyCompactItemize}

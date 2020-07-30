@@ -1,0 +1,5 @@
+<map id="Core::GameSys::CharSheet::Transform::GetAngle" name="Core::GameSys::CharSheet::Transform::GetAngle">
+<area shape="rect" id="node1" title=" " alt="" coords="5,23,192,65"/>
+<area shape="rect" id="node2" href="$structCore_1_1Radians.html#a65d2c6a4fba58e4866f8d2da8f00d9b8" title=" " alt="" coords="240,5,415,32"/>
+<area shape="rect" id="node3" href="$structCore_1_1Degrees.html#a9c218f476eea2a1c9761d59de91883ec" title=" " alt="" coords="240,56,415,83"/>
+</map>

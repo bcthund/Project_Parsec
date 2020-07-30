@@ -1,0 +1,28 @@
+var structCore_1_1GameSys_1_1__WinSys_1_1Coords =
+[
+    [ "a00", "structCore_1_1GameSys_1_1__WinSys_1_1Coords.html#a173ba3a645b98fb260bf69cb10faf501", null ],
+    [ "a01", "structCore_1_1GameSys_1_1__WinSys_1_1Coords.html#aa064c3788bff92e172ec2db1ca547b19", null ],
+    [ "a02", "structCore_1_1GameSys_1_1__WinSys_1_1Coords.html#a366935a8cf7906b18aaeba59be3b88c3", null ],
+    [ "a03", "structCore_1_1GameSys_1_1__WinSys_1_1Coords.html#a334281247c59fe40aeabfc6202776465", null ],
+    [ "a04", "structCore_1_1GameSys_1_1__WinSys_1_1Coords.html#a5081d4e5549dcb7397f473196a8c05f3", null ],
+    [ "a05", "structCore_1_1GameSys_1_1__WinSys_1_1Coords.html#a405c5e67c313b5f6c09846fa70ef3e11", null ],
+    [ "a06", "structCore_1_1GameSys_1_1__WinSys_1_1Coords.html#aefbf62c3ef72fd3b49d31100fbe8a273", null ],
+    [ "a07", "structCore_1_1GameSys_1_1__WinSys_1_1Coords.html#a96ada56825287af0d933997d095b4db8", null ],
+    [ "a08", "structCore_1_1GameSys_1_1__WinSys_1_1Coords.html#ad1ceee39285c5eef86a83adb1acd8301", null ],
+    [ "a09", "structCore_1_1GameSys_1_1__WinSys_1_1Coords.html#a5f63eea4e2c5658e05aed14ade214ad7", null ],
+    [ "a10", "structCore_1_1GameSys_1_1__WinSys_1_1Coords.html#abaf2849b5030df81748c25c29d2b27da", null ],
+    [ "a11", "structCore_1_1GameSys_1_1__WinSys_1_1Coords.html#ac406929552f7c16c88195bcd9247a520", null ],
+    [ "a12", "structCore_1_1GameSys_1_1__WinSys_1_1Coords.html#af3b584a63347754e66630e2fcd6c5509", null ],
+    [ "a13", "structCore_1_1GameSys_1_1__WinSys_1_1Coords.html#a896ad3b546b3e61c340c1d5ac74177de", null ],
+    [ "a14", "structCore_1_1GameSys_1_1__WinSys_1_1Coords.html#add53586b99deff9455a1805da6b4b4d2", null ],
+    [ "a15", "structCore_1_1GameSys_1_1__WinSys_1_1Coords.html#aca36c1248fe43015a3d609a137df04ac", null ],
+    [ "a16", "structCore_1_1GameSys_1_1__WinSys_1_1Coords.html#a3e655962700dd1e56b1077e0de7c4c97", null ],
+    [ "a17", "structCore_1_1GameSys_1_1__WinSys_1_1Coords.html#a57a14fbf246163a566ef6a1f2144d5ea", null ],
+    [ "a18", "structCore_1_1GameSys_1_1__WinSys_1_1Coords.html#a798ca71fcebf2bd85ba3f9f94bc1bc62", null ],
+    [ "a19", "structCore_1_1GameSys_1_1__WinSys_1_1Coords.html#a12f3e37a8c9fd6e27b97f00d244dfc06", null ],
+    [ "a20", "structCore_1_1GameSys_1_1__WinSys_1_1Coords.html#a0d17ec18b813137dd6a37ea13424be7d", null ],
+    [ "a21", "structCore_1_1GameSys_1_1__WinSys_1_1Coords.html#aaab5896f8fec7a3a9dbbee8069f80fd0", null ],
+    [ "a22", "structCore_1_1GameSys_1_1__WinSys_1_1Coords.html#a92f4df934ef22354ecdc7e82b22136bf", null ],
+    [ "a23", "structCore_1_1GameSys_1_1__WinSys_1_1Coords.html#afe46a0ee8a6474baeefa493aa8455786", null ],
+    [ "a24", "structCore_1_1GameSys_1_1__WinSys_1_1Coords.html#a46d4a65469bd494ef02d25f13930b712", null ]
+];

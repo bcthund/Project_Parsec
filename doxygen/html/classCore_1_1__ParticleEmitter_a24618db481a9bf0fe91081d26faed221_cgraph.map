@@ -1,0 +1,8 @@
+<map id="Core::_ParticleEmitter::draw" name="Core::_ParticleEmitter::draw">
+<area shape="rect" id="node1" title=" " alt="" coords="5,123,156,164"/>
+<area shape="rect" id="node2" href="$classCore_1_1GlInit__System.html#a3c282198c9175f2b7772dd93355bf91c" title=" " alt="" coords="204,5,375,47"/>
+<area shape="rect" id="node3" href="$classCore_1_1VAO.html#a3072110ba182f2d5499a5c2b57b29916" title=" " alt="" coords="228,71,351,98"/>
+<area shape="rect" id="node4" href="$classCore_1_1GlInit__System.html#aa4fef3c497cbdc2576e21dc28257c372" title=" " alt="" coords="206,123,373,164"/>
+<area shape="rect" id="node5" href="$classCore_1_1Timer.html#a778cb9ce079fdb2c8cd02c0ef65259ff" title=" " alt="" coords="213,189,365,215"/>
+<area shape="rect" id="node6" href="$classCore_1_1Texture.html#a228f55462eb83370664dd6a669e1fc4d" title=" " alt="" coords="225,239,354,266"/>
+</map>

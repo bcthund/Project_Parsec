@@ -1,0 +1,14 @@
+<map id="_Admin::GetInput" name="_Admin::GetInput">
+<area shape="rect" id="node1" title=" " alt="" coords="5,56,129,83"/>
+<area shape="rect" id="node2" href="$class__Admin.html#a66234a471729df7a10b089b4870b6d8d" title=" " alt="" coords="185,5,336,32"/>
+<area shape="rect" id="node4" href="$classCore_1_1__Mouse.html#a2ccb9590ad870cc0fc2178dccd64a334" title=" " alt="" coords="185,56,336,83"/>
+<area shape="rect" id="node6" href="$classCore_1_1__Keyboard.html#a4959c6e98d61094e6de8bba5c5a79653" title=" " alt="" coords="177,147,344,173"/>
+<area shape="rect" id="node3" href="$classCore_1_1__Mouse.html#a1a6e3af5c7eda3d8b3d9e7a8d52cf893" title=" " alt="" coords="392,5,581,32"/>
+<area shape="rect" id="node5" href="$classCore_1_1__Mouse.html#a3f7336959d22a7e8109bc0b31bad8c79" title=" " alt="" coords="394,56,579,83"/>
+<area shape="rect" id="node7" href="$structCore_1_1__Keyboard_1_1__KeyArray.html#a02a67204e7fa4959588004c4cdd968e2" title=" " alt="" coords="392,107,581,149"/>
+<area shape="rect" id="node9" href="$structCore_1_1__Keyboard_1_1__KeyArray.html#aef4889aaca7366886c363a06a7cd40bb" title=" " alt="" coords="392,238,581,279"/>
+<area shape="rect" id="node12" href="$structCore_1_1__Keyboard_1_1__KeyArray.html#ae60074a492dfd4df7284c1adb20b1a29" title=" " alt="" coords="392,173,581,214"/>
+<area shape="rect" id="node8" href="$structCore_1_1__Keyboard_1_1__KeyArray.html#aecfc07291984ea33f774a00e639b12b2" title=" " alt="" coords="629,173,819,214"/>
+<area shape="rect" id="node10" href="$classCore_1_1Timer.html#aad974e854b799d25fc559383cc5a194b" title=" " alt="" coords="663,241,785,268"/>
+<area shape="rect" id="node11" href="$classCore_1_1Timer.html#a59aaa557616c6bc69b034035887e5d62" title=" " alt="" coords="661,292,787,319"/>
+</map>

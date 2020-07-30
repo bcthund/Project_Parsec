@@ -1,0 +1,9 @@
+<map id="Core::GUI::Props_Button" name="Core::GUI::Props_Button">
+<area shape="rect" id="node1" title=" " alt="" coords="265,184,435,211"/>
+<area shape="rect" id="node7" href="$classCore_1_1GUI_1_1Props__ComboBox.html" title=" " alt="" coords="252,259,448,285"/>
+<area shape="rect" id="node2" href="$classCore_1_1GUI_1_1Props__Window.html" title=" " alt="" coords="63,102,242,129"/>
+<area shape="rect" id="node3" href="$classCore_1_1GUI_1_1Props.html" title="General Props used for all objects." alt="" coords="5,13,129,39"/>
+<area shape="rect" id="node4" href="$classCore_1_1GUI_1_1Props__Addon__Stipple.html" title="Create a new group but do not add any values to it." alt="" coords="154,5,322,47"/>
+<area shape="rect" id="node5" href="$classCore_1_1GUI_1_1Props__Addon__Group.html" title="Allow object to be part of a group with restricted usage." alt="" coords="266,95,434,136"/>
+<area shape="rect" id="node6" href="$classCore_1_1GUI_1_1Props__Addon__Toggle.html" title="Object can be toggled." alt="" coords="458,95,626,136"/>
+</map>

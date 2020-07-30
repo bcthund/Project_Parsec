@@ -1,0 +1,413 @@
+\hypertarget{classWorldMap}{}\doxysection{World\+Map Class Reference}
+\label{classWorldMap}\index{WorldMap@{WorldMap}}
+
+
+{\ttfamily \#include $<$map.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classWorldMap_a7e5e580b30ff39c892722b7334ee923e}{World\+Map}} (Atmosphere $\ast$\mbox{\hyperlink{gl4__5_2glcorearb_8h_a3309789fc188587d666cda5ece79cf82}{a}}, \mbox{\hyperlink{gl4__old_2glext_8h_ab4ccfaa8ab0e1afaae94dc96ef52dde1}{std\+::string}} d)
+\item 
+\mbox{\hyperlink{classWorldMap_ae9cf3ee707e53755952d440b747e35e1}{$\sim$\+World\+Map}} ()
+\item 
+bool \mbox{\hyperlink{classWorldMap_ac592d37a1ad1e7376571024246252470}{init}} ()
+\item 
+bool \mbox{\hyperlink{classWorldMap_a49f63fe598a21199d17272a69e07faed}{init}} (int i\+Sx, int i\+Sz)
+\item 
+bool \mbox{\hyperlink{classWorldMap_a9f5ac145ee6ab8129d3d6fac5f797f26}{init}} (int i\+Sx, int i\+Sz, int i\+Px, int i\+Py, int i\+Pz)
+\item 
+bool \mbox{\hyperlink{classWorldMap_a5f09ea92e08627e788e5faff636d9c9f}{load}} (int i\+Shift)
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classWorldMap_ad8b4b50f2229da2b0d171a137c3697f6}{shift}} (int i\+Shift)
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classWorldMap_a2479cecf42a8a23bd4b2f6a18ff5cca3}{stitch}} (unsigned int i\+Stitch, int \mbox{\hyperlink{gl4__5_2glcorearb_8h_a0cdec8e97a75ee9458b23d152bf962d4}{x}}, int \mbox{\hyperlink{gl4__5_2glcorearb_8h_aee38b51639b577753f6a92029fb92000}{z}})
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classWorldMap_a49cc90fe8d692058765d88acde50585e}{update\+Norms}} (int \mbox{\hyperlink{gl4__5_2glcorearb_8h_a0cdec8e97a75ee9458b23d152bf962d4}{x}}, int \mbox{\hyperlink{gl4__5_2glcorearb_8h_aee38b51639b577753f6a92029fb92000}{z}})
+\item 
+bool \mbox{\hyperlink{classWorldMap_a52667a049526ba07fccc60aac18a10f4}{calc}} (bool b\+Update)
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classWorldMap_acd20eead607f5a57d5c49c3d557d5cf9}{modify}} (M\+O\+D\+\_\+\+V\+AL e\+Mod, float f\+New\+Val)
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classWorldMap_ac3f751535132ea5fe6fcecb7cb59b2a0}{update}} (int i\+Gridx, int i\+Gridz)
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classWorldMap_a55f8f47f4178113450e378db4188361e}{draw}} (int i\+Shader)
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} \mbox{\hyperlink{classWorldMap_a79502861e24ad0b65d00e94fc4e3a819}{reset}} (Atmosphere $\ast$\mbox{\hyperlink{gl4__5_2glcorearb_8h_a3309789fc188587d666cda5ece79cf82}{a}}, \mbox{\hyperlink{gl4__old_2glext_8h_ab4ccfaa8ab0e1afaae94dc96ef52dde1}{std\+::string}} d)
+\item 
+float \mbox{\hyperlink{classWorldMap_ab44895e386bedc49af82f54ba7490802}{get\+Height}} (float \mbox{\hyperlink{gl4__5_2glcorearb_8h_a0cdec8e97a75ee9458b23d152bf962d4}{x}}, float \mbox{\hyperlink{gl4__5_2glcorearb_8h_aee38b51639b577753f6a92029fb92000}{z}})
+\item 
+float \mbox{\hyperlink{classWorldMap_a42162f6af116f80fe721df518f2d1b72}{get\+Height}} (float iX, float iZ, int gX, int gZ)
+\item 
+float $\ast$ \mbox{\hyperlink{classWorldMap_aa103fd251ca76a4ef1c26a982b81d236}{get\+Height\+\_\+\+Normal}} (float \mbox{\hyperlink{gl4__5_2glcorearb_8h_a0cdec8e97a75ee9458b23d152bf962d4}{x}}, float \mbox{\hyperlink{gl4__5_2glcorearb_8h_aee38b51639b577753f6a92029fb92000}{z}})
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{gl4__old_2glext_8h_ab4ccfaa8ab0e1afaae94dc96ef52dde1}{std\+::string}} \mbox{\hyperlink{classWorldMap_a934940a4a7fb20ce211ebe0110003d23}{dir}}
+\item 
+Vector2i \mbox{\hyperlink{classWorldMap_aa4139ace746879ddd6da819e49f38050}{v\+Start}}
+\item 
+Vector2ui \mbox{\hyperlink{classWorldMap_ac331dc7a0e080d1862ba63fa564145d1}{v\+Base}}
+\item 
+Map\+Data \mbox{\hyperlink{classWorldMap_afae5e2727fd472c35d5653574e3dd757}{map\+Data}} \mbox{[}9\mbox{]}\mbox{[}9\mbox{]}
+\item 
+bool \mbox{\hyperlink{classWorldMap_ab2b8142e4bb9c8a6ad2bb7ef9f29cd22}{b\+Skip}} \mbox{[}81\mbox{]}
+\item 
+Atmosphere $\ast$ \mbox{\hyperlink{classWorldMap_a6fc6bfcf6012991f107d7a358db35414}{atmosphere}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+
+
+Definition at line 11 of file map.\+h.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classWorldMap_a7e5e580b30ff39c892722b7334ee923e}\label{classWorldMap_a7e5e580b30ff39c892722b7334ee923e}} 
+\index{WorldMap@{WorldMap}!WorldMap@{WorldMap}}
+\index{WorldMap@{WorldMap}!WorldMap@{WorldMap}}
+\doxysubsubsection{\texorpdfstring{WorldMap()}{WorldMap()}}
+{\footnotesize\ttfamily World\+Map\+::\+World\+Map (\begin{DoxyParamCaption}\item[{Atmosphere $\ast$}]{a,  }\item[{\mbox{\hyperlink{gl4__old_2glext_8h_ab4ccfaa8ab0e1afaae94dc96ef52dde1}{std\+::string}}}]{d }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 17 of file map.\+h.
+
+\mbox{\Hypertarget{classWorldMap_ae9cf3ee707e53755952d440b747e35e1}\label{classWorldMap_ae9cf3ee707e53755952d440b747e35e1}} 
+\index{WorldMap@{WorldMap}!````~WorldMap@{$\sim$WorldMap}}
+\index{````~WorldMap@{$\sim$WorldMap}!WorldMap@{WorldMap}}
+\doxysubsubsection{\texorpdfstring{$\sim$WorldMap()}{~WorldMap()}}
+{\footnotesize\ttfamily World\+Map\+::$\sim$\+World\+Map (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 24 of file map.\+h.
+
+
+
+References cout.
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classWorldMap_a52667a049526ba07fccc60aac18a10f4}\label{classWorldMap_a52667a049526ba07fccc60aac18a10f4}} 
+\index{WorldMap@{WorldMap}!calc@{calc}}
+\index{calc@{calc}!WorldMap@{WorldMap}}
+\doxysubsubsection{\texorpdfstring{calc()}{calc()}}
+{\footnotesize\ttfamily bool World\+Map\+::calc (\begin{DoxyParamCaption}\item[{bool}]{b\+Update = {\ttfamily false} }\end{DoxyParamCaption})}
+
+
+
+Definition at line 1430 of file map.\+h.
+
+
+
+References cout, Core\+::\+Game\+Vars\+::debug, Core\+::game\+Vars, G\+L\+\_\+\+T\+R\+I\+A\+N\+G\+L\+ES, Core\+::\+G\+L\+A\+\_\+\+I\+N\+D\+EX, Core\+::\+G\+L\+A\+\_\+\+N\+O\+R\+M\+AL, Core\+::\+G\+L\+A\+\_\+\+T\+E\+X\+T\+U\+RE, Core\+::\+G\+L\+A\+\_\+\+V\+E\+R\+T\+EX, map\+Data, Core\+::\+Game\+Vars\+::screen, stitch(), x, and z.
+
+
+
+Referenced by \+\_\+\+The\+Void\+::load(), and shift().
+
+\mbox{\Hypertarget{classWorldMap_a55f8f47f4178113450e378db4188361e}\label{classWorldMap_a55f8f47f4178113450e378db4188361e}} 
+\index{WorldMap@{WorldMap}!draw@{draw}}
+\index{draw@{draw}!WorldMap@{WorldMap}}
+\doxysubsubsection{\texorpdfstring{draw()}{draw()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} World\+Map\+::draw (\begin{DoxyParamCaption}\item[{int}]{i\+Shader }\end{DoxyParamCaption})}
+
+
+
+Definition at line 1647 of file map.\+h.
+
+
+
+References atmosphere, Core\+::game\+Vars, G\+L\+\_\+\+T\+E\+X\+T\+U\+R\+E0, G\+L\+\_\+\+T\+E\+X\+T\+U\+R\+E1, G\+L\+\_\+\+T\+E\+X\+T\+U\+R\+E2, G\+L\+\_\+\+T\+E\+X\+T\+U\+R\+E3, G\+L\+\_\+\+T\+E\+X\+T\+U\+R\+E4, G\+L\+\_\+\+T\+E\+X\+T\+U\+R\+E5, G\+L\+\_\+\+T\+E\+X\+T\+U\+R\+E6, G\+L\+\_\+\+T\+E\+X\+T\+U\+R\+E7, G\+L\+\_\+\+T\+E\+X\+T\+U\+R\+E8, Core\+::\+G\+L\+M\+\_\+\+D\+R\+A\+W\+\_\+\+E\+L\+E\+M\+E\+N\+TS, map\+Data, Core\+::\+Game\+Vars\+::screen, x, and z.
+
+
+
+Referenced by \+\_\+\+The\+Void\+::\+Draw().
+
+\mbox{\Hypertarget{classWorldMap_a42162f6af116f80fe721df518f2d1b72}\label{classWorldMap_a42162f6af116f80fe721df518f2d1b72}} 
+\index{WorldMap@{WorldMap}!getHeight@{getHeight}}
+\index{getHeight@{getHeight}!WorldMap@{WorldMap}}
+\doxysubsubsection{\texorpdfstring{getHeight()}{getHeight()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily float World\+Map\+::get\+Height (\begin{DoxyParamCaption}\item[{float}]{iX,  }\item[{float}]{iZ,  }\item[{int}]{gX,  }\item[{int}]{gZ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 52 of file map.\+h.
+
+
+
+References h, map\+Data, p, t, and w.
+
+\mbox{\Hypertarget{classWorldMap_ab44895e386bedc49af82f54ba7490802}\label{classWorldMap_ab44895e386bedc49af82f54ba7490802}} 
+\index{WorldMap@{WorldMap}!getHeight@{getHeight}}
+\index{getHeight@{getHeight}!WorldMap@{WorldMap}}
+\doxysubsubsection{\texorpdfstring{getHeight()}{getHeight()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily float World\+Map\+::get\+Height (\begin{DoxyParamCaption}\item[{float}]{x,  }\item[{float}]{z }\end{DoxyParamCaption})}
+
+
+
+Definition at line 133 of file map.\+h.
+
+
+
+References h, map\+Data, p, t, and w.
+
+
+
+Referenced by O2\+D\+::calc(), \+\_\+\+N\+P\+C\+::calc(), Run\+Battle\+::process\+Input(), and \+\_\+\+The\+Void\+::\+Run().
+
+\mbox{\Hypertarget{classWorldMap_aa103fd251ca76a4ef1c26a982b81d236}\label{classWorldMap_aa103fd251ca76a4ef1c26a982b81d236}} 
+\index{WorldMap@{WorldMap}!getHeight\_Normal@{getHeight\_Normal}}
+\index{getHeight\_Normal@{getHeight\_Normal}!WorldMap@{WorldMap}}
+\doxysubsubsection{\texorpdfstring{getHeight\_Normal()}{getHeight\_Normal()}}
+{\footnotesize\ttfamily float $\ast$ World\+Map\+::get\+Height\+\_\+\+Normal (\begin{DoxyParamCaption}\item[{float}]{x,  }\item[{float}]{z }\end{DoxyParamCaption})}
+
+
+
+Definition at line 415 of file map.\+h.
+
+
+
+References h, map\+Data, p, t, and w.
+
+\mbox{\Hypertarget{classWorldMap_ac592d37a1ad1e7376571024246252470}\label{classWorldMap_ac592d37a1ad1e7376571024246252470}} 
+\index{WorldMap@{WorldMap}!init@{init}}
+\index{init@{init}!WorldMap@{WorldMap}}
+\doxysubsubsection{\texorpdfstring{init()}{init()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily bool World\+Map\+::init (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 742 of file map.\+h.
+
+
+
+References Core\+::\+Game\+Vars\+::\+Player\+::active, cout, Core\+::\+Game\+Vars\+::debug, dir, Core\+::game\+Vars, Core\+::itoa(), Core\+::\+Game\+Vars\+::player, Core\+::\+Game\+Sys\+::\+Char\+Sheet\+::\+Transform\+::pos, Core\+::read\+File(), Core\+::\+Game\+Vars\+::screen, Core\+::\+Game\+Sys\+::\+Char\+Sheet\+::transform, and v\+Start.
+
+
+
+Referenced by \+\_\+\+The\+Void\+::load().
+
+\mbox{\Hypertarget{classWorldMap_a49f63fe598a21199d17272a69e07faed}\label{classWorldMap_a49f63fe598a21199d17272a69e07faed}} 
+\index{WorldMap@{WorldMap}!init@{init}}
+\index{init@{init}!WorldMap@{WorldMap}}
+\doxysubsubsection{\texorpdfstring{init()}{init()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily bool World\+Map\+::init (\begin{DoxyParamCaption}\item[{int}]{i\+Sx,  }\item[{int}]{i\+Sz }\end{DoxyParamCaption})}
+
+
+
+Definition at line 802 of file map.\+h.
+
+
+
+References Core\+::\+Game\+Vars\+::\+Player\+::active, Core\+::\+Game\+Vars\+::debug, Core\+::game\+Vars, Core\+::\+Game\+Vars\+::player, Core\+::\+Game\+Sys\+::\+Char\+Sheet\+::\+Transform\+::pos, Core\+::\+Game\+Vars\+::screen, Core\+::\+Game\+Sys\+::\+Char\+Sheet\+::transform, and v\+Start.
+
+\mbox{\Hypertarget{classWorldMap_a9f5ac145ee6ab8129d3d6fac5f797f26}\label{classWorldMap_a9f5ac145ee6ab8129d3d6fac5f797f26}} 
+\index{WorldMap@{WorldMap}!init@{init}}
+\index{init@{init}!WorldMap@{WorldMap}}
+\doxysubsubsection{\texorpdfstring{init()}{init()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily bool World\+Map\+::init (\begin{DoxyParamCaption}\item[{int}]{i\+Sx,  }\item[{int}]{i\+Sz,  }\item[{int}]{i\+Px,  }\item[{int}]{i\+Py,  }\item[{int}]{i\+Pz }\end{DoxyParamCaption})}
+
+
+
+Definition at line 822 of file map.\+h.
+
+
+
+References Core\+::\+Game\+Vars\+::\+Player\+::active, Core\+::\+Game\+Vars\+::debug, Core\+::game\+Vars, Core\+::\+Game\+Vars\+::player, Core\+::\+Game\+Sys\+::\+Char\+Sheet\+::\+Transform\+::pos, Core\+::\+Game\+Vars\+::screen, Core\+::\+Game\+Sys\+::\+Char\+Sheet\+::transform, and v\+Start.
+
+\mbox{\Hypertarget{classWorldMap_a5f09ea92e08627e788e5faff636d9c9f}\label{classWorldMap_a5f09ea92e08627e788e5faff636d9c9f}} 
+\index{WorldMap@{WorldMap}!load@{load}}
+\index{load@{load}!WorldMap@{WorldMap}}
+\doxysubsubsection{\texorpdfstring{load()}{load()}}
+{\footnotesize\ttfamily bool World\+Map\+::load (\begin{DoxyParamCaption}\item[{int}]{i\+Shift = {\ttfamily SHIFT\+\_\+LAST} }\end{DoxyParamCaption})}
+
+
+
+Definition at line 839 of file map.\+h.
+
+
+
+References cout, Core\+::\+Game\+Vars\+::debug, dir, Core\+::game\+Vars, map\+Data, Core\+::read\+File(), Core\+::\+Game\+Vars\+::screen, v\+Base, v\+Start, x, and z.
+
+
+
+Referenced by \+\_\+\+The\+Void\+::load(), and shift().
+
+\mbox{\Hypertarget{classWorldMap_acd20eead607f5a57d5c49c3d557d5cf9}\label{classWorldMap_acd20eead607f5a57d5c49c3d557d5cf9}} 
+\index{WorldMap@{WorldMap}!modify@{modify}}
+\index{modify@{modify}!WorldMap@{WorldMap}}
+\doxysubsubsection{\texorpdfstring{modify()}{modify()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} World\+Map\+::modify (\begin{DoxyParamCaption}\item[{M\+O\+D\+\_\+\+V\+AL}]{e\+Mod,  }\item[{float}]{f\+New\+Val }\end{DoxyParamCaption})}
+
+
+
+Definition at line 1639 of file map.\+h.
+
+\mbox{\Hypertarget{classWorldMap_a79502861e24ad0b65d00e94fc4e3a819}\label{classWorldMap_a79502861e24ad0b65d00e94fc4e3a819}} 
+\index{WorldMap@{WorldMap}!reset@{reset}}
+\index{reset@{reset}!WorldMap@{WorldMap}}
+\doxysubsubsection{\texorpdfstring{reset()}{reset()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} World\+Map\+::reset (\begin{DoxyParamCaption}\item[{Atmosphere $\ast$}]{a,  }\item[{\mbox{\hyperlink{gl4__old_2glext_8h_ab4ccfaa8ab0e1afaae94dc96ef52dde1}{std\+::string}}}]{d }\end{DoxyParamCaption})}
+
+
+
+Definition at line 727 of file map.\+h.
+
+
+
+References atmosphere, cout, and dir.
+
+
+
+Referenced by \+\_\+\+The\+Void\+::load().
+
+\mbox{\Hypertarget{classWorldMap_ad8b4b50f2229da2b0d171a137c3697f6}\label{classWorldMap_ad8b4b50f2229da2b0d171a137c3697f6}} 
+\index{WorldMap@{WorldMap}!shift@{shift}}
+\index{shift@{shift}!WorldMap@{WorldMap}}
+\doxysubsubsection{\texorpdfstring{shift()}{shift()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} World\+Map\+::shift (\begin{DoxyParamCaption}\item[{int}]{i\+Shift = {\ttfamily SHIFT\+\_\+LAST} }\end{DoxyParamCaption})}
+
+
+
+Definition at line 1053 of file map.\+h.
+
+
+
+References calc(), Core\+::game\+Vars, load(), and Core\+::\+Game\+Vars\+::screen.
+
+
+
+Referenced by \+\_\+\+The\+Void\+::reload().
+
+\mbox{\Hypertarget{classWorldMap_a2479cecf42a8a23bd4b2f6a18ff5cca3}\label{classWorldMap_a2479cecf42a8a23bd4b2f6a18ff5cca3}} 
+\index{WorldMap@{WorldMap}!stitch@{stitch}}
+\index{stitch@{stitch}!WorldMap@{WorldMap}}
+\doxysubsubsection{\texorpdfstring{stitch()}{stitch()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} World\+Map\+::stitch (\begin{DoxyParamCaption}\item[{unsigned int}]{i\+Stitch,  }\item[{int}]{x,  }\item[{int}]{z }\end{DoxyParamCaption})}
+
+
+
+Definition at line 1106 of file map.\+h.
+
+
+
+References cout, map\+Data, t, x, and z.
+
+
+
+Referenced by calc().
+
+\mbox{\Hypertarget{classWorldMap_ac3f751535132ea5fe6fcecb7cb59b2a0}\label{classWorldMap_ac3f751535132ea5fe6fcecb7cb59b2a0}} 
+\index{WorldMap@{WorldMap}!update@{update}}
+\index{update@{update}!WorldMap@{WorldMap}}
+\doxysubsubsection{\texorpdfstring{update()}{update()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} World\+Map\+::update (\begin{DoxyParamCaption}\item[{int}]{i\+Gridx,  }\item[{int}]{i\+Gridz }\end{DoxyParamCaption})}
+
+
+
+Definition at line 1643 of file map.\+h.
+
+\mbox{\Hypertarget{classWorldMap_a49cc90fe8d692058765d88acde50585e}\label{classWorldMap_a49cc90fe8d692058765d88acde50585e}} 
+\index{WorldMap@{WorldMap}!updateNorms@{updateNorms}}
+\index{updateNorms@{updateNorms}!WorldMap@{WorldMap}}
+\doxysubsubsection{\texorpdfstring{updateNorms()}{updateNorms()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_a46df6112013cf583e82b25cebd5cb499}{void}} World\+Map\+::update\+Norms (\begin{DoxyParamCaption}\item[{int}]{x,  }\item[{int}]{z }\end{DoxyParamCaption})}
+
+
+
+Definition at line 1102 of file map.\+h.
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classWorldMap_a6fc6bfcf6012991f107d7a358db35414}\label{classWorldMap_a6fc6bfcf6012991f107d7a358db35414}} 
+\index{WorldMap@{WorldMap}!atmosphere@{atmosphere}}
+\index{atmosphere@{atmosphere}!WorldMap@{WorldMap}}
+\doxysubsubsection{\texorpdfstring{atmosphere}{atmosphere}}
+{\footnotesize\ttfamily Atmosphere$\ast$ World\+Map\+::atmosphere}
+
+
+
+Definition at line 49 of file map.\+h.
+
+
+
+Referenced by draw(), and reset().
+
+\mbox{\Hypertarget{classWorldMap_ab2b8142e4bb9c8a6ad2bb7ef9f29cd22}\label{classWorldMap_ab2b8142e4bb9c8a6ad2bb7ef9f29cd22}} 
+\index{WorldMap@{WorldMap}!bSkip@{bSkip}}
+\index{bSkip@{bSkip}!WorldMap@{WorldMap}}
+\doxysubsubsection{\texorpdfstring{bSkip}{bSkip}}
+{\footnotesize\ttfamily bool World\+Map\+::b\+Skip\mbox{[}81\mbox{]}}
+
+
+
+Definition at line 33 of file map.\+h.
+
+\mbox{\Hypertarget{classWorldMap_a934940a4a7fb20ce211ebe0110003d23}\label{classWorldMap_a934940a4a7fb20ce211ebe0110003d23}} 
+\index{WorldMap@{WorldMap}!dir@{dir}}
+\index{dir@{dir}!WorldMap@{WorldMap}}
+\doxysubsubsection{\texorpdfstring{dir}{dir}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gl4__old_2glext_8h_ab4ccfaa8ab0e1afaae94dc96ef52dde1}{std\+::string}} World\+Map\+::dir}
+
+
+
+Definition at line 29 of file map.\+h.
+
+
+
+Referenced by init(), O2\+D\+::load(), load(), E2\+D\+::load(), \+\_\+\+The\+Void\+::load(), E2\+D\+::load\+Event(), and reset().
+
+\mbox{\Hypertarget{classWorldMap_afae5e2727fd472c35d5653574e3dd757}\label{classWorldMap_afae5e2727fd472c35d5653574e3dd757}} 
+\index{WorldMap@{WorldMap}!mapData@{mapData}}
+\index{mapData@{mapData}!WorldMap@{WorldMap}}
+\doxysubsubsection{\texorpdfstring{mapData}{mapData}}
+{\footnotesize\ttfamily Map\+Data World\+Map\+::map\+Data\mbox{[}9\mbox{]}\mbox{[}9\mbox{]}}
+
+
+
+Definition at line 32 of file map.\+h.
+
+
+
+Referenced by calc(), draw(), get\+Height(), get\+Height\+\_\+\+Normal(), N\+P\+C\+::height(), load(), \+\_\+\+The\+Void\+::load(), and stitch().
+
+\mbox{\Hypertarget{classWorldMap_ac331dc7a0e080d1862ba63fa564145d1}\label{classWorldMap_ac331dc7a0e080d1862ba63fa564145d1}} 
+\index{WorldMap@{WorldMap}!vBase@{vBase}}
+\index{vBase@{vBase}!WorldMap@{WorldMap}}
+\doxysubsubsection{\texorpdfstring{vBase}{vBase}}
+{\footnotesize\ttfamily Vector2ui World\+Map\+::v\+Base}
+
+
+
+Definition at line 31 of file map.\+h.
+
+
+
+Referenced by E2\+D\+::execute(), O2\+D\+::load(), load(), E2\+D\+::load(), and \+\_\+\+The\+Void\+::load().
+
+\mbox{\Hypertarget{classWorldMap_aa4139ace746879ddd6da819e49f38050}\label{classWorldMap_aa4139ace746879ddd6da819e49f38050}} 
+\index{WorldMap@{WorldMap}!vStart@{vStart}}
+\index{vStart@{vStart}!WorldMap@{WorldMap}}
+\doxysubsubsection{\texorpdfstring{vStart}{vStart}}
+{\footnotesize\ttfamily Vector2i World\+Map\+::v\+Start}
+
+
+
+Definition at line 30 of file map.\+h.
+
+
+
+Referenced by init(), load(), \+\_\+\+The\+Void\+::load(), and \+\_\+\+The\+Void\+::reload().
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/headers/gamesys/ref/\mbox{\hyperlink{map_8h}{map.\+h}}\end{DoxyCompactItemize}

@@ -1,0 +1,279 @@
+\hypertarget{classSimplexNoise}{}\doxysection{Simplex\+Noise Class Reference}
+\label{classSimplexNoise}\index{SimplexNoise@{SimplexNoise}}
+
+
+A Perlin Simplex Noise C++ Implementation (1D, 2D, 3D, 4D).  
+
+
+
+
+{\ttfamily \#include $<$Simplex\+Noise.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+float \mbox{\hyperlink{classSimplexNoise_a868146cbed0ee0137b641b5b828a4c75}{fractal}} (size\+\_\+t octaves, float \mbox{\hyperlink{gl4__5_2glcorearb_8h_a0cdec8e97a75ee9458b23d152bf962d4}{x}}) const
+\item 
+float \mbox{\hyperlink{classSimplexNoise_a4914fce2d033b3ed90d84b2602df362f}{fractal}} (size\+\_\+t octaves, float \mbox{\hyperlink{gl4__5_2glcorearb_8h_a0cdec8e97a75ee9458b23d152bf962d4}{x}}, float \mbox{\hyperlink{gl4__5_2glcorearb_8h_a74d80fd479c0f6d0153c709949a089ef}{y}}) const
+\item 
+float \mbox{\hyperlink{classSimplexNoise_a6081db3a6e38029897928d72ef715297}{fractal}} (size\+\_\+t octaves, float \mbox{\hyperlink{gl4__5_2glcorearb_8h_a0cdec8e97a75ee9458b23d152bf962d4}{x}}, float \mbox{\hyperlink{gl4__5_2glcorearb_8h_a74d80fd479c0f6d0153c709949a089ef}{y}}, float \mbox{\hyperlink{gl4__5_2glcorearb_8h_aee38b51639b577753f6a92029fb92000}{z}}) const
+\item 
+\mbox{\hyperlink{classSimplexNoise_a6981510da521395c25be9e9ad2fdbda0}{Simplex\+Noise}} (float frequency=1.\+0f, float amplitude=1.\+0f, float lacunarity=2.\+0f, float persistence=0.\+5\mbox{\hyperlink{gl4__5_2glcorearb_8h_a691492ec0bd6383f91200e49f6ae40ed}{f}})
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static float \mbox{\hyperlink{classSimplexNoise_ac7bd445e9b5e2d5aecb30c5f5840528c}{noise}} (float \mbox{\hyperlink{gl4__5_2glcorearb_8h_a0cdec8e97a75ee9458b23d152bf962d4}{x}})
+\item 
+static float \mbox{\hyperlink{classSimplexNoise_a0b42e3da3917901946b978991559496f}{noise}} (float \mbox{\hyperlink{gl4__5_2glcorearb_8h_a0cdec8e97a75ee9458b23d152bf962d4}{x}}, float \mbox{\hyperlink{gl4__5_2glcorearb_8h_a74d80fd479c0f6d0153c709949a089ef}{y}})
+\item 
+static float \mbox{\hyperlink{classSimplexNoise_a1b029db3e2753dface743eef4c0d5307}{noise}} (float \mbox{\hyperlink{gl4__5_2glcorearb_8h_a0cdec8e97a75ee9458b23d152bf962d4}{x}}, float \mbox{\hyperlink{gl4__5_2glcorearb_8h_a74d80fd479c0f6d0153c709949a089ef}{y}}, float \mbox{\hyperlink{gl4__5_2glcorearb_8h_aee38b51639b577753f6a92029fb92000}{z}})
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+float \mbox{\hyperlink{classSimplexNoise_a6b245c487b4e40f0f8e3af70d6a8c6a7}{m\+Frequency}}
+\begin{DoxyCompactList}\small\item\em Frequency (\char`\"{}width\char`\"{}) of the first octave of noise (default to 1.\+0) \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{classSimplexNoise_a898a0509aa688943d143842f31a8601f}{m\+Amplitude}}
+\begin{DoxyCompactList}\small\item\em Amplitude (\char`\"{}height\char`\"{}) of the first octave of noise (default to 1.\+0) \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{classSimplexNoise_a99450f3a7f0bb9409ed3872e8c7f6eac}{m\+Lacunarity}}
+\begin{DoxyCompactList}\small\item\em Lacunarity specifies the frequency multiplier between successive octaves (default to 2.\+0). \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{classSimplexNoise_a5e6d372078f2f2067371b7d5735004a3}{m\+Persistence}}
+\begin{DoxyCompactList}\small\item\em Persistence is the loss of amplitude between successive octaves (usually 1/lacunarity) \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A Perlin Simplex Noise C++ Implementation (1D, 2D, 3D, 4D). 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classSimplexNoise_a6981510da521395c25be9e9ad2fdbda0}\label{classSimplexNoise_a6981510da521395c25be9e9ad2fdbda0}} 
+\index{SimplexNoise@{SimplexNoise}!SimplexNoise@{SimplexNoise}}
+\index{SimplexNoise@{SimplexNoise}!SimplexNoise@{SimplexNoise}}
+\doxysubsubsection{\texorpdfstring{SimplexNoise()}{SimplexNoise()}}
+{\footnotesize\ttfamily Simplex\+Noise\+::\+Simplex\+Noise (\begin{DoxyParamCaption}\item[{float}]{frequency = {\ttfamily 1.0f},  }\item[{float}]{amplitude = {\ttfamily 1.0f},  }\item[{float}]{lacunarity = {\ttfamily 2.0f},  }\item[{float}]{persistence = {\ttfamily 0.5\mbox{\hyperlink{gl4__5_2glcorearb_8h_a691492ec0bd6383f91200e49f6ae40ed}{f}}} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}
+
+Constructor of to initialize a fractal noise summation
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em frequency} & Frequency (\char`\"{}width\char`\"{}) of the first octave of noise (default to 1.\+0) \\
+\hline
+\mbox{\texttt{ in}}  & {\em amplitude} & Amplitude (\char`\"{}height\char`\"{}) of the first octave of noise (default to 1.\+0) \\
+\hline
+\mbox{\texttt{ in}}  & {\em lacunarity} & Lacunarity specifies the frequency multiplier between successive octaves (default to 2.\+0). \\
+\hline
+\mbox{\texttt{ in}}  & {\em persistence} & Persistence is the loss of amplitude between successive octaves (usually 1/lacunarity) \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classSimplexNoise_a868146cbed0ee0137b641b5b828a4c75}\label{classSimplexNoise_a868146cbed0ee0137b641b5b828a4c75}} 
+\index{SimplexNoise@{SimplexNoise}!fractal@{fractal}}
+\index{fractal@{fractal}!SimplexNoise@{SimplexNoise}}
+\doxysubsubsection{\texorpdfstring{fractal()}{fractal()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily float Simplex\+Noise\+::fractal (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{octaves,  }\item[{float}]{x }\end{DoxyParamCaption}) const}
+
+Fractal/\+Fractional Brownian Motion (f\+Bm) summation of 1D Perlin Simplex noise
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em octaves} & number of fraction of noise to sum \\
+\hline
+\mbox{\texttt{ in}}  & {\em x} & float coordinate\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Noise value in the range\mbox{[}-\/1; 1\mbox{]}, value of 0 on all integer coordinates. 
+\end{DoxyReturn}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classSimplexNoise_a868146cbed0ee0137b641b5b828a4c75_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classSimplexNoise_a4914fce2d033b3ed90d84b2602df362f}\label{classSimplexNoise_a4914fce2d033b3ed90d84b2602df362f}} 
+\index{SimplexNoise@{SimplexNoise}!fractal@{fractal}}
+\index{fractal@{fractal}!SimplexNoise@{SimplexNoise}}
+\doxysubsubsection{\texorpdfstring{fractal()}{fractal()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily float Simplex\+Noise\+::fractal (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{octaves,  }\item[{float}]{x,  }\item[{float}]{y }\end{DoxyParamCaption}) const}
+
+Fractal/\+Fractional Brownian Motion (f\+Bm) summation of 2D Perlin Simplex noise
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em octaves} & number of fraction of noise to sum \\
+\hline
+\mbox{\texttt{ in}}  & {\em x} & x float coordinate \\
+\hline
+\mbox{\texttt{ in}}  & {\em y} & y float coordinate\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Noise value in the range\mbox{[}-\/1; 1\mbox{]}, value of 0 on all integer coordinates. 
+\end{DoxyReturn}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classSimplexNoise_a4914fce2d033b3ed90d84b2602df362f_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classSimplexNoise_a6081db3a6e38029897928d72ef715297}\label{classSimplexNoise_a6081db3a6e38029897928d72ef715297}} 
+\index{SimplexNoise@{SimplexNoise}!fractal@{fractal}}
+\index{fractal@{fractal}!SimplexNoise@{SimplexNoise}}
+\doxysubsubsection{\texorpdfstring{fractal()}{fractal()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily float Simplex\+Noise\+::fractal (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{octaves,  }\item[{float}]{x,  }\item[{float}]{y,  }\item[{float}]{z }\end{DoxyParamCaption}) const}
+
+Fractal/\+Fractional Brownian Motion (f\+Bm) summation of 3D Perlin Simplex noise
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em octaves} & number of fraction of noise to sum \\
+\hline
+\mbox{\texttt{ in}}  & {\em x} & x float coordinate \\
+\hline
+\mbox{\texttt{ in}}  & {\em y} & y float coordinate \\
+\hline
+\mbox{\texttt{ in}}  & {\em z} & z float coordinate\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Noise value in the range\mbox{[}-\/1; 1\mbox{]}, value of 0 on all integer coordinates. 
+\end{DoxyReturn}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classSimplexNoise_a6081db3a6e38029897928d72ef715297_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classSimplexNoise_ac7bd445e9b5e2d5aecb30c5f5840528c}\label{classSimplexNoise_ac7bd445e9b5e2d5aecb30c5f5840528c}} 
+\index{SimplexNoise@{SimplexNoise}!noise@{noise}}
+\index{noise@{noise}!SimplexNoise@{SimplexNoise}}
+\doxysubsubsection{\texorpdfstring{noise()}{noise()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily float Simplex\+Noise\+::noise (\begin{DoxyParamCaption}\item[{float}]{x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+1D Perlin simplex noise
+
+Takes around 74ns on an A\+MD A\+PU.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em x} & float coordinate\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Noise value in the range\mbox{[}-\/1; 1\mbox{]}, value of 0 on all integer coordinates. 
+\end{DoxyReturn}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=349pt]{classSimplexNoise_ac7bd445e9b5e2d5aecb30c5f5840528c_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classSimplexNoise_a0b42e3da3917901946b978991559496f}\label{classSimplexNoise_a0b42e3da3917901946b978991559496f}} 
+\index{SimplexNoise@{SimplexNoise}!noise@{noise}}
+\index{noise@{noise}!SimplexNoise@{SimplexNoise}}
+\doxysubsubsection{\texorpdfstring{noise()}{noise()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily float Simplex\+Noise\+::noise (\begin{DoxyParamCaption}\item[{float}]{x,  }\item[{float}]{y }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+2D Perlin simplex noise
+
+Takes around 150ns on an A\+MD A\+PU.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em x} & float coordinate \\
+\hline
+\mbox{\texttt{ in}}  & {\em y} & float coordinate\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Noise value in the range\mbox{[}-\/1; 1\mbox{]}, value of 0 on all integer coordinates. 
+\end{DoxyReturn}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=349pt]{classSimplexNoise_a0b42e3da3917901946b978991559496f_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classSimplexNoise_a1b029db3e2753dface743eef4c0d5307}\label{classSimplexNoise_a1b029db3e2753dface743eef4c0d5307}} 
+\index{SimplexNoise@{SimplexNoise}!noise@{noise}}
+\index{noise@{noise}!SimplexNoise@{SimplexNoise}}
+\doxysubsubsection{\texorpdfstring{noise()}{noise()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily float Simplex\+Noise\+::noise (\begin{DoxyParamCaption}\item[{float}]{x,  }\item[{float}]{y,  }\item[{float}]{z }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+3D Perlin simplex noise
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em x} & float coordinate \\
+\hline
+\mbox{\texttt{ in}}  & {\em y} & float coordinate \\
+\hline
+\mbox{\texttt{ in}}  & {\em z} & float coordinate\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Noise value in the range\mbox{[}-\/1; 1\mbox{]}, value of 0 on all integer coordinates. 
+\end{DoxyReturn}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=349pt]{classSimplexNoise_a1b029db3e2753dface743eef4c0d5307_cgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classSimplexNoise_a898a0509aa688943d143842f31a8601f}\label{classSimplexNoise_a898a0509aa688943d143842f31a8601f}} 
+\index{SimplexNoise@{SimplexNoise}!mAmplitude@{mAmplitude}}
+\index{mAmplitude@{mAmplitude}!SimplexNoise@{SimplexNoise}}
+\doxysubsubsection{\texorpdfstring{mAmplitude}{mAmplitude}}
+{\footnotesize\ttfamily float Simplex\+Noise\+::m\+Amplitude\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Amplitude (\char`\"{}height\char`\"{}) of the first octave of noise (default to 1.\+0) 
+
+\mbox{\Hypertarget{classSimplexNoise_a6b245c487b4e40f0f8e3af70d6a8c6a7}\label{classSimplexNoise_a6b245c487b4e40f0f8e3af70d6a8c6a7}} 
+\index{SimplexNoise@{SimplexNoise}!mFrequency@{mFrequency}}
+\index{mFrequency@{mFrequency}!SimplexNoise@{SimplexNoise}}
+\doxysubsubsection{\texorpdfstring{mFrequency}{mFrequency}}
+{\footnotesize\ttfamily float Simplex\+Noise\+::m\+Frequency\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Frequency (\char`\"{}width\char`\"{}) of the first octave of noise (default to 1.\+0) 
+
+\mbox{\Hypertarget{classSimplexNoise_a99450f3a7f0bb9409ed3872e8c7f6eac}\label{classSimplexNoise_a99450f3a7f0bb9409ed3872e8c7f6eac}} 
+\index{SimplexNoise@{SimplexNoise}!mLacunarity@{mLacunarity}}
+\index{mLacunarity@{mLacunarity}!SimplexNoise@{SimplexNoise}}
+\doxysubsubsection{\texorpdfstring{mLacunarity}{mLacunarity}}
+{\footnotesize\ttfamily float Simplex\+Noise\+::m\+Lacunarity\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Lacunarity specifies the frequency multiplier between successive octaves (default to 2.\+0). 
+
+\mbox{\Hypertarget{classSimplexNoise_a5e6d372078f2f2067371b7d5735004a3}\label{classSimplexNoise_a5e6d372078f2f2067371b7d5735004a3}} 
+\index{SimplexNoise@{SimplexNoise}!mPersistence@{mPersistence}}
+\index{mPersistence@{mPersistence}!SimplexNoise@{SimplexNoise}}
+\doxysubsubsection{\texorpdfstring{mPersistence}{mPersistence}}
+{\footnotesize\ttfamily float Simplex\+Noise\+::m\+Persistence\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Persistence is the loss of amplitude between successive octaves (usually 1/lacunarity) 
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/bcthund/\+One\+Drive/\+Projects/\+Programming/\+Project\+\_\+\+Parsec/src/headers/core/\mbox{\hyperlink{SimplexNoise_8h}{Simplex\+Noise.\+h}}\item 
+/home/bcthund/\+One\+Drive/\+Projects/\+Programming/\+Project\+\_\+\+Parsec/src/headers/core/\mbox{\hyperlink{SimplexNoise_8cpp}{Simplex\+Noise.\+cpp}}\end{DoxyCompactItemize}
