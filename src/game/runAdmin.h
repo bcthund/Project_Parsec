@@ -215,10 +215,16 @@ _Admin::_Admin(_Game *gamePtr) :
  *  ****************************************************************************************************************************** */
 void _Admin::init() {
 	// GUI - Master container
+
 	if (!bOneShot[0]) {
 		std::cout << "GUI: Loading #00: Master Container ............................. ";
 		//std::cout << "...............................................................";
+		std::cout << "\n";
+		Core::debug.log("[A-0]");
+		Core::debug.logIncreaseIndent();
 		Core::gui.createGUI("GameMenu");
+		Core::debug.logDecreaseIndent();
+		Core::debug.log("[A-1]");
 		bOneShot[0] = true;
 		std::cout << "Done" << std::endl;
 	}
@@ -227,7 +233,12 @@ void _Admin::init() {
 	if (!bOneShot[1]) {
 		std::cout << "GUI: Loading #01: Windows ...................................... ";
 		//std::cout << "...............................................................";
+		std::cout << "\n";
+		Core::debug.log("[B-0]");
+		Core::debug.logIncreaseIndent();
 		Core::GUI::Props_Window cMaster;
+		Core::debug.logDecreaseIndent();
+		Core::debug.log("[B-1]");
 		cMaster.setOrigin(Core::GUI::CONSTRAIN_TOP_RIGHT);
 		cMaster.setAnchor(Core::GUI::CONSTRAIN_TOP_RIGHT);
 		cMaster.setPos(-10, -10);
@@ -236,8 +247,14 @@ void _Admin::init() {
 		cMaster.setHeight(550, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
 		cMaster.setPadding(10);
 		cMaster.setVisibility(true);
+		Core::debug.log("[B-2]");
+		Core::debug.logIncreaseIndent();
 		Core::gui["GameMenu"].add("Window 0", cMaster);
+		Core::debug.logDecreaseIndent();
+		Core::debug.log("[B-3]");
+
 		cMaster.setVisibility(false);
+		cMaster.setScrollable();
 		Core::gui["GameMenu"].add("Window 1", cMaster);
 		Core::gui["GameMenu"].add("Window 3", cMaster);
 		Core::gui["GameMenu"].add("Window 4", cMaster);
@@ -259,9 +276,9 @@ void _Admin::init() {
 		Core::gui["GameMenu"].add("Window 16", cMaster);
 		Core::gui["GameMenu"].add("Window 17", cMaster);
 		Core::gui["GameMenu"].add("Window 18", cMaster);
-		cMaster.setScrollable(true);
+//		cMaster.setScrollable();
 		Core::gui["GameMenu"].add("Window 19", cMaster);
-		cMaster.setScrollable(false);
+//		cMaster.resetScrollable();
 		Core::gui["GameMenu"].add("Window 20", cMaster);
 		Core::gui["GameMenu"].add("Window 21", cMaster);
 
@@ -288,8 +305,9 @@ void _Admin::init() {
 		bOneShot[1] = true;
 		std::cout << "Done" << std::endl;
 	}
-//	if (!bOneShot[0]) std::cout << "-------------------------------------- 9999 \n";
-	bOneShot[1] = true;
+
+//	throw std::runtime_error("Abort");
+
 
 	if (!bOneShot[2]) {
 		std::cout << "GUI: Loading #02: Button window ................................ ";
@@ -328,9 +346,8 @@ void _Admin::init() {
 		con.showBackground();
 		con.colorBack.base = &Core::colors[Core::colors().Gray_web];
 //		con.setLabelAutoSize(true, true);
-		con.autoWidth(false);
-		con.autoHeight(true);
-
+		//con.autoWidth(false);
+		//con.autoHeight(true);
 
 //		Core::gui->Label.addTo("Window 0", "Window 0", con);
 		Core::gui["GameMenu"]["Window 0"].Label.add("Window 0", con);
@@ -1758,7 +1775,7 @@ void _Admin::init() {
 		prop.autoWidth();
 		prop.autoHeight();
 		prop.setAutoHide(false);
-		prop.scroll.setBorder(0, 0);
+		prop.scrollButton.setBorder(0, 0);
 		//prop.item.autoHeight();	// FIXME: Doesn't work, likely because itemList sets height first and never updates after autoheight calculated
 
 		// Adding some initial items at ComboBox creation
@@ -1802,6 +1819,24 @@ void _Admin::init() {
 		//cButton.modPos(-260, 0);
 		//cButton.text = "WTF 3";
 		//Core::gui["GameMenu"]["Window 19"].Button.add("NOP 1", false, cButton);
+
+		// Test Slider
+		Core::GUI::Props_Slider con;
+		con.setOrigin(Core::GUI::CONSTRAIN_BOTTOM);
+		con.setAnchor(Core::GUI::CONSTRAIN_BOTTOM);					// Center of button
+		con.setWidth(50, Core::GUI::SIZE_CONSTRAINT_RELATIVE);
+		con.setHeight(40, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+		con.control.setWidth(50, Core::GUI::SIZE_CONSTRAINT_RELATIVE);
+		con.control.setHeight(40, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+		con.showField();
+		con.showLabel();
+		con.setPrecision(5);
+		con.setX(0);
+		con.setY(200);
+		con.setMinMax(0, 1);
+		con.setStep(1.0f, 1.0f, 1.0f);
+		con.setText("Testing");
+		Core::gui["GameMenu"]["Window 19"].Slider.add("Switch Test", 0, con);
 
 		bOneShot[44] = true;
 		std::cout << "Done" << std::endl;

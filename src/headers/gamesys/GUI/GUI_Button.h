@@ -62,7 +62,7 @@ namespace Core {
 				public:
 					Window win;
 					void updateObjectState(iState eExternState);
-					void updateScroll();
+//					void updateScroll();
 			};
 
 			Button::Button() {}
@@ -224,14 +224,16 @@ namespace Core {
 				// FIXME: Create SOUNDS enumeration
 				initSound(0, 1, 2, 0, 0, true, true);
 
+				if(bHasParent) {
+					con->scroll.bind(*parent);
+					con->exec(*parent);
+				}
+				else con->exec();
+
 				// Create button window with contraints to parent if present
 				if (bHasParent) win = Object::Window(*parent, name, con);
 				else win = Object::Window(name, con);
 				win.init();
-
-				// Setup button contraints
-				if(bHasParent) con->exec(*parent);
-				else con->exec();
 
 				// Other items
 				timeFocusDebounce.start();
@@ -354,18 +356,18 @@ namespace Core {
 			 * @brief Update all children according to parent scroll state
 			 *
 			 */
-			void Button::updateScroll() {
-				if(parent!=nullptr) {
-					con->bEnableScroll = parent->bEnableScroll;
-					con->pos.yOffset = parent->pos.yOffset;
-					win.con->pos.yOffset = parent->pos.yOffset;
-				}
-			}
+//			void Button::updateScroll() {
+//				if(parent!=nullptr) {
+//					con->bEnableScroll = parent->bEnableScroll;
+//					con->pos.yOffset = parent->pos.yOffset;
+//					win.con->pos.yOffset = parent->pos.yOffset;
+//				}
+//			}
 
 			void Button::exec(iState eExternState) {
 				if(bInit) {
 					if(con->visibility && ((parent!=nullptr && parent->visibility) || (parent==nullptr))) {
-						updateScroll();
+//						updateScroll();
 
 						// Update constraints
 						if(bHasParent) con->exec(*parent);
@@ -390,6 +392,15 @@ namespace Core {
 						else colors.PushFront(*con->colorText.base);
 
 //						textSys->draw(con, name, con->eLabelAnchor);
+
+						if(name=="Erase Test") std::cout << "\n";
+						if(name=="Erase Test") debug.log(""+std::to_string(con->scroll.getX()));
+						if(name=="Erase Test") debug.log(""+std::to_string(con->scroll.getY()));
+						if(name=="Erase Test") debug.log(""+std::to_string(con->getPos().x));
+						if(name=="Erase Test") debug.log(""+std::to_string(con->getPos().y));
+						if(name=="Erase Test") debug.log(""+std::to_string(con->getScrollPos().x));
+						if(name=="Erase Test") debug.log(""+std::to_string(con->getScrollPos().y));
+
 						textSys->draw(con, con->text, con->eLabelAnchor);
 						colors.PopFront();
 					}

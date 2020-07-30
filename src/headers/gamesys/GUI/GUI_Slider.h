@@ -89,8 +89,8 @@ namespace Core {
 				bHasFocus			= false;
 				field				= nullptr;
 				label				= nullptr;
-				valuePtr		= nullptr;
-				bLocalValue		= true;
+				valuePtr			= nullptr;
+				bLocalValue			= true;
 			}
 
 			template <class T> Slider<T>::Slider(std::string n, T *ptr, Props_Slider c) {
@@ -270,6 +270,7 @@ namespace Core {
 				this->con			= new Props_Slider();
 				*this->con			= c;
 				if(this->con->text == "") this->con->text = n;
+				debug.log("'"+name+"', '"+this->con->text+"'");
 			}
 
 			template <class T> Slider<T>::Slider(Props &p, std::string n, T t, Props_Slider *c) {
@@ -320,8 +321,15 @@ namespace Core {
 
 			template <class T> void Slider<T>::init() {
 				// Setup contraints
-				if(this->bHasParent) this->con->exec(*this->parent);
-				else this->con->exec();
+//				if(this->bHasParent) this->con->exec(*this->parent);
+//				else this->con->exec();
+
+				if(bHasParent) {
+					//if(!con->scroll.getEnabled()) con->scroll.bind(*parent);
+					con->scroll.bind(*parent);
+					con->exec(*parent);
+				}
+				else con->exec();
 
 				// FIXME: Create SOUNDS enumeration
 				initSound(3, 7, 8, -1, 0, false, true);
@@ -561,7 +569,9 @@ namespace Core {
 				}
 				else {
 					if(!(eExternState&STATE_UPDATE)) {
-						this->mState = Core::mouse->checkInput(gameVars->screen.half.x+this->con->pos.x, gameVars->screen.half.y-this->con->pos.y, std::max(this->con->size.x, this->con->control.size.x), std::max(this->con->size.y, this->con->control.size.y));
+						Vector2f vPos = this->con->getScrollPos();
+						this->mState = Core::mouse->checkInput(gameVars->screen.half.x+vPos.x, gameVars->screen.half.y-vPos.y, this->con->size.x, this->con->size.y);
+						//this->mState = Core::mouse->checkInput(gameVars->screen.half.x+this->con->pos.x, gameVars->screen.half.y-this->con->pos.y, std::max(this->con->size.x, this->con->control.size.x), std::max(this->con->size.y, this->con->control.size.y));
 					}
 					else this->mState = Core::_Mouse::MOUSE_NONE;
 

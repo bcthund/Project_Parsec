@@ -1831,7 +1831,14 @@ namespace Core {
 				if(anchor&GUI::CONSTRAIN_TOP)		vAnchor.y -= (vSize.y/2.0f)+con->vPadding.top;
 				if(anchor&GUI::CONSTRAIN_BOTTOM)	vAnchor.y += (vSize.y/2.0f)+con->vPadding.bottom;
 
-				Vector2f vPos = con->getScrollPos();
+				//Vector2f vPos = con->getScrollPos();
+//				Core::debug.log("vPos = ("+std::to_string(vPos.x)+", "+std::to_string(vPos.y)+")");
+
+				Vector2f vPos = con->getPos();
+				if(con->scroll.getEnabled()) {
+					vPos.x += con->scroll.getX();
+					vPos.y += con->scroll.getY();
+				}
 				matrix->Translate(int(vPos.x+vAnchor.x), int(vPos.y+vAnchor.y), 0.0f);
 				glActiveTexture(0);
 				texture.Set(Core::gameVars->font.iTexNum);
@@ -2003,6 +2010,14 @@ namespace Core {
 					// Draw each string on a new line
 					bool bBreak = false;
 					float linePos = 0.0f;
+					if(con->scroll.getEnabled()) linePos = con->scroll.getY();
+					//Vector2f vPos = con->getPos();
+					//if(con->scroll.getEnabled()) {
+					//	vPos.x += con->scroll.getX();
+					//	vPos.y += con->scroll.getY();
+					//}
+					//matrix->Translate( vPos.x, vPos.y, 0.0f );
+
 					for(int i=con->scrollPosition; i<=iLines; i++) {
 
 						if( i-con->scrollPosition >= (con->limit.y-2) ) {

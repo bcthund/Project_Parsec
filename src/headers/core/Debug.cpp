@@ -19,7 +19,7 @@ namespace Core {
 		bDrawLog = true;
 		bDrawPrint = true;
 
-		ioctl(STDOUT_FILENO, TIOCGWINSZ, &size);
+		//ioctl(STDOUT_FILENO, TIOCGWINSZ, &size);
 		//auto const w(WEXITSTATUS(std::system("exit `tput cols`")));
 		//auto const h(WEXITSTATUS(std::system("exit `tput lines`")));
 	}
@@ -28,9 +28,10 @@ namespace Core {
 		// TODO Auto-generated destructor stub
 	}
 
-	//void _Debug::init() {
-	//	timerPrint.start();
-	//}
+	void _Debug::logIncreaseIndent()   { sLogIndent.append(" "); }
+	void _Debug::logDecreaseIndent()   { if(sLogIndent.length()>0) sLogIndent.pop_back(); }
+	void _Debug::printIncreaseIndent() { sPrintIndent.append(" "); }
+	void _Debug::printDecreaseIndent() { if(sPrintIndent.length()>0) sPrintIndent.pop_back(); }
 
 	/**
 	 * \brief Check and reset timers per cycle, to be called at beginning of program loop
@@ -67,7 +68,7 @@ namespace Core {
 				timeStamp.append(" ");
 			}
 
-			std::cout << consoleColors.colors[color] << timeStamp << buffer << consoleColors.colors[consoleColors.NC] << std::endl;
+			std::cout << consoleColors.colors[color] << timeStamp << sLogIndent << buffer << consoleColors.colors[consoleColors.NC] << std::endl;
 		}
 	}
 
@@ -78,7 +79,7 @@ namespace Core {
 	 */
 	void _Debug::print(std::string buffer, ConsoleColors::eCOLOR color) {
 		if (bDrawPrint) {
-			std::cout << consoleColors.colors[color] << buffer << consoleColors.colors[consoleColors.NC];
+			std::cout << consoleColors.colors[color] << sPrintIndent << buffer << consoleColors.colors[consoleColors.NC];
 		}
 	}
 

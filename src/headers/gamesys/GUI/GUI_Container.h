@@ -37,9 +37,9 @@ namespace Core {
 	namespace GUI {
 		class GUI_Container : public Object::Window/*, private Object::Base::Interactive_Base*/ {
 			public:
-				GUI_Container(std::string name, Props_Window c) : Object::Window(name, c)				{	init();	}
+				GUI_Container(std::string name, Props_Window &c) : Object::Window(name, c)				{	init();	}
 				GUI_Container(std::string name, Props_Window *c) : Object::Window(name, c)				{	init();	}
-				GUI_Container(Props &p, std::string name, Props_Window c) : Object::Window(p, name, c)	{	init();	}
+				GUI_Container(Props &p, std::string name, Props_Window &c) : Object::Window(p, name, c)	{	init();	}
 				GUI_Container(Props &p, std::string name, Props_Window *c) : Object::Window(p, name, c)	{	init();	}
 				~GUI_Container() {}
 				void exec();
@@ -54,7 +54,7 @@ namespace Core {
 //				bool								bIsActive;
 
 			public:
-				GUI_Container & add(std::string containerName, Props_Window c, Props *p=nullptr);
+				GUI_Container & add(std::string containerName, Props_Window &c, Props *p=nullptr);
 				GUI_Container & add(std::string containerName, Props_Window *c, Props *p=nullptr);
 
 				GUI_Container	&operator[](std::string containerName)			{	if(map.count(containerName)>0) return *containers[map[containerName]]; else throw std::runtime_error("Invalid Container: "+containerName);	}
@@ -333,19 +333,40 @@ namespace Core {
 		 * ==========================================================
 		 */
 		GUI_Container & GUI_Container::pushData(std::string name, GUI_Container *data) {
+//			debug.log("[8]: GUI_Container::pushData()");
 			data->init();
+//			debug.log("[9]: GUI_Container::pushData()");
 			containers.push_back(data);
+//			debug.log("[10]: pushData()");
 			uint id = containers.size()-1;
+//			debug.log("[11]: GUI_Container::pushData()");
 			map.insert(make_pair(name, id));
+//			debug.log("[12]: GUI_Container::pushData()");
 			return *containers[id];
 		}
 
-		GUI_Container & GUI_Container::add(std::string containerName, Props_Window c, Props *p) {
+		GUI_Container & GUI_Container::add(std::string containerName, Props_Window &c, Props *p) {
+//			debug.log("[0]: GUI_Container::add()");
 			GUI_Container * container;
-			if(p!=nullptr) container = new GUI_Container(*p, containerName, c);
-			else container = new GUI_Container(*con, containerName, c);
+//			debug.log("[1]: GUI_Container::add()");
+			if(p!=nullptr) {
+//				debug.log("[2]: GUI_Container::add()");
+//				Core::debug.logIncreaseIndent();
+				container = new GUI_Container(*p, containerName, c);
+//				Core::debug.logDecreaseIndent();
+//				debug.log("[3]: GUI_Container::add()");
+			}
+			else {
+//				debug.log("[4]: GUI_Container::add()");
+//				Core::debug.logIncreaseIndent();
+				container = new GUI_Container(*con, containerName, c);
+//				Core::debug.logDecreaseIndent();
+//				debug.log("[5]: GUI_Container::add()");
+			}
 			container->con->bNoInput = true;
+//			debug.log("[6]: GUI_Container::add()");
 			container->init();
+//			debug.log("[7]: GUI_Container::add()");
 			return pushData(containerName, container);
 		}
 

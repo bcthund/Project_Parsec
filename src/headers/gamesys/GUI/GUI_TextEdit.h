@@ -197,6 +197,12 @@ namespace Core {
 //				con->disablePadding();
 //				con->setPadding(0);
 
+				if(bHasParent) {
+					con->scroll.bind(*parent);
+					con->exec(*parent);
+				}
+				else con->exec();
+
 				if(con->enableScrolling) {
 					con->setWidth(con->size.constraint.x-con->iScrollSize, con->size.constraint.xType);
 				}
@@ -205,10 +211,6 @@ namespace Core {
 				if (bHasParent) win = Object::Window(*parent, name, con);
 				else win = Object::Window(name, con);
 				win.init();
-
-				// Setup button contraints
-				if(bHasParent) con->exec(*parent);
-				else con->exec(*win.con);
 
 				con->text.setAnchor(CONSTRAIN_CENTER);	// DO NOT CHANGE
 				con->text.setOrigin(CONSTRAIN_TOP|CONSTRAIN_LEFT);
@@ -346,7 +348,9 @@ namespace Core {
 					// Check button input - Do this first so we can modify colors accordingly.
 //					mState = Core::mouse->checkInput(gameVars->screen.half.x+con->pos.x, gameVars->screen.half.y-con->pos.y, con->size.x, con->size.y);
 					if(!(eExternState&STATE_UPDATE)) {
-						mState = Core::mouse->checkInput(gameVars->screen.half.x+con->pos.x, gameVars->screen.half.y-con->pos.y, con->size.x, con->size.y);
+						Vector2f vPos = con->getScrollPos();
+						mState = Core::mouse->checkInput(gameVars->screen.half.x+vPos.x, gameVars->screen.half.y-vPos.y, con->size.x, con->size.y);
+						//mState = Core::mouse->checkInput(gameVars->screen.half.x+con->pos.x, gameVars->screen.half.y-con->pos.y, con->size.x, con->size.y);
 					}
 					else this->mState = Core::_Mouse::MOUSE_NONE;
 

@@ -261,6 +261,7 @@ namespace Core {
 			 */
 			template <class T> void Field<T>::init() {
 				if (this->bHasParent) {
+					this->con->scroll.bind(*this->parent);
 					this->con->exec(*this->parent);
 					win = Object::Window(*this->parent, this->name, this->con);
 				}
@@ -381,7 +382,9 @@ namespace Core {
 				else {
 
 					if(!(eExternState&STATE_UPDATE)) {
-						this->mState = Core::mouse->checkInput(gameVars->screen.half.x+this->con->pos.x, gameVars->screen.half.y-this->con->pos.y, this->con->size.x, this->con->size.y);
+						Vector2f vPos = this->con->getScrollPos();
+						this->mState = Core::mouse->checkInput(gameVars->screen.half.x+vPos.x, gameVars->screen.half.y-vPos.y, this->con->size.x, this->con->size.y);
+						//this->mState = Core::mouse->checkInput(gameVars->screen.half.x+this->con->pos.x, gameVars->screen.half.y-this->con->pos.y, this->con->size.x, this->con->size.y);
 					}
 					else this->mState = Core::_Mouse::MOUSE_NONE;
 

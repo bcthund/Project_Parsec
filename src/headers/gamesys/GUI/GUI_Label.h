@@ -99,27 +99,40 @@ namespace Core {
 			}
 
 			void Label::init() {
+				if(bHasParent) {
+					con->scroll.bind(*parent);
+					con->exec(*parent);
+				}
+				else con->exec();
+
 				// Create button window with contraints to parent if present
 				if (bHasParent) win = Object::Window(*parent, name, con);
 				else win = Object::Window(name, con);
 
 				win.init();
-				con->exec();
+				//con->exec();
 
 				bInit = true;
 			}
 
 			void Label::updateObjectState(iState eExternState) {
-				if(eExternState!=STATE_NONE && !(eExternState&STATE_UPDATE)) {
-					eObjectState = eExternState;
+				if(!(eExternState&STATE_UPDATE)) {
+					Vector2f vPos = con->getScrollPos();
+					mState = Core::mouse->checkInput(gameVars->screen.half.x+vPos.x, gameVars->screen.half.y-vPos.y, con->size.x, con->size.y);
+					//mState = Core::mouse->checkInput(gameVars->screen.half.x+con->pos.x, gameVars->screen.half.y-con->pos.y, con->size.x, con->size.y);
 				}
+				else this->mState = Core::_Mouse::MOUSE_NONE;
+
+				if(eExternState!=STATE_NONE && !(eExternState&STATE_UPDATE)) eObjectState = eExternState;
+				else if (mState&Core::_Mouse::MOUSE_HOVER) eObjectState = STATE_HOVER;
 				else eObjectState = STATE_NONE;
+
 				if(!enabled()) eObjectState |= STATE_DISABLED;
 			}
 
 			void Label::exec(iState eExternState) {
 				if(bInit && con->visibility && ((parent!=nullptr && parent->visibility) || (parent==nullptr))) {
-					if(con->size.isAutoSet()) {
+//					if(con->size.isAutoSet()) {
 						//if(!bFocusPresent) updateObjectState(eExternState);
 						updateObjectState(eExternState);
 
@@ -140,8 +153,8 @@ namespace Core {
 						else 									colors.PushFront(*con->colorText.base);
 						textSys->draw(con, con->text, CONSTRAIN_CENTER);
 						colors.PopFront();
-					}
-					else textSys->draw(con, con->text, CONSTRAIN_CENTER);
+//					}
+//					else textSys->draw(con, con->text, CONSTRAIN_CENTER);
 
 					// Autosize
 					if(con->size.constraint.xAuto) {
@@ -150,7 +163,6 @@ namespace Core {
 					}
 					if(con->size.constraint.yAuto) con->setHeight(Core::gameVars->font.vSize.y+(con->vPadding.top+con->vPadding.bottom), GUI::SIZE_CONSTRAINT_ABSOLUTE);
 					if(con->size.constraint.xAuto || con->size.constraint.yAuto) con->exec();
-
 				}
 			}
 		}

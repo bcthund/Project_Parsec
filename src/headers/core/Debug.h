@@ -68,6 +68,13 @@ namespace Core {
 			int maxRate;
 			bool bDrawLog, bDrawPrint;
 			struct winsize size;
+			std::string sLogIndent, sPrintIndent;
+
+			void logIncreaseIndent();
+			void logDecreaseIndent();
+
+			void printIncreaseIndent();
+			void printDecreaseIndent();
 
 			void update(int rate=500, bool bClear=true);
 			void log(std::string buffer, ConsoleColors::eCOLOR color=ConsoleColors::eCOLOR(consoleColors.GREEN));

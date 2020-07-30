@@ -92,8 +92,15 @@ namespace Core {
 			}
 
 			void Text::init() {
-				if (bHasParent) con->exec(*parent->con);
+				if(bHasParent) {
+					con->scroll.bind(*parent->con);
+					con->exec(*parent->con);
+				}
 				else con->exec();
+
+				//if (bHasParent) con->exec(*parent->con);
+				//else con->exec();
+
 				bInit = true;
 			}
 

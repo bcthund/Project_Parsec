@@ -209,7 +209,13 @@ namespace Core {
 			}
 
 			void ComboBox::init() {
-				if (bHasParent) con->exec(*parent);
+//				if (bHasParent) con->exec(*parent);
+//				else con->exec();
+
+				if(bHasParent) {
+					con->scroll.bind(*parent);
+					con->exec(*parent);
+				}
 				else con->exec();
 
 				selectedItem = new Object::Button(*parent, name+"_Selected", false, con);
@@ -222,16 +228,16 @@ namespace Core {
 				itemList->init();
 
 				// Preliminary setup for items to be added
-				con->item.setPos(0, 0);
-				con->item.setGroup(Core::groups.add(name+"_ComboBoxItem", true));
-				con->item.exec();
+				con->itemButton.setPos(0, 0);
+				con->itemButton.setGroup(Core::groups.add(name+"_ComboBoxItem", true));
+				con->itemButton.exec();
 
-				scrollUp = new Object::Button(con->itemList, "Scroll Up", false, con->scroll);
+				scrollUp = new Object::Button(con->itemList, "Scroll Up", false, con->scrollButton);
 				scrollUp->con->setButtonType(BUTTON_DEBOUNCE);
 				scrollUp->con->setText("\x1E");	// Up Arrow
 				scrollUp->init();
 
-				scrollDown = new Object::Button(con->itemList, "Scroll Down", false, con->scroll);
+				scrollDown = new Object::Button(con->itemList, "Scroll Down", false, con->scrollButton);
 				scrollDown->con->setButtonType(BUTTON_DEBOUNCE);
 				scrollDown->con->setText("\x1F");	// Down arrow
 				scrollDown->init();
@@ -242,29 +248,29 @@ namespace Core {
 			}
 
 			void ComboBox::addItem(std::string title, t_BIFS iValue) {
-				Object::Button * data = new Object::Button(con->itemList, title, false, con->item);		// Creates a NEW copy of button constraints so On/Off values can be kept separate
+				Object::Button * data = new Object::Button(con->itemList, title, false, con->itemButton);		// Creates a NEW copy of button constraints so On/Off values can be kept separate
 				data->dataSet.addGroupState(data->sOnState, iValue);
 				data->init();
 
 				items.add(title, data);
 
 				// Prep for next item
-				con->item.modPos(0, -con->item.size.y);
-				con->item.exec();
+				con->itemButton.modPos(0, -con->itemButton.size.y);
+				con->itemButton.exec();
 			}
 
 			void ComboBox::addItems(t_ComboBoxItems vItems) {
 
 				for (auto const& vItem : std::as_const(vItems)) {
-					Object::Button * data = new Object::Button(con->itemList, vItem.first, false, con->item);	// Creates a NEW copy of button constraints so On/Off values can be kept separate
+					Object::Button * data = new Object::Button(con->itemList, vItem.first, false, con->itemButton);	// Creates a NEW copy of button constraints so On/Off values can be kept separate
 					data->dataSet.addGroupState(data->sOnState, vItem.second);
 					data->init();
 
 					items.add(vItem.first, data);
 
 					// Prep for next item
-					con->item.modPos(0, -con->item.size.y);
-					con->item.exec();
+					con->itemButton.modPos(0, -con->itemButton.size.y);
+					con->itemButton.exec();
 				}
 			}
 
@@ -354,34 +360,34 @@ namespace Core {
 			 * @brief Update all children according to parent scroll state
 			 *
 			 */
-			void ComboBox::updateScroll() {
-				if(parent!=nullptr) {
-					con->bEnableScroll = parent->bEnableScroll;
-					con->pos.yOffset = parent->pos.yOffset;
-
-					selectedItem->con->bEnableScroll = parent->bEnableScroll;
-					selectedItem->con->pos.yOffset = parent->pos.yOffset;
-
-					itemList->con->bEnableScroll = parent->bEnableScroll;
-					itemList->con->pos.yOffset = parent->pos.yOffset;
-
-					scrollUp->con->bEnableScroll = parent->bEnableScroll;
-					scrollUp->con->pos.yOffset = parent->pos.yOffset;
-
-					scrollDown->con->bEnableScroll = parent->bEnableScroll;
-					scrollDown->con->pos.yOffset = parent->pos.yOffset;
-
-					for(int n=0; n<items.size(); n++) {
-						items[n]->con->bEnableScroll = parent->bEnableScroll;
-						items[n]->con->pos.yOffset = parent->pos.yOffset;
-					}
-				}
-			}
+//			void ComboBox::updateScroll() {
+//				if(parent!=nullptr) {
+//					con->bEnableScroll = parent->bEnableScroll;
+//					con->pos.yOffset = parent->pos.yOffset;
+//
+//					selectedItem->con->bEnableScroll = parent->bEnableScroll;
+//					selectedItem->con->pos.yOffset = parent->pos.yOffset;
+//
+//					itemList->con->bEnableScroll = parent->bEnableScroll;
+//					itemList->con->pos.yOffset = parent->pos.yOffset;
+//
+//					scrollUp->con->bEnableScroll = parent->bEnableScroll;
+//					scrollUp->con->pos.yOffset = parent->pos.yOffset;
+//
+//					scrollDown->con->bEnableScroll = parent->bEnableScroll;
+//					scrollDown->con->pos.yOffset = parent->pos.yOffset;
+//
+//					for(int n=0; n<items.size(); n++) {
+//						items[n]->con->bEnableScroll = parent->bEnableScroll;
+//						items[n]->con->pos.yOffset = parent->pos.yOffset;
+//					}
+//				}
+//			}
 
 			void ComboBox::exec(iState eExternState) {
 				if(bInit && con->visibility && ((parent!=nullptr && parent->visibility) || (parent==nullptr))) {
 					if(items.size()>0) {
-						updateScroll();
+//						updateScroll();
 
 						//if(!Base::Interactive_Base::bFocusPresent) updateObjectState(eExternState);
 						updateObjectState(eExternState);
@@ -432,10 +438,12 @@ namespace Core {
 							// Draw adjusted itemList window
 							int iHeight = std::min(items.size(), con->iListLength);
 							int iScrollHeight = scrollUp->con->size.y + scrollDown->con->size.y;
-							itemList->con->setHeight(iScrollHeight + ((iHeight)*con->item.size.y+itemList->con->vPadding.top_bottom()), SIZE_CONSTRAINT_ABSOLUTE);
+							itemList->con->setHeight(iScrollHeight + ((iHeight)*con->itemButton.size.y+itemList->con->vPadding.top_bottom()), SIZE_CONSTRAINT_ABSOLUTE);
 							itemList->exec(STATE_NONE);
 
 							// Draw up button
+//							int xPos = con->scroll.getX(),
+//								yPos = con->scroll.getY();
 							int xPos = 0,
 								yPos = 0;
 							scrollUp->setEnabled(iScrollIndex>0);
@@ -452,7 +460,7 @@ namespace Core {
 									items[n]->exec(STATE_NONE);
 
 									// Prep for next item
-									yPos -= con->item.size.y;
+									yPos -= con->itemButton.size.y;
 								}
 								else items[n]->updateNoFocus();
 
@@ -478,7 +486,7 @@ namespace Core {
 
 							// Find out what has larger constraints and use that
 							int maxSizeSelected	= int(lengthBuffer*Core::gameVars->font.vSize.x)+(con->vPadding.left+con->vPadding.right);
-							int maxSizeList 	= int(lengthBuffer*Core::gameVars->font.vSize.x)+(itemList->con->vPadding.left+itemList->con->vPadding.right)+(con->item.vPadding.left+con->item.vPadding.right);
+							int maxSizeList 	= int(lengthBuffer*Core::gameVars->font.vSize.x)+(itemList->con->vPadding.left+itemList->con->vPadding.right)+(con->itemButton.vPadding.left+con->itemButton.vPadding.right);
 							int maxSize = std::max(maxSizeSelected, maxSizeList);
 
 							// Set selected item and list width

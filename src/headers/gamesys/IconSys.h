@@ -332,7 +332,13 @@ namespace Core {
 
 			glDisable(GL_DEPTH_TEST);
 			matrix->Push();
-				matrix->Translate( con->pos.x, con->pos.y, 0.0f );
+				Vector2f vPos = con->getPos();
+				if(con->scroll.getEnabled()) {
+					vPos.x += con->scroll.getX();
+					vPos.y += con->scroll.getY();
+				}
+				matrix->Translate( vPos.x, vPos.y, 0.0f );
+//				matrix->Translate( con->pos.x, con->pos.y, 0.0f );
 				matrix->Scale(((con->size.x-(con->vPadding.left+con->vPadding.right))/64), ((con->size.y-(con->vPadding.top+con->vPadding.bottom))/64), 1);	// FIXME: Make VAO unit normal, get rid of "/64"
 
 				glActiveTexture(0);

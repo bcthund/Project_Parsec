@@ -50,8 +50,8 @@ namespace Core {
 //					friend class Window;
 				public:
 					Window();
-					Window(std::string n, Props_Window c);
-					Window(Props &p,std::string n, Props_Window c);
+					Window(std::string n, Props_Window &c);
+					Window(Props &p,std::string n, Props_Window &c);
 					Window(std::string n, Props_Window *c);
 					Window(Props &p,std::string n, Props_Window *c);
 					~Window();
@@ -73,7 +73,7 @@ namespace Core {
 
 			Window::Window() { iScrollIndex	= 0; }
 
-			Window::Window(std::string n, Props_Window c) {
+			Window::Window(std::string n, Props_Window &c) {
 				name			= n;
 
 				bHasParent		= false;
@@ -85,7 +85,7 @@ namespace Core {
 				iScrollIndex	= 0;
 			}
 
-			Window::Window(Props &p, std::string n, Props_Window c) {
+			Window::Window(Props &p, std::string n, Props_Window &c) {
 				name			= n;
 
 				bHasParent		= true;
@@ -124,7 +124,10 @@ namespace Core {
 			}
 
 			void Window::init() {
-				if(bHasParent) con->exec(*parent);
+				if(bHasParent) {
+					if(!con->scroll.getEnabled()) con->scroll.bind(*parent);
+					con->exec(*parent);
+				}
 				else con->exec();
 
 				float iHalf_W = 0.5;
@@ -157,6 +160,7 @@ namespace Core {
 
 				timeFocusDebounce.start();
 				bInit = true;
+//				debug.log("[5-3]: Window::init()");
 			}
 
 			void Window::update() {
@@ -194,7 +198,13 @@ namespace Core {
 				if(eExternState!=STATE_NONE && !(eExternState&STATE_UPDATE)) eObjectState = eExternState;
 				else {
 					if(!(eExternState&STATE_UPDATE)) {
-						mState = Core::mouse->checkInput(gameVars->screen.half.x+con->pos.x, gameVars->screen.half.y-con->pos.y, con->size.x, con->size.y);
+
+						//if(con->scroll.getEnabled()) {
+						if(parent!=nullptr && parent->scroll.getEnabled()) {
+							Vector2f vPos = con->getScrollPos();
+							mState = Core::mouse->checkInput(gameVars->screen.half.x+vPos.x, gameVars->screen.half.y-vPos.y, con->size.x, con->size.y);
+						}
+						else mState = Core::mouse->checkInput(gameVars->screen.half.x+con->pos.x, gameVars->screen.half.y-con->pos.y, con->size.x, con->size.y);
 					}
 					else mState = Core::_Mouse::MOUSE_NONE;
 
@@ -226,13 +236,25 @@ namespace Core {
 
 
 			void Window::updateScrollMouse() {
-				if(con->bEnableScroll) {
+				if(con->scroll.getEnabled() && !Base::Interactive_Base::bFocusPresent) {
 					Core::_Mouse::MOUSE_STATE wheel = Core::mouse->checkWheel();
 					if(wheel != Core::_Mouse::MOUSE_NONE) {
+
+						int modVal = 50;
+
+						const Uint8 *keyState = SDL_GetKeyboardState(NULL);
+						if (keyState[SDL_SCANCODE_LSHIFT] || keyState[SDL_SCANCODE_RSHIFT])		modVal = 100;
+						else if (keyState[SDL_SCANCODE_LCTRL] || keyState[SDL_SCANCODE_RCTRL])	modVal = 20;
+
 						switch(wheel) {
-							case Core::_Mouse::MOUSE_WHEEL_UP:		iScrollIndex -= 10;	break;
-							case Core::_Mouse::MOUSE_WHEEL_DOWN:	iScrollIndex += 10;	break;
+							case Core::_Mouse::MOUSE_WHEEL_UP:		iScrollIndex -= modVal;	break;
+							case Core::_Mouse::MOUSE_WHEEL_DOWN:	iScrollIndex += modVal;	break;
 						}
+
+//						switch(wheel) {
+//							case Core::_Mouse::MOUSE_WHEEL_UP:		iScrollIndex -= 10;	break;
+//							case Core::_Mouse::MOUSE_WHEEL_DOWN:	iScrollIndex += 10;	break;
+//						}
 
 						iScrollIndex = std::max(iScrollIndex, 0);
 						iScrollIndex = std::min(iScrollIndex, 5000);
@@ -242,9 +264,15 @@ namespace Core {
 					iScrollIndex = 0;
 				}
 
-				con->pos.yOffset = iScrollIndex;
+				con->scroll.getYRef() = iScrollIndex;
+				con->scroll.getXRef() = 0;
 
-				if(name=="Window 19") debug.log(""+std::to_string(iScrollIndex));
+				if(name=="Window 19") debug.log(""+std::to_string(con->scroll.getX()));
+				if(name=="Window 19") debug.log(""+std::to_string(con->scroll.getY()));
+				if(name=="Window 19") debug.log(""+std::to_string(con->getPos().x));
+				if(name=="Window 19") debug.log(""+std::to_string(con->getPos().y));
+				if(name=="Window 19") debug.log(""+std::to_string(con->getScrollPos().x));
+				if(name=="Window 19") debug.log(""+std::to_string(con->getScrollPos().y));
 			}
 
 			void Window::exec(iState eExternState) {
@@ -316,12 +344,10 @@ namespace Core {
 
 						matrix->Push();
 
-							Vector2f vPos = con->getPos();
-							if(parent!=nullptr && parent->bEnableScroll) {
-								vPos.x += parent->pos.xOffset;
-								vPos.y += parent->pos.yOffset;
-							}
-
+							// Only scroll this item if the parent has scrolling enabled
+							Vector2f vPos;
+							if(parent!=nullptr && parent->scroll.getEnabled()) vPos = con->getScrollPos();
+							else vPos = con->getPos();
 							matrix->Translate( vPos.x, vPos.y, 0.0 );
 
 							Vector2f vSize = con->getSize();

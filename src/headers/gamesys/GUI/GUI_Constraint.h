@@ -169,19 +169,6 @@ namespace Core {
 				base = src.base;
 				return *this;
 			}
-//			Color &operator=(const Color *src)	{
-//				this->base = new Color(*src);
-//				if(gameVars->debug.gui.bDrawTest) debug.log("Assign Base: ("+std::to_string(src->r)+","
-//																			+std::to_string(src->g)+","
-//																			+std::to_string(src->b)+","
-//																			+std::to_string(src->a)+"); ("
-//																			+std::to_string(this->base->r)+","
-//																			+std::to_string(this->base->g)+","
-//																			+std::to_string(this->base->b)+","
-//																			+std::to_string(this->base->a)+")"
-//																			);
-//				return *this->base;
-//			}
 		};
 
 		struct GUI_ColorH {
@@ -198,19 +185,6 @@ namespace Core {
 				highlight = src.highlight;
 				return *this;
 			}
-//			Color &operator=(const Color *src)	{
-//				this->highlight = new Color(*src);
-//				if(gameVars->debug.gui.bDrawTest) debug.log("Assign Base: ("+std::to_string(src->r)+","
-//																			+std::to_string(src->g)+","
-//																			+std::to_string(src->b)+","
-//																			+std::to_string(src->a)+"); ("
-//																			+std::to_string(this->highlight->r)+","
-//																			+std::to_string(this->highlight->g)+","
-//																			+std::to_string(this->highlight->b)+","
-//																			+std::to_string(this->highlight->a)+")"
-//																			);
-//				return *this->highlight;
-//			}
 		};
 
 		struct GUI_ColorA {
@@ -227,19 +201,6 @@ namespace Core {
 				active = src.active;
 				return *this;
 			}
-//			Color &operator=(const Color *src)	{
-//				this->active = new Color(*src);
-//				if(gameVars->debug.gui.bDrawTest) debug.log("Assign Base: ("+std::to_string(src->r)+","
-//																			+std::to_string(src->g)+","
-//																			+std::to_string(src->b)+","
-//																			+std::to_string(src->a)+"); ("
-//																			+std::to_string(this->active->r)+","
-//																			+std::to_string(this->active->g)+","
-//																			+std::to_string(this->active->b)+","
-//																			+std::to_string(this->active->a)+")"
-//																			);
-//				return *this->active;
-//			}
 		};
 
 		// Generic and Highlight only
@@ -256,11 +217,6 @@ namespace Core {
 				GUI_ColorH::operator=(src);
 				return *this;
 			}
-//			GUI_ColorBH &operator=(const Color *src)	{
-//				GUI_ColorB::operator=(src);
-//				GUI_ColorH::operator=(src);
-//				return *this;
-//			}
 		};
 
 		// Generic, highlight, and active colors
@@ -279,12 +235,6 @@ namespace Core {
 				GUI_ColorA::operator=(src);
 				return *this;
 			}
-//			GUI_ColorBHA &operator=(const Color *src)	{
-//				GUI_ColorB::operator=(src);
-//				GUI_ColorH::operator=(src);
-//				GUI_ColorA::operator=(src);
-//				return *this;
-//			}
 		};
 
 		/** ******************************************************************************************************************************
@@ -297,18 +247,13 @@ namespace Core {
 		 * ****************************************************************************************************************************** */
 		class Props {
 			public:
-				struct _Position : Vector2f {
+				struct s_Position : Vector2f {
 					Vector2f constraint;						///< Size reference constraint used to calculate actual position
-					int xOffset,								///< Used for scrolling (future implementation)
-						yOffset;								///< Used for scrolling
-						_Position() {
-							xOffset = 0;
-							yOffset = 0;
-						}
+					s_Position() {}
 				} pos;											///< Actual calculated position from origin and anchor constraints, automatically updated
 
-				struct _Size : Vector2f {
-					struct _SizeConstraint : Vector2f {
+				struct s_Size : Vector2f {
+					struct s_SizeConstraint : Vector2f {
 						eSizeConstraint xType,					///< Type of width constraint, relative or absolute
 										yType;					///< Type of height constraint, relative or absolute
 						bool			xAuto,					///< Auto size x axis
@@ -318,7 +263,7 @@ namespace Core {
 										yMin,					///< Minimum y size (future)
 										yMax;					///< Maximum y size (future)
 
-						_SizeConstraint() {
+						s_SizeConstraint() {
 							x		= -1;
 							y		= -1;
 							xType	= SIZE_CONSTRAINT_ABSOLUTE;
@@ -334,6 +279,153 @@ namespace Core {
 					bool isAutoSet() {	return (!constraint.xAuto || (constraint.xAuto && constraint.x>0) ) && ( !constraint.yAuto || (constraint.yAuto && constraint.y>0) );	}
 				} size;											///< Actual calculated width(x) and height(y) from origin and anchor constraints, automatically updated
 
+				struct s_Scroll {
+					friend class Props;
+					public:
+						bool *bEnablePtr;							///< Is scrolling enabled for this object
+						bool bLocalEn,								///< Is the enable locally defined or external
+							 bLocalX,								///< Is the x offset locally defined or external
+							 bLocalY;								///< Is the y offset locally defined or external
+						int *xOffsetPtr,							///< Used for scrolling (future implementation)
+							*yOffsetPtr;							///< Used for scrolling
+
+					public:
+						bool& getEnabledRef() {
+							if(bEnablePtr!=nullptr) return *bEnablePtr;
+							else throw std::runtime_error("Cannot access bEnablePtr, did you forget to bind with Props::scroll.bind()?");
+						}
+						int& getXRef() {
+							if(xOffsetPtr!=nullptr) return *xOffsetPtr;
+							else throw std::runtime_error("Cannot access xOffsetPtr, did you forget to bind with Props::scroll.bind()?");
+						}
+						int& getYRef() {
+							if(yOffsetPtr!=nullptr) return *yOffsetPtr;
+							else throw std::runtime_error("Cannot access yOffsetPtr, did you forget to bind with Props::scroll.bind()?");
+						}
+
+						bool getEnabled() {
+							if(bEnablePtr!=nullptr) return *bEnablePtr;
+							else return false;
+						}
+						int getX() {
+							if(xOffsetPtr!=nullptr) return *xOffsetPtr;
+							else return 0;
+						}
+						int getY() {
+							if(yOffsetPtr!=nullptr) return *yOffsetPtr;
+							else return 0;
+						}
+
+						void enable(bool b=true) { *bEnablePtr = b; }
+
+						/**
+						 * @brief Define as local values, this is usually when this object will be a parent
+						 */
+						void makeLocal() {
+							if(bLocalEn && bEnablePtr!=nullptr) delete bEnablePtr;
+							bLocalEn = true;
+							bEnablePtr = new bool(false);
+
+							if(bLocalX && xOffsetPtr!=nullptr) delete xOffsetPtr;
+							bLocalX = true;
+							xOffsetPtr = new int(0);
+
+							if(bLocalY && yOffsetPtr!=nullptr) delete yOffsetPtr;
+							bLocalY = false;
+							yOffsetPtr = new int(0);
+						}
+
+						/**
+						 * @brief Assign external pointer to #bEnablePtr
+						 * @param x
+						 */
+						void bindEnable(bool &b) {
+							if(bLocalEn && bEnablePtr!=nullptr) delete bEnablePtr;
+							bLocalEn = false;
+							bEnablePtr = &b;
+						}
+
+						/**
+						 * @brief Assign external pointer to #xOffsetPtr
+						 * @param x
+						 */
+						void bindX(int &x) {
+							if(bLocalX && xOffsetPtr!=nullptr) delete xOffsetPtr;
+							bLocalX = false;
+							xOffsetPtr = &x;
+						}
+						/**
+						 * @brief Assign external pointer to #yOffsetPtr
+						 * @param y
+						 */
+						void bindY(int &y) {
+							if(bLocalY && yOffsetPtr!=nullptr) delete yOffsetPtr;
+							bLocalY = false;
+							yOffsetPtr = &y;
+						}
+						/**
+						 * @brief Assign all external pointers
+						 * @param b Enable reference
+						 * @param x x Offset reference
+						 * @param y y Offset reference
+						 */
+						void bind(bool &b, int &x, int &y) {
+							bindEnable(b);
+							bindX(x);
+							bindY(y);
+						}
+
+						/**
+						 * @brief Assign all external pointers from a parent object
+						 * @param p Parent properties
+						 */
+						void bind(Props &parent) {
+							bindEnable(*parent.scroll.bEnablePtr);
+							bindX(*parent.scroll.xOffsetPtr);
+							bindY(*parent.scroll.yOffsetPtr);
+						}
+
+						void unBind() {
+							if(bLocalEn && bEnablePtr!=nullptr) delete bEnablePtr;
+							bLocalEn = false;
+
+							if(bLocalX && xOffsetPtr!=nullptr) delete xOffsetPtr;
+							bLocalX = false;
+
+							if(bLocalY && yOffsetPtr!=nullptr) delete yOffsetPtr;
+							bLocalY = false;
+						}
+
+						s_Scroll &operator=(const s_Scroll &src) {
+							bLocalEn		= src.bLocalEn;
+							bEnablePtr		= new bool(*src.bEnablePtr);
+
+							bLocalX			= src.bLocalX;
+							xOffsetPtr		= new int(*src.xOffsetPtr);
+
+							bLocalY			= src.bLocalY;
+							yOffsetPtr		= new int(*src.yOffsetPtr);
+							return *this;
+						}
+
+						s_Scroll() {
+							bLocalEn	= false;
+							bEnablePtr	= nullptr;
+							bLocalX		= false;
+							bLocalY		= false;
+							xOffsetPtr	= nullptr;
+							yOffsetPtr	= nullptr;
+						}
+
+						// TODO: Copy constructor
+
+						virtual ~s_Scroll() {
+							if(bLocalEn && bEnablePtr!=nullptr) delete bEnablePtr;
+							if(bLocalX && xOffsetPtr!=nullptr) delete xOffsetPtr;
+							if(bLocalY && yOffsetPtr!=nullptr) delete yOffsetPtr;
+						}
+				} scroll;
+
 				int						origin;					///< The starting drawing point with respect to the parent, if present, otherwise full screen.
 				int						anchor;					///< The point at which this object is offset from the origin.
 				Vector4i				vPadding;				///< Extra reserved space taken into account for origin.
@@ -341,7 +433,6 @@ namespace Core {
 				bool 					visibility;				///< Controls if this object is drawn and any of its direct children.
 				inline static bool		bGlobalSettings = true;	///< Used externally to allow multiple windows to use identical settings.
 				std::string				text;					///< Text to be displayed by object (object name is used by default)
-				bool			bEnableScroll;
 
 				struct ToolTip {
 					inline static bool	bShowGlobal = true;		///< Enable tooltips
@@ -386,8 +477,14 @@ namespace Core {
 				void setAnchor(iConstrain e=CONSTRAIN_CENTER)						{	anchor = e;	}
 				void setOrigin(iConstrain e=CONSTRAIN_CENTER)						{	origin = e;	}
 				void exec()															{	execPos(gameVars->screen.half);	execSize(gameVars->screen.res);	}
-				void exec(Props c)													{	execPos(c.size/2.0f, c.pos, c.vPadding);	execSize(c.size, c.vPadding);	}
-				Vector2f getScrollPos()												{	return Vector2f(pos.x+pos.xOffset, pos.y+pos.yOffset);	}
+				void exec(Props &c)													{	execPos(c.size/2.0f, c.pos, c.vPadding);	execSize(c.size, c.vPadding);	}
+				Vector2f getScrollPos()												{
+					Vector2f v;
+					v.x = pos.x+scroll.getX();
+					v.y = pos.y+scroll.getY();
+					return v;
+					//return Vector2f(pos.x+scroll.getX(), pos.y+scroll.getY());
+				}
 				Vector2f getPos()													{	return Vector2f(pos.x, pos.y);	}
 				Vector2f getSize()													{	return Vector2f(size.x, size.y);	}
 				void setPadding(int i)												{	vPadding.top = i; vPadding.bottom = i; vPadding.left = i; vPadding.right = i; }
@@ -408,13 +505,13 @@ namespace Core {
 				void setMinHeight(int i)											{	size.constraint.yMin = i;	}
 				void setMaxHeight(int i)											{	size.constraint.yMax = i;	}
 				void setText(std::string s)											{	text = s;	}
+//				void setScrollable()												{	scroll.makeLocal(); scroll.enable(true); }
+//				void resetScrollable()												{	scroll.unBind(); }
+				void setScrollable()												{	scroll.enable(true); }
+				void resetScrollable()												{	scroll.enable(false); }
 
 				Props() {
-					bEnableScroll			= false;
-					text = "";
-					//toolTip.bShowGlobal	= true;
-					//toolTip.showDelay	= 500;
-					//toolTip.hideDelay	= 10000;
+					text				= "";
 					toolTip.bShow		= false;
 					toolTip.Text		= "No ToolTip set!";
 					toolTip.border		= 1;
@@ -422,13 +519,8 @@ namespace Core {
 					toolTip.padding		= 4;
 					toolTip.round		= false;
 					toolTip.showLabel	= true;
-//					toolTip.color.header.background		= &gameVars->pallette.gui.toolTip.header.background;
-//					toolTip.color.header.border			= &gameVars->pallette.gui.toolTip.header.border;
-//					toolTip.color.header.text			= &gameVars->pallette.gui.toolTip.header.text;
-//					toolTip.color.textarea.background	= &gameVars->pallette.gui.toolTip.textarea.background;
-//					toolTip.color.textarea.border		= &gameVars->pallette.gui.toolTip.textarea.border;
-//					toolTip.color.textarea.text			= &gameVars->pallette.gui.toolTip.textarea.text;
 
+					scroll.makeLocal();
 
 					size.constraint.xType = SIZE_CONSTRAINT_ABSOLUTE;
 					size.constraint.x = 0.0f;
@@ -468,7 +560,8 @@ namespace Core {
 					visibility				= src.visibility;
 					eEnablePadding			= src.eEnablePadding;
 					text					= src.text;
-					bEnableScroll			= src.bEnableScroll;
+
+					scroll					= src.scroll;
 
 					pos.x					= src.pos.x;
 					pos.y					= src.pos.y;
@@ -663,7 +756,7 @@ namespace Core {
 				void disableScissor()										{	bScissor = false;	}
 				void setResizeRadius(bool b=true)							{	bResizeRadius = b; }
 				void setNoInput(bool b=true)								{	bNoInput = b;	}
-				void setScrollable(bool b)									{	bEnableScroll = b;	}
+				//void setScrollable(bool b)									{	scroll.bEnable = b;	}
 
 				Props_Window() {
 					bScissor				= true;
@@ -867,6 +960,33 @@ namespace Core {
 					colorBorder.active			= &Core::gameVars->pallette.gui.field.border.active;
 				}
 
+//				Props_Field& operator=(const Props_Field &src) {
+//					bNumeric					= src.bNumeric;
+//					precision					= src.precision;
+//					bEditable					= src.bEditable;
+//					minValue					= src.minValue;
+//					maxValue					= src.maxValue;
+//
+//					colorText.base				= src.colorText.base;
+//					colorText.highlight			= src.colorText.highlight;
+//					colorText.active			= src.colorText.active;
+//
+//					radius						= src.radius;
+//					roundBorder					= src.roundBorder;
+//
+//					colorBack.base				= src.colorBack.base;
+//					colorBack.highlight			= src.colorBack.highlight;
+//					colorBack.active			= src.colorBack.active;
+//
+//					colorBorder.base			= src.colorBorder.base;
+//					colorBorder.highlight		= src.colorBorder.highlight;
+//					colorBorder.active			= src.colorBorder.active;
+//
+//					// TODO:
+//					//Props_Window::operator=()
+//					return *this;
+//				}
+
 				~Props_Field() {
 				}
 		};
@@ -886,6 +1006,19 @@ namespace Core {
 //					field.disablePadding();
 					field.setMinMaxWidth(10, 250);
 				}
+
+				Props_Addon_Field& operator=(const Props_Addon_Field &src) {
+					bShowField		= src.bShowField;
+					field			= src.field;
+					return *this;
+				}
+
+//				Props_Addon_Field(const Props_Addon_Field &src) {
+//					bShowField		= false;
+//					field.setPos(0, 0);
+////					field.disablePadding();
+//					field.setMinMaxWidth(10, 250);
+//				}
 		};
 
 		/** ******************************************************************************************************************************
@@ -1646,9 +1779,9 @@ namespace Core {
 
 			public:
 				Props_Window	itemList;		///< The container for additional items that show up when down arrow pressed
-				Props_Button 	item,			///< Style information for each item in the item list
-								scroll;			///< Style information for scroll buttons
-				Props_Icon		icon;			///< Button to enable dropdown
+				Props_Button 	itemButton,		///< Style information for each item in the item list
+								scrollButton;	///< Style information for scroll buttons
+				//Props_Icon		icon;			///< Button to enable dropdown
 
 				bool	bAutoHide;
 				int		iListLength;
@@ -1684,9 +1817,9 @@ namespace Core {
 					setHeight(20, GUI::SIZE_CONSTRAINT_ABSOLUTE);
 
 					// Button to show itemList
-					icon.setOrigin(Core::GUI::CONSTRAIN_RIGHT);
-					icon.setAnchor(Core::GUI::CONSTRAIN_LEFT);
-					icon.setButtonType(Core::GUI::BUTTON_TOGGLE);
+//					icon.setOrigin(Core::GUI::CONSTRAIN_RIGHT);
+//					icon.setAnchor(Core::GUI::CONSTRAIN_LEFT);
+//					icon.setButtonType(Core::GUI::BUTTON_TOGGLE);
 
 					// selectedItem will be parent
 					itemList.setOrigin(Core::GUI::CONSTRAIN_BOTTOM);
@@ -1708,50 +1841,50 @@ namespace Core {
 					itemList.setHeight(20, GUI::SIZE_CONSTRAINT_ABSOLUTE);	// Size set automatically later
 
 					// Settings for ALL items in list
-					item.setOrigin(Core::GUI::CONSTRAIN_TOP);
-					item.setAnchor(Core::GUI::CONSTRAIN_TOP);
-					item.setButtonType(BUTTON_TOGGLE);
+					itemButton.setOrigin(Core::GUI::CONSTRAIN_TOP);
+					itemButton.setAnchor(Core::GUI::CONSTRAIN_TOP);
+					itemButton.setButtonType(BUTTON_TOGGLE);
 
-					item.colorBack.base				= &Core::colors[Core::colors().Pale_aqua];
-					item.colorBack.highlight		= &Core::colors[Core::colors().Yellow];
-					item.colorBack.active			= &Core::colors[Core::colors().Green];
+					itemButton.colorBack.base				= &Core::colors[Core::colors().Pale_aqua];
+					itemButton.colorBack.highlight		= &Core::colors[Core::colors().Yellow];
+					itemButton.colorBack.active			= &Core::colors[Core::colors().Green];
 
-					item.colorBorder.base			= &Core::colors[Core::colors().Black];
-					item.colorBorder.highlight		= &Core::colors[Core::colors().Black];
-					item.colorBorder.active			= &Core::colors[Core::colors().Black];
+					itemButton.colorBorder.base			= &Core::colors[Core::colors().Black];
+					itemButton.colorBorder.highlight		= &Core::colors[Core::colors().Black];
+					itemButton.colorBorder.active			= &Core::colors[Core::colors().Black];
 
-					item.colorText.base				= &Core::colors[Core::colors().Black];
-					item.colorText.highlight		= &Core::colors[Core::colors().Black];
-					item.colorText.active			= &Core::colors[Core::colors().Black];
+					itemButton.colorText.base				= &Core::colors[Core::colors().Black];
+					itemButton.colorText.highlight		= &Core::colors[Core::colors().Black];
+					itemButton.colorText.active			= &Core::colors[Core::colors().Black];
 
-					item.setBorder(0, 1);
-					item.setResizeRadius(0);
-					item.setPadding(2);
-					item.setWidth(100, GUI::SIZE_CONSTRAINT_RELATIVE);
-					item.setHeight(20, GUI::SIZE_CONSTRAINT_ABSOLUTE);
+					itemButton.setBorder(0, 1);
+					itemButton.setResizeRadius(0);
+					itemButton.setPadding(2);
+					itemButton.setWidth(100, GUI::SIZE_CONSTRAINT_RELATIVE);
+					itemButton.setHeight(20, GUI::SIZE_CONSTRAINT_ABSOLUTE);
 
 					// Settings for scroll buttons
-					scroll.setOrigin(Core::GUI::CONSTRAIN_TOP);
-					scroll.setAnchor(Core::GUI::CONSTRAIN_TOP);
-					scroll.setButtonType(BUTTON_DEBOUNCE);
+					scrollButton.setOrigin(Core::GUI::CONSTRAIN_TOP);
+					scrollButton.setAnchor(Core::GUI::CONSTRAIN_TOP);
+					scrollButton.setButtonType(BUTTON_DEBOUNCE);
 
-					scroll.colorBack.base			= &Core::colors[Core::colors().Gray40];
-					scroll.colorBack.highlight		= &Core::colors[Core::colors().Gray60];
-					scroll.colorBack.active			= &Core::colors[Core::colors().Green];
+					scrollButton.colorBack.base			= &Core::colors[Core::colors().Gray40];
+					scrollButton.colorBack.highlight		= &Core::colors[Core::colors().Gray60];
+					scrollButton.colorBack.active			= &Core::colors[Core::colors().Green];
 
-					scroll.colorBorder.base			= &Core::colors[Core::colors().Black];
-					scroll.colorBorder.highlight	= &Core::colors[Core::colors().Black];
-					scroll.colorBorder.active		= &Core::colors[Core::colors().Black];
+					scrollButton.colorBorder.base			= &Core::colors[Core::colors().Black];
+					scrollButton.colorBorder.highlight	= &Core::colors[Core::colors().Black];
+					scrollButton.colorBorder.active		= &Core::colors[Core::colors().Black];
 
-					scroll.colorText.base			= &Core::colors[Core::colors().Black];
-					scroll.colorText.highlight		= &Core::colors[Core::colors().Black];
-					scroll.colorText.active			= &Core::colors[Core::colors().Black];
+					scrollButton.colorText.base			= &Core::colors[Core::colors().Black];
+					scrollButton.colorText.highlight		= &Core::colors[Core::colors().Black];
+					scrollButton.colorText.active			= &Core::colors[Core::colors().Black];
 
-					scroll.setBorder(0, 1);
-					scroll.setResizeRadius(0);
-					scroll.setPadding(1);
-					scroll.setWidth(100, GUI::SIZE_CONSTRAINT_RELATIVE);
-					scroll.setHeight(12, GUI::SIZE_CONSTRAINT_ABSOLUTE);
+					scrollButton.setBorder(0, 1);
+					scrollButton.setResizeRadius(0);
+					scrollButton.setPadding(1);
+					scrollButton.setWidth(100, GUI::SIZE_CONSTRAINT_RELATIVE);
+					scrollButton.setHeight(12, GUI::SIZE_CONSTRAINT_ABSOLUTE);
 				}
 
 				~Props_ComboBox() {

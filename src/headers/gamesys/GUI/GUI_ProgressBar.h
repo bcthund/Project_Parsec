@@ -189,7 +189,12 @@ namespace Core {
 			}
 
 			void ProgressBar::init() {
-				con->exec();
+				//con->exec();
+				if(bHasParent) {
+					con->scroll.bind(*parent);
+					con->exec(*parent);
+				}
+				else con->exec();
 
 				// Create button window with contraints to parent if present
 				if (bHasParent) winBack = Object::Window(*parent, name, con);
@@ -262,7 +267,9 @@ namespace Core {
 
 			void ProgressBar::updateObjectState(iState eExternState) {
 				if(!(eExternState&STATE_UPDATE)) {
-					mState = Core::mouse->checkInput(gameVars->screen.half.x+con->pos.x, gameVars->screen.half.y-con->pos.y, con->size.x, con->size.y);
+					Vector2f vPos = con->getScrollPos();
+					mState = Core::mouse->checkInput(gameVars->screen.half.x+vPos.x, gameVars->screen.half.y-vPos.y, con->size.x, con->size.y);
+					//mState = Core::mouse->checkInput(gameVars->screen.half.x+con->pos.x, gameVars->screen.half.y-con->pos.y, con->size.x, con->size.y);
 				}
 				else this->mState = Core::_Mouse::MOUSE_NONE;
 

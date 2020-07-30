@@ -223,21 +223,28 @@
  * 			[X] Scrolling text window
  * 			[X] Can use glScissor and glEnable/Disable(GL_SCISSOR_TEST). Use Window minus padding for drawable area.
  * 			[ ] Apply scrolling (per-pixel) to windows
- * 				[ ] Create x/y offset pointers
- * 					[ ] If object has a parent, then assign pointers to parent object
- * 					[ ] If object doesn't have parent, then create local copy to be used as a parent
- * 					[ ] Now all children automatically have the parent window scroll offset
- * 				[ ] Enable Disable scrolling
+ * 				[X] Create x/y offset pointers
+ * 					[X] If object has a parent, then assign pointers to parent object
+ * 					[X] If object doesn't have parent, then create local copy to be used as a parent
+ * 					[X] Now all children automatically have the parent window scroll offset
+ * 				[X] Enable Disable scrolling
  * 					[X] Mouse based scrolling
- * 					[ ] External control (disable mouse but still update scrolling data) (Use to make a slide-in window?)
+ * 					[X] External control (disable mouse but still update scrolling data) (Use to make a slide-in window?)
  *				[X] Manage wheel mouse scrolling
  * 				[ ] Add check to glScissor area, ignore input outside scissor area for nested objects
  * 					[ ] Use the STATE_FOCUS concept. if mouse is in glScissor area then enable objects.
+ * 					[ ] Use Base::Interactive static for active window?
+ * 					[ ] Add parent active pointer? Use nested structure like scrolling so children know if parent has focus.
  * 				[X] Scroll position (int)
  * 				[ ] Maximum scroll position (auto calc???)
  * 				[ ] Window scrolling disabled when any object is active
+ * 					[X] If Interactive_Base::bFocusPresent then don't scroll
+ * 					[ ] If an object has hover (slider, field, etc) then don't scroll (add new static to Base::Interactive)
  * 					[ ] Make ComboBox report active state
+ * 					[ ]
  *
+ * TODO: [ ] Change Props to pass by reference in GUI_Container
+ * 			[ ]
  * TODO: [ ] Update objects to use AnyType
  * 			- This is difficult to implement with pointers to non-AnyType values
  * 			  so this should probably not be done and just keep original system.
