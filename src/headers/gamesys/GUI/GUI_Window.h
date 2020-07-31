@@ -237,6 +237,8 @@ namespace Core {
 
 
 			void Window::updateScrollMouse() {
+				debug.log(std::to_string(con->scroll.getEnabled())+", "+std::to_string(!Base::Interactive_Base::bFocusPresent)+", "+std::to_string(!Base::Interactive_Base::bScrollFocus));
+
 				if(parent!=nullptr && parent->scroll.getEnabled()) {
 				}
 				else {
@@ -260,7 +262,6 @@ namespace Core {
 						}
 					}
 					else if(!con->scroll.getEnabled()) {
-						debug.log(name+": Disabled");
 						iScrollIndex = 0;
 					}
 

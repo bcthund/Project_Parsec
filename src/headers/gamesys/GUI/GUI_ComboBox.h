@@ -33,9 +33,9 @@ namespace Core {
 			class ComboBox : public Base::Interactive<Props_ComboBox> {
 				public:
 					ComboBox();
-					ComboBox(std::string n, Props_ComboBox c);
+					ComboBox(std::string n, Props_ComboBox &c);
 					ComboBox(std::string n, Props_ComboBox *c);
-					ComboBox(Props &p, std::string n, Props_ComboBox c);
+					ComboBox(Props &p, std::string n, Props_ComboBox &c);
 					ComboBox(Props &p, std::string n, Props_ComboBox *c);
 					virtual ~ComboBox();
 
@@ -84,7 +84,7 @@ namespace Core {
 				scrollDown		= nullptr;
 			}
 
-			ComboBox::ComboBox(std::string n, Props_ComboBox c) {
+			ComboBox::ComboBox(std::string n, Props_ComboBox &c) {
 				name			= n;
 				bInit			= false;
 
@@ -110,7 +110,7 @@ namespace Core {
 				scrollDown		= nullptr;
 			}
 
-			ComboBox::ComboBox(Props &p, std::string n, Props_ComboBox c) {
+			ComboBox::ComboBox(Props &p, std::string n, Props_ComboBox &c) {
 				name			= n;
 				bInit			= false;
 
@@ -223,12 +223,10 @@ namespace Core {
 				}
 				else con->exec();
 
-				//con->disableFocusLock();
 				selectedItem = new Object::Button(*parent, name, false, con);
 				selectedItem->init();
 				setStatePtr(selectedItem->getStatePtr());
 
-				//con->itemList.disableFocusLock();
 				itemList = new Object::Window(*selectedItem->con, name, &con->itemList);
 				itemList->con->setNoInput(false);
 				itemList->con->setWidth(selectedItem->con->size.x, selectedItem->con->size.constraint.xType);
@@ -241,14 +239,11 @@ namespace Core {
 				con->itemButton.setGroup(Core::groups.add(name+"_ComboBoxItem", true));
 				con->itemButton.exec();
 
-				//con->scrollButton.disableFocusLock();
-//				scrollUp = new Object::Button(con->itemList, "Scroll Up", false, con->scrollButton);
 				scrollUp = new Object::Button(con->itemList, name, false, con->scrollButton);
 				scrollUp->con->setButtonType(BUTTON_DEBOUNCE);
 				scrollUp->con->setText("\x1E");	// Up Arrow
 				scrollUp->init();
 
-//				scrollDown = new Object::Button(con->itemList, "Scroll Down", false, con->scrollButton);
 				scrollDown = new Object::Button(con->itemList, name, false, con->scrollButton);
 				scrollDown->con->setButtonType(BUTTON_DEBOUNCE);
 				scrollDown->con->setText("\x1F");	// Down arrow
@@ -265,9 +260,9 @@ namespace Core {
 			 * @param iValue Value of item
 			 */
 			void ComboBox::addItem(std::string title, t_BIFS iValue) {
-				Object::Button * data = new Object::Button(con->itemList, name, false, con->itemButton);		// Creates a NEW copy of button constraints so On/Off values can be kept separate
+				Object::Button * data = new Object::Button(con->itemList, title, false, con->itemButton);
 				data->con->setText(title);
-				data->dataSet.addGroupState(data->sOnState, iValue);
+				//data->dataSet.addGroupState(data->sOnState, iValue);
 				data->init();
 
 				items.add(title, data);
@@ -284,15 +279,7 @@ namespace Core {
 			void ComboBox::addItems(t_ComboBoxItems vItems) {
 
 				for (auto const& vItem : std::as_const(vItems)) {
-					Object::Button * data = new Object::Button(con->itemList, vItem.first, false, con->itemButton);	// Creates a NEW copy of button constraints so On/Off values can be kept separate
-					data->dataSet.addGroupState(data->sOnState, vItem.second);
-					data->init();
-
-					items.add(vItem.first, data);
-
-					// Prep for next item
-					con->itemButton.modPos(0, -con->itemButton.size.y);
-					con->itemButton.exec();
+					addItem(vItem.first, vItem.second);
 				}
 			}
 
@@ -352,7 +339,17 @@ namespace Core {
 						if(mState&Core::_Mouse::MOUSE_HOVER) {
 							updateScrollMouse();
 						}
+
 						// TODO: Escape closes list
+//						SDL_PumpEvents();
+//						keyboard.event = SDL_GetKeyboardState(NULL);
+//						keyboard.update();
+//						if (keyboard.keys[SDLK_ESCAPE].bActive) {
+//							bHasFocus = false;
+//							bFocusPresent = false;
+//							eObjectState = STATE_NONE;
+//							(*con->text.bufferPtr) = sEditBuffer;
+//						}
 
 						// Manage itemList visibility
 						if(con->bAutoHide && (!(selectedItem->eObjectState&STATE_FOCUS) && !(itemList->eObjectState&STATE_FOCUS)) && getState()) {

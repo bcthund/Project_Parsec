@@ -38,8 +38,8 @@ namespace Core {
 			class ColorSwatch : public Base::Generic<Props_ColorSwatch> {
 				public:
 					ColorSwatch();
-					ColorSwatch(std::string n, Color * ptr, Props_ColorSwatch c);
-					ColorSwatch(Props &p, std::string n, Color * ptr, Props_ColorSwatch c);
+					ColorSwatch(std::string n, Color * ptr, Props_ColorSwatch &c);
+					ColorSwatch(Props &p, std::string n, Color * ptr, Props_ColorSwatch &c);
 					ColorSwatch(std::string n, Color * ptr, Props_ColorSwatch *c);
 					ColorSwatch(Props &p, std::string n, Color * ptr, Props_ColorSwatch *c);
 					virtual ~ColorSwatch();
@@ -71,7 +71,7 @@ namespace Core {
 				background		= nullptr;
 			}
 
-			ColorSwatch::ColorSwatch(std::string n, Color * ptr, Props_ColorSwatch c) {
+			ColorSwatch::ColorSwatch(std::string n, Color * ptr, Props_ColorSwatch &c) {
 				name			= n;
 
 				bHasParent		= false;
@@ -91,7 +91,7 @@ namespace Core {
 				background		= nullptr;
 			}
 
-			ColorSwatch::ColorSwatch(Props &p, std::string n, Color * ptr, Props_ColorSwatch c) {
+			ColorSwatch::ColorSwatch(Props &p, std::string n, Color * ptr, Props_ColorSwatch &c) {
 				name			= n;
 
 				bHasParent		= true;

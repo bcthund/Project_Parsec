@@ -26,13 +26,13 @@ namespace Core {
 			class CheckBox : public Base::Interactive<Props_CheckBox>, public Base::AudioFeedback {
 				public:
 					CheckBox();
-					CheckBox(std::string n, bool b, Props_CheckBox c);
-					CheckBox(Props &p, std::string n, bool b, Props_CheckBox c);
+					CheckBox(std::string n, bool b, Props_CheckBox &c);
+					CheckBox(Props &p, std::string n, bool b, Props_CheckBox &c);
 					CheckBox(std::string n, bool b, Props_CheckBox *c);
 					CheckBox(Props &p, std::string n, bool b, Props_CheckBox *c);
 
-					CheckBox(std::string n, bool *b, Props_CheckBox c);
-					CheckBox(Props &p, std::string n, bool *b, Props_CheckBox c);
+					CheckBox(std::string n, bool *b, Props_CheckBox &c);
+					CheckBox(Props &p, std::string n, bool *b, Props_CheckBox &c);
 					CheckBox(std::string n, bool *b, Props_CheckBox *c);
 					CheckBox(Props &p, std::string n, bool *b, Props_CheckBox *c);
 					virtual ~CheckBox();
@@ -55,7 +55,7 @@ namespace Core {
 				label			= nullptr;
 			}
 
-			CheckBox::CheckBox(std::string n, bool b, Props_CheckBox c) {
+			CheckBox::CheckBox(std::string n, bool b, Props_CheckBox &c) {
 				name			= n;
 				bIsGrouped		= (c.iGroup>0);
 				label			= nullptr;
@@ -74,7 +74,7 @@ namespace Core {
 				if(con->text == "") con->text = n;
 			}
 
-			CheckBox::CheckBox(Props &p, std::string n, bool b, Props_CheckBox c) {
+			CheckBox::CheckBox(Props &p, std::string n, bool b, Props_CheckBox &c) {
 				name			= n;
 				bIsGrouped		= (c.iGroup>0);
 				label			= nullptr;
@@ -129,7 +129,7 @@ namespace Core {
 				if(con->text == "") con->text = n;
 			}
 
-			CheckBox::CheckBox(std::string n, bool *b, Props_CheckBox c) {
+			CheckBox::CheckBox(std::string n, bool *b, Props_CheckBox &c) {
 				name			= n;
 				bIsGrouped		= (c.iGroup>0);
 				label			= nullptr;
@@ -148,7 +148,7 @@ namespace Core {
 				if(con->text == "") con->text = n;
 			}
 
-			CheckBox::CheckBox(Props &p, std::string n, bool *b, Props_CheckBox c) {
+			CheckBox::CheckBox(Props &p, std::string n, bool *b, Props_CheckBox &c) {
 				name			= n;
 				bIsGrouped		= (c.iGroup>0);
 				label			= nullptr;

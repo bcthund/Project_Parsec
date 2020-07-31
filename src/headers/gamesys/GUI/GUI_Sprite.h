@@ -41,8 +41,8 @@ namespace Core {
 			class Sprite : public Base::Generic<Props_Sprite> {
 				public:
 					Sprite();
-					Sprite(std::string n, Props_Sprite c);
-					Sprite(Props &p, std::string n, Props_Sprite c);
+					Sprite(std::string n, Props_Sprite &c);
+					Sprite(Props &p, std::string n, Props_Sprite &c);
 					Sprite(std::string n, Props_Sprite *c);
 					Sprite(Props &p, std::string n, Props_Sprite *c);
 
@@ -60,7 +60,7 @@ namespace Core {
 
 			Sprite::Sprite() {}
 
-			Sprite::Sprite(std::string n, Props_Sprite c) {
+			Sprite::Sprite(std::string n, Props_Sprite &c) {
 				name			= n;
 
 				bHasParent		= false;
@@ -72,7 +72,7 @@ namespace Core {
 				if(con->text == "") con->text = n;
 			}
 
-			Sprite::Sprite(Props &p, std::string n, Props_Sprite c) {
+			Sprite::Sprite(Props &p, std::string n, Props_Sprite &c) {
 				name			= n;
 
 				bHasParent		= true;

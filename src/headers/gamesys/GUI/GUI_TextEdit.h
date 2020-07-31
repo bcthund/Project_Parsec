@@ -53,8 +53,8 @@ namespace Core {
 			class TextEdit : public Base::Interactive<Props_TextArea>, public TextEditBase {
 				public:
 					TextEdit();
-					TextEdit(std::string n, Props_TextArea c);
-					TextEdit(Props &p, std::string n, Props_TextArea c);
+					TextEdit(std::string n, Props_TextArea &c);
+					TextEdit(Props &p, std::string n, Props_TextArea &c);
 					TextEdit(std::string n, Props_TextArea *c);
 					TextEdit(Props &p, std::string n, Props_TextArea *c);
 					virtual ~TextEdit();
@@ -95,7 +95,7 @@ namespace Core {
 				label				= nullptr;
 			}
 
-			TextEdit::TextEdit(std::string n, Props_TextArea c) {
+			TextEdit::TextEdit(std::string n, Props_TextArea &c) {
 				name				= n;
 
 				bHasParent			= false;
@@ -119,7 +119,7 @@ namespace Core {
 				label				= nullptr;
 			}
 
-			TextEdit::TextEdit(Props &p, std::string n, Props_TextArea c) {
+			TextEdit::TextEdit(Props &p, std::string n, Props_TextArea &c) {
 				name				= n;
 
 				bHasParent			= true;

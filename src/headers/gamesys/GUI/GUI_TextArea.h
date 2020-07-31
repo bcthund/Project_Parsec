@@ -25,8 +25,8 @@ namespace Core {
 			class TextArea : virtual public Base::Generic<Props_TextArea> {
 				public:
 					TextArea();
-					TextArea(std::string n, Props_TextArea c);
-					TextArea(Props &p, std::string n, Props_TextArea c);
+					TextArea(std::string n, Props_TextArea &c);
+					TextArea(Props &p, std::string n, Props_TextArea &c);
 					TextArea(std::string n, Props_TextArea *c);
 					TextArea(Props &p, std::string n, Props_TextArea *c);
 					virtual ~TextArea();
@@ -55,7 +55,7 @@ namespace Core {
 				label				= nullptr;
 			}
 
-			TextArea::TextArea(std::string n, Props_TextArea c) {
+			TextArea::TextArea(std::string n, Props_TextArea &c) {
 				name				= n;
 
 				bHasParent			= false;
@@ -74,7 +74,7 @@ namespace Core {
 				label				= nullptr;
 			}
 
-			TextArea::TextArea(Props &p, std::string n, Props_TextArea c) {
+			TextArea::TextArea(Props &p, std::string n, Props_TextArea &c) {
 				name				= n;
 
 				bHasParent			= true;

@@ -27,8 +27,8 @@ namespace Core {
 			class Label : public Base::Generic<Props_Label> {
 				public:
 					Label();
-					Label(std::string n, Props_Label c);
-					Label(Props &p, std::string n, Props_Label c);
+					Label(std::string n, Props_Label &c);
+					Label(Props &p, std::string n, Props_Label &c);
 					Label(std::string n, Props_Label *c);
 					Label(Props &p, std::string n, Props_Label *c);
 					virtual ~Label();
@@ -44,7 +44,7 @@ namespace Core {
 
 			Label::Label() {}
 
-			Label::Label(std::string n, Props_Label c) {
+			Label::Label(std::string n, Props_Label &c) {
 				name			= n;
 				bInit			= false;
 
@@ -57,7 +57,7 @@ namespace Core {
 				if(con->text == "") con->text = n;
 			}
 
-			Label::Label(Props &p, std::string n, Props_Label c) {
+			Label::Label(Props &p, std::string n, Props_Label &c) {
 				name			= n;
 				bInit			= false;
 

@@ -35,14 +35,14 @@ namespace Core {
 					friend class AnySlider;
 				public:
 					Slider();
-					Slider(std::string n, T *ptr, Props_Slider c);
+					Slider(std::string n, T *ptr, Props_Slider &c);
 					Slider(std::string n, T *ptr, Props_Slider *c);
-					Slider(Props &p, std::string n, T *ptr, Props_Slider c);
+					Slider(Props &p, std::string n, T *ptr, Props_Slider &c);
 					Slider(Props &p, std::string n, T *ptr, Props_Slider *c);
 
-					Slider(std::string n, T t, Props_Slider c);
+					Slider(std::string n, T t, Props_Slider &c);
 					Slider(std::string n, T t, Props_Slider *c);
-					Slider(Props &p, std::string n, T t, Props_Slider c);
+					Slider(Props &p, std::string n, T t, Props_Slider &c);
 					Slider(Props &p, std::string n, T t, Props_Slider *c);
 					virtual ~Slider();
 
@@ -93,7 +93,7 @@ namespace Core {
 				bLocalValue			= true;
 			}
 
-			template <class T> Slider<T>::Slider(std::string n, T *ptr, Props_Slider c) {
+			template <class T> Slider<T>::Slider(std::string n, T *ptr, Props_Slider &c) {
 				currentPos			= Vector2f(0.0f);
 				bHasFocus			= false;
 				minPos				= 0.0f;
@@ -144,7 +144,7 @@ namespace Core {
 				if(this->con->text == "") this->con->text = n;
 			}
 
-			template <class T> Slider<T>::Slider(Props &p, std::string n, T *ptr, Props_Slider c) {
+			template <class T> Slider<T>::Slider(Props &p, std::string n, T *ptr, Props_Slider &c) {
 				currentPos			= Vector2f(0.0f);
 				bHasFocus			= false;
 				minPos				= 0.0f;
@@ -195,7 +195,7 @@ namespace Core {
 				if(this->con->text == "") this->con->text = n;
 			}
 
-			template <class T> Slider<T>::Slider(std::string n, T t, Props_Slider c) {
+			template <class T> Slider<T>::Slider(std::string n, T t, Props_Slider &c) {
 				currentPos			= Vector2f(0.0f);
 				bHasFocus			= false;
 				minPos				= 0.0f;
@@ -246,7 +246,7 @@ namespace Core {
 				if(this->con->text == "") this->con->text = n;
 			}
 
-			template <class T> Slider<T>::Slider(Props &p, std::string n, T t, Props_Slider c) {
+			template <class T> Slider<T>::Slider(Props &p, std::string n, T t, Props_Slider &c) {
 				currentPos			= Vector2f(0.0f);
 				bHasFocus			= false;
 				minPos				= 0.0f;
@@ -686,24 +686,24 @@ namespace Core {
 
 				public:
 					// FIXME: Make these private somehow?
-					void set(std::string n, float * fPtr, Props_Slider c)				{	tag = FLOAT;	f = new Object::Slider<float>(n, fPtr, c);		}
+					void set(std::string n, float * fPtr, Props_Slider &c)				{	tag = FLOAT;	f = new Object::Slider<float>(n, fPtr, c);		}
 					void set(std::string n, float * fPtr, Props_Slider *c)				{	tag = FLOAT;	f = new Object::Slider<float>(n, fPtr, c);		}
-					void set(std::string n, int * iPtr, Props_Slider c)					{	tag = INT;		i = new Object::Slider<int>(n, iPtr, c);		}
+					void set(std::string n, int * iPtr, Props_Slider &c)				{	tag = INT;		i = new Object::Slider<int>(n, iPtr, c);		}
 					void set(std::string n, int * iPtr, Props_Slider *c)				{	tag = INT;		i = new Object::Slider<int>(n, iPtr, c);		}
 
-					void set(std::string n, float fVal, Props_Slider c)					{	tag = FLOAT;	f = new Object::Slider<float>(n, fVal, c);			}
+					void set(std::string n, float fVal, Props_Slider &c)				{	tag = FLOAT;	f = new Object::Slider<float>(n, fVal, c);			}
 					void set(std::string n, float fVal, Props_Slider *c)				{	tag = FLOAT;	f = new Object::Slider<float>(n, fVal, c);			}
-					void set(std::string n, int iVal, Props_Slider c)					{	tag = INT;		i = new Object::Slider<int>(n, iVal, c);			}
+					void set(std::string n, int iVal, Props_Slider &c)					{	tag = INT;		i = new Object::Slider<int>(n, iVal, c);			}
 					void set(std::string n, int iVal, Props_Slider *c)					{	tag = INT;		i = new Object::Slider<int>(n, iVal, c);			}
 
-					void set(Props &p, std::string n, float * fPtr, Props_Slider c)		{	tag = FLOAT;	f = new Object::Slider<float>(p, n, fPtr, c);	}
+					void set(Props &p, std::string n, float * fPtr, Props_Slider &c)	{	tag = FLOAT;	f = new Object::Slider<float>(p, n, fPtr, c);	}
 					void set(Props &p, std::string n, float * fPtr, Props_Slider *c)	{	tag = FLOAT;	f = new Object::Slider<float>(p, n, fPtr, c);	}
-					void set(Props &p, std::string n, int * iPtr, Props_Slider c)		{	tag = INT;		i = new Object::Slider<int>(p, n, iPtr, c);		}
+					void set(Props &p, std::string n, int * iPtr, Props_Slider &c)		{	tag = INT;		i = new Object::Slider<int>(p, n, iPtr, c);		}
 					void set(Props &p, std::string n, int * iPtr, Props_Slider *c)		{	tag = INT;		i = new Object::Slider<int>(p, n, iPtr, c);		}
 
-					void set(Props &p, std::string n, float fVal, Props_Slider c)		{	tag = FLOAT;	f = new Object::Slider<float>(p, n, fVal, c);		}
+					void set(Props &p, std::string n, float fVal, Props_Slider &c)		{	tag = FLOAT;	f = new Object::Slider<float>(p, n, fVal, c);		}
 					void set(Props &p, std::string n, float fVal, Props_Slider *c)		{	tag = FLOAT;	f = new Object::Slider<float>(p, n, fVal, c);		}
-					void set(Props &p, std::string n, int iVal, Props_Slider c)			{	tag = INT;		i = new Object::Slider<int>(p, n, iVal, c);		}
+					void set(Props &p, std::string n, int iVal, Props_Slider &c)		{	tag = INT;		i = new Object::Slider<int>(p, n, iVal, c);		}
 					void set(Props &p, std::string n, int iVal, Props_Slider *c)		{	tag = INT;		i = new Object::Slider<int>(p, n, iVal, c);		}
 
 					Object::Slider<float>	* getF() {

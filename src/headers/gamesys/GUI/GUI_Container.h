@@ -46,8 +46,7 @@ namespace Core {
 				bool isActive() { return Object::Base::Interactive_Base::bFocusPresent; };
 
 			private:
-				std::vector<GUI_Container*>			containers;
-				Map_si								map;
+				Core::t_Vector<GUI_Container*> containers;
 				void execObjects();
 				void execToolTips();
 				GUI_Container & pushData(std::string name, GUI_Container *data);
@@ -56,23 +55,22 @@ namespace Core {
 			public:
 				GUI_Container & add(std::string containerName, Props_Window &c, Props *p=nullptr);
 				GUI_Container & add(std::string containerName, Props_Window *c, Props *p=nullptr);
-
-				GUI_Container & operator[](std::string containerName)			{	if(map.count(containerName)>0) return *containers[map[containerName]]; else throw std::runtime_error("Invalid Container: "+containerName);	}
-				Props_Window  & operator()(std::string containerName)			{	if(map.count(containerName)>0) return *containers[map[containerName]]->con; else throw std::runtime_error("Invalid Container: "+containerName);	}
+				GUI_Container & operator[](std::string containerName)			{	return *containers[containerName];			}
+				Props_Window  & operator()(std::string containerName)			{	return *containers[containerName]->con;		}
 
 				class WindowInterface {
 						friend class GUI_Container;
 					private:
-						std::vector<Object::Window*>		windows;
-						Map_si								map;
+						Core::t_Vector<Object::Window*> windows;
 						GUI_Container * gui;
 						Object::Window & pushData(std::string name, Object::Window *data);
 
 					public:
-						Object::Window & add(std::string containerName, Props_Window c, Props *p=nullptr);
+						Object::Window & add(std::string containerName, Props_Window &c, Props *p=nullptr);
 						Object::Window & add(std::string containerName, Props_Window *c, Props *p=nullptr);
-						Object::Window & operator[](std::string windowName)			{	if(map.count(windowName)>0) return *windows[map[windowName]]; else throw std::runtime_error("Invalid Window: "+windowName);	}
-						Props_Window   & operator()(std::string windowName)			{	if(map.count(windowName)>0) return *windows[map[windowName]]->con; else throw std::runtime_error("Invalid Window: "+windowName);	}
+						Object::Window & operator[](std::string windowName)			{	return *windows[windowName];		}
+						Props_Window   & operator()(std::string windowName)			{	return *windows[windowName]->con;	}
+
 						WindowInterface(GUI_Container * parent) { gui = parent; }
 						~WindowInterface() { for (auto & window : windows) delete window; }
 				};
@@ -81,16 +79,15 @@ namespace Core {
 				class LabelInterface {
 						friend class GUI_Container;
 					private:
-						std::vector<Object::Label*>			labels;
-						Map_si								map;
+						Core::t_Vector<Object::Label*> labels;
 						GUI_Container * gui;
 						Object::Label & pushData(std::string name, Object::Label *data);
 
 					public:
-						Object::Label & add(std::string labelName, Props_Label c, Props *p=nullptr);
+						Object::Label & add(std::string labelName, Props_Label &c, Props *p=nullptr);
 						Object::Label & add(std::string labelName, Props_Label *c, Props *p=nullptr);
-						Object::Label & operator[](std::string labelName)			{	if(map.count(labelName)>0) return *labels[map[labelName]]; else throw std::runtime_error("Invalid Label: "+labelName);	}
-						Props_Label	  & operator()(std::string labelName)			{	if(map.count(labelName)>0) return *labels[map[labelName]]->con; else throw std::runtime_error("Invalid Label: "+labelName);	}
+						Object::Label & operator[](std::string labelName)			{	return *labels[labelName];		}
+						Props_Label	  & operator()(std::string labelName)			{	return *labels[labelName]->con;	}
 						LabelInterface(GUI_Container * parent) { gui = parent; }
 						~LabelInterface() { for (auto & label : labels) delete label; }
 				};
@@ -99,19 +96,17 @@ namespace Core {
 				class ButtonInterface {
 						friend class GUI_Container;
 					private:
-						std::vector<Object::Button*>	buttons;
-						Map_si							map;
+						Core::t_Vector<Object::Button*> buttons;
 						GUI_Container * gui;
 						Object::Button & pushData(std::string name, Object::Button *data);
 
 					public:
-						Object::Button & add(std::string buttonName, bool  b, Props_Button  c, Props *p=nullptr);
+						Object::Button & add(std::string buttonName, bool  b, Props_Button &c, Props *p=nullptr);
 						Object::Button & add(std::string buttonName, bool  b, Props_Button *c, Props *p=nullptr);
-						Object::Button & add(std::string buttonName, bool *b, Props_Button  c, Props *p=nullptr);
+						Object::Button & add(std::string buttonName, bool *b, Props_Button &c, Props *p=nullptr);
 						Object::Button & add(std::string buttonName, bool *b, Props_Button *c, Props *p=nullptr);
-
-						Object::Button		&operator[](std::string buttonName)			{	if(map.count(buttonName)>0) return *buttons[map[buttonName]]; else throw std::runtime_error("Invalid Button: "+buttonName);	}
-						Props_Button	&operator()(std::string buttonName)			{	if(map.count(buttonName)>0) return *buttons[map[buttonName]]->con; else throw std::runtime_error("Invalid Button: "+buttonName);	}
+						Object::Button & operator[](std::string buttonName)			{	return *buttons[buttonName];		}
+						Props_Button   & operator()(std::string buttonName)			{	return *buttons[buttonName]->con;	}
 						ButtonInterface(GUI_Container * parent) { gui = parent; }
 						~ButtonInterface() { for (auto & button : buttons) delete button; }
 				};
@@ -120,19 +115,16 @@ namespace Core {
 				class SliderInterface {
 						friend class GUI_Container;
 					private:
-						std::vector<Object::AnySlider*>		sliders;
-						Map_si								map;
+						Core::t_Vector<Object::AnySlider*> sliders;
 						GUI_Container * gui;
 						Object::AnySlider & pushData(std::string name, Object::AnySlider *data);
 
 					public:
-						template <typename T> Object::AnySlider & add(std::string sliderName, T *ptr, Props_Slider c, Props *p=nullptr);
+						template <typename T> Object::AnySlider & add(std::string sliderName, T *ptr, Props_Slider &c, Props *p=nullptr);
 						template <typename T> Object::AnySlider & add(std::string sliderName, T *ptr, Props_Slider *c, Props *p=nullptr);
-
-						template <typename T> Object::AnySlider & add(std::string sliderName, T t, Props_Slider c, Props *p=nullptr);
+						template <typename T> Object::AnySlider & add(std::string sliderName, T t, Props_Slider &c, Props *p=nullptr);
 						template <typename T> Object::AnySlider & add(std::string sliderName, T t, Props_Slider *c, Props *p=nullptr);
-
-						Object::AnySlider	&operator[](std::string sliderName)			{	if(map.count(sliderName)>0) return *sliders[map[sliderName]]; else throw std::runtime_error("Invalid Slider: "+sliderName);	}
+						Object::AnySlider & operator[](std::string sliderName)		{	return *sliders[sliderName];	}
 //						Props_Slider	&operator()(std::string sliderName)			{	return *sliders[map[sliderName]]->con;	}
 						SliderInterface(GUI_Container * parent) { gui = parent; }
 						~SliderInterface() { for (auto & slider : sliders) delete slider; }
@@ -142,17 +134,15 @@ namespace Core {
 				class FieldInterface {
 						friend class GUI_Container;
 					private:
-						std::vector<Object::AnyField*>		fields;
-						Map_si								map;
+						Core::t_Vector<Object::AnyField*> fields;
 						GUI_Container * gui;
 						Object::AnyField & pushData(std::string name, Object::AnyField *data);
 
 					public:
-						template <typename T> Object::AnyField & add(std::string fieldName, T * ptr, Props_Field c, Props *p=nullptr);
+						template <typename T> Object::AnyField & add(std::string fieldName, T * ptr, Props_Field &c, Props *p=nullptr);
 						template <typename T> Object::AnyField & add(std::string fieldName, T * ptr, Props_Field *c, Props *p=nullptr);
-
 						Props_Field * get(std::string fieldName);
-						Object::AnyField	&operator[](std::string fieldName)			{	if(map.count(fieldName)>0) return *fields[map[fieldName]]; else throw std::runtime_error("Invalid Field: "+fieldName);	}
+						Object::AnyField & operator[](std::string fieldName)		{	return *fields[fieldName];	}
 //						Props_Field	&operator()(std::string fieldName)			{	return *fields[map[fieldName]]->get();	}
 						FieldInterface(GUI_Container * parent) { gui = parent; }
 						~FieldInterface() { for (auto & field : fields) delete field; }
@@ -162,17 +152,15 @@ namespace Core {
 				class TextAreaInterface {
 						friend class GUI_Container;
 					private:
-						std::vector<Object::TextArea*>		textAreas;
-						Map_si								map;
+						Core::t_Vector<Object::TextArea*> textAreas;
 						GUI_Container * gui;
 						Object::TextArea & pushData(std::string name, Object::TextArea *data);
 
 					public:
-						Object::TextArea & add(std::string textAreaName, Props_TextArea c, Props *p=nullptr);
+						Object::TextArea & add(std::string textAreaName, Props_TextArea &c, Props *p=nullptr);
 						Object::TextArea & add(std::string textAreaName, Props_TextArea *c, Props *p=nullptr);
-
-						Object::TextArea		&operator[](std::string textAreaName)	{	if(map.count(textAreaName)>0) return *textAreas[map[textAreaName]]; else throw std::runtime_error("Invalid TextArea: "+textAreaName);	}
-						Props_TextArea	&operator()(std::string textAreaName)	{	if(map.count(textAreaName)>0) return *textAreas[map[textAreaName]]->con; else throw std::runtime_error("Invalid TextArea: "+textAreaName);	}
+						Object::TextArea &operator[](std::string textAreaName)	{	return *textAreas[textAreaName];		}
+						Props_TextArea	 &operator()(std::string textAreaName)	{	return *textAreas[textAreaName]->con;	}
 						TextAreaInterface(GUI_Container * parent) { gui = parent; }
 						~TextAreaInterface() { for (auto & textArea : textAreas) delete textArea; }
 				};
@@ -181,17 +169,15 @@ namespace Core {
 				class TextEditInterface {
 						friend class GUI_Container;
 					private:
-						std::vector<Object::TextEdit*>		textEdits;
-						Map_si								map;
+						Core::t_Vector<Object::TextEdit*> textEdits;
 						GUI_Container * gui;
 						Object::TextEdit & pushData(std::string name, Object::TextEdit *data);
 
 					public:
-						Object::TextEdit & add(std::string textEditName, Props_TextArea c, Props *p=nullptr);
+						Object::TextEdit & add(std::string textEditName, Props_TextArea &c, Props *p=nullptr);
 						Object::TextEdit & add(std::string textEditName, Props_TextArea *c, Props *p=nullptr);
-
-						Object::TextEdit		&operator[](std::string textEditName)	{	if(map.count(textEditName)>0) return *textEdits[map[textEditName]]; else throw std::runtime_error("Invalid TextEdit: "+textEditName);	}
-						Props_TextArea	&operator()(std::string textEditName)	{	if(map.count(textEditName)>0) return *textEdits[map[textEditName]]->con; else throw std::runtime_error("Invalid TextEdit: "+textEditName);	}
+						Object::TextEdit &operator[](std::string textEditName)	{	return *textEdits[textEditName];		}
+						Props_TextArea	 &operator()(std::string textEditName)	{	return *textEdits[textEditName]->con;	}
 						TextEditInterface(GUI_Container * parent) { gui = parent; }
 						~TextEditInterface() { for (auto & textEdit : textEdits) delete textEdit; }
 				};
@@ -200,17 +186,15 @@ namespace Core {
 				class ColorSwatchInterface {
 						friend class GUI_Container;
 					private:
-						std::vector<Object::ColorSwatch*>	colorSwatches;
-						Map_si								map;
+						Core::t_Vector<Object::ColorSwatch*> colorSwatches;
 						GUI_Container * gui;
 						Object::ColorSwatch & pushData(std::string name, Object::ColorSwatch *data);
 
 					public:
-						Object::ColorSwatch & add(std::string colorSwatchName, Color * ptr, Props_ColorSwatch c, Props *p=nullptr);
+						Object::ColorSwatch & add(std::string colorSwatchName, Color * ptr, Props_ColorSwatch &c, Props *p=nullptr);
 						Object::ColorSwatch & add(std::string colorSwatchName, Color * ptr, Props_ColorSwatch *c, Props *p=nullptr);
-
-						Object::ColorSwatch		&operator[](std::string colorSwatchName)	{	if(map.count(colorSwatchName)>0) return *colorSwatches[map[colorSwatchName]]; else throw std::runtime_error("Invalid ColorSwatch: "+colorSwatchName);	}
-						Props_ColorSwatch	&operator()(std::string colorSwatchName)	{	if(map.count(colorSwatchName)>0) return *colorSwatches[map[colorSwatchName]]->con; else throw std::runtime_error("Invalid ColorSwatch: "+colorSwatchName);	}
+						Object::ColorSwatch &operator[](std::string colorSwatchName)	{	return *colorSwatches[colorSwatchName];			}
+						Props_ColorSwatch	&operator()(std::string colorSwatchName)	{	return *colorSwatches[colorSwatchName]->con;	}
 						ColorSwatchInterface(GUI_Container * parent) { gui = parent; }
 						~ColorSwatchInterface() { for (auto & colorSwatch : colorSwatches) delete colorSwatch; }
 				};
@@ -220,23 +204,22 @@ namespace Core {
 						friend class GUI_Container;
 
 					private:
-						std::vector<Object::CheckBox*>		checkBoxes;
-						Map_si								map;
+						Core::t_Vector<Object::CheckBox*> checkBoxes;
 						GUI_Container * gui;
 						Object::CheckBox & pushData(std::string name, Object::CheckBox *data);
 
 					public:
-						Object::CheckBox & add(std::string checkBoxName, bool b, Props_CheckBox c, Props *p=nullptr);
+						Object::CheckBox & add(std::string checkBoxName, bool b, Props_CheckBox &c, Props *p=nullptr);
 						Object::CheckBox & add(std::string checkBoxName, bool b, Props_CheckBox *c, Props *p=nullptr);
-						Object::CheckBox & add(std::string checkBoxName, bool *b, Props_CheckBox c, Props *p=nullptr);
+						Object::CheckBox & add(std::string checkBoxName, bool *b, Props_CheckBox &c, Props *p=nullptr);
 						Object::CheckBox & add(std::string checkBoxName, bool *b, Props_CheckBox *c, Props *p=nullptr);
 
 						t_BIFS groupState(int iGroup, int n=0);
 						t_BIFS groupState(std::string sGroup, int n=0);
 //						auto groupState(std::string sGroup, int n);
 
-						Object::CheckBox		&operator[](std::string checkBoxName)	{	if(map.count(checkBoxName)>0) return *checkBoxes[map[checkBoxName]]; else throw std::runtime_error("Invalid CheckBox: "+checkBoxName);	}
-						Props_CheckBox	&operator()(std::string checkBoxName)	{	if(map.count(checkBoxName)>0) return *checkBoxes[map[checkBoxName]]->con; else throw std::runtime_error("Invalid CheckBox: "+checkBoxName);	}
+						Object::CheckBox &operator[](std::string checkBoxName)	{	return *checkBoxes[checkBoxName];		}
+						Props_CheckBox	 &operator()(std::string checkBoxName)	{	return *checkBoxes[checkBoxName]->con;	}
 						CheckBoxInterface(GUI_Container * parent) { gui = parent; }
 						~CheckBoxInterface() { for (auto & checkBox : checkBoxes) delete checkBox; }
 				};
@@ -246,19 +229,17 @@ namespace Core {
 						friend class GUI_Container;
 
 					private:
-						std::vector<Object::Icon*>			icons;
-						Map_si								map;
+						Core::t_Vector<Object::Icon*> icons;
 						GUI_Container * gui;
 						Object::Icon & pushData(std::string name, Object::Icon *data);
 
 					public:
-						Object::Icon & add(std::string iconName, bool b, Props_Icon c, Props *p=nullptr);
+						Object::Icon & add(std::string iconName, bool b, Props_Icon &c, Props *p=nullptr);
 						Object::Icon & add(std::string iconName, bool b, Props_Icon *c, Props *p=nullptr);
-						Object::Icon & add(std::string iconName, bool *b, Props_Icon c, Props *p=nullptr);
+						Object::Icon & add(std::string iconName, bool *b, Props_Icon &c, Props *p=nullptr);
 						Object::Icon & add(std::string iconName, bool *b, Props_Icon *c, Props *p=nullptr);
-
-						Object::Icon		&operator[](std::string iconName)			{	if(map.count(iconName)>0) return *icons[map[iconName]]; else throw std::runtime_error("Invalid Icon: "+iconName);	}
-						Props_Icon	&operator()(std::string iconName)			{	if(map.count(iconName)>0) return *icons[map[iconName]]->con; else throw std::runtime_error("Invalid Icon: "+iconName);	}
+						Object::Icon & operator[](std::string iconName)			{	return *icons[iconName];		}
+						Props_Icon	 & operator()(std::string iconName)			{	return *icons[iconName]->con;	}
 						IconInterface(GUI_Container * parent) { gui = parent; }
 						~IconInterface() { for (auto & icon : icons) delete icon; }
 				};
@@ -268,17 +249,15 @@ namespace Core {
 						friend class GUI_Container;
 
 					private:
-						std::vector<Object::Sprite*>		sprites;
-						Map_si								map;
+						Core::t_Vector<Object::Sprite*> sprites;
 						GUI_Container * gui;
 						Object::Sprite & pushData(std::string name, Object::Sprite *data);
 
 					public:
-						Object::Sprite & add(std::string spriteName, Props_Sprite c, Props *p=nullptr);
+						Object::Sprite & add(std::string spriteName, Props_Sprite &c, Props *p=nullptr);
 						Object::Sprite & add(std::string spriteName, Props_Sprite *c, Props *p=nullptr);
-
-						Object::Sprite		&operator[](std::string spriteName)			{	if(map.count(spriteName)>0) return *sprites[map[spriteName]]; else throw std::runtime_error("Invalid Sprite: "+spriteName);	}
-						Props_Sprite	&operator()(std::string spriteName)			{	if(map.count(spriteName)>0) return *sprites[map[spriteName]]->con; else throw std::runtime_error("Invalid Sprite: "+spriteName);	}
+						Object::Sprite &operator[](std::string spriteName)			{	return *sprites[spriteName];		}
+						Props_Sprite   &operator()(std::string spriteName)			{	return *sprites[spriteName]->con;	}
 						SpriteInterface(GUI_Container * parent) { gui = parent; }
 						~SpriteInterface() { for (auto & sprite : sprites) delete sprite; }
 				};
@@ -288,19 +267,17 @@ namespace Core {
 						friend class GUI_Container;
 
 					private:
-						std::vector<Object::ProgressBar*>		progressBars;
-						Map_si									map;
+						Core::t_Vector<Object::ProgressBar*> progressBars;
 						GUI_Container * gui;
 						Object::ProgressBar & pushData(std::string name, Object::ProgressBar *data);
 
 					public:
-						Object::ProgressBar & add(std::string progressBarName, int progress, Props_ProgressBar c, Props *p=nullptr);
+						Object::ProgressBar & add(std::string progressBarName, int progress, Props_ProgressBar &c, Props *p=nullptr);
 						Object::ProgressBar & add(std::string progressBarName, int progress, Props_ProgressBar *c, Props *p=nullptr);
-						Object::ProgressBar & add(std::string progressBarName, int *progress, Props_ProgressBar c, Props *p=nullptr);
+						Object::ProgressBar & add(std::string progressBarName, int *progress, Props_ProgressBar &c, Props *p=nullptr);
 						Object::ProgressBar & add(std::string progressBarName, int *progress, Props_ProgressBar *c, Props *p=nullptr);
-
-						Object::ProgressBar		&operator[](std::string progressBarName)			{	if(map.count(progressBarName)>0) return *progressBars[map[progressBarName]]; else throw std::runtime_error("Invalid ProgressBar: "+progressBarName);	}
-						Props_ProgressBar		&operator()(std::string progressBarName)			{	if(map.count(progressBarName)>0) return *progressBars[map[progressBarName]]->con; else throw std::runtime_error("Invalid ProgressBar: "+progressBarName);	}
+						Object::ProgressBar &operator[](std::string progressBarName)			{	return *progressBars[progressBarName];		}
+						Props_ProgressBar	&operator()(std::string progressBarName)			{	return *progressBars[progressBarName]->con;	}
 						ProgressBarInterface(GUI_Container * parent) { gui = parent; }
 						~ProgressBarInterface() { for (auto & progressBar : progressBars) delete progressBar; }
 				};
@@ -309,17 +286,15 @@ namespace Core {
 				class ComboBoxInterface {
 						friend class GUI_Container;
 					private:
-						std::vector<Object::ComboBox*>	comboBoxes;
-						Map_si							map;
+						Core::t_Vector<Object::ComboBox*> comboBoxes;
 						GUI_Container * gui;
 						Object::ComboBox & pushData(std::string name, Object::ComboBox *data);
 
 					public:
-						Object::ComboBox & add(std::string comboBoxName, Props_ComboBox  c, Props *p=nullptr);
+						Object::ComboBox & add(std::string comboBoxName, Props_ComboBox  &c, Props *p=nullptr);
 						Object::ComboBox & add(std::string comboBoxName, Props_ComboBox *c, Props *p=nullptr);
-
-						Object::ComboBox	&operator[](std::string comboBoxName)	{	if(map.count(comboBoxName)>0) return *comboBoxes[map[comboBoxName]]; else throw std::runtime_error("Invalid ComboBox: "+comboBoxName);	}
-						Props_ComboBox		&operator()(std::string comboBoxName)	{	if(map.count(comboBoxName)>0) return *comboBoxes[map[comboBoxName]]->con; else throw std::runtime_error("Invalid ComboBox: "+comboBoxName);	}
+						Object::ComboBox & operator[](std::string comboBoxName)	{	return *comboBoxes[comboBoxName];		}
+						Props_ComboBox	 & operator()(std::string comboBoxName)	{	return *comboBoxes[comboBoxName]->con;	}
 						ComboBoxInterface(GUI_Container * parent) { gui = parent; }
 						~ComboBoxInterface() { for (auto & comboBox : comboBoxes) delete comboBox; }
 				};
@@ -332,40 +307,16 @@ namespace Core {
 		 * ==========================================================
 		 */
 		GUI_Container & GUI_Container::pushData(std::string name, GUI_Container *data) {
-//			debug.log("[8]: GUI_Container::pushData()");
 			data->init();
-//			debug.log("[9]: GUI_Container::pushData()");
-			containers.push_back(data);
-//			debug.log("[10]: pushData()");
-			uint id = containers.size()-1;
-//			debug.log("[11]: GUI_Container::pushData()");
-			map.insert(make_pair(name, id));
-//			debug.log("[12]: GUI_Container::pushData()");
-			return *containers[id];
+			return *containers.add(name, data);
 		}
 
 		GUI_Container & GUI_Container::add(std::string containerName, Props_Window &c, Props *p) {
-//			debug.log("[0]: GUI_Container::add()");
 			GUI_Container * container;
-//			debug.log("[1]: GUI_Container::add()");
-			if(p!=nullptr) {
-//				debug.log("[2]: GUI_Container::add()");
-//				Core::debug.logIncreaseIndent();
-				container = new GUI_Container(*p, containerName, c);
-//				Core::debug.logDecreaseIndent();
-//				debug.log("[3]: GUI_Container::add()");
-			}
-			else {
-//				debug.log("[4]: GUI_Container::add()");
-//				Core::debug.logIncreaseIndent();
-				container = new GUI_Container(*con, containerName, c);
-//				Core::debug.logDecreaseIndent();
-//				debug.log("[5]: GUI_Container::add()");
-			}
+			if(p!=nullptr) container = new GUI_Container(*p, containerName, c);
+			else container = new GUI_Container(*con, containerName, c);
 			container->con->bNoInput = true;
-//			debug.log("[6]: GUI_Container::add()");
 			container->init();
-//			debug.log("[7]: GUI_Container::add()");
 			return pushData(containerName, container);
 		}
 
@@ -385,13 +336,10 @@ namespace Core {
 		 */
 		Object::Window & GUI_Container::WindowInterface::pushData(std::string name, Object::Window *data) {
 			data->init();
-			windows.push_back(data);
-			uint id = windows.size()-1;
-			map.insert(make_pair(name, id));
-			return *windows[id];
+			return *windows.add(name, data);
 		}
 
-		Object::Window & GUI_Container::WindowInterface::add(std::string windowName, Props_Window c, Props *p) {
+		Object::Window & GUI_Container::WindowInterface::add(std::string windowName, Props_Window &c, Props *p) {
 			Object::Window * window;
 			if(p!=nullptr) window = new Object::Window(*p, windowName, c);
 			else window = new Object::Window(*gui->con, windowName, c);
@@ -412,13 +360,10 @@ namespace Core {
 		 */
 		Object::Label & GUI_Container::LabelInterface::pushData(std::string name, Object::Label *data) {
 			data->init();
-			labels.push_back(data);
-			uint id = labels.size()-1;
-			map.insert(make_pair(name, id));
-			return *labels[id];
+			return *labels.add(name, data);
 		}
 
-		Object::Label & GUI_Container::LabelInterface::add(std::string labelName, Props_Label c, Props *p) {
+		Object::Label & GUI_Container::LabelInterface::add(std::string labelName, Props_Label &c, Props *p) {
 			Object::Label * label;
 			if(p!=nullptr) label = new Object::Label(*p, labelName, c);
 			else label = new Object::Label(*gui->con, labelName, c);
@@ -439,13 +384,10 @@ namespace Core {
 		 */
 		Object::Button & GUI_Container::ButtonInterface::pushData(std::string name, Object::Button *data) {
 			data->init();
-			buttons.push_back(data);
-			uint id = buttons.size()-1;
-			map.insert(make_pair(name, id));
-			return *buttons[id];
+			return *buttons.add(name, data);
 		}
 
-		Object::Button & GUI_Container::ButtonInterface::add(std::string buttonName, bool b, Props_Button c, Props *p) {
+		Object::Button & GUI_Container::ButtonInterface::add(std::string buttonName, bool b, Props_Button &c, Props *p) {
 			Object::Button * button;
 			if(p!=nullptr) button = new Object::Button(*p, buttonName, b, c);
 			else button = new Object::Button(*gui->con, buttonName, b, c);
@@ -459,7 +401,7 @@ namespace Core {
 			return pushData(buttonName, button);
 		}
 
-		Object::Button & GUI_Container::ButtonInterface::add(std::string buttonName, bool *b, Props_Button c, Props *p) {
+		Object::Button & GUI_Container::ButtonInterface::add(std::string buttonName, bool *b, Props_Button &c, Props *p) {
 			Object::Button * button;
 			if(p!=nullptr) button = new Object::Button(*p, buttonName, b, c);
 			else button = new Object::Button(*gui->con, buttonName, b, c);
@@ -480,13 +422,10 @@ namespace Core {
 		 */
 		Object::AnySlider & GUI_Container::SliderInterface::pushData(std::string name, Object::AnySlider *data) {
 			data->init();
-			sliders.push_back(data);
-			uint id = sliders.size()-1;
-			map.insert(make_pair(name, id));
-			return *sliders[id];
+			return *sliders.add(name, data);
 		}
 
-		template <typename T> Object::AnySlider & GUI_Container::SliderInterface::add(std::string sliderName, T *ptr, Props_Slider c, Props *p) {
+		template <typename T> Object::AnySlider & GUI_Container::SliderInterface::add(std::string sliderName, T *ptr, Props_Slider &c, Props *p) {
 			Object::AnySlider * slider = new Object::AnySlider();
 			if(p!=nullptr) slider->set(*p, sliderName, ptr, c);
 			else slider->set(*gui->con, sliderName, ptr, c);
@@ -501,7 +440,7 @@ namespace Core {
 			return pushData(sliderName, slider);
 		}
 
-		template <typename T> Object::AnySlider & GUI_Container::SliderInterface::add(std::string sliderName, T t, Props_Slider c, Props *p) {
+		template <typename T> Object::AnySlider & GUI_Container::SliderInterface::add(std::string sliderName, T t, Props_Slider &c, Props *p) {
 			Object::AnySlider * slider = new Object::AnySlider();
 			if(p!=nullptr) slider->set(*p, sliderName, t, c);
 			else slider->set(*gui->con, sliderName, t, c);
@@ -523,13 +462,10 @@ namespace Core {
 		 */
 		Object::AnyField & GUI_Container::FieldInterface::pushData(std::string name, Object::AnyField *data) {
 			data->init();
-			fields.push_back(data);
-			uint id = fields.size()-1;
-			map.insert(make_pair(name, id));
-			return *fields[id];
+			return *fields.add(name, data);
 		}
 
-		template <typename T> Object::AnyField & GUI_Container::FieldInterface::add(std::string fieldName, T * ptr, Props_Field c, Props *p) {
+		template <typename T> Object::AnyField & GUI_Container::FieldInterface::add(std::string fieldName, T * ptr, Props_Field &c, Props *p) {
 			Object::AnyField * field = new Object::AnyField();
 			if(p!=nullptr) field->set(*p, fieldName, ptr, c);
 			else field->set(*gui->con, fieldName, ptr, c);
@@ -550,13 +486,10 @@ namespace Core {
 		 */
 		Object::TextArea & GUI_Container::TextAreaInterface::pushData(std::string name, Object::TextArea *data) {
 			data->init();
-			textAreas.push_back(data);
-			uint id = textAreas.size()-1;
-			map.insert(make_pair(name, id));
-			return *textAreas[id];
+			return *textAreas.add(name, data);
 		}
 
-		Object::TextArea & GUI_Container::TextAreaInterface::add(std::string textAreaName, Props_TextArea c, Props *p) {
+		Object::TextArea & GUI_Container::TextAreaInterface::add(std::string textAreaName, Props_TextArea &c, Props *p) {
 			Object::TextArea * textArea;
 			if(p!=nullptr) textArea = new Object::TextArea(*p, textAreaName, c);
 			else textArea = new Object::TextArea(*gui->con, textAreaName, c);
@@ -577,13 +510,10 @@ namespace Core {
 		 */
 		Object::TextEdit & GUI_Container::TextEditInterface::pushData(std::string name, Object::TextEdit *data) {
 			data->init();
-			textEdits.push_back(data);
-			uint id = textEdits.size()-1;
-			map.insert(make_pair(name, id));
-			return *textEdits[id];
+			return *textEdits.add(name, data);
 		}
 
-		Object::TextEdit & GUI_Container::TextEditInterface::add(std::string textEditName, Props_TextArea c, Props *p) {
+		Object::TextEdit & GUI_Container::TextEditInterface::add(std::string textEditName, Props_TextArea &c, Props *p) {
 			Object::TextEdit * textEdit;
 			if(p!=nullptr) textEdit = new Object::TextEdit(*p, textEditName, c);
 			else textEdit = new Object::TextEdit(*gui->con, textEditName, c);
@@ -606,13 +536,10 @@ namespace Core {
 		 */
 		Object::ColorSwatch & GUI_Container::ColorSwatchInterface::pushData(std::string name, Object::ColorSwatch *data) {
 			data->init();
-			colorSwatches.push_back(data);
-			uint id = colorSwatches.size()-1;
-			map.insert(make_pair(name, id));
-			return *colorSwatches[id];
+			return *colorSwatches.add(name, data);
 		}
 
-		Object::ColorSwatch & GUI_Container::ColorSwatchInterface::add(std::string colorSwatchName, Color * ptr, Props_ColorSwatch c, Props *p) {
+		Object::ColorSwatch & GUI_Container::ColorSwatchInterface::add(std::string colorSwatchName, Color * ptr, Props_ColorSwatch &c, Props *p) {
 			Object::ColorSwatch * colorSwatch;
 			if(p!=nullptr) colorSwatch = new Object::ColorSwatch(*p, colorSwatchName, ptr, c);
 			else colorSwatch = new Object::ColorSwatch(*gui->con, colorSwatchName, ptr, c);
@@ -633,13 +560,10 @@ namespace Core {
 		 */
 		Object::CheckBox & GUI_Container::CheckBoxInterface::pushData(std::string name, Object::CheckBox *data) {
 			data->init();
-			checkBoxes.push_back(data);
-			uint id = checkBoxes.size()-1;
-			map.insert(make_pair(name, id));
-			return *checkBoxes[id];
+			return *checkBoxes.add(name, data);
 		}
 
-		Object::CheckBox & GUI_Container::CheckBoxInterface::add(std::string checkBoxName, bool b, Props_CheckBox c, Props *p) {
+		Object::CheckBox & GUI_Container::CheckBoxInterface::add(std::string checkBoxName, bool b, Props_CheckBox &c, Props *p) {
 			Object::CheckBox * checkBox;
 			if(p!=nullptr) checkBox = new Object::CheckBox(*p, checkBoxName, b, c);
 			else checkBox = new Object::CheckBox(*gui->con, checkBoxName, b, c);
@@ -653,7 +577,7 @@ namespace Core {
 			return pushData(checkBoxName, checkBox);
 		}
 
-		Object::CheckBox & GUI_Container::CheckBoxInterface::add(std::string checkBoxName, bool *b, Props_CheckBox c, Props *p) {
+		Object::CheckBox & GUI_Container::CheckBoxInterface::add(std::string checkBoxName, bool *b, Props_CheckBox &c, Props *p) {
 			Object::CheckBox * checkBox;
 			if(p!=nullptr) checkBox = new Object::CheckBox(*p, checkBoxName, b, c);
 			else checkBox = new Object::CheckBox(*gui->con, checkBoxName, b, c);
@@ -734,13 +658,10 @@ namespace Core {
 		 */
 		Object::Icon & GUI_Container::IconInterface::pushData(std::string name, Object::Icon *data) {
 			data->init();
-			icons.push_back(data);
-			uint id = icons.size()-1;
-			map.insert(make_pair(name, id));
-			return *icons[id];
+			return *icons.add(name, data);
 		}
 
-		Object::Icon & GUI_Container::IconInterface::add(std::string iconName, bool b, Props_Icon c, Props *p) {
+		Object::Icon & GUI_Container::IconInterface::add(std::string iconName, bool b, Props_Icon &c, Props *p) {
 			Object::Icon * icon;
 			if(p!=nullptr) icon = new Object::Icon(*p, iconName, b, c);
 			else icon = new Object::Icon(*gui->con, iconName, b, c);
@@ -754,7 +675,7 @@ namespace Core {
 			return pushData(iconName, icon);
 		}
 
-		Object::Icon & GUI_Container::IconInterface::add(std::string iconName, bool *b, Props_Icon c, Props *p) {
+		Object::Icon & GUI_Container::IconInterface::add(std::string iconName, bool *b, Props_Icon &c, Props *p) {
 			Object::Icon * icon;
 			if(p!=nullptr) icon = new Object::Icon(*p, iconName, b, c);
 			else icon = new Object::Icon(*gui->con, iconName, b, c);
@@ -775,13 +696,10 @@ namespace Core {
 		 */
 		Object::Sprite & GUI_Container::SpriteInterface::pushData(std::string name, Object::Sprite *data) {
 			data->init();
-			sprites.push_back(data);
-			uint id = sprites.size()-1;
-			map.insert(make_pair(name, id));
-			return *sprites[id];
+			return *sprites.add(name, data);
 		}
 
-		Object::Sprite & GUI_Container::SpriteInterface::add(std::string spriteName, Props_Sprite c, Props *p) {
+		Object::Sprite & GUI_Container::SpriteInterface::add(std::string spriteName, Props_Sprite &c, Props *p) {
 			Object::Sprite * sprite;
 			if(p!=nullptr) sprite = new Object::Sprite(*p, spriteName, c);
 			else sprite = new Object::Sprite(*gui->con, spriteName, c);
@@ -802,13 +720,10 @@ namespace Core {
 		 */
 		Object::ProgressBar & GUI_Container::ProgressBarInterface::pushData(std::string name, Object::ProgressBar *data) {
 			data->init();
-			progressBars.push_back(data);
-			uint id = progressBars.size()-1;
-			map.insert(make_pair(name, id));
-			return *progressBars[id];
+			return *progressBars.add(name, data);
 		}
 
-		Object::ProgressBar & GUI_Container::ProgressBarInterface::add(std::string progressBarName, int progress, Props_ProgressBar c, Props *p) {
+		Object::ProgressBar & GUI_Container::ProgressBarInterface::add(std::string progressBarName, int progress, Props_ProgressBar &c, Props *p) {
 			Object::ProgressBar * progressBar;
 			if(p!=nullptr) progressBar = new Object::ProgressBar(*p, progressBarName, progress, c);
 			else progressBar = new Object::ProgressBar(*gui->con, progressBarName, progress, c);
@@ -822,7 +737,7 @@ namespace Core {
 			return pushData(progressBarName, progressBar);
 		}
 
-		Object::ProgressBar & GUI_Container::ProgressBarInterface::add(std::string progressBarName, int *progress, Props_ProgressBar c, Props *p) {
+		Object::ProgressBar & GUI_Container::ProgressBarInterface::add(std::string progressBarName, int *progress, Props_ProgressBar &c, Props *p) {
 			Object::ProgressBar * progressBar;
 			if(p!=nullptr) progressBar = new Object::ProgressBar(*p, progressBarName, progress, c);
 			else progressBar = new Object::ProgressBar(*gui->con, progressBarName, progress, c);
@@ -843,13 +758,10 @@ namespace Core {
 		 */
 		Object::ComboBox & GUI_Container::ComboBoxInterface::pushData(std::string name, Object::ComboBox *data) {
 			data->init();
-			comboBoxes.push_back(data);
-			uint id = comboBoxes.size()-1;
-			map.insert(make_pair(name, id));
-			return *comboBoxes[id];
+			return *comboBoxes.add(name, data);
 		}
 
-		Object::ComboBox & GUI_Container::ComboBoxInterface::add(std::string comboBoxName, Props_ComboBox c, Props *p) {
+		Object::ComboBox & GUI_Container::ComboBoxInterface::add(std::string comboBoxName, Props_ComboBox &c, Props *p) {
 			Object::ComboBox * comboBoxes;
 			if(p!=nullptr) comboBoxes = new Object::ComboBox(*p, comboBoxName, c);
 			else comboBoxes = new Object::ComboBox(*gui->con, comboBoxName, c);
@@ -877,14 +789,6 @@ namespace Core {
 			if(bInit) {
 				if(con->visibility) {
 					con->exec();
-
-					// FIXME: Create a Scissor coordinates stack
-					//			[ ] Push onto stack
-					//				- Includes enable/disable
-					//				- A disable stack does not require x,y,w,h
-					//			[ ] Pop from stack
-					//			[ ] exec stack
-					//				- If nothing on stack, do not enable
 
 					// Always disable scissor before drawing a container
 					glDisable(GL_SCISSOR_TEST);

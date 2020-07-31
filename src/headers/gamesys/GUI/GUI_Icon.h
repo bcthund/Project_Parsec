@@ -43,14 +43,14 @@ namespace Core {
 			class Icon : public Base::Interactive<Props_Icon>, public Base::AudioFeedback {
 				public:
 					Icon();
-					Icon(std::string n, bool b, Props_Icon c);
+					Icon(std::string n, bool b, Props_Icon &c);
 					Icon(std::string n, bool b, Props_Icon *c);
-					Icon(Props &p, std::string n, bool b, Props_Icon c);
+					Icon(Props &p, std::string n, bool b, Props_Icon &c);
 					Icon(Props &p, std::string n, bool b, Props_Icon *c);
 
-					Icon(std::string n, bool *b, Props_Icon c);
+					Icon(std::string n, bool *b, Props_Icon &c);
 					Icon(std::string n, bool *b, Props_Icon *c);
-					Icon(Props &p, std::string n, bool *b, Props_Icon c);
+					Icon(Props &p, std::string n, bool *b, Props_Icon &c);
 					Icon(Props &p, std::string n, bool *b, Props_Icon *c);
 					virtual ~Icon();
 
@@ -70,7 +70,7 @@ namespace Core {
 				label = nullptr;
 			}
 
-			Icon::Icon(std::string n, bool b, Props_Icon c) {
+			Icon::Icon(std::string n, bool b, Props_Icon &c) {
 				name			= n;
 				label			= nullptr;
 
@@ -89,7 +89,7 @@ namespace Core {
 				else  eObjectState	= STATE_NONE;
 			}
 
-			Icon::Icon(Props &p, std::string n, bool b, Props_Icon c) {
+			Icon::Icon(Props &p, std::string n, bool b, Props_Icon &c) {
 				name			= n;
 				label			= nullptr;
 
@@ -144,7 +144,7 @@ namespace Core {
 				else  eObjectState	= STATE_NONE;
 			}
 
-			Icon::Icon(std::string n, bool *b, Props_Icon c) {
+			Icon::Icon(std::string n, bool *b, Props_Icon &c) {
 				name			= n;
 				label			= nullptr;
 
@@ -163,7 +163,7 @@ namespace Core {
 				else  eObjectState	= STATE_NONE;
 			}
 
-			Icon::Icon(Props &p, std::string n, bool *b, Props_Icon c) {
+			Icon::Icon(Props &p, std::string n, bool *b, Props_Icon &c) {
 				name			= n;
 				label			= nullptr;
 

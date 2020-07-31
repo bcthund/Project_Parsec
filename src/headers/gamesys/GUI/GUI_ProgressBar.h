@@ -21,13 +21,13 @@ namespace Core {
 			class ProgressBar : public Base::Generic<Props_ProgressBar> {
 				public:
 					ProgressBar();
-					ProgressBar(std::string n, int progress, Props_ProgressBar c);
-					ProgressBar(Props &p, std::string n, int progress, Props_ProgressBar c);
+					ProgressBar(std::string n, int progress, Props_ProgressBar &c);
+					ProgressBar(Props &p, std::string n, int progress, Props_ProgressBar &c);
 					ProgressBar(std::string n, int progress, Props_ProgressBar *c);
 					ProgressBar(Props &p, std::string n, int progress, Props_ProgressBar *c);
 
-					ProgressBar(std::string n, int *progress, Props_ProgressBar c);
-					ProgressBar(Props &p, std::string n, int *progress, Props_ProgressBar c);
+					ProgressBar(std::string n, int *progress, Props_ProgressBar &c);
+					ProgressBar(Props &p, std::string n, int *progress, Props_ProgressBar &c);
 					ProgressBar(std::string n, int *progress, Props_ProgressBar *c);
 					ProgressBar(Props &p, std::string n, int *progress, Props_ProgressBar *c);
 					virtual ~ProgressBar();
@@ -59,7 +59,7 @@ namespace Core {
 				valuePtr		= nullptr;
 			}
 
-			ProgressBar::ProgressBar(std::string n, int progress, Props_ProgressBar c) {
+			ProgressBar::ProgressBar(std::string n, int progress, Props_ProgressBar &c) {
 				name			= n;
 				bInit			= false;
 
@@ -75,7 +75,7 @@ namespace Core {
 				valuePtr		= new int(progress);
 			}
 
-			ProgressBar::ProgressBar(Props &p, std::string n, int progress, Props_ProgressBar c) {
+			ProgressBar::ProgressBar(Props &p, std::string n, int progress, Props_ProgressBar &c) {
 				name			= n;
 				bInit			= false;
 
@@ -121,7 +121,7 @@ namespace Core {
 				valuePtr		= new int(progress);
 			}
 
-			ProgressBar::ProgressBar(std::string n, int *progress, Props_ProgressBar c) {
+			ProgressBar::ProgressBar(std::string n, int *progress, Props_ProgressBar &c) {
 				name			= n;
 				bInit			= false;
 
@@ -137,7 +137,7 @@ namespace Core {
 				valuePtr		= progress;
 			}
 
-			ProgressBar::ProgressBar(Props &p, std::string n, int *progress, Props_ProgressBar c) {
+			ProgressBar::ProgressBar(Props &p, std::string n, int *progress, Props_ProgressBar &c) {
 				name			= n;
 				bInit			= false;
 

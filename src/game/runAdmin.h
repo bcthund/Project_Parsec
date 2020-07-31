@@ -1865,6 +1865,9 @@ void _Admin::run() {
 			Core::gui["GameMenu"]["Window 19"].ComboBox["ComboBox2"].removeItem("Test Object 5");
 		}
 
+		Core::debug.log(Core::GUI::Object::Base::Interactive_Base::sActiveObject+", "+std::to_string(Core::GUI::Object::Base::Interactive_Base::bFocusPresent));
+		Core::debug.log(Core::GUI::Object::Base::Interactive_Base::sScrollObject+", "+std::to_string(Core::GUI::Object::Base::Interactive_Base::bScrollFocus));
+
 		// TESTING: Variant example and type deduction
 //		std::variant<int, float, std::string> intFloatString;
 //		intFloatString = "test";

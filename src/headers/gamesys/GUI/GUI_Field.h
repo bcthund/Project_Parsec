@@ -46,14 +46,14 @@ namespace Core {
 					friend class AnyField;
 				public:
 					Field();
-					Field(std::string n, T *tPtr, Props_Field c);
+					Field(std::string n, T *tPtr, Props_Field &c);
 					Field(std::string n, T *tPtr, Props_Field *c);
-					Field(Props &p, std::string n, T *tPtr, Props_Field c);
+					Field(Props &p, std::string n, T *tPtr, Props_Field &c);
 					Field(Props &p, std::string n, T *tPtr, Props_Field *c);
 
-					Field(std::string n, T t, Props_Field c);
+					Field(std::string n, T t, Props_Field &c);
 					Field(std::string n, T t, Props_Field *c);
-					Field(Props &p, std::string n, T t, Props_Field c);
+					Field(Props &p, std::string n, T t, Props_Field &c);
 					Field(Props &p, std::string n, T t, Props_Field *c);
 
 					virtual ~Field();
@@ -90,7 +90,7 @@ namespace Core {
 				bLocalValue		= true;
 			}
 
-			template <class T> Field<T>::Field(std::string n, T *tPtr, Props_Field c) {
+			template <class T> Field<T>::Field(std::string n, T *tPtr, Props_Field &c) {
 				bHasFocus				= false;
 				this->name				= n;
 
@@ -127,7 +127,7 @@ namespace Core {
 				if(this->con->text == "") this->con->text = n;
 			}
 
-			template <class T> Field<T>::Field(Props &p, std::string n, T *tPtr, Props_Field c) {
+			template <class T> Field<T>::Field(Props &p, std::string n, T *tPtr, Props_Field &c) {
 				bHasFocus				= false;
 				this->name				= n;
 
@@ -164,7 +164,7 @@ namespace Core {
 				if(this->con->text == "") this->con->text = n;
 			}
 
-			template <class T> Field<T>::Field(std::string n, T t, Props_Field c) {
+			template <class T> Field<T>::Field(std::string n, T t, Props_Field &c) {
 				bHasFocus				= false;
 				this->name				= n;
 
@@ -201,7 +201,7 @@ namespace Core {
 				if(this->con->text == "") this->con->text = n;
 			}
 
-			template <class T> Field<T>::Field(Props &p, std::string n, T t, Props_Field c) {
+			template <class T> Field<T>::Field(Props &p, std::string n, T t, Props_Field &c) {
 				bHasFocus				= false;
 				this->name				= n;
 
@@ -502,24 +502,24 @@ namespace Core {
 
 				public:
 					AnyField() {	tag=NONE;	}
-					void set(std::string n, float * fPtr, Props_Field c)					{	tag = FLOAT;	c.bNumeric = true;		f = new Object::Field<float>(n, fPtr, c);	}
+					void set(std::string n, float * fPtr, Props_Field &c)					{	tag = FLOAT;	c.bNumeric = true;		f = new Object::Field<float>(n, fPtr, c);	}
 					void set(std::string n, float * fPtr, Props_Field *c)					{	tag = FLOAT;	c->bNumeric = true;		f = new Object::Field<float>(n, fPtr, c);	}
 					void set(std::string n, float fVal, Props_Field *c)						{	tag = FLOAT;	c->bNumeric = true;		f = new Object::Field<float>(n, fVal, c);	}
-					void set(std::string n, int * iPtr, Props_Field c)						{	tag = INT;		c.bNumeric = true;		i = new Object::Field<int>(n, iPtr, c);	}
+					void set(std::string n, int * iPtr, Props_Field &c)						{	tag = INT;		c.bNumeric = true;		i = new Object::Field<int>(n, iPtr, c);	}
 					void set(std::string n, int * iPtr, Props_Field *c)						{	tag = INT;		c->bNumeric = true;		i = new Object::Field<int>(n, iPtr, c);	}
 					void set(std::string n, int iVal, Props_Field *c)						{	tag = INT;		c->bNumeric = true;		i = new Object::Field<int>(n, iVal, c);	}
-					void set(std::string n, std::string * sPtr, Props_Field c)				{	tag = STRING;	c.bNumeric = false;		s = new Object::Field<std::string>(n, sPtr, c);	}
+					void set(std::string n, std::string * sPtr, Props_Field &c)				{	tag = STRING;	c.bNumeric = false;		s = new Object::Field<std::string>(n, sPtr, c);	}
 					void set(std::string n, std::string * sPtr, Props_Field *c)				{	tag = STRING;	c->bNumeric = false;	s = new Object::Field<std::string>(n, sPtr, c);	}
 					void set(std::string n, std::string sVal, Props_Field *c)				{	tag = STRING;	c->bNumeric = false;	s = new Object::Field<std::string>(n, sVal, c);	}
 
 
-					void set(Props &p, std::string n, float * fPtr, Props_Field c)			{	tag = FLOAT;	c.bNumeric = true;		f = new Object::Field<float>(p, n, fPtr, c);	}
+					void set(Props &p, std::string n, float * fPtr, Props_Field &c)			{	tag = FLOAT;	c.bNumeric = true;		f = new Object::Field<float>(p, n, fPtr, c);	}
 					void set(Props &p, std::string n, float * fPtr, Props_Field *c)			{	tag = FLOAT;	c->bNumeric = true;		f = new Object::Field<float>(p, n, fPtr, c);	}
 					void set(Props &p, std::string n, float fVal, Props_Field *c)			{	tag = FLOAT;	c->bNumeric = true;		f = new Object::Field<float>(p, n, fVal, c);	}
-					void set(Props &p, std::string n, int * iPtr, Props_Field c)			{	tag = INT;		c.bNumeric = true;		i = new Object::Field<int>(p, n, iPtr, c);	}
+					void set(Props &p, std::string n, int * iPtr, Props_Field &c)			{	tag = INT;		c.bNumeric = true;		i = new Object::Field<int>(p, n, iPtr, c);	}
 					void set(Props &p, std::string n, int * iPtr, Props_Field *c)			{	tag = INT;		c->bNumeric = true;		i = new Object::Field<int>(p, n, iPtr, c);	}
 					void set(Props &p, std::string n, int iVal, Props_Field *c)				{	tag = INT;		c->bNumeric = true;		i = new Object::Field<int>(p, n, iVal, c);	}
-					void set(Props &p, std::string n, std::string * sPtr, Props_Field c)	{	tag = STRING;	c.bNumeric = false;		s = new Object::Field<std::string>(p, n, sPtr, c);	}
+					void set(Props &p, std::string n, std::string * sPtr, Props_Field &c)	{	tag = STRING;	c.bNumeric = false;		s = new Object::Field<std::string>(p, n, sPtr, c);	}
 					void set(Props &p, std::string n, std::string * sPtr, Props_Field *c)	{	tag = STRING;	c->bNumeric = false;	s = new Object::Field<std::string>(p, n, sPtr, c);	}
 					void set(Props &p, std::string n, std::string sVal, Props_Field *c)		{	tag = STRING;	c->bNumeric = false;	s = new Object::Field<std::string>(p, n, sVal, c);	}
 

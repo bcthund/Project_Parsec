@@ -239,13 +239,19 @@
  * 					[ ] Add parent active pointer? Use nested structure like scrolling so children know if parent has focus.
  * 				[X] Scroll position (int)
  * 				[ ] Maximum scroll position (auto calc???)
- * 				[X] Window scrolling disabled when any object is active
+ * 				[ ] Window scrolling disabled when any object is active
  * 					[X] If Interactive_Base::bFocusPresent then don't scroll
  * 					[X] If an object has hover (slider, field, etc) then don't scroll (add new static to Base::Interactive)
  * 					[X] Make ComboBox report active state
+ * 					[ ] Duplicate object names break scroll lock, need to create some sort of unique object ID (timestamp?)
+ * 					[ ] Make object IDs part of a global static database so we can check for duplicates (use t_Vector)
  *
  * TODO: [ ] Change Props to pass by reference in GUI_Container
  * 			[ ]
+ *
+ * TODO: [ ] Keyboard Control
+ * 			[ ] Add a global GUI keyboard (static)
+ * 			[ ] Generally disabled until an object requests interaction
  *
  * TODO: [ ] Update objects to use AnyType
  * 			- This is difficult to implement with pointers to non-AnyType values
@@ -299,9 +305,17 @@
  * 					[ ] Flora (flora is currently broken in the particle system)
  * 					[ ] Satellite
  * 					[ ] GUI
- * 					[ ] GUI_Container
+ * 					[X] GUI_Container
  * 					[ ] GUI_ComboBox
  * 					[ ] TextSys
+ *
+ * TODO: [ ] Create a Scissor coordinates stack
+ *			[ ] Push onto stack
+ *				- Includes enable/disable
+ *				- A disable stack does not require x,y,w,h
+ *			[ ] Pop from stack
+ *			[ ] exec stack
+ *				- If nothing on stack, do not enable
  *
  * TODO: [ ] Window padding should automatically take border size into account?
  * 			- How does this work for negative? Ignore border?
