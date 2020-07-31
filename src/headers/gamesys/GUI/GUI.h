@@ -400,15 +400,14 @@ namespace Core {
 	namespace GUI {
 		class GUI {
 			private:
-				std::vector<GUI_Container*> guis;
-				Map_si	  mapGUI;
+				Core::t_Vector<GUI_Container*> guis;
 
 			public:
 				GUI();
 				virtual ~GUI();
 				GUI_Container	* activeGUI;
 				void createGUI(std::string guiName);
-				void createGUI(std::string guiName, Props_Window c);
+				void createGUI(std::string guiName, Props_Window &c);
 				Props * getGUI();
 				Props * getGUI(std::string guiName);
 				void setActiveGUI(std::string guiName);
@@ -421,7 +420,7 @@ namespace Core {
 				 * @param guiName
 				 * @return
 				 */
-				GUI_Container	&operator[](const std::string &guiName)	{	return *guis[mapGUI[guiName]];	}
+				GUI_Container	&operator[](const std::string &guiName)	{	return *guis[guiName];	}
 		};
 
 		int GUI::iGUIFocus = 0;
@@ -458,9 +457,7 @@ namespace Core {
 
 			GUI_Container * gui = new GUI_Container(guiName, c);
 			gui->init();
-			guis.push_back(gui);
-			uint id = guis.size()-1;
-			mapGUI.insert(make_pair(guiName, id));
+			guis.add(guiName, gui);
 			setActiveGUI(guiName);
 		}
 
@@ -469,13 +466,9 @@ namespace Core {
 		 * @param guiName
 		 * @param c
 		 * ****************************************************************************************************************************** */
-		void GUI::createGUI(std::string guiName, Props_Window c) {
-//			GUI_Master * gui = new GUI_Master(guiName, c);
+		void GUI::createGUI(std::string guiName, Props_Window &c) {
 			GUI_Container * gui = new GUI_Container(guiName, c);
-			gui->init();
-			guis.push_back(gui);
-			uint id = guis.size()-1;
-			mapGUI.insert(make_pair(guiName, id));
+			guis.add(guiName, gui);
 			setActiveGUI(guiName);
 		}
 
@@ -493,83 +486,8 @@ namespace Core {
 		 * @return
 		 * ****************************************************************************************************************************** */
 		Props * GUI::getGUI(std::string guiName) {
-			uint guiID = mapGUI[guiName];
-			return guis[guiID]->con;
+			return guis[guiName]->con;
 		}
-
-		/** ******************************************************************************************************************************
-		 *
-		 * @param windowName
-		 * @param c
-		 * ****************************************************************************************************************************** */
-//		void GUI::createContainer(std::string containerName, Props_Window c) {
-//
-//			try {
-//				GUI_Container * container;
-//				container = new GUI_Container(*activeGUI->con, containerName, c);
-//				activeGUI->containers.push_back(container);
-//				uint id = activeGUI->containers.size()-1;
-//				activeGUI->mapContainer.insert(make_pair(containerName, id));
-//				setActiveContainer(containerName);
-//			}
-//			catch(...) {
-//				std::cout << "Error creating Window Container, has a GUI been created and set active?" << std::endl;
-//			}
-//		}
-
-		/** ******************************************************************************************************************************
-		 *
-		 * @return
-		 * ****************************************************************************************************************************** */
-//		GUI_Container * GUI::getContainer() {
-//			return activeContainer;
-//		}
-
-		/** ******************************************************************************************************************************
-		 *
-		 * @param windowName
-		 * @return
-		 * ****************************************************************************************************************************** */
-//		GUI_Container * GUI::getContainer(std::string containerName) {
-//			return activeGUI->containers[activeGUI->mapContainer[containerName]];
-//		}
-
-		/** ******************************************************************************************************************************
-		 *
-		 * @param guiName
-		 * @param windowName
-		 * @return
-		 * ****************************************************************************************************************************** */
-//		GUI_Container * GUI::getContainer(std::string guiName, std::string containerName) {
-//			uint guiID = mapGUI[guiName];
-//			uint containerID = guis[guiID]->mapContainer[containerName];
-//			return guis[guiID]->containers[containerID];
-//		}
-
-		/** ******************************************************************************************************************************
-		 * \brief Set the active GUI/Window pair
-		 * @param guiName
-		 * @param windowName
-		 *
-		 * This is the normal way of setting the active GUI and window. When changing
-		 * the GUI alone the activeContainer is not updated, therfore this function
-		 * allows both to be set at the same time.
-		 * ****************************************************************************************************************************** */
-//		void GUI::setActive(std::string guiName, std::string containerName) {
-//			activeGUI = guis[mapGUI[guiName]];
-//			setActiveContainer(containerName);
-//		}
-
-		/** ******************************************************************************************************************************
-		 * \brief Set the active window
-		 * @param windowName
-		 *
-		 * This will set the active window reference with respect to the currently
-		 * active GUI.
-		 * ****************************************************************************************************************************** */
-//		void GUI::setActiveContainer(std::string containerName) {
-//			activeContainer = activeGUI->containers[activeGUI->mapContainer[containerName]];
-//		}
 
 		/** ******************************************************************************************************************************
 		 * \brief Set the active GUI
@@ -580,81 +498,11 @@ namespace Core {
 		 * active window unless a new one is added.
 		 * ****************************************************************************************************************************** */
 		void GUI::setActiveGUI(std::string guiName) {
-			activeGUI = guis[mapGUI[guiName]];
+			activeGUI = guis[guiName];
 		}
 
-		/*
-		 * ==========================================================
-		 *						Container
-		 * ==========================================================
-		 */
-//		void GUI::ContainerInterface::pushData(std::string name, Object::Container *data) {
-//			gui->activeContainer->containers.push_back(data);
-//			uint id = gui->activeContainer->containers.size()-1;
-//			gui->activeContainer->mapContainer.insert(make_pair(name, id));
-//		}
-//
-//		void GUI::ContainerInterface::add(std::string containerName, Props c, Props *p) {
-//			Object::Container * container;
-//			if(p!=nullptr) container = new Object::Container(*p, c);
-//			else container = new Object::Container(c);
-//			container->init();
-//			pushData(containerName, container);
-//		}
-//
-//		void GUI::ContainerInterface::add(std::string containerName, Props *c, Props *p) {
-//			Object::Container * container;
-//			if(p!=nullptr) container = new Object::Container(*p, c);
-//			else container = new Object::Container(c);
-//			container->init();
-//			pushData(containerName, container);
-//		}
-
-//		void GUI::ContainerInterface::hide(std::string containerName) {
-//			uint containerID = gui->activeGUI->mapContainer[containerName];
-//			gui->activeGUI->containers[containerID]->hide();
-//		}
-
-//		void GUI::ContainerInterface::show(std::string containerName) {
-//			uint containerID = gui->activeGUI->mapContainer[containerName];
-//			gui->activeGUI->containers[containerID]->show();
-//		}
-
-//		void GUI::ContainerInterface::toggle(std::string containerName) {
-//			uint containerID = gui->activeContainer->mapContainer[containerName];
-//			gui->activeContainer->containers[containerID]->toggle();
-//		}
-//
-//		bool GUI::ContainerInterface::visible(std::string containerName) {
-//			uint containerID = gui->activeContainer->mapContainer[containerName];
-//			return gui->activeContainer->containers[containerID]->con->visibility;
-//		}
-//
-//		Props * GUI::ContainerInterface::get(std::string containerName) {
-//			uint containerID = gui->activeContainer->mapContainer[containerName];
-//			return gui->activeContainer->containers[containerID]->con;
-//		}
-//
-//		Props * GUI::ContainerInterface::get(std::string windowName, std::string containerName) {
-//			uint windowID = gui->activeGUI->mapMasterWindow[windowName];
-//			uint containerID = gui->activeGUI->masterWindows[windowID]->mapContainer[containerName];
-//			return gui->activeContainer->containers[containerID]->con;
-//		}
-//
-//		Props * GUI::ContainerInterface::get(std::string guiName, std::string windowName, std::string containerName) {
-//			uint guiID = gui->mapGUI[guiName];
-//			uint windowID = gui->guis[guiID]->mapMasterWindow[windowName];
-//			uint containerID = gui->activeGUI->masterWindows[windowID]->mapContainer[containerName];
-//			return gui->activeContainer->containers[containerID]->con;
-//		}
-
-		/*
-		 * ==========================================================
-		 *						Global
-		 * ==========================================================
-		 */
 		void GUI::exec(std::string guiName) {
-			uint guiID = mapGUI[guiName];
+			//uint guiID = mapGUI[guiName];
 
 			// FIXME: Fine tune focus state, restrict input when editing fields (escape exits game when it should just cancel edit)
 			// FIXME: Focus state sometimes gets stuck?
@@ -671,18 +519,71 @@ namespace Core {
 			// Reset focus state
 			iGUIFocus = 0;
 
-			guis[guiID]->exec();
-
-//			for (auto & container : guis[guiID]->containers) {
-//
-//				std::cout << "Executing Container '" << container->name << "' ";
-//				std::cout << "(" << container->con->pos.constraint.x << ", " << container->con->pos.constraint.y << ")";
-//				std::cout << "(" << container->con->pos.x << ", " << container->con->pos.y << ")";
-//				container->exec();
-//				std::cout << " Done\n";
-//			}
+			guis[guiName]->exec();
 		}
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 } /* namespace Core */
 
 #endif /* HEADERS_GAMESYS_GUI_H_ */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
