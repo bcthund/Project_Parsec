@@ -428,7 +428,7 @@ namespace Core {
 						if(this->bHasParent) this->con->exec(*this->parent);
 						else this->con->exec();
 
-						if(!this->bFocusPresent || (this->sActiveObject==this->name)) {
+						if((con->bFocusLock && !bFocusPresent) || !con->bFocusLock || (sActiveObject==name)) {
 							updateObjectState(eExternState);
 
 							if(this->con->toolTip.bShow) this->toolTip.updateObjectState(this->eObjectState);

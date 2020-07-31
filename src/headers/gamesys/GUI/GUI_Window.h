@@ -194,17 +194,22 @@ namespace Core {
 				// Uncomment if object state can be set externally
 				//checkStatePtr();
 
+//				if(name=="World Scale 1") debug.log(name+": [0], "+std::to_string(eExternState));
+
 				// Generic state handler
-				if(eExternState!=STATE_NONE && !(eExternState&STATE_UPDATE)) eObjectState = eExternState;
+				if(!(eExternState&STATE_NONE) && !(eExternState&STATE_UPDATE)) {
+					eObjectState = eExternState;
+				}
 				else {
 					if(!(eExternState&STATE_UPDATE)) {
-
 						//if(con->scroll.getEnabled()) {
 						if(parent!=nullptr && parent->scroll.getEnabled()) {
 							Vector2f vPos = con->getScrollPos();
 							mState = Core::mouse->checkInput(gameVars->screen.half.x+vPos.x, gameVars->screen.half.y-vPos.y, con->size.x, con->size.y);
 						}
-						else mState = Core::mouse->checkInput(gameVars->screen.half.x+con->pos.x, gameVars->screen.half.y-con->pos.y, con->size.x, con->size.y);
+						else {
+							mState = Core::mouse->checkInput(gameVars->screen.half.x+con->pos.x, gameVars->screen.half.y-con->pos.y, con->size.x, con->size.y);
+						}
 					}
 					else mState = Core::_Mouse::MOUSE_NONE;
 
@@ -215,16 +220,12 @@ namespace Core {
 						}
 						eObjectState = STATE_NONE;
 					}
-					else eObjectState = STATE_NONE;
+					else {
+						eObjectState = STATE_NONE;
+					}
 				}
 
-//				// Allow mouse hover at any time (used for tooltips)
-//				if(!(eExternState&STATE_UPDATE)) {
-//					if(mState&Core::_Mouse::MOUSE_HOVER) eObjectState = eObjectState|STATE_HOVER;
-//					else eObjectState = eObjectState&~STATE_HOVER;
-//				}
-
-//				// Report if mouse is in button space
+				// Report if mouse is in button space
 				if(!(mState&Core::_Mouse::MOUSE_NONE)) eObjectState = eObjectState|STATE_FOCUS;
 				else eObjectState = eObjectState&~STATE_FOCUS;
 
@@ -236,43 +237,36 @@ namespace Core {
 
 
 			void Window::updateScrollMouse() {
-				if(con->scroll.getEnabled() && !Base::Interactive_Base::bFocusPresent) {
-					Core::_Mouse::MOUSE_STATE wheel = Core::mouse->checkWheel();
-					if(wheel != Core::_Mouse::MOUSE_NONE) {
-
-						int modVal = 50;
-
-						const Uint8 *keyState = SDL_GetKeyboardState(NULL);
-						if (keyState[SDL_SCANCODE_LSHIFT] || keyState[SDL_SCANCODE_RSHIFT])		modVal = 100;
-						else if (keyState[SDL_SCANCODE_LCTRL] || keyState[SDL_SCANCODE_RCTRL])	modVal = 20;
-
-						switch(wheel) {
-							case Core::_Mouse::MOUSE_WHEEL_UP:		iScrollIndex -= modVal;	break;
-							case Core::_Mouse::MOUSE_WHEEL_DOWN:	iScrollIndex += modVal;	break;
-						}
-
-//						switch(wheel) {
-//							case Core::_Mouse::MOUSE_WHEEL_UP:		iScrollIndex -= 10;	break;
-//							case Core::_Mouse::MOUSE_WHEEL_DOWN:	iScrollIndex += 10;	break;
-//						}
-
-						iScrollIndex = std::max(iScrollIndex, 0);
-						iScrollIndex = std::min(iScrollIndex, 5000);
-					}
+				if(parent!=nullptr && parent->scroll.getEnabled()) {
 				}
 				else {
-					iScrollIndex = 0;
+					if(con->scroll.getEnabled() && !Base::Interactive_Base::bFocusPresent && !Base::Interactive_Base::bScrollFocus) {
+						Core::_Mouse::MOUSE_STATE wheel = Core::mouse->checkWheel();
+						if(wheel != Core::_Mouse::MOUSE_NONE) {
+
+							int modVal = 50;
+
+							const Uint8 *keyState = SDL_GetKeyboardState(NULL);
+							if (keyState[SDL_SCANCODE_LSHIFT] || keyState[SDL_SCANCODE_RSHIFT])		modVal = 100;
+							else if (keyState[SDL_SCANCODE_LCTRL] || keyState[SDL_SCANCODE_RCTRL])	modVal = 20;
+
+							switch(wheel) {
+								case Core::_Mouse::MOUSE_WHEEL_UP:		iScrollIndex -= modVal;	break;
+								case Core::_Mouse::MOUSE_WHEEL_DOWN:	iScrollIndex += modVal;	break;
+							}
+
+							iScrollIndex = std::max(iScrollIndex, 0);
+							iScrollIndex = std::min(iScrollIndex, 5000);
+						}
+					}
+					else if(!con->scroll.getEnabled()) {
+						debug.log(name+": Disabled");
+						iScrollIndex = 0;
+					}
+
+					con->scroll.getYRef() = iScrollIndex;
+					con->scroll.getXRef() = 0;
 				}
-
-				con->scroll.getYRef() = iScrollIndex;
-				con->scroll.getXRef() = 0;
-
-				if(name=="Window 19") debug.log(""+std::to_string(con->scroll.getX()));
-				if(name=="Window 19") debug.log(""+std::to_string(con->scroll.getY()));
-				if(name=="Window 19") debug.log(""+std::to_string(con->getPos().x));
-				if(name=="Window 19") debug.log(""+std::to_string(con->getPos().y));
-				if(name=="Window 19") debug.log(""+std::to_string(con->getScrollPos().x));
-				if(name=="Window 19") debug.log(""+std::to_string(con->getScrollPos().y));
 			}
 
 			void Window::exec(iState eExternState) {
@@ -293,27 +287,6 @@ namespace Core {
 
 						//if(!bFocusPresent) updateObjectState(eExternState);
 						updateObjectState(eExternState);
-
-//						if(name=="ComboBox") debug.log("Extern 3: "+std::to_string(eExternState));
-//						if(name=="ComboBox") debug.log("Object 3: "+std::to_string(eObjectState));
-
-//						if(name=="ComboBox") debug.log("      NONE: "+std::to_string(eObjectState&STATE_NONE));
-//						if(name=="ComboBox") debug.log("  NOACTION: "+std::to_string(eObjectState&STATE_NOACTION));
-//						if(name=="ComboBox") debug.log("     FOCUS: "+std::to_string(eObjectState&STATE_FOCUS));
-//						if(name=="ComboBox") debug.log("     HOVER: "+std::to_string(eObjectState&STATE_HOVER));
-//						if(name=="ComboBox") debug.log("    ACTIVE: "+std::to_string(eObjectState&STATE_ACTIVE));
-//						if(name=="ComboBox") debug.log("  DISABLED: "+std::to_string(eObjectState&STATE_DISABLED));
-//						if(name=="ComboBox") debug.log("    UPDATE: "+std::to_string(eObjectState&STATE_UPDATE));
-//						if(name=="ComboBox") debug.log("    NODRAW: "+std::to_string(eObjectState&STATE_NODRAW));
-
-//						if(name=="ComboBox") debug.log("      NONE: "+std::to_string(eExternState&STATE_NONE));
-//						if(name=="ComboBox") debug.log("  NOACTION: "+std::to_string(eExternState&STATE_NOACTION));
-//						if(name=="ComboBox") debug.log("     FOCUS: "+std::to_string(eExternState&STATE_FOCUS));
-//						if(name=="ComboBox") debug.log("     HOVER: "+std::to_string(eExternState&STATE_HOVER));
-//						if(name=="ComboBox") debug.log("    ACTIVE: "+std::to_string(eExternState&STATE_ACTIVE));
-//						if(name=="ComboBox") debug.log("  DISABLED: "+std::to_string(eExternState&STATE_DISABLED));
-//						if(name=="ComboBox") debug.log("    UPDATE: "+std::to_string(eExternState&STATE_UPDATE));
-//						if(name=="ComboBox") debug.log("    NODRAW: "+std::to_string(eExternState&STATE_NODRAW));
 
 						if(eObjectState&STATE_DISABLED) {
 							if(eObjectState&STATE_HOVER) {

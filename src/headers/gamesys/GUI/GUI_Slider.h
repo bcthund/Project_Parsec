@@ -384,12 +384,14 @@ namespace Core {
 
 
 				// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-				// 			Setup VAO
+				// 			Slider and Control
 				// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 				if(this->bHasParent) slider = Window(*this->parent, this->name, this->con);
 				else slider = Window(this->name, this->con);
 				slider.init();
 
+//				control = Window(*this->con, this->name, &this->con->control);
+				//this->con->control.scroll.bind(*this->con);
 				control = Window(*this->con, this->name, &this->con->control);
 				control.init();
 
@@ -419,21 +421,24 @@ namespace Core {
 			}
 
 			template <class T> float Slider<T>::getValueFromPos(float f) {
-				float f1, f2, f3, f4, f5;
+				float f0, f1, f2, f3, f4, f5;
+				f0 = f;
 				if(this->con->orientation == Core::GUI::SLIDER_HORIZONTAL)	{
+					if(parent!=nullptr && parent->scroll.getEnabled()) f0 += con->scroll.getX();
 					if(this->con->minValue<this->con->maxValue) {
-						f1 = getNormalized(f-Core::gameVars->screen.half.x, minPos, maxPos);
+						f1 = getNormalized(f0-Core::gameVars->screen.half.x, minPos, maxPos);
 					}
 					else {
-						f1 = getNormalized(f-Core::gameVars->screen.half.x, maxPos, minPos);
+						f1 = getNormalized(f0-Core::gameVars->screen.half.x, maxPos, minPos);
 					}
 				}
 				else if(this->con->orientation == Core::GUI::SLIDER_VERTICAL)	{
+					if(parent!=nullptr && parent->scroll.getEnabled()) f0 += con->scroll.getY();
 					if(this->con->minValue<this->con->maxValue) {
-						f1 = getNormalized(f-Core::gameVars->screen.half.y, minPos, maxPos);
+						f1 = getNormalized(f0-Core::gameVars->screen.half.y, minPos, maxPos);
 					}
 					else {
-						f1 = getNormalized(f-Core::gameVars->screen.half.y, maxPos, minPos);
+						f1 = getNormalized(f0-Core::gameVars->screen.half.y, maxPos, minPos);
 					}
 				}
 
@@ -447,7 +452,6 @@ namespace Core {
 				f4 = 0.0f;
 				f5 = f1 * f2 + f3 - f4;
 
-//				return int(f5/this->con->fMinimumStep)*this->con->fMinimumStep;		// Constrain value to minimum step size
 				return int(f5/this->con->vStep[0])*this->con->vStep[0];		// Constrain value to minimum step size
 			}
 
@@ -493,47 +497,16 @@ namespace Core {
 				setValue();
 			}
 
-			/*
-			 * Returns true if value has changed since last
-			 * time read. Immediately resets for one shot
-			 * operation.
-			 */
-//			template <class T> bool Slider<T>::valueChanged() {
-//				if(bValueChanged) {
-//					bValueChanged = false;
-//					return true;
-//				}
-//				return false;
-//			}
-
 			template <class T> void Slider<T>::updateScrollMouse() {
 
 				Core::_Mouse::MOUSE_STATE wheel = Core::mouse->checkWheel();
 
 				if(wheel != Core::_Mouse::MOUSE_NONE) {
-//					T modVal = (spanValue/spanPos);		// Default, move by 1 pixel worth of value
-//
-//					const Uint8 *keyState = SDL_GetKeyboardState(NULL);
-//					if (keyState[SDL_SCANCODE_LSHIFT] || keyState[SDL_SCANCODE_RSHIFT])		modVal *= 10;
-//					else if (keyState[SDL_SCANCODE_LCTRL] || keyState[SDL_SCANCODE_RCTRL])	modVal /= 10;
-//
-//					modVal *= this->con->scrollSpeed;
-//					modVal = int(modVal/this->con->fMinimumStep)*this->con->fMinimumStep;
-//
-//					if(modVal < this->con->fMinimumStep)		modVal = this->con->fMinimumStep;
-//					if(this->con->minValue > this->con->maxValue)	modVal = -modVal;
-
 					T modVal = this->con->vStep[1];
 
 					const Uint8 *keyState = SDL_GetKeyboardState(NULL);
 					if (keyState[SDL_SCANCODE_LSHIFT] || keyState[SDL_SCANCODE_RSHIFT])		modVal = this->con->vStep[2];
 					else if (keyState[SDL_SCANCODE_LCTRL] || keyState[SDL_SCANCODE_RCTRL])	modVal = this->con->vStep[0];
-
-					//modVal *= this->con->scrollSpeed;
-					//modVal = int(modVal/this->con->fMinimumStep)*this->con->fMinimumStep;
-
-					//if(modVal < this->con->fMinimumStep)		modVal = this->con->fMinimumStep;
-					//if(this->con->minValue > this->con->maxValue)	modVal = -modVal;
 
 					if(this->con->minValue > this->con->maxValue) 	modVal = -modVal;
 
@@ -544,33 +517,21 @@ namespace Core {
 				}
 			}
 
-//			template <> void Slider<int>::updateScrollMouse() {
-////				int modVal = std::fmax(spanValue/spanPos, 1.0f);
-////
-////				const Uint8 *keyState = SDL_GetKeyboardState(NULL);
-////				if (keyState[SDL_SCANCODE_LSHIFT] || keyState[SDL_SCANCODE_RSHIFT])		modVal *= 10;
-////				else if (keyState[SDL_SCANCODE_LCTRL] || keyState[SDL_SCANCODE_RCTRL])	modVal /= 10;
-//
-//				int modVal = this->con->vStep[1];
-//				const Uint8 *keyState = SDL_GetKeyboardState(NULL);
-//				if (keyState[SDL_SCANCODE_LSHIFT] || keyState[SDL_SCANCODE_RSHIFT])		modVal = this->con->vStep[2];
-//				else if (keyState[SDL_SCANCODE_LCTRL] || keyState[SDL_SCANCODE_RCTRL])	modVal = this->con->vStep[0];
-//
-//				if(con->minValue>con->maxValue) 	modVal = -modVal;
-//
-//				Core::_Mouse::MOUSE_STATE wheel = Core::mouse->checkWheel();
-//				if(wheel == Core::_Mouse::MOUSE_WHEEL_UP)		*valuePtr += (modVal*con->scrollSpeed);
-//				if(wheel == Core::_Mouse::MOUSE_WHEEL_DOWN)		*valuePtr -= (modVal*con->scrollSpeed);
-//			}
-
 			template <class T> void Slider<T>::updateObjectState(iState eExternState) {
 				if(eExternState!=STATE_NONE && !(eExternState&STATE_UPDATE)) {
 					this->eObjectState = eExternState;
 				}
 				else {
 					if(!(eExternState&STATE_UPDATE)) {
-						Vector2f vPos = this->con->getScrollPos();
-						this->mState = Core::mouse->checkInput(gameVars->screen.half.x+vPos.x, gameVars->screen.half.y-vPos.y, this->con->size.x, this->con->size.y);
+						Vector2f vPos = slider.con->getScrollPos();
+						Core::_Mouse::iMouseState test1 = Core::mouse->checkInput(gameVars->screen.half.x+vPos.x, gameVars->screen.half.y-vPos.y, slider.con->size.x, slider.con->size.y);
+
+						vPos = control.con->getScrollPos();
+						Core::_Mouse::iMouseState test2 = Core::mouse->checkInput(gameVars->screen.half.x+vPos.x, gameVars->screen.half.y-vPos.y, control.con->size.x, control.con->size.y);
+						mState = test1 | test2;
+
+						//Vector2f vPos = this->con->getScrollPos();
+						//this->mState = Core::mouse->checkInput(gameVars->screen.half.x+vPos.x, gameVars->screen.half.y-vPos.y, this->con->size.x, this->con->size.y);
 						//this->mState = Core::mouse->checkInput(gameVars->screen.half.x+this->con->pos.x, gameVars->screen.half.y-this->con->pos.y, std::max(this->con->size.x, this->con->control.size.x), std::max(this->con->size.y, this->con->control.size.y));
 					}
 					else this->mState = Core::_Mouse::MOUSE_NONE;
@@ -609,6 +570,16 @@ namespace Core {
 						if(this->mState&Core::_Mouse::MOUSE_HOVER) this->eObjectState = this->eObjectState|STATE_HOVER;
 						else this->eObjectState = this->eObjectState&~STATE_HOVER;
 					}
+
+					// If mouse hover, then automatically set focus to suspend other objects (will suspend window scrolling)
+					if(this->eObjectState&STATE_HOVER) {
+						bScrollFocus	= true;
+						sScrollObject	= name;
+					}
+					else if(sScrollObject == name) {
+						bScrollFocus	= false;
+						sScrollObject	= "";
+					}
 				}
 
 				if(!this->enabled()) this->eObjectState |= STATE_DISABLED;
@@ -629,7 +600,7 @@ namespace Core {
 					 *	- This only matters if contraints have changed (future proof, resizable windows)
 					 */
 					update();
-					if(!this->bFocusPresent || (this->sActiveObject==this->name)) {
+					if((this->con->bFocusLock && !this->bFocusPresent) || !this->con->bFocusLock || (this->sActiveObject==this->name)) {
 						updateObjectState(eExternState);
 
 						if(this->con->toolTip.bShow) this->toolTip.updateObjectState(this->eObjectState);
@@ -659,6 +630,7 @@ namespace Core {
 					// Draw Control
 					control.con->setPos(currentPos);
 					control.exec(this->eObjectState);
+					//control.exec(STATE_NONE);
 
 					// Draw Label
 					if(this->con->bShowLabel)	label->exec(this->eObjectState);

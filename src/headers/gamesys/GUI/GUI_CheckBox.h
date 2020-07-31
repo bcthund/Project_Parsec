@@ -312,6 +312,7 @@ namespace Core {
 			void CheckBox::exec(iState eExternState) {
 				if(bInit && con->visibility && ((parent!=nullptr && parent->visibility) || (parent==nullptr))) {
 
+					//if((con->bFocusLock && !bFocusPresent) || !con->bFocusLock || (sActiveObject==name))
 					updateObjectState(eExternState);
 
 					if(con->toolTip.bShow) toolTip.updateObjectState(eObjectState);

@@ -57,8 +57,8 @@ namespace Core {
 				GUI_Container & add(std::string containerName, Props_Window &c, Props *p=nullptr);
 				GUI_Container & add(std::string containerName, Props_Window *c, Props *p=nullptr);
 
-				GUI_Container	&operator[](std::string containerName)			{	if(map.count(containerName)>0) return *containers[map[containerName]]; else throw std::runtime_error("Invalid Container: "+containerName);	}
-				Props_Window	&operator()(std::string containerName)			{	if(map.count(containerName)>0) return *containers[map[containerName]]->con; else throw std::runtime_error("Invalid Container: "+containerName);	}
+				GUI_Container & operator[](std::string containerName)			{	if(map.count(containerName)>0) return *containers[map[containerName]]; else throw std::runtime_error("Invalid Container: "+containerName);	}
+				Props_Window  & operator()(std::string containerName)			{	if(map.count(containerName)>0) return *containers[map[containerName]]->con; else throw std::runtime_error("Invalid Container: "+containerName);	}
 
 				class WindowInterface {
 						friend class GUI_Container;
@@ -71,9 +71,8 @@ namespace Core {
 					public:
 						Object::Window & add(std::string containerName, Props_Window c, Props *p=nullptr);
 						Object::Window & add(std::string containerName, Props_Window *c, Props *p=nullptr);
-
-						Object::Window		&operator[](std::string windowName)			{	if(map.count(windowName)>0) return *windows[map[windowName]]; else throw std::runtime_error("Invalid Window: "+windowName);	}
-						Props_Window	&operator()(std::string windowName)			{	if(map.count(windowName)>0) return *windows[map[windowName]]->con; else throw std::runtime_error("Invalid Window: "+windowName);	}
+						Object::Window & operator[](std::string windowName)			{	if(map.count(windowName)>0) return *windows[map[windowName]]; else throw std::runtime_error("Invalid Window: "+windowName);	}
+						Props_Window   & operator()(std::string windowName)			{	if(map.count(windowName)>0) return *windows[map[windowName]]->con; else throw std::runtime_error("Invalid Window: "+windowName);	}
 						WindowInterface(GUI_Container * parent) { gui = parent; }
 						~WindowInterface() { for (auto & window : windows) delete window; }
 				};
@@ -90,8 +89,8 @@ namespace Core {
 					public:
 						Object::Label & add(std::string labelName, Props_Label c, Props *p=nullptr);
 						Object::Label & add(std::string labelName, Props_Label *c, Props *p=nullptr);
-						Object::Label &operator[](std::string labelName)			{	if(map.count(labelName)>0) return *labels[map[labelName]]; else throw std::runtime_error("Invalid Label: "+labelName);	}
-						Props_Label	  &operator()(std::string labelName)			{	if(map.count(labelName)>0) return *labels[map[labelName]]->con; else throw std::runtime_error("Invalid Label: "+labelName);	}
+						Object::Label & operator[](std::string labelName)			{	if(map.count(labelName)>0) return *labels[map[labelName]]; else throw std::runtime_error("Invalid Label: "+labelName);	}
+						Props_Label	  & operator()(std::string labelName)			{	if(map.count(labelName)>0) return *labels[map[labelName]]->con; else throw std::runtime_error("Invalid Label: "+labelName);	}
 						LabelInterface(GUI_Container * parent) { gui = parent; }
 						~LabelInterface() { for (auto & label : labels) delete label; }
 				};

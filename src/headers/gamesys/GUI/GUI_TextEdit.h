@@ -390,7 +390,7 @@ namespace Core {
 					con->text.size.constraint.xAuto = con->size.constraint.xAuto;
 					con->text.size.constraint.yAuto = con->size.constraint.yAuto;
 
-					if(!bFocusPresent || (sActiveObject==this->name)) updateObjectState(eExternState);
+					if((con->bFocusLock && !bFocusPresent) || !con->bFocusLock || (sActiveObject==name)) updateObjectState(eExternState);
 
 					// Update constraints
 					if(bHasParent) con->exec(*parent);

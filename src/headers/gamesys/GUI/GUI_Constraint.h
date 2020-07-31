@@ -433,6 +433,7 @@ namespace Core {
 				bool 					visibility;				///< Controls if this object is drawn and any of its direct children.
 				inline static bool		bGlobalSettings = true;	///< Used externally to allow multiple windows to use identical settings.
 				std::string				text;					///< Text to be displayed by object (object name is used by default)
+				bool					bFocusLock;				///< Do not lock when another object has focus (required for children that are part of the locking objetc)
 
 				struct ToolTip {
 					inline static bool	bShowGlobal = true;		///< Enable tooltips
@@ -447,6 +448,10 @@ namespace Core {
 					bool				round;					///< Rounded corners
 					bool				showLabel;				///< Show name of tooltip (name of object attached to is used)
 					bool				bShow;					///< Show this tooltip (automatically set when text applied)
+
+					// FIXME: copy constructor
+					// FIXME: assignment operator
+
 					ToolTip() {
 						bShow		= false;
 						Text		= "No ToolTip set!";
@@ -509,8 +514,11 @@ namespace Core {
 //				void resetScrollable()												{	scroll.unBind(); }
 				void setScrollable()												{	scroll.enable(true); }
 				void resetScrollable()												{	scroll.enable(false); }
+				void enableFocusLock()												{	bFocusLock = true; }
+				void disableFocusLock()												{	bFocusLock = false; }
 
 				Props() {
+					bFocusLock			= true;
 					text				= "";
 					toolTip.bShow		= false;
 					toolTip.Text		= "No ToolTip set!";
@@ -560,6 +568,7 @@ namespace Core {
 					visibility				= src.visibility;
 					eEnablePadding			= src.eEnablePadding;
 					text					= src.text;
+					bFocusLock				= src.bFocusLock;
 
 					scroll					= src.scroll;
 
@@ -581,6 +590,8 @@ namespace Core {
 					size.constraint.yType	= src.size.constraint.yType;
 					size.constraint.yAuto	= src.size.constraint.yAuto;
 				}
+
+				// FIXME: assignment operator
 
 				~Props() {
 				}
@@ -706,6 +717,9 @@ namespace Core {
 					stippleColor.highlight	= &gameVars->pallette.gui.window.stipple.hover;
 					stippleColor.active		= &gameVars->pallette.gui.window.stipple.active;
 				}
+
+				// FIXME: copy constructor
+				// FIXME: assignment operator
 		};
 
 		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-

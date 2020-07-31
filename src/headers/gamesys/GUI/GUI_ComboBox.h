@@ -66,19 +66,18 @@ namespace Core {
 				private:
 					//Window		win;
 					int			iSelected;
-					bool		bSelecting;
+					//bool		getState();
 					int			iLastValue;
 					int			iScrollIndex;
 					void updateScrollMouse();
 					void updateObjectState(iState eExternState);
-					void updateScroll();
 			};
 
 			ComboBox::ComboBox() {
 				selectedItem	= nullptr;
 				itemList		= nullptr;
 				iSelected		= 0;
-				bSelecting		= false;
+//				getState()		= false;
 				iLastValue		= 0;
 				iScrollIndex	= 0;
 				scrollUp		= nullptr;
@@ -97,13 +96,14 @@ namespace Core {
 				*con			= c;
 				if(con->text == "") con->text = n;
 
-				bLocalState		= true;
-				statePtr		= new bool(false);
+				//bLocalState		= true;
+				//statePtr		= new bool(false);
+				bLocalState		= false;
 
 				selectedItem	= nullptr;
 				itemList		= nullptr;
 				iSelected		= 0;
-				bSelecting		= false;
+//				getState()		= false;
 				iLastValue		= 0;
 				iScrollIndex	= 0;
 				scrollUp		= nullptr;
@@ -122,13 +122,14 @@ namespace Core {
 				*con			= c;
 				if(con->text == "") con->text = n;
 
-				bLocalState		= true;
-				statePtr		= new bool(false);
+				//bLocalState		= true;
+				//statePtr		= new bool(false);
+				bLocalState		= false;
 
 				selectedItem	= nullptr;
 				itemList		= nullptr;
 				iSelected		= 0;
-				bSelecting		= false;
+//				getState()		= false;
 				iLastValue		= 0;
 				iScrollIndex	= 0;
 				scrollUp		= nullptr;
@@ -146,13 +147,14 @@ namespace Core {
 				con				= c;
 				if(con->text == "") con->text = n;
 
-				bLocalState		= true;
-				statePtr		= new bool(false);
+				//bLocalState		= true;
+				//statePtr		= new bool(false);
+				bLocalState		= false;
 
 				selectedItem	= nullptr;
 				itemList		= nullptr;
 				iSelected		= 0;
-				bSelecting		= false;
+//				getState()		= false;
 				iLastValue		= 0;
 				iScrollIndex	= 0;
 				scrollUp		= nullptr;
@@ -170,13 +172,14 @@ namespace Core {
 				con				= c;
 				if(con->text == "") con->text = n;
 
-				bLocalState		= true;
-				statePtr		= new bool(false);
+				//bLocalState		= true;
+				//statePtr		= new bool(false);
+				bLocalState		= false;
 
 				selectedItem	= nullptr;
 				itemList		= nullptr;
 				iSelected		= 0;
-				bSelecting		= false;
+//				getState()		= false;
 				iLastValue		= 0;
 				iScrollIndex	= 0;
 				scrollUp		= nullptr;
@@ -208,36 +211,45 @@ namespace Core {
 				iSelected = id;
 			}
 
+			/**
+			 * @brief Setup children that make up this component. All children use
+			 * 		  the same #name which allows object locking to not lock any objects
+			 * 		  defined here.
+			 */
 			void ComboBox::init() {
-//				if (bHasParent) con->exec(*parent);
-//				else con->exec();
-
 				if(bHasParent) {
 					con->scroll.bind(*parent);
 					con->exec(*parent);
 				}
 				else con->exec();
 
-				selectedItem = new Object::Button(*parent, name+"_Selected", false, con);
+				//con->disableFocusLock();
+				selectedItem = new Object::Button(*parent, name, false, con);
 				selectedItem->init();
+				setStatePtr(selectedItem->getStatePtr());
 
-				itemList = new Object::Window(*selectedItem->con, name+"_List", &con->itemList);
+				//con->itemList.disableFocusLock();
+				itemList = new Object::Window(*selectedItem->con, name, &con->itemList);
 				itemList->con->setNoInput(false);
 				itemList->con->setWidth(selectedItem->con->size.x, selectedItem->con->size.constraint.xType);
 				itemList->con->disableScissor();
 				itemList->init();
 
 				// Preliminary setup for items to be added
+				con->itemButton.disableFocusLock();
 				con->itemButton.setPos(0, 0);
 				con->itemButton.setGroup(Core::groups.add(name+"_ComboBoxItem", true));
 				con->itemButton.exec();
 
-				scrollUp = new Object::Button(con->itemList, "Scroll Up", false, con->scrollButton);
+				//con->scrollButton.disableFocusLock();
+//				scrollUp = new Object::Button(con->itemList, "Scroll Up", false, con->scrollButton);
+				scrollUp = new Object::Button(con->itemList, name, false, con->scrollButton);
 				scrollUp->con->setButtonType(BUTTON_DEBOUNCE);
 				scrollUp->con->setText("\x1E");	// Up Arrow
 				scrollUp->init();
 
-				scrollDown = new Object::Button(con->itemList, "Scroll Down", false, con->scrollButton);
+//				scrollDown = new Object::Button(con->itemList, "Scroll Down", false, con->scrollButton);
+				scrollDown = new Object::Button(con->itemList, name, false, con->scrollButton);
 				scrollDown->con->setButtonType(BUTTON_DEBOUNCE);
 				scrollDown->con->setText("\x1F");	// Down arrow
 				scrollDown->init();
@@ -247,8 +259,14 @@ namespace Core {
 				bInit = true;
 			}
 
+			/**
+			 * @brief Add an item to the list with \p title and \p iValue
+			 * @param title Name of item
+			 * @param iValue Value of item
+			 */
 			void ComboBox::addItem(std::string title, t_BIFS iValue) {
-				Object::Button * data = new Object::Button(con->itemList, title, false, con->itemButton);		// Creates a NEW copy of button constraints so On/Off values can be kept separate
+				Object::Button * data = new Object::Button(con->itemList, name, false, con->itemButton);		// Creates a NEW copy of button constraints so On/Off values can be kept separate
+				data->con->setText(title);
 				data->dataSet.addGroupState(data->sOnState, iValue);
 				data->init();
 
@@ -259,6 +277,10 @@ namespace Core {
 				con->itemButton.exec();
 			}
 
+			/**
+			 * @brief Add a list of items all at once
+			 * @param vItems Vector of <title, value> pairs to set
+			 */
 			void ComboBox::addItems(t_ComboBoxItems vItems) {
 
 				for (auto const& vItem : std::as_const(vItems)) {
@@ -274,6 +296,10 @@ namespace Core {
 				}
 			}
 
+			/**
+			 * @brief Remove an item defined by \p title from list
+			 * @param title Name of item to remove
+			 */
 			void ComboBox::removeItem(std::string title) {
 				items.remove(title);
 			}
@@ -299,9 +325,13 @@ namespace Core {
 				return items[n]->dataSet;
 			}
 
+			/**
+			 * @brief Update the internal state of the object
+			 * @param eExternState State from a calling (parent) object that overrides this objects state
+			 */
 			void ComboBox::updateObjectState(iState eExternState) {
 				// Uncomment if object state can be set externally
-				//checkStatePtr();
+				checkStatePtr();
 
 				// Generic state handler
 				if(eExternState!=STATE_NONE && !(eExternState&STATE_UPDATE)) eObjectState = eExternState;
@@ -322,7 +352,29 @@ namespace Core {
 						if(mState&Core::_Mouse::MOUSE_HOVER) {
 							updateScrollMouse();
 						}
-						eObjectState = STATE_NONE;
+						// TODO: Escape closes list
+
+						// Manage itemList visibility
+						if(con->bAutoHide && (!(selectedItem->eObjectState&STATE_FOCUS) && !(itemList->eObjectState&STATE_FOCUS)) && getState()) {
+							eObjectState = STATE_NONE;
+						}
+						else if(!con->bAutoHide) {
+							if((!(selectedItem->eObjectState&STATE_FOCUS) && !(itemList->eObjectState&STATE_FOCUS)) && getState() && Core::mouse->button.held[SDL_BUTTON_LEFT]) {
+								eObjectState = STATE_NONE;
+							}
+						}
+
+						// Object locks other objects
+						if(eObjectState&STATE_ACTIVE) {
+							bFocusPresent = true;
+							sActiveObject = name;
+						}
+						else if(sActiveObject == name) {
+							bFocusPresent = false;
+							sActiveObject = "";
+						}
+
+						//eObjectState = STATE_NONE;
 					}
 					else eObjectState = STATE_NONE;
 				}
@@ -357,43 +409,30 @@ namespace Core {
 			}
 
 			/**
-			 * @brief Update all children according to parent scroll state
-			 *
+			 * @brief Execute logic and draw thie object
+			 * @param eExternState
 			 */
-//			void ComboBox::updateScroll() {
-//				if(parent!=nullptr) {
-//					con->bEnableScroll = parent->bEnableScroll;
-//					con->pos.yOffset = parent->pos.yOffset;
-//
-//					selectedItem->con->bEnableScroll = parent->bEnableScroll;
-//					selectedItem->con->pos.yOffset = parent->pos.yOffset;
-//
-//					itemList->con->bEnableScroll = parent->bEnableScroll;
-//					itemList->con->pos.yOffset = parent->pos.yOffset;
-//
-//					scrollUp->con->bEnableScroll = parent->bEnableScroll;
-//					scrollUp->con->pos.yOffset = parent->pos.yOffset;
-//
-//					scrollDown->con->bEnableScroll = parent->bEnableScroll;
-//					scrollDown->con->pos.yOffset = parent->pos.yOffset;
-//
-//					for(int n=0; n<items.size(); n++) {
-//						items[n]->con->bEnableScroll = parent->bEnableScroll;
-//						items[n]->con->pos.yOffset = parent->pos.yOffset;
-//					}
-//				}
-//			}
-
 			void ComboBox::exec(iState eExternState) {
 				if(bInit && con->visibility && ((parent!=nullptr && parent->visibility) || (parent==nullptr))) {
 					if(items.size()>0) {
 //						updateScroll();
 
-						//if(!Base::Interactive_Base::bFocusPresent) updateObjectState(eExternState);
-						updateObjectState(eExternState);
+//						if(!Base::Interactive_Base::bFocusPresent) {
+//							updateObjectState(eExternState);
+//							if(con->toolTip.bShow) toolTip.updateObjectState(eObjectState);
+//							else toolTip.updateObjectState(STATE_NONE);
+//						}
 
-						if(con->toolTip.bShow) toolTip.updateObjectState(eObjectState);
-						else toolTip.updateObjectState(STATE_NONE);
+						// Allow update only if No object active or this object active
+
+						if(name=="ComboBox2") debug.log(name+":      sActiveObject ="+sActiveObject);
+
+						if((con->bFocusLock && !bFocusPresent) || !con->bFocusLock || (sActiveObject==name)) {
+							updateObjectState(eExternState);
+
+							if(this->con->toolTip.bShow) this->toolTip.updateObjectState(this->eObjectState);
+							else this->toolTip.updateObjectState(STATE_NONE);
+						}
 
 						// Update constraints
 						if(bHasParent) con->exec(*parent);
@@ -411,20 +450,21 @@ namespace Core {
 						itemList->con->visibility = selectedItem->getState();
 
 						// Manage itemList visibility
-						if(selectedItem->getState() && !bSelecting) bSelecting = true;
-						else if(con->bAutoHide && (!(selectedItem->eObjectState&STATE_FOCUS) && !(itemList->eObjectState&STATE_FOCUS)) && bSelecting) {
-							selectedItem->setState(false);
-							bSelecting = false;
-						}
-						else if(!con->bAutoHide) {
-							if((!(selectedItem->eObjectState&STATE_FOCUS) && !(itemList->eObjectState&STATE_FOCUS)) && bSelecting && Core::mouse->button.held[SDL_BUTTON_LEFT]) {
-								selectedItem->setState(false);
-								bSelecting = false;
-							}
-						}
+						//if(selectedItem->getState() && !getState()) getState() = true;
+//						else if(con->bAutoHide && (!(selectedItem->eObjectState&STATE_FOCUS) && !(itemList->eObjectState&STATE_FOCUS)) && getState()) {
+//						if(con->bAutoHide && (!(selectedItem->eObjectState&STATE_FOCUS) && !(itemList->eObjectState&STATE_FOCUS)) && getState()) {
+//							selectedItem->setState(false);
+//							getState() = false;
+//						}
+//						else if(!con->bAutoHide) {
+//							if((!(selectedItem->eObjectState&STATE_FOCUS) && !(itemList->eObjectState&STATE_FOCUS)) && getState() && Core::mouse->button.held[SDL_BUTTON_LEFT]) {
+//								selectedItem->setState(false);
+//								getState() = false;
+//							}
+//						}
 
 						// Draw itemList and items
-						if(bSelecting) {
+						if(getState()) {
 //							// Detect scroll button status
 							int iMem = iScrollIndex;
 							if(scrollUp->getState())   { iScrollIndex -= 1; }
@@ -506,6 +546,9 @@ namespace Core {
 				}
 			}
 
+			/**
+			 * @brief Draw tooltip
+			 */
 			void ComboBox::execToolTip() {
 				toolTip.exec();
 			}

@@ -379,7 +379,7 @@ namespace Core {
 					if(bHasParent) con->exec(*parent);
 					else con->exec();
 
-					if(!bFocusPresent) {
+					if((con->bFocusLock && !bFocusPresent) || !con->bFocusLock || (sActiveObject==name)) {
 						updateObjectState(eExternState);
 
 						if(con->toolTip.bShow) toolTip.updateObjectState(eObjectState);

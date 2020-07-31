@@ -180,6 +180,8 @@
  * 				[X] Remove item (maybe not do this, possible complications?)
  * 				[X] SetItem (set item return states)
  * 				[X] GetItem (get the selected item return states)
+ * 			[X] Additional Fixes
+ * 				[X] STATE_ACTIVE should be used for showing list and selecting items
  *
  * TODO: [X] Fix progress bar not working, likely related to valuePtr changes
  *
@@ -237,14 +239,14 @@
  * 					[ ] Add parent active pointer? Use nested structure like scrolling so children know if parent has focus.
  * 				[X] Scroll position (int)
  * 				[ ] Maximum scroll position (auto calc???)
- * 				[ ] Window scrolling disabled when any object is active
+ * 				[X] Window scrolling disabled when any object is active
  * 					[X] If Interactive_Base::bFocusPresent then don't scroll
- * 					[ ] If an object has hover (slider, field, etc) then don't scroll (add new static to Base::Interactive)
- * 					[ ] Make ComboBox report active state
- * 					[ ]
+ * 					[X] If an object has hover (slider, field, etc) then don't scroll (add new static to Base::Interactive)
+ * 					[X] Make ComboBox report active state
  *
  * TODO: [ ] Change Props to pass by reference in GUI_Container
  * 			[ ]
+ *
  * TODO: [ ] Update objects to use AnyType
  * 			- This is difficult to implement with pointers to non-AnyType values
  * 			  so this should probably not be done and just keep original system.
@@ -253,6 +255,7 @@
  * 			[ ] Separate slider into separate type definitions?
  * 				- Copies of Slider such as SliderInt, SliderFloat, SliderBool instead of AnySlider.
  * 			[ ] Separate fields in to FieldInt, FieldBool, FieldFloat, FieldString
+ * 			[ ] Or use GUI_Container templates for access to each type
  *
  * TODO: [ ] Slider2D - Like a slider but uses a point in 2D space controlling 2 values at once
  * 			[ ] Box for selection area (window using standard Props)
@@ -299,13 +302,17 @@
  * 					[ ] GUI_Container
  * 					[ ] GUI_ComboBox
  * 					[ ] TextSys
+ *
  * TODO: [ ] Window padding should automatically take border size into account?
  * 			- How does this work for negative? Ignore border?
+ *
  * TODO: [ ] Add STATE_FOCUS handler to all objects
+ *
  * TODO: [ ] Object Sprites
  * 				[X] Allow a window to use a texture sprite instead of drawing generic quad
  * 					- Can already kinda be done with invisible window and 100% relative sprite
  * 				[ ] Allow buttons to use sprites with base, active, and hover states. Maybe create a new button class? (ImageButton)
+ *
  * TODO: [ ] Implement Scissoring on all objects
  * 			- Scissoring window is the objects window minus any padding.
  * 				- Objects drawn outside the window will no longer be visible
@@ -318,6 +325,7 @@
  * 				[ ] Use Pop to return to the previous scissor area
  * 				[ ] Monitor for overflow/underflow of push/pop
  * 				[ ] Add an enable/disable option; Global and per stack item, so a Push can simply disable scissor for that item
+ *
  * TODO: [ ] GUI focus handing like button groups, GUI name defines focus group.
  * 			- Group focus allows window layers that won't interfere with each other.
  * 			- Focus is set/reset by code conditions. (Button opens GUI and activates focus, Close button closes GUI and releases focus. Use a STACK.)
@@ -329,6 +337,7 @@
  * 			[ ] Add a GUI.exec() function to execute GUIs on the GUI stack
  * 				[ ] Execute stack in order
  * 				[ ] Only top of stack accepts input
+ *
  * TODO: [ ] Add copy constructor and assignment operator to all Props
  * 			  - Copy: <class>(const <class> &src) { var = new <class>; *var = src; }
  * 			  - Assignment: <class> &operator=(const <class> &src) { var = new <class>; *var = src; return *this; }

@@ -38,14 +38,14 @@ namespace Core {
 			class Button : virtual public Base::Interactive<Props_Button>, public Base::AudioFeedback {
 				public:
 					Button();
-					Button(std::string n, bool b, Props_Button c);
+					Button(std::string n, bool b, Props_Button &c);
 					Button(std::string n, bool b, Props_Button *c);
-					Button(Props &p, std::string n, bool b, Props_Button c);
+					Button(Props &p, std::string n, bool b, Props_Button &c);
 					Button(Props &p, std::string n, bool b, Props_Button *c);
 
-					Button(std::string n, bool *b, Props_Button c);
+					Button(std::string n, bool *b, Props_Button &c);
 					Button(std::string n, bool *b, Props_Button *c);
-					Button(Props &p, std::string n, bool *b, Props_Button c);
+					Button(Props &p, std::string n, bool *b, Props_Button &c);
 					Button(Props &p, std::string n, bool *b, Props_Button *c);
 
 					virtual ~Button();
@@ -67,7 +67,7 @@ namespace Core {
 
 			Button::Button() {}
 
-			Button::Button(std::string n, bool b, Props_Button c) {
+			Button::Button(std::string n, bool b, Props_Button &c) {
 				name			= n;
 
 				bRepeatStatus	= false;
@@ -87,7 +87,7 @@ namespace Core {
 				else  eObjectState	= STATE_NONE;
 			}
 
-			Button::Button(Props &p, std::string n, bool b, Props_Button c) {
+			Button::Button(Props &p, std::string n, bool b, Props_Button &c) {
 				name			= n;
 				bRepeatStatus	= false;
 				bIsGrouped		= (c.iGroup>0);
@@ -141,7 +141,7 @@ namespace Core {
 				else  eObjectState	= STATE_NONE;
 			}
 
-			Button::Button(std::string n, bool *b, Props_Button c) {
+			Button::Button(std::string n, bool *b, Props_Button &c) {
 				name			= n;
 				bRepeatStatus	= false;
 				bIsGrouped		= (c.iGroup>0);
@@ -160,7 +160,7 @@ namespace Core {
 				else  eObjectState	= STATE_NONE;
 			}
 
-			Button::Button(Props &p, std::string n, bool *b, Props_Button c) {
+			Button::Button(Props &p, std::string n, bool *b, Props_Button &c) {
 				name			= n;
 
 				bRepeatStatus	= false;
@@ -352,28 +352,15 @@ namespace Core {
 				updateStatePtr();
 			}
 
-			/**
-			 * @brief Update all children according to parent scroll state
-			 *
-			 */
-//			void Button::updateScroll() {
-//				if(parent!=nullptr) {
-//					con->bEnableScroll = parent->bEnableScroll;
-//					con->pos.yOffset = parent->pos.yOffset;
-//					win.con->pos.yOffset = parent->pos.yOffset;
-//				}
-//			}
-
 			void Button::exec(iState eExternState) {
 				if(bInit) {
 					if(con->visibility && ((parent!=nullptr && parent->visibility) || (parent==nullptr))) {
-//						updateScroll();
 
 						// Update constraints
 						if(bHasParent) con->exec(*parent);
 						else con->exec();
 
-						if(!bFocusPresent) {
+						if((con->bFocusLock && !bFocusPresent) || !con->bFocusLock || (sActiveObject==name)) {
 							updateObjectState(eExternState);
 							if(con->toolTip.bShow) toolTip.updateObjectState(eObjectState);
 							else toolTip.updateObjectState(STATE_NONE);
@@ -390,16 +377,6 @@ namespace Core {
 						else if(eObjectState&STATE_ACTIVE) colors.PushFront(*con->colorText.active);
 						else if(eObjectState&STATE_HOVER) colors.PushFront(*con->colorText.highlight);
 						else colors.PushFront(*con->colorText.base);
-
-//						textSys->draw(con, name, con->eLabelAnchor);
-
-						if(name=="Erase Test") std::cout << "\n";
-						if(name=="Erase Test") debug.log(""+std::to_string(con->scroll.getX()));
-						if(name=="Erase Test") debug.log(""+std::to_string(con->scroll.getY()));
-						if(name=="Erase Test") debug.log(""+std::to_string(con->getPos().x));
-						if(name=="Erase Test") debug.log(""+std::to_string(con->getPos().y));
-						if(name=="Erase Test") debug.log(""+std::to_string(con->getScrollPos().x));
-						if(name=="Erase Test") debug.log(""+std::to_string(con->getScrollPos().y));
 
 						textSys->draw(con, con->text, con->eLabelAnchor);
 						colors.PopFront();

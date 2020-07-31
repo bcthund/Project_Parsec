@@ -250,13 +250,19 @@ namespace Core {
 
 				class Interactive_Base {
 					public:
-						static bool bFocusPresent;				// An object currently has focus
-						static std::string sActiveObject;		// Global active object, only one object can be active at a time (Field, slider, textedit, etc)
+						static bool bFocusPresent;				///< An object currently has focus
+						static std::string sActiveObject;		///< Global active object, only one object can be active at a time (Field, slider, textedit, etc)
+
+						static bool bScrollFocus;				///< An object has scrolling focus
+						static std::string sScrollObject;		///< Object name preventing scrolling
+
 						Interactive_Base() {}
 						~Interactive_Base() {}
 				};
 				bool Interactive_Base::bFocusPresent			= false;
 				std::string Interactive_Base::sActiveObject		= "";
+				bool Interactive_Base::bScrollFocus				= false;
+				std::string Interactive_Base::sScrollObject		= "";
 
 				template <class C>
 				class Interactive : public Generic<C>, virtual public Interactive_Base {
@@ -321,6 +327,12 @@ namespace Core {
 						 * @return Return value of this object
 						 */
 						bool getState() {	return *statePtr;	}
+
+						/**
+						 * \brief Get the value of this object. For a button it will be the boolean state.
+						 * @return Return value of this object
+						 */
+						bool getFocus() {	return this->eObjectState&STATE_FOCUS;	}
 
 						/**
 						 * \brief Set the pointer of internal state to an external item
