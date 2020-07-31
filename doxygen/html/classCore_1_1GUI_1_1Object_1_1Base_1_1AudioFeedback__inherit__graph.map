@@ -1,9 +1,0 @@
-<map id="Core::GUI::Object::Base::AudioFeedback" name="Core::GUI::Object::Base::AudioFeedback">
-<area shape="rect" id="node1" title=" " alt="" coords="5,159,156,200"/>
-<area shape="rect" id="node2" href="$classCore_1_1GUI_1_1Object_1_1Button.html" title=" " alt="" coords="217,5,353,47"/>
-<area shape="rect" id="node3" href="$classCore_1_1GUI_1_1Object_1_1CheckBox.html" title=" " alt="" coords="217,71,353,112"/>
-<area shape="rect" id="node4" href="$classCore_1_1GUI_1_1Object_1_1Icon.html" title=" " alt="" coords="204,137,365,163"/>
-<area shape="rect" id="node5" href="$classCore_1_1GUI_1_1Object_1_1Slider.html" title=" " alt="" coords="217,188,353,229"/>
-<area shape="rect" id="node6" href="$classCore_1_1GUI_1_1Object_1_1Slider.html" title=" " alt="" coords="217,253,353,295"/>
-<area shape="rect" id="node7" href="$classCore_1_1GUI_1_1Object_1_1Slider.html" title=" " alt="" coords="217,319,353,360"/>
-</map>

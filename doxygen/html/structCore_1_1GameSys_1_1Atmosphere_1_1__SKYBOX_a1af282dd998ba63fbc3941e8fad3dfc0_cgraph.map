@@ -1,6 +1,0 @@
-<map id="Core::GameSys::Atmosphere::_SKYBOX::calc" name="Core::GameSys::Atmosphere::_SKYBOX::calc">
-<area shape="rect" id="node1" title=" " alt="" coords="5,27,200,69"/>
-<area shape="rect" id="node2" href="$classCore_1_1GameSys_1_1Atmosphere.html#a10e9e415b9ea6cad37b24025673afa1b" title=" " alt="" coords="248,27,443,69"/>
-<area shape="rect" id="node3" href="$classCore_1_1__Particles.html#ad3800cb2d0d3a8eb79e6dd083bb520d1" title=" " alt="" coords="506,5,654,32"/>
-<area shape="rect" id="node4" href="$classCore_1_1GameSys_1_1__Satellite.html#a55f61feb8c6cc45adca134a3df9ddc70" title=" " alt="" coords="491,57,669,98"/>
-</map>

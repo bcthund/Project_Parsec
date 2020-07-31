@@ -1,6 +1,0 @@
-<map id="Core::GUI::Props_Label" name="Core::GUI::Props_Label">
-<area shape="rect" id="node1" title=" " alt="" coords="71,169,234,196"/>
-<area shape="rect" id="node2" href="$classCore_1_1GUI_1_1Props__Window.html" title=" " alt="" coords="63,95,242,121"/>
-<area shape="rect" id="node3" href="$classCore_1_1GUI_1_1Props.html" title="General Props used for all objects." alt="" coords="5,13,129,39"/>
-<area shape="rect" id="node4" href="$classCore_1_1GUI_1_1Props__Addon__Stipple.html" title="Create a new group but do not add any values to it." alt="" coords="154,5,322,47"/>
-</map>

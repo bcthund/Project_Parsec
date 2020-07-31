@@ -1,7 +1,0 @@
-<map id="Core::_Mouse" name="Core::_Mouse">
-<area shape="rect" id="node1" title=" " alt="" coords="224,153,328,180"/>
-<area shape="rect" id="node2" href="$classCore_1_1Timer.html" title=" " alt="" coords="5,5,96,32"/>
-<area shape="rect" id="node3" href="$structCore_1_1__Mouse_1_1__Button.html" title=" " alt="" coords="120,5,277,32"/>
-<area shape="rect" id="node4" href="$structCore_1_1Vector3f.html" title=" " alt="" coords="301,5,408,32"/>
-<area shape="rect" id="node5" href="$structCore_1_1__Mouse_1_1__Wheel.html" title=" " alt="" coords="433,5,589,32"/>
-</map>

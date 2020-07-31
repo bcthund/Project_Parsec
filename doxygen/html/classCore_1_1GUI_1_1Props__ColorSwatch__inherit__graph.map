@@ -1,9 +1,0 @@
-<map id="Core::GUI::Props_ColorSwatch" name="Core::GUI::Props_ColorSwatch">
-<area shape="rect" id="node1" title=" " alt="" coords="448,127,655,153"/>
-<area shape="rect" id="node2" href="$classCore_1_1GUI_1_1Props__Window.html" title=" " alt="" coords="221,35,400,61"/>
-<area shape="rect" id="node3" href="$classCore_1_1GUI_1_1Props.html" title="General Props used for all objects." alt="" coords="27,5,151,32"/>
-<area shape="rect" id="node4" href="$classCore_1_1GUI_1_1Props__Addon__Stipple.html" title="Create a new group but do not add any values to it." alt="" coords="5,57,173,98"/>
-<area shape="rect" id="node5" href="$classCore_1_1GUI_1_1Props__Addon__Background.html" title=" " alt="" coords="227,86,395,127"/>
-<area shape="rect" id="node6" href="$classCore_1_1GUI_1_1Props__Addon__Label.html" title=" " alt="" coords="227,151,395,193"/>
-<area shape="rect" id="node7" href="$classCore_1_1GUI_1_1Props__Addon__Slider.html" title=" " alt="" coords="227,217,395,258"/>
-</map>

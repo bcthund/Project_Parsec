@@ -1,8 +1,0 @@
-<map id="Core::GUI::Props_Addon_Group" name="Core::GUI::Props_Addon_Group">
-<area shape="rect" id="node1" title="Allow object to be part of a group with restricted usage." alt="" coords="5,74,173,115"/>
-<area shape="rect" id="node2" href="$classCore_1_1GUI_1_1Props__Button.html" title=" " alt="" coords="233,5,402,32"/>
-<area shape="rect" id="node4" href="$classCore_1_1GUI_1_1Props__CheckBox.html" title=" " alt="" coords="221,56,413,83"/>
-<area shape="rect" id="node5" href="$classCore_1_1GUI_1_1Props__Icon.html" title=" " alt="" coords="239,107,395,133"/>
-<area shape="rect" id="node6" href="$classCore_1_1GUI_1_1Props__Sprite.html" title=" " alt="" coords="235,157,400,184"/>
-<area shape="rect" id="node3" href="$classCore_1_1GUI_1_1Props__ComboBox.html" title=" " alt="" coords="461,5,657,32"/>
-</map>

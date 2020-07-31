@@ -1,7 +1,0 @@
-<map id="Core::_ParticleEmitterData" name="Core::_ParticleEmitterData">
-<area shape="rect" id="node1" title=" " alt="" coords="508,141,687,168"/>
-<area shape="rect" id="node2" href="$structCore_1_1Vector3f.html" title=" " alt="" coords="221,5,328,32"/>
-<area shape="rect" id="node3" href="$structCore_1_1Vector2f.html" title=" " alt="" coords="5,156,112,183"/>
-<area shape="rect" id="node4" href="$structCore_1_1__ParticleEmitterData_1_1__SpreadStruct.html" title=" " alt="" coords="185,178,364,219"/>
-<area shape="rect" id="node5" href="$classCore_1_1__TextureAtlas.html" title=" " alt="" coords="205,244,344,271"/>
-</map>

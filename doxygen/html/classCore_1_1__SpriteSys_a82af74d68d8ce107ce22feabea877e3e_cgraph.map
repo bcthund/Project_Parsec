@@ -1,7 +1,0 @@
-<map id="Core::_SpriteSys::draw" name="Core::_SpriteSys::draw">
-<area shape="rect" id="node1" title=" " alt="" coords="5,56,164,83"/>
-<area shape="rect" id="node2" href="$classCore_1_1__SpriteSys.html#a7898cb37e4e0d6453892406d6b75c408" title=" " alt="" coords="218,5,377,32"/>
-<area shape="rect" id="node4" href="$classCore_1_1__Colors.html#aa7624cbbd0c1b94247efff11d9f7e742" title=" " alt="" coords="215,56,379,83"/>
-<area shape="rect" id="node5" href="$classCore_1_1__Colors.html#a80ce9c5980115ce42c071d99b5404689" title=" " alt="" coords="212,107,383,133"/>
-<area shape="rect" id="node3" href="$classCore_1_1VAO.html#a3072110ba182f2d5499a5c2b57b29916" title=" " alt="" coords="431,5,553,32"/>
-</map>

@@ -1,8 +1,0 @@
-<map id="Core::GameSys::MapSys::getSimplexElevation" name="Core::GameSys::MapSys::getSimplexElevation">
-<area shape="rect" id="node1" title=" " alt="" coords="5,49,177,90"/>
-<area shape="rect" id="node2" href="$classSimplexNoise.html#a868146cbed0ee0137b641b5b828a4c75" title=" " alt="" coords="225,56,372,83"/>
-<area shape="rect" id="node3" href="$classSimplexNoise.html#ac7bd445e9b5e2d5aecb30c5f5840528c" title=" " alt="" coords="420,56,563,83"/>
-<area shape="rect" id="node4" href="$SimplexNoise_8cpp.html#ac357795e5f54b15183807d99cde5199d" title=" " alt="" coords="611,5,680,32"/>
-<area shape="rect" id="node5" href="$SimplexNoise_8cpp.html#a70932d9c87977053f493d729e778e661" title=" " alt="" coords="622,56,669,83"/>
-<area shape="rect" id="node6" href="$SimplexNoise_8cpp.html#a39b91b979c2d169ec26079a983134a54" title=" " alt="" coords="728,81,779,108"/>
-</map>
