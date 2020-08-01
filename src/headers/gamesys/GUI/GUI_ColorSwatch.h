@@ -163,6 +163,8 @@ namespace Core {
 			}
 
 			void ColorSwatch::init() {
+				this->id = IDs.create();
+
 				if(bHasParent) con->exec(*parent);
 				else con->exec();
 

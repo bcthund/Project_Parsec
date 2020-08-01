@@ -33,13 +33,50 @@
 //#include "../core/vao.h"
 //#include "../core/matrix.h"
 //#include "../core/shader.h"
+#include <chrono>
 
 namespace Core {
 	namespace GUI {
 		namespace Object {
 			namespace Base {
+				struct c_ID {
+					t_Vector<int> list;				///< Unique object IDs (bool specifies in-use, for possible future use)
+
+					/**
+					 * @brief Will create a new unique ID and assign it to the used ID list, then return the ID
+					 * @return The unique ID of this object
+					 */
+					std::string create() {
+						int time = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+						std::ostringstream timeStamp;
+						timeStamp << std::hex << time;
+						list.add(timeStamp.str(), true);
+						return timeStamp.str();
+					}
+					void set(std::string id, int i)		{	list[id] = i;		}
+					void remove(std::string id) 		{	list.remove(id);	}
+					int & operator[](std::string id)	{	return list[id];	}
+				};
+				//t_Vector<bool> c_ID::list;
+
+				struct c_Generic_Base {
+					public:
+						static bool bFocusPresent;				///< An object currently has focus
+						static std::string sActiveObject;		///< Global active object, only one object can be active at a time (Field, slider, textedit, etc)
+
+						static bool bScrollFocus;				///< An object has scrolling focus
+						static std::string sScrollObject;		///< Object name preventing scrolling
+
+						c_Generic_Base() {}
+						~c_Generic_Base() {}
+				};
+				bool c_Generic_Base::bFocusPresent			= false;
+				std::string c_Generic_Base::sActiveObject	= "";
+				bool c_Generic_Base::bScrollFocus			= false;
+				std::string c_Generic_Base::sScrollObject	= "";
+
 				template <class C>
-				class Generic {
+				class Generic : virtual public c_Generic_Base {
 	//					friend class Container;
 						friend class Button;
 						friend class CheckBox;
@@ -58,22 +95,129 @@ namespace Core {
 						friend class ProgressBar;
 						friend class ComboBox;
 
-					//protected:	// Doesn't always work right, friend can't access
 					public:
 						//Core::_Mouse::MOUSE_STATE mState;
 						Core::_Mouse::iMouseState mState;
-						std::string name;
-						bool bInit;
-						bool bLocalCon;
-						bool bHasParent;
-						bool bIsGrouped;
-						bool bRepeatStatus;
-						iState eObjectState;
-						Timer timeFocusDebounce;
-						int iFocusDebounce;
+						std::string name;						///< Generic object name used for user interaction
+						std::string id;							///< Unique object ID used by system
+						bool bInit;								///< Object has been initialized and exec() can run
+						bool bLocalCon;							///< Are contraints locally defined
+						bool bHasParent;						///< Does object have a parent
+						bool bIsGrouped;						///< Is object part of a group
+						iState eObjectState;					///< Internal state of the object
+						Timer timeFocusDebounce;				///< Debounce timer to lose focus (too fast can cause issues at object transistions)
+						int iFocusDebounce;						///< Amount of time before losing focus
+//						static std::vector<std::string> IDs;	///< Unique object IDs
+						int border;
+						C			* con;
+						Props * parent;
+						bool bEnabled;
+
+						Generic() {
+							mState			= Core::_Mouse::MOUSE_NONE;
+//							bCopied			= false;
+							con				= nullptr;
+							name			= "";
+							bInit			= false;
+							parent			= nullptr;
+							bLocalCon		= false;
+							bHasParent		= false;
+							bIsGrouped		= false;
+							eObjectState	= STATE_NONE;
+							for (int n=0; n<8; n++) {
+								enable.AND(n) = true;
+								enable.OR(n) = false;
+							}
+							enable.OR(0) = true;
+							border = 1;
+							bEnabled = true;
+							iFocusDebounce = 100;
+						}
+
+						virtual ~Generic() {
+							/*
+							 * Do not delete pointers if never initialized
+							 *
+							 * This is a safety catch to prevent temporary objects
+							 * from detroying their pointers after being copied
+							 * to another object.
+							 */
+							if(bInit) {
+								// TODO: delete pointers if local
+							}
+						}
+
+						Generic &operator=(const Generic &src) {
+//							std::cout << "Generic &operator=() called\n";
+							mState				= src.mState;
+							name				= src.name;
+							bInit				= src.bInit;
+							bIsGrouped			= src.bIsGrouped;
+							eObjectState		= src.eObjectState;
+							bEnabled			= src.bEnabled;
+							iFocusDebounce		= src.iFocusDebounce;
+
+							bLocalCon			= src.bLocalCon;
+							if(bLocalCon) con = new C(*src.con);
+							else con = src.con;
+
+							bHasParent			= src.bHasParent;
+							parent				= src.parent;
+
+							enable				= src.enable;
+
+							return *this;
+						}
+
+						void hide()		{	con->visibility = false;	}
+						void show()		{	con->visibility = true;	}
+						bool visible()	{	return con->visibility;	}
+						void setEnabled(bool b) { bEnabled = b; }
+						void setEnableA(bool b, int n=0) { *enable.s_AND[n].b = b; }
+
+						void setEnableAPtr(bool *b)
+						{
+							setEnableAPtr(b, enable.iAND);
+							enable.iAND = std::min(enable.iAND+1, 7);
+						}
+
+						void setEnableAPtr(bool *b, int n)
+						{
+							enable.iAND = std::min(n, 7);
+							if(enable.s_AND[enable.iOR].bLocal) delete enable.s_AND[enable.iOR].b;
+							enable.s_AND[enable.iOR].bLocal = false;
+							enable.s_AND[enable.iOR].b = b;
+						}
+
+						void setEnableO(bool b, int n=0) { enable.s_OR[n].b = b; }
+
+						void setEnableOPtr(bool *b) {
+							setEnableOPtr(b, enable.iOR);
+							enable.iOR = std::min(enable.iOR+1, 7);
+						}
+
+						void setEnableOPtr(bool *b, int n) {
+							enable.iOR = std::min(n, 7);
+							if(enable.s_OR[enable.iOR].bLocal) delete enable.s_OR[enable.iOR].b;
+							enable.s_OR[enable.iOR].bLocal = false;
+							enable.s_OR[enable.iOR].b = b;
+						}
+
+						bool enabled() {
+							bool bAND = true;
+							bool bOR = false;
+							for (int n=0; n<8; n++) {
+								bAND = bAND && enable.AND(n);
+								bOR = bOR || enable.OR(n);
+							}
+							return bEnabled && (bAND && bOR);
+						}
+						iState	getObjectState()	{	return eObjectState;	}
+
+						static c_ID IDs;
 
 					private:
-//						bool bCopied;	// FIXME: MEMORY LEAKS HERE: Pointers not getting deleted
+//						bool bCopied;	// FIXME: MEMORY LEAKS HERE: Pointers not getting deleted (probably just remove this)
 						class _AndOrBase {
 							friend class Generic;
 							private:
@@ -134,138 +278,31 @@ namespace Core {
 								}
 						} enable;
 
-					public:
-						int border;
-						C			* con;
-						Props * parent;
-						bool bEnabled;
-						void hide()		{	con->visibility = false;	}
-						void show()		{	con->visibility = true;	}
-						bool visible()	{	return con->visibility;	}
-
-						void setEnabled(bool b) {
-							bEnabled = b;
-						}
-
-						void setEnableA(bool b, int n=0) { *enable.s_AND[n].b = b; }
-
-						void setEnableAPtr(bool *b)
-						{
-							setEnableAPtr(b, enable.iAND);
-							enable.iAND = std::min(enable.iAND+1, 7);
-						}
-
-						void setEnableAPtr(bool *b, int n)
-						{
-							enable.iAND = std::min(n, 7);
-							if(enable.s_AND[enable.iOR].bLocal) delete enable.s_AND[enable.iOR].b;
-							enable.s_AND[enable.iOR].bLocal = false;
-							enable.s_AND[enable.iOR].b = b;
-						}
-
-						void setEnableO(bool b, int n=0) { enable.s_OR[n].b = b; }
-
-						void setEnableOPtr(bool *b) {
-							setEnableOPtr(b, enable.iOR);
-							enable.iOR = std::min(enable.iOR+1, 7);
-						}
-
-						void setEnableOPtr(bool *b, int n) {
-							enable.iOR = std::min(n, 7);
-							if(enable.s_OR[enable.iOR].bLocal) delete enable.s_OR[enable.iOR].b;
-							enable.s_OR[enable.iOR].bLocal = false;
-							enable.s_OR[enable.iOR].b = b;
-						}
-
-						bool enabled() {
-							bool bAND = true;
-							bool bOR = false;
-							for (int n=0; n<8; n++) {
-								bAND = bAND && enable.AND(n);
-								bOR = bOR || enable.OR(n);
-							}
-							return bEnabled && (bAND && bOR);
-						}
-						iState	getObjectState()	{	return eObjectState;	}
-
-						Generic() {
-							mState			= Core::_Mouse::MOUSE_NONE;
-//							bCopied			= false;
-							con				= nullptr;
-							name			= "";
-							bInit			= false;
-							parent			= nullptr;
-							bLocalCon		= false;
-							bHasParent		= false;
-							bIsGrouped		= false;
-							eObjectState	= STATE_NONE;
-							bRepeatStatus	= false;
-							for (int n=0; n<8; n++) {
-								enable.AND(n) = true;
-								enable.OR(n) = false;
-							}
-							enable.OR(0) = true;
-							border = 1;
-							bEnabled = true;
-							iFocusDebounce = 100;
-						}
-
-						virtual ~Generic() {
-							/*
-							 * Do not delete pointers if never initialized
-							 *
-							 * This is a safety catch to prevent temporary objects
-							 * from detroying their pointers after being copied
-							 * to another object.
-							 */
-							if(bInit) {
-								// TODO: delete pointers if local
-							}
-						}
-
-						Generic &operator=(const Generic &src) {
-//							std::cout << "Generic &operator=() called\n";
-							mState				= src.mState;
-							name				= src.name;
-							bInit				= src.bInit;
-							bIsGrouped			= src.bIsGrouped;
-							eObjectState		= src.eObjectState;
-							bRepeatStatus		= src.bRepeatStatus;
-							bEnabled			= src.bEnabled;
-							iFocusDebounce		= src.iFocusDebounce;
-
-							bLocalCon			= src.bLocalCon;
-							if(bLocalCon) con = new C(*src.con);
-							else con = src.con;
-
-							bHasParent			= src.bHasParent;
-							parent				= src.parent;
-
-							enable				= src.enable;
-
-							return *this;
-						}
-
 				};
-
-				class Interactive_Base {
-					public:
-						static bool bFocusPresent;				///< An object currently has focus
-						static std::string sActiveObject;		///< Global active object, only one object can be active at a time (Field, slider, textedit, etc)
-
-						static bool bScrollFocus;				///< An object has scrolling focus
-						static std::string sScrollObject;		///< Object name preventing scrolling
-
-						Interactive_Base() {}
-						~Interactive_Base() {}
-				};
-				bool Interactive_Base::bFocusPresent			= false;
-				std::string Interactive_Base::sActiveObject		= "";
-				bool Interactive_Base::bScrollFocus				= false;
-				std::string Interactive_Base::sScrollObject		= "";
 
 				template <class C>
-				class Interactive : public Generic<C>, virtual public Interactive_Base {
+				c_ID Generic<C>::IDs;
+//				std::vector<std::string> Generic<C>::c_ID::IDs;
+
+//				class Interactive_Base {
+//					public:
+//						static bool bFocusPresent;				///< An object currently has focus
+//						static std::string sActiveObject;		///< Global active object, only one object can be active at a time (Field, slider, textedit, etc)
+//
+//						static bool bScrollFocus;				///< An object has scrolling focus
+//						static std::string sScrollObject;		///< Object name preventing scrolling
+//
+//						Interactive_Base() {}
+//						~Interactive_Base() {}
+//				};
+//				bool Interactive_Base::bFocusPresent			= false;
+//				std::string Interactive_Base::sActiveObject		= "";
+//				bool Interactive_Base::bScrollFocus				= false;
+//				std::string Interactive_Base::sScrollObject		= "";
+
+				template <class C>
+				//class Interactive : public Generic<C>, virtual public Interactive_Base {
+				class Interactive : public Generic<C> {
 	//					friend class Container;
 						friend class Button;
 						friend class CheckBox;
@@ -291,6 +328,7 @@ namespace Core {
 					public:
 						t_DataSet dataSet;
 						std::string sOnState, sOffState;
+						bool bRepeatStatus;					///< Used for oneshot and debounce button types
 
 						Interactive() {
 							statePtr		= nullptr;
@@ -298,6 +336,7 @@ namespace Core {
 							bLocalState		= false;
 							sOnState		= "ON";
 							sOffState		= "OFF";
+							bRepeatStatus	= false;
 						}
 
 						Interactive(const Interactive &src) {
@@ -306,6 +345,7 @@ namespace Core {
 							statePtr		= new bool(src.statePtr);
 							bStateChanged	= src.bStateChanged;
 							bLocalState		= src.bLocalState;
+							bRepeatStatus	= src.bRepeatStatus;
 
 							Generic<C>::operator=(src);
 							//this->Interactive_Base::operator=(src);

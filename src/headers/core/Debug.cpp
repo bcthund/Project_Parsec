@@ -28,6 +28,10 @@ namespace Core {
 		// TODO Auto-generated destructor stub
 	}
 
+	_Debug::ConsoleColors& _Debug::operator()() {
+		return consoleColors;
+	}
+
 	void _Debug::logIncreaseIndent()   { sLogIndent.append(" "); }
 	void _Debug::logDecreaseIndent()   { if(sLogIndent.length()>0) sLogIndent.pop_back(); }
 	void _Debug::printIncreaseIndent() { sPrintIndent.append(" "); }
@@ -48,13 +52,11 @@ namespace Core {
 			bDrawLog = false;
 			bDrawPrint = false;
 		}
-
-		//if(timerPrint.get_splitdiff() > maxRate) {
-		//	bDrawPrint = true;
-		//	timerPrint.split();
-		//}
-		//else bDrawPrint = false;
 	}
+
+	// TODO: Make into std::cout style
+	//std::ostream & objOstream = std::cout;
+	//objOstream << "Test sentence goes to console\n";
 
 	/**
 	 * \brief Print a message to console with a timestamp in ticks and an automatic newline
@@ -84,3 +86,68 @@ namespace Core {
 	}
 
 } /* namespace Core */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

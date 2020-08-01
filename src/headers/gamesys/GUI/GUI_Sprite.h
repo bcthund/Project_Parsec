@@ -114,6 +114,8 @@ namespace Core {
 			 *
 			 * ****************************************************************************************************************************** */
 			void Sprite::init() {
+				this->id = IDs.create();
+
 				if(bHasParent) {
 					con->scroll.bind(*parent);
 					con->exec(*parent);

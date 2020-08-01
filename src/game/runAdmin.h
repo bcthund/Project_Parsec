@@ -219,12 +219,7 @@ void _Admin::init() {
 	if (!bOneShot[0]) {
 		std::cout << "GUI: Loading #00: Master Container ............................. ";
 		//std::cout << "...............................................................";
-		std::cout << "\n";
-		Core::debug.log("[A-0]");
-		Core::debug.logIncreaseIndent();
 		Core::gui.createGUI("GameMenu");
-		Core::debug.logDecreaseIndent();
-		Core::debug.log("[A-1]");
 		bOneShot[0] = true;
 		std::cout << "Done" << std::endl;
 	}
@@ -233,12 +228,7 @@ void _Admin::init() {
 	if (!bOneShot[1]) {
 		std::cout << "GUI: Loading #01: Windows ...................................... ";
 		//std::cout << "...............................................................";
-		std::cout << "\n";
-		Core::debug.log("[B-0]");
-		Core::debug.logIncreaseIndent();
 		Core::GUI::Props_Window cMaster;
-		Core::debug.logDecreaseIndent();
-		Core::debug.log("[B-1]");
 		cMaster.setOrigin(Core::GUI::CONSTRAIN_TOP_RIGHT);
 		cMaster.setAnchor(Core::GUI::CONSTRAIN_TOP_RIGHT);
 		cMaster.setPos(-10, -10);
@@ -247,11 +237,7 @@ void _Admin::init() {
 		cMaster.setHeight(550, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
 		cMaster.setPadding(10);
 		cMaster.setVisibility(true);
-		Core::debug.log("[B-2]");
-		Core::debug.logIncreaseIndent();
 		Core::gui["GameMenu"].add("Window 0", cMaster);
-		Core::debug.logDecreaseIndent();
-		Core::debug.log("[B-3]");
 
 		cMaster.setVisibility(false);
 		cMaster.setScrollable();
@@ -1590,6 +1576,8 @@ void _Admin::init() {
 			Slider_Window.setBorder(1, 2);
 			Slider_Window.setRadius(10);
 			Slider_Window.setPos(-5, 0);
+			Slider_Window.resetScrollable();
+			Core::debug.log("DISABLE SCROLLABLE", Core::debug().RED);
 			Core::gui["GameMenu"]["Window 17"].add("Position", Slider_Window);
 
 			Core::GUI::Props_Slider con;
@@ -1615,7 +1603,9 @@ void _Admin::init() {
 			Slider_Window.setAnchor(Core::GUI::CONSTRAIN_BOTTOM_RIGHT);
 //			Slider_Window.setPos(-5, 105);
 			Slider_Window.modPos(0, 105);
+			Slider_Window.resetScrollable();
 //			Slider_Window.enableScissor();
+			Core::debug.log("DISABLE SCROLLABLE", Core::debug().RED);
 			Core::gui["GameMenu"]["Window 17"].add("Padding", Slider_Window);
 
 			con.setPos(0, 0);		con.setMinMax(-100, 100);		con.setStep(1.0f, 10.0f, 100.0f);
@@ -1865,8 +1855,8 @@ void _Admin::run() {
 			Core::gui["GameMenu"]["Window 19"].ComboBox["ComboBox2"].removeItem("Test Object 5");
 		}
 
-		Core::debug.log(Core::GUI::Object::Base::Interactive_Base::sActiveObject+", "+std::to_string(Core::GUI::Object::Base::Interactive_Base::bFocusPresent));
-		Core::debug.log(Core::GUI::Object::Base::Interactive_Base::sScrollObject+", "+std::to_string(Core::GUI::Object::Base::Interactive_Base::bScrollFocus));
+//		Core::debug.log("Global: Active Object: "+Core::GUI::Object::Base::c_Generic_Base::sActiveObject+", "+std::to_string(Core::GUI::Object::Base::c_Generic_Base::bFocusPresent));
+//		Core::debug.log("Global: Scroll Object: "+Core::GUI::Object::Base::c_Generic_Base::sScrollObject+", "+std::to_string(Core::GUI::Object::Base::c_Generic_Base::bScrollFocus));
 
 		// TESTING: Variant example and type deduction
 //		std::variant<int, float, std::string> intFloatString;

@@ -270,7 +270,6 @@ namespace Core {
 				this->con			= new Props_Slider();
 				*this->con			= c;
 				if(this->con->text == "") this->con->text = n;
-				debug.log("'"+name+"', '"+this->con->text+"'");
 			}
 
 			template <class T> Slider<T>::Slider(Props &p, std::string n, T t, Props_Slider *c) {
@@ -320,6 +319,8 @@ namespace Core {
 			}
 
 			template <class T> void Slider<T>::init() {
+				this->id = IDs.create();
+
 				// Setup contraints
 //				if(this->bHasParent) this->con->exec(*this->parent);
 //				else this->con->exec();
@@ -545,14 +546,14 @@ namespace Core {
 						if(!this->bHasFocus && ((this->mState&Core::_Mouse::MOUSE_LEFT) || (this->mState&Core::_Mouse::MOUSE_LEFT_DOWN))) {
 							bHasFocus = true;
 							this->bFocusPresent = true;
-							this->sActiveObject = this->name;
+							this->sActiveObject = this->id;
 							this->eObjectState = STATE_ACTIVE;
 							Sound_PlayOn();
 						}
 						else if(bHasFocus && (this->eObjectState&STATE_ACTIVE) && Core::mouse->checkState()!=Core::_Mouse::MOUSE_LEFT_DOWN) {
 							bHasFocus = false;
 							this->bFocusPresent = false;
-							if(this->sActiveObject == this->name) this->sActiveObject = "";
+							if(this->sActiveObject == this->id) this->sActiveObject = "";
 							this->eObjectState = STATE_NONE;
 							Sound_PlayOff();
 						}
@@ -574,9 +575,9 @@ namespace Core {
 					// If mouse hover, then automatically set focus to suspend other objects (will suspend window scrolling)
 					if(this->eObjectState&STATE_HOVER) {
 						bScrollFocus	= true;
-						sScrollObject	= name;
+						sScrollObject	= id;
 					}
-					else if(sScrollObject == name) {
+					else if(sScrollObject == id) {
 						bScrollFocus	= false;
 						sScrollObject	= "";
 					}
@@ -600,7 +601,7 @@ namespace Core {
 					 *	- This only matters if contraints have changed (future proof, resizable windows)
 					 */
 					update();
-					if((this->con->bFocusLock && !this->bFocusPresent) || !this->con->bFocusLock || (this->sActiveObject==this->name)) {
+					if((this->con->bFocusLock && !this->bFocusPresent) || !this->con->bFocusLock || (this->sActiveObject==this->id)) {
 						updateObjectState(eExternState);
 
 						if(this->con->toolTip.bShow) this->toolTip.updateObjectState(this->eObjectState);

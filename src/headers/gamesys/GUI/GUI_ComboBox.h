@@ -217,17 +217,21 @@ namespace Core {
 			 * 		  defined here.
 			 */
 			void ComboBox::init() {
+				this->id = IDs.create();
+
 				if(bHasParent) {
 					con->scroll.bind(*parent);
 					con->exec(*parent);
 				}
 				else con->exec();
 
-				selectedItem = new Object::Button(*parent, name, false, con);
+				selectedItem = new Object::Button(*parent, name+"_Selected", false, con);
+				selectedItem->con->disableFocusLock();
 				selectedItem->init();
 				setStatePtr(selectedItem->getStatePtr());
 
-				itemList = new Object::Window(*selectedItem->con, name, &con->itemList);
+				itemList = new Object::Window(*selectedItem->con, name+"_List", &con->itemList);
+				itemList->con->disableFocusLock();
 				itemList->con->setNoInput(false);
 				itemList->con->setWidth(selectedItem->con->size.x, selectedItem->con->size.constraint.xType);
 				itemList->con->disableScissor();
@@ -236,15 +240,17 @@ namespace Core {
 				// Preliminary setup for items to be added
 				con->itemButton.disableFocusLock();
 				con->itemButton.setPos(0, 0);
-				con->itemButton.setGroup(Core::groups.add(name+"_ComboBoxItem", true));
+				con->itemButton.setGroup(Core::groups.add(id+"_ComboBoxItems", true));
 				con->itemButton.exec();
 
-				scrollUp = new Object::Button(con->itemList, name, false, con->scrollButton);
+				scrollUp = new Object::Button(con->itemList, name+"_ScrollUp", false, con->scrollButton);
+				scrollUp->con->disableFocusLock();
 				scrollUp->con->setButtonType(BUTTON_DEBOUNCE);
 				scrollUp->con->setText("\x1E");	// Up Arrow
 				scrollUp->init();
 
-				scrollDown = new Object::Button(con->itemList, name, false, con->scrollButton);
+				scrollDown = new Object::Button(con->itemList, name+"_ScrollDown", false, con->scrollButton);
+				scrollDown->con->disableFocusLock();
 				scrollDown->con->setButtonType(BUTTON_DEBOUNCE);
 				scrollDown->con->setText("\x1F");	// Down arrow
 				scrollDown->init();
@@ -351,6 +357,13 @@ namespace Core {
 //							(*con->text.bufferPtr) = sEditBuffer;
 //						}
 
+//						Core::debug.log(name+"["+id+"]: eObjectstate = "+std::to_string(eObjectState));
+//						Core::debug.log(name+"["+id+"]:       mState = "+std::to_string(mState));
+//						Core::debug.log(name+"["+id+"]:       test 1 = "+std::to_string(con->bAutoHide));
+//						Core::debug.log(name+"["+id+"]:       test 2 = "+std::to_string(!(selectedItem->eObjectState&STATE_FOCUS)));
+//						Core::debug.log(name+"["+id+"]:       test 3 = "+std::to_string(!(itemList->eObjectState&STATE_FOCUS)));
+//						Core::debug.log(name+"["+id+"]:       test 4 = "+std::to_string(getState()));
+
 						// Manage itemList visibility
 						if(con->bAutoHide && (!(selectedItem->eObjectState&STATE_FOCUS) && !(itemList->eObjectState&STATE_FOCUS)) && getState()) {
 							eObjectState = STATE_NONE;
@@ -364,11 +377,21 @@ namespace Core {
 						// Object locks other objects
 						if(eObjectState&STATE_ACTIVE) {
 							bFocusPresent = true;
-							sActiveObject = name;
+							sActiveObject = id;
 						}
-						else if(sActiveObject == name) {
+						else if(sActiveObject == id) {
 							bFocusPresent = false;
 							sActiveObject = "";
+						}
+
+						// If mouse hover, then automatically set focus to suspend other objects (will suspend window scrolling)
+						if(eObjectState&STATE_HOVER) {
+							bScrollFocus	= true;
+							sScrollObject	= id;
+						}
+						else if(sScrollObject == id) {
+							bScrollFocus	= false;
+							sScrollObject	= "";
 						}
 
 						//eObjectState = STATE_NONE;
@@ -421,10 +444,7 @@ namespace Core {
 //						}
 
 						// Allow update only if No object active or this object active
-
-						if(name=="ComboBox2") debug.log(name+":      sActiveObject ="+sActiveObject);
-
-						if((con->bFocusLock && !bFocusPresent) || !con->bFocusLock || (sActiveObject==name)) {
+						if((con->bFocusLock && !bFocusPresent) || !con->bFocusLock || (sActiveObject==id)) {
 							updateObjectState(eExternState);
 
 							if(this->con->toolTip.bShow) this->toolTip.updateObjectState(this->eObjectState);

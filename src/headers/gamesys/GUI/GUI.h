@@ -239,12 +239,12 @@
  * 					[ ] Add parent active pointer? Use nested structure like scrolling so children know if parent has focus.
  * 				[X] Scroll position (int)
  * 				[ ] Maximum scroll position (auto calc???)
- * 				[ ] Window scrolling disabled when any object is active
+ * 				[X] Window scrolling disabled when any object is active
  * 					[X] If Interactive_Base::bFocusPresent then don't scroll
  * 					[X] If an object has hover (slider, field, etc) then don't scroll (add new static to Base::Interactive)
  * 					[X] Make ComboBox report active state
- * 					[ ] Duplicate object names break scroll lock, need to create some sort of unique object ID (timestamp?)
- * 					[ ] Make object IDs part of a global static database so we can check for duplicates (use t_Vector)
+ * 					[X] Duplicate object names break scroll lock, need to create some sort of unique object ID (timestamp?)
+ * 					[X] Make object IDs part of a global static database so we can check for duplicates (use t_Vector)
  *
  * TODO: [ ] Change Props to pass by reference in GUI_Container
  * 			[ ]
@@ -400,7 +400,9 @@ namespace Core {
 	namespace GUI {
 		class GUI {
 			private:
-				Core::t_Vector<GUI_Container*> guis;
+				Core::t_Vector<GUI_Container*> guis;		///< Master GUI containers
+				//Core::t_Vector<std::string> IDs;			///< Unique object IDs
+//				static std::vector<std::string> IDs;		///< Unique object IDs
 
 			public:
 				GUI();
@@ -424,6 +426,7 @@ namespace Core {
 		};
 
 		int GUI::iGUIFocus = 0;
+//		std::vector<std::string> GUI::IDs;
 
 		GUI::GUI() {
 			std::cout << "Construct GUI System.............................................";

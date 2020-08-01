@@ -37,13 +37,19 @@ namespace Core {
 	namespace GUI {
 		class GUI_Container : public Object::Window/*, private Object::Base::Interactive_Base*/ {
 			public:
-				GUI_Container(std::string name, Props_Window &c) : Object::Window(name, c)				{	init();	}
-				GUI_Container(std::string name, Props_Window *c) : Object::Window(name, c)				{	init();	}
-				GUI_Container(Props &p, std::string name, Props_Window &c) : Object::Window(p, name, c)	{	init();	}
-				GUI_Container(Props &p, std::string name, Props_Window *c) : Object::Window(p, name, c)	{	init();	}
+//				GUI_Container(std::string name, Props_Window &c) : Object::Window(name, c)				{	init();	}
+//				GUI_Container(std::string name, Props_Window *c) : Object::Window(name, c)				{	init();	}
+//				GUI_Container(Props &p, std::string name, Props_Window &c) : Object::Window(p, name, c)	{	init();	}
+//				GUI_Container(Props &p, std::string name, Props_Window *c) : Object::Window(p, name, c)	{	init();	}
+
+				GUI_Container(std::string name, Props_Window &c) : Object::Window(name, c)				{		}
+				GUI_Container(std::string name, Props_Window *c) : Object::Window(name, c)				{		}
+				GUI_Container(Props &p, std::string name, Props_Window &c) : Object::Window(p, name, c)	{		}
+				GUI_Container(Props &p, std::string name, Props_Window *c) : Object::Window(p, name, c)	{		}
+
 				~GUI_Container() {}
 				void exec();
-				bool isActive() { return Object::Base::Interactive_Base::bFocusPresent; };
+				bool isActive() { return bFocusPresent; };
 
 			private:
 				Core::t_Vector<GUI_Container*> containers;
@@ -307,16 +313,19 @@ namespace Core {
 		 * ==========================================================
 		 */
 		GUI_Container & GUI_Container::pushData(std::string name, GUI_Container *data) {
+			Core::debug.log("(02): "+std::to_string(data->con->scroll.bScrollable), Core::debug().YELLOW);
 			data->init();
+			Core::debug.log("(03): "+std::to_string(data->con->scroll.bScrollable), Core::debug().YELLOW);
 			return *containers.add(name, data);
 		}
 
 		GUI_Container & GUI_Container::add(std::string containerName, Props_Window &c, Props *p) {
+			Core::debug.log("(00): "+std::to_string(c.scroll.bScrollable), Core::debug().YELLOW);
 			GUI_Container * container;
 			if(p!=nullptr) container = new GUI_Container(*p, containerName, c);
 			else container = new GUI_Container(*con, containerName, c);
 			container->con->bNoInput = true;
-			container->init();
+			Core::debug.log("(01): "+std::to_string(c.scroll.bScrollable), Core::debug().YELLOW);
 			return pushData(containerName, container);
 		}
 
@@ -325,7 +334,6 @@ namespace Core {
 			if(p!=nullptr) container = new GUI_Container(*p, containerName, c);
 			else container = new GUI_Container(*con, containerName, c);
 			container->con->bNoInput = true;
-			container->init();
 			return pushData(containerName, container);
 		}
 

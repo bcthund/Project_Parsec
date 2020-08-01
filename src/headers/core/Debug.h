@@ -18,6 +18,8 @@ namespace Core {
 	class _Debug {
 		private:
 			typedef struct {
+				friend class _Debug;
+				private:
 				std::string colors[32] = {
 					"\033[0m",
 					"\033[0;30m",
@@ -38,6 +40,7 @@ namespace Core {
 					"\033[1;36m"
 				};
 
+				public:
 				enum eCOLOR {
 					NC = 0,
 					grey,
@@ -75,6 +78,8 @@ namespace Core {
 
 			void printIncreaseIndent();
 			void printDecreaseIndent();
+
+			ConsoleColors& operator()();
 
 			void update(int rate=500, bool bClear=true);
 			void log(std::string buffer, ConsoleColors::eCOLOR color=ConsoleColors::eCOLOR(consoleColors.GREEN));

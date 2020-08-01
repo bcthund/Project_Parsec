@@ -139,6 +139,8 @@ namespace Core {
 			}
 
 			void TextArea::init() {
+				this->id = IDs.create();
+
 				if(bHasParent) {
 					con->scroll.bind(*parent);
 					con->exec(*parent);
@@ -254,6 +256,17 @@ namespace Core {
 					eObjectState = STATE_HOVER;
 				}
 				else eObjectState = STATE_NONE;
+
+				// If mouse hover, then automatically set focus to suspend other objects (will suspend window scrolling)
+				if(this->eObjectState&STATE_HOVER) {
+					bScrollFocus	= true;
+					sScrollObject	= id;
+				}
+				else if(sScrollObject == id) {
+					bScrollFocus	= false;
+					sScrollObject	= "";
+				}
+
 				if(!enabled()) eObjectState |= STATE_DISABLED;
 			}
 

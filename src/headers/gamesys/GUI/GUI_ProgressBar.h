@@ -189,6 +189,8 @@ namespace Core {
 			}
 
 			void ProgressBar::init() {
+				this->id = IDs.create();
+
 				//con->exec();
 				if(bHasParent) {
 					con->scroll.bind(*parent);

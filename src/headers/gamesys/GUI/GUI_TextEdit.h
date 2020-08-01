@@ -190,6 +190,8 @@ namespace Core {
 			}
 
 			TextEdit::~TextEdit() {
+				this->id = IDs.create();
+
 			}
 
 			void TextEdit::init() {
@@ -358,17 +360,27 @@ namespace Core {
 						if(!bFocusPresent && (mState&Core::_Mouse::MOUSE_LEFT)) {
 							bHasFocus = true;
 							bFocusPresent = true;
-							sActiveObject = this->name;
+							sActiveObject = this->id;
 							eObjectState = STATE_ACTIVE;
 							sEditBuffer = *con->text.bufferPtr;
 							con->text.iCursorPosition = con->text.bufferPtr->length();
 						}
 						else if ( !(eObjectState&STATE_ACTIVE) || ((eObjectState&STATE_ACTIVE) && !bFocusPresent) )	{
 							eObjectState = STATE_NONE;
-							if(sActiveObject == this->name) sActiveObject = "";
+							if(sActiveObject == this->id) sActiveObject = "";
 						}
 					}
 					else this->eObjectState = STATE_NONE;
+
+					// If mouse hover, then automatically set focus to suspend other objects (will suspend window scrolling)
+					if(this->eObjectState&STATE_HOVER) {
+						bScrollFocus	= true;
+						sScrollObject	= id;
+					}
+					else if(sScrollObject == id) {
+						bScrollFocus	= false;
+						sScrollObject	= "";
+					}
 
 					// Allow mouse hover at any time (used for tooltips)
 					if(!(eExternState&STATE_UPDATE)) {
@@ -390,7 +402,7 @@ namespace Core {
 					con->text.size.constraint.xAuto = con->size.constraint.xAuto;
 					con->text.size.constraint.yAuto = con->size.constraint.yAuto;
 
-					if((con->bFocusLock && !bFocusPresent) || !con->bFocusLock || (sActiveObject==name)) updateObjectState(eExternState);
+					if((con->bFocusLock && !bFocusPresent) || !con->bFocusLock || (sActiveObject==id)) updateObjectState(eExternState);
 
 					// Update constraints
 					if(bHasParent) con->exec(*parent);

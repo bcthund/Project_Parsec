@@ -92,8 +92,11 @@ namespace Core {
 				parent			= &p;
 
 				bLocalCon		= true;
+				Core::debug.log("(10): "+std::to_string(c.scroll.bScrollable), Core::debug().YELLOW);
 				con				= new Props_Window();
+				Core::debug.log("(11): "+std::to_string(c.scroll.bScrollable), Core::debug().YELLOW);
 				*con			= c;
+				Core::debug.log("(12): "+std::to_string(con->scroll.bScrollable), Core::debug().YELLOW);
 				iScrollIndex	= 0;
 			}
 
@@ -124,11 +127,15 @@ namespace Core {
 			}
 
 			void Window::init() {
+				this->id = IDs.create();
+
 				if(bHasParent) {
-					if(!con->scroll.getEnabled()) con->scroll.bind(*parent);
+					if(!con->scroll.getEnabled() && con->scroll.bScrollable) con->scroll.bind(*parent);
 					con->exec(*parent);
 				}
-				else con->exec();
+				else {
+					con->exec();
+				}
 
 				float iHalf_W = 0.5;
 				float iHalf_H = 0.5;
@@ -237,12 +244,10 @@ namespace Core {
 
 
 			void Window::updateScrollMouse() {
-				debug.log(std::to_string(con->scroll.getEnabled())+", "+std::to_string(!Base::Interactive_Base::bFocusPresent)+", "+std::to_string(!Base::Interactive_Base::bScrollFocus));
-
 				if(parent!=nullptr && parent->scroll.getEnabled()) {
 				}
 				else {
-					if(con->scroll.getEnabled() && !Base::Interactive_Base::bFocusPresent && !Base::Interactive_Base::bScrollFocus) {
+					if(con->scroll.getEnabled() && !bFocusPresent && !bScrollFocus) {
 						Core::_Mouse::MOUSE_STATE wheel = Core::mouse->checkWheel();
 						if(wheel != Core::_Mouse::MOUSE_NONE) {
 
@@ -320,7 +325,8 @@ namespace Core {
 
 							// Only scroll this item if the parent has scrolling enabled
 							Vector2f vPos;
-							if(parent!=nullptr && parent->scroll.getEnabled()) vPos = con->getScrollPos();
+							if(con->scroll.bScrollable && (parent!=nullptr && parent->scroll.getEnabled())) vPos = con->getScrollPos();
+//							if((parent!=nullptr && parent->scroll.getEnabled())) vPos = con->getScrollPos();
 							else vPos = con->getPos();
 							matrix->Translate( vPos.x, vPos.y, 0.0 );
 

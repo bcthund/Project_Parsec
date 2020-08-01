@@ -99,6 +99,8 @@ namespace Core {
 			}
 
 			void Label::init() {
+				this->id = IDs.create();
+
 				if(bHasParent) {
 					con->scroll.bind(*parent);
 					con->exec(*parent);

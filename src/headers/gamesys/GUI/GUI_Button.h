@@ -221,6 +221,8 @@ namespace Core {
 			}
 
 			void Button::init() {
+				this->id = IDs.create();
+
 				// FIXME: Create SOUNDS enumeration
 				initSound(0, 1, 2, 0, 0, true, true);
 
@@ -279,19 +281,19 @@ namespace Core {
 							}
 						}
 						else if(con->buttonType==BUTTON_TOGGLE) {
-							if(bIsGrouped && (eObjectState&STATE_ACTIVE) && (Core::groups[con->iGroup].object!=name && Core::groups[con->iGroup].object!="")) {
+							if(bIsGrouped && (eObjectState&STATE_ACTIVE) && (Core::groups[con->iGroup].object!=id && Core::groups[con->iGroup].object!="")) {
 								eObjectState = STATE_NONE;
 								Sound_AbortState();
 							}
 							else if (mState&Core::_Mouse::MOUSE_LEFT) {
 								if(eObjectState&STATE_ACTIVE) {
 									if (!bIsGrouped || (bIsGrouped && !Core::groups[con->iGroup].bExclusive)) eObjectState = STATE_NONE;
-									if(bIsGrouped && Core::groups[con->iGroup].object==name) Core::groups[con->iGroup].object = "";
+									if(bIsGrouped && Core::groups[con->iGroup].object==id) Core::groups[con->iGroup].object = "";
 									Sound_PlayOff();
 								}
 								else if(!(eObjectState&STATE_ACTIVE)) {
 									eObjectState = STATE_ACTIVE;
-									if(bIsGrouped) Core::groups[con->iGroup].object = name;
+									if(bIsGrouped) Core::groups[con->iGroup].object = id;
 									Sound_PlayOn();
 								}
 								else {
@@ -360,7 +362,7 @@ namespace Core {
 						if(bHasParent) con->exec(*parent);
 						else con->exec();
 
-						if((con->bFocusLock && !bFocusPresent) || !con->bFocusLock || (sActiveObject==name)) {
+						if((con->bFocusLock && !bFocusPresent) || !con->bFocusLock || (sActiveObject==id)) {
 							updateObjectState(eExternState);
 							if(con->toolTip.bShow) toolTip.updateObjectState(eObjectState);
 							else toolTip.updateObjectState(STATE_NONE);

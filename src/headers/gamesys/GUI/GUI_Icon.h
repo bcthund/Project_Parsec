@@ -228,6 +228,8 @@ namespace Core {
 			 *
 			 * ****************************************************************************************************************************** */
 			void Icon::init() {
+				this->id = IDs.create();
+
 				// FIXME: Create SOUNDS enumeration
 				initSound(2, 5, 6, 0, 0, true, true);
 
@@ -379,7 +381,7 @@ namespace Core {
 					if(bHasParent) con->exec(*parent);
 					else con->exec();
 
-					if((con->bFocusLock && !bFocusPresent) || !con->bFocusLock || (sActiveObject==name)) {
+					if((con->bFocusLock && !bFocusPresent) || !con->bFocusLock || (sActiveObject==id)) {
 						updateObjectState(eExternState);
 
 						if(con->toolTip.bShow) toolTip.updateObjectState(eObjectState);

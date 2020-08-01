@@ -92,6 +92,8 @@ namespace Core {
 			}
 
 			void Text::init() {
+				this->id = IDs.create();
+
 				if(bHasParent) {
 					con->scroll.bind(*parent->con);
 					con->exec(*parent->con);

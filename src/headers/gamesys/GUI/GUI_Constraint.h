@@ -282,6 +282,7 @@ namespace Core {
 				struct s_Scroll {
 					friend class Props;
 					public:
+						bool bScrollable;							///< Master determining if this object is scrollable
 						bool *bEnablePtr;							///< Is scrolling enabled for this object
 						bool bLocalEn,								///< Is the enable locally defined or external
 							 bLocalX,								///< Is the x offset locally defined or external
@@ -316,7 +317,14 @@ namespace Core {
 							else return 0;
 						}
 
-						void enable(bool b=true) { *bEnablePtr = b; }
+						void enable(bool b=true) {
+							if(bEnablePtr==nullptr) {
+								bEnablePtr = new bool(b);
+								bLocalEn = true;
+							}
+							else *bEnablePtr = b;
+							bScrollable = b;
+						}
 
 						/**
 						 * @brief Define as local values, this is usually when this object will be a parent
@@ -397,6 +405,8 @@ namespace Core {
 						}
 
 						s_Scroll &operator=(const s_Scroll &src) {
+							bScrollable		= src.bScrollable;
+
 							bLocalEn		= src.bLocalEn;
 							bEnablePtr		= new bool(*src.bEnablePtr);
 
@@ -409,6 +419,7 @@ namespace Core {
 						}
 
 						s_Scroll() {
+							bScrollable	= true;
 							bLocalEn	= false;
 							bEnablePtr	= nullptr;
 							bLocalX		= false;
@@ -514,6 +525,8 @@ namespace Core {
 //				void resetScrollable()												{	scroll.unBind(); }
 				void setScrollable()												{	scroll.enable(true); }
 				void resetScrollable()												{	scroll.enable(false); }
+				//void setScrollable()												{	scroll.bScrollable = true; }
+				//void resetScrollable()												{	scroll.bScrollable = false; }
 				void enableFocusLock()												{	bFocusLock = true; }
 				void disableFocusLock()												{	bFocusLock = false; }
 

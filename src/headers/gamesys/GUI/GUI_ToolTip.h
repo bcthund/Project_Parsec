@@ -63,6 +63,8 @@ namespace Core {
 			}
 
 			void ToolTip::init(Props &p, std::string n) {
+				//this->id = IDs.create();
+
 				name = n;
 
 				parent = &p;

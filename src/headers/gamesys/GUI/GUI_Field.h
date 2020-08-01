@@ -260,6 +260,8 @@ namespace Core {
 			 * Initialize required data, create pointer
 			 */
 			template <class T> void Field<T>::init() {
+				this->id = IDs.create();
+
 				if (this->bHasParent) {
 					this->con->scroll.bind(*this->parent);
 					this->con->exec(*this->parent);
@@ -392,14 +394,14 @@ namespace Core {
 						if(!this->bFocusPresent && (this->mState&Core::_Mouse::MOUSE_LEFT)) {
 							bHasFocus = true;
 							this->bFocusPresent = true;
-							this->sActiveObject = this->name;
+							this->sActiveObject = this->id;
 							this->eObjectState = STATE_ACTIVE;
 
 							execEditStart();
 						}
 						else if ( !(this->eObjectState&STATE_ACTIVE) || ((this->eObjectState&STATE_ACTIVE) && !this->bFocusPresent) ) {
 							this->eObjectState = STATE_NONE;
-							if(this->sActiveObject == this->name) this->sActiveObject = "";
+							if(this->sActiveObject == this->id) this->sActiveObject = "";
 						}
 					}
 					else this->eObjectState = STATE_NONE;
@@ -409,6 +411,16 @@ namespace Core {
 				if(!(eExternState&STATE_UPDATE)) {
 					if(this->mState&Core::_Mouse::MOUSE_HOVER) this->eObjectState = this->eObjectState|STATE_HOVER;
 					else this->eObjectState = this->eObjectState&~STATE_HOVER;
+				}
+
+				// If mouse hover, then automatically set focus to suspend other objects (will suspend window scrolling)
+				if(this->eObjectState&STATE_HOVER) {
+					bScrollFocus	= true;
+					sScrollObject	= id;
+				}
+				else if(sScrollObject == id) {
+					bScrollFocus	= false;
+					sScrollObject	= "";
 				}
 
 				if(!this->enabled()) this->eObjectState |= STATE_DISABLED;
@@ -428,7 +440,7 @@ namespace Core {
 						if(this->bHasParent) this->con->exec(*this->parent);
 						else this->con->exec();
 
-						if((con->bFocusLock && !bFocusPresent) || !con->bFocusLock || (sActiveObject==name)) {
+						if((con->bFocusLock && !bFocusPresent) || !con->bFocusLock || (sActiveObject==id)) {
 							updateObjectState(eExternState);
 
 							if(this->con->toolTip.bShow) this->toolTip.updateObjectState(this->eObjectState);
