@@ -53,7 +53,7 @@ namespace Core {
 					Object::Button * scrollUp;
 					Object::Button * scrollDown;
 
-					Core::t_Vector<Object::Button*> items;
+					Core::t_VectorMap<Object::Button*> items;
 					Object::Button & operator[](std::string name);
 					Object::Button & operator()();
 

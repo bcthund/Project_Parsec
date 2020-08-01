@@ -1585,16 +1585,82 @@ namespace Core {
 //	} t_BIFS;
 
 
-	// TODO: Implement copy constructor
+	// TODO: Implement copy/move/assignment constructor
 	template <typename T>
-	class t_Vector {
+	class t_Vector1T {
+		private:
+			std::vector<T> typeList;
+
+		public:
+			t_Vector1T() {}
+			virtual ~t_Vector1T() {}
+
+			bool checkID(int id, bool bThrow=true) {
+				if(id >= 0 && id < typeList.size()) return true;
+				else {
+					if (bThrow) throw std::runtime_error("Invalid ID: '"+std::to_string(id)+"'");
+					else return false;
+				}
+			}
+
+			virtual T & operator[](int id)	{
+				checkID(id);
+				return typeList[id];
+			}
+
+			virtual T & add(T t) {
+				typeList.push_back(t);
+				int id = typeList.size() - 1;
+				return typeList[id];
+
+			}
+
+			virtual void remove(int id, bool bThrow=true) {
+				if(checkID(id, false)) {
+					typeList.erase(typeList.begin() + id);
+				}
+				else {
+					if(bThrow) throw std::runtime_error("ID in t_Vector doesn't exist: '"+std::to_string(id)+"'");
+				}
+
+			}
+
+			virtual T & get(int id)	{
+				checkID(id);
+				return typeList[id];
+			}
+
+			int size() {
+				return typeList.size();
+			}
+
+			/*
+			 * Allow Iteration
+			 *
+			 * Example:
+			 * 	t_Vector<T> items;
+			 * 	for(auto item : items) {
+			 * 		// Work with 'item'
+			 * 	}
+			 */
+			typedef T* iterator;
+			typedef const T* const_iterator;
+			iterator begin() 		{ return &typeList[0]; }
+			iterator end() 			{ return &typeList[typeList.size()]; }
+			const_iterator begin() 	const	{ return &typeList[0]; }
+			const_iterator end() 	const	{ return &typeList[typeList.size()]; }
+	};
+
+	// TODO: Implement copy/move/assignment constructor
+	template <typename T>
+	class t_VectorMap {
 		private:
 			std::vector<T> typeList;
 			Map_si map;
 
 		public:
-			t_Vector() {}
-			virtual ~t_Vector() {}
+			t_VectorMap() {}
+			virtual ~t_VectorMap() {}
 
 			bool checkName(std::string name, bool bThrow=true) {
 				if(map.count(name)>0) return true;
@@ -1691,7 +1757,6 @@ namespace Core {
 			iterator end() 			{ return &typeList[typeList.size()]; }
 			const_iterator begin() 	const	{ return &typeList[0]; }
 			const_iterator end() 	const	{ return &typeList[typeList.size()]; }
-
 	};
 
 	typedef std::pair<std::string, Core::t_BIFS> t_ComboBoxItem;
@@ -1704,7 +1769,7 @@ namespace Core {
 	 */
 	class t_DataSet {
 		public:
-			t_Vector< std::vector<t_BIFS> > states;
+			t_VectorMap< std::vector<t_BIFS> > states;
 			t_DataSet() {}
 
 			std::vector<t_BIFS> & operator[](std::string name)	{ return states[name]; }

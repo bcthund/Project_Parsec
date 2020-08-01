@@ -26,7 +26,7 @@ namespace Core {
 		}
 	};
 
-	class _Groups : virtual public t_Vector<t_Group> {
+	class _Groups : virtual public t_VectorMap<t_Group> {
 		public:
 			_Groups();
 			virtual ~_Groups();

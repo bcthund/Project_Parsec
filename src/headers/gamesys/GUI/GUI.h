@@ -246,8 +246,7 @@
  * 					[X] Duplicate object names break scroll lock, need to create some sort of unique object ID (timestamp?)
  * 					[X] Make object IDs part of a global static database so we can check for duplicates (use t_Vector)
  *
- * TODO: [ ] Change Props to pass by reference in GUI_Container
- * 			[ ]
+ * TODO: [X] Change Props to pass by reference in GUI_Container
  *
  * TODO: [ ] Keyboard Control
  * 			[ ] Add a global GUI keyboard (static)
@@ -400,7 +399,7 @@ namespace Core {
 	namespace GUI {
 		class GUI {
 			private:
-				Core::t_Vector<GUI_Container*> guis;		///< Master GUI containers
+				Core::t_VectorMap<GUI_Container*> guis;		///< Master GUI containers
 				//Core::t_Vector<std::string> IDs;			///< Unique object IDs
 //				static std::vector<std::string> IDs;		///< Unique object IDs
 

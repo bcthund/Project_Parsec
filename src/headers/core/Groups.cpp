@@ -18,11 +18,11 @@ namespace Core {
 	}
 
 	void _Groups::setExclusive(std::string name, bool b) {
-		t_Vector::get(name).bExclusive = b;
+		t_VectorMap::get(name).bExclusive = b;
 	}
 
 	void _Groups::setExclusive(int id, bool b) {
-		t_Vector::get(id).bExclusive = b;
+		t_VectorMap::get(id).bExclusive = b;
 	}
 
 	/**
@@ -38,15 +38,15 @@ namespace Core {
 		group.name = name;
 		group.bExclusive = bExclusive;
 		group.object = "";
-		return t_Vector::add(name, group);
+		return t_VectorMap::add(name, group);
 	}
 
 	void _Groups::setActive(std::string name, std::string object) {
-		t_Vector::get(name).object = object;
+		t_VectorMap::get(name).object = object;
 	}
 
 	void _Groups::setActive(int id, std::string object) {
-		t_Vector::get(id).object = object;
+		t_VectorMap::get(id).object = object;
 	}
 
 } /* namespace Core */

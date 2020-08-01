@@ -52,7 +52,7 @@ namespace Core {
 				bool isActive() { return bFocusPresent; };
 
 			private:
-				Core::t_Vector<GUI_Container*> containers;
+				Core::t_VectorMap<GUI_Container*> containers;
 				void execObjects();
 				void execToolTips();
 				GUI_Container & pushData(std::string name, GUI_Container *data);
@@ -67,7 +67,7 @@ namespace Core {
 				class WindowInterface {
 						friend class GUI_Container;
 					private:
-						Core::t_Vector<Object::Window*> windows;
+						Core::t_VectorMap<Object::Window*> windows;
 						GUI_Container * gui;
 						Object::Window & pushData(std::string name, Object::Window *data);
 
@@ -85,7 +85,7 @@ namespace Core {
 				class LabelInterface {
 						friend class GUI_Container;
 					private:
-						Core::t_Vector<Object::Label*> labels;
+						Core::t_VectorMap<Object::Label*> labels;
 						GUI_Container * gui;
 						Object::Label & pushData(std::string name, Object::Label *data);
 
@@ -102,7 +102,7 @@ namespace Core {
 				class ButtonInterface {
 						friend class GUI_Container;
 					private:
-						Core::t_Vector<Object::Button*> buttons;
+						Core::t_VectorMap<Object::Button*> buttons;
 						GUI_Container * gui;
 						Object::Button & pushData(std::string name, Object::Button *data);
 
@@ -121,7 +121,7 @@ namespace Core {
 				class SliderInterface {
 						friend class GUI_Container;
 					private:
-						Core::t_Vector<Object::AnySlider*> sliders;
+						Core::t_VectorMap<Object::AnySlider*> sliders;
 						GUI_Container * gui;
 						Object::AnySlider & pushData(std::string name, Object::AnySlider *data);
 
@@ -140,7 +140,7 @@ namespace Core {
 				class FieldInterface {
 						friend class GUI_Container;
 					private:
-						Core::t_Vector<Object::AnyField*> fields;
+						Core::t_VectorMap<Object::AnyField*> fields;
 						GUI_Container * gui;
 						Object::AnyField & pushData(std::string name, Object::AnyField *data);
 
@@ -158,7 +158,7 @@ namespace Core {
 				class TextAreaInterface {
 						friend class GUI_Container;
 					private:
-						Core::t_Vector<Object::TextArea*> textAreas;
+						Core::t_VectorMap<Object::TextArea*> textAreas;
 						GUI_Container * gui;
 						Object::TextArea & pushData(std::string name, Object::TextArea *data);
 
@@ -175,7 +175,7 @@ namespace Core {
 				class TextEditInterface {
 						friend class GUI_Container;
 					private:
-						Core::t_Vector<Object::TextEdit*> textEdits;
+						Core::t_VectorMap<Object::TextEdit*> textEdits;
 						GUI_Container * gui;
 						Object::TextEdit & pushData(std::string name, Object::TextEdit *data);
 
@@ -192,7 +192,7 @@ namespace Core {
 				class ColorSwatchInterface {
 						friend class GUI_Container;
 					private:
-						Core::t_Vector<Object::ColorSwatch*> colorSwatches;
+						Core::t_VectorMap<Object::ColorSwatch*> colorSwatches;
 						GUI_Container * gui;
 						Object::ColorSwatch & pushData(std::string name, Object::ColorSwatch *data);
 
@@ -210,7 +210,7 @@ namespace Core {
 						friend class GUI_Container;
 
 					private:
-						Core::t_Vector<Object::CheckBox*> checkBoxes;
+						Core::t_VectorMap<Object::CheckBox*> checkBoxes;
 						GUI_Container * gui;
 						Object::CheckBox & pushData(std::string name, Object::CheckBox *data);
 
@@ -235,7 +235,7 @@ namespace Core {
 						friend class GUI_Container;
 
 					private:
-						Core::t_Vector<Object::Icon*> icons;
+						Core::t_VectorMap<Object::Icon*> icons;
 						GUI_Container * gui;
 						Object::Icon & pushData(std::string name, Object::Icon *data);
 
@@ -255,7 +255,7 @@ namespace Core {
 						friend class GUI_Container;
 
 					private:
-						Core::t_Vector<Object::Sprite*> sprites;
+						Core::t_VectorMap<Object::Sprite*> sprites;
 						GUI_Container * gui;
 						Object::Sprite & pushData(std::string name, Object::Sprite *data);
 
@@ -273,7 +273,7 @@ namespace Core {
 						friend class GUI_Container;
 
 					private:
-						Core::t_Vector<Object::ProgressBar*> progressBars;
+						Core::t_VectorMap<Object::ProgressBar*> progressBars;
 						GUI_Container * gui;
 						Object::ProgressBar & pushData(std::string name, Object::ProgressBar *data);
 
@@ -292,7 +292,7 @@ namespace Core {
 				class ComboBoxInterface {
 						friend class GUI_Container;
 					private:
-						Core::t_Vector<Object::ComboBox*> comboBoxes;
+						Core::t_VectorMap<Object::ComboBox*> comboBoxes;
 						GUI_Container * gui;
 						Object::ComboBox & pushData(std::string name, Object::ComboBox *data);
 

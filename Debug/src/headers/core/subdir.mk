@@ -12,6 +12,7 @@ CPP_SRCS += \
 ../src/headers/core/ParticleEmitter.cpp \
 ../src/headers/core/Particles.cpp \
 ../src/headers/core/RunningStat.cpp \
+../src/headers/core/Scissor.cpp \
 ../src/headers/core/SimplexNoise.cpp \
 ../src/headers/core/Stipple.cpp \
 ../src/headers/core/SystemTextures.cpp \
@@ -43,6 +44,7 @@ OBJS += \
 ./src/headers/core/ParticleEmitter.o \
 ./src/headers/core/Particles.o \
 ./src/headers/core/RunningStat.o \
+./src/headers/core/Scissor.o \
 ./src/headers/core/SimplexNoise.o \
 ./src/headers/core/Stipple.o \
 ./src/headers/core/SystemTextures.o \
@@ -74,6 +76,7 @@ CPP_DEPS += \
 ./src/headers/core/ParticleEmitter.d \
 ./src/headers/core/Particles.d \
 ./src/headers/core/RunningStat.d \
+./src/headers/core/Scissor.d \
 ./src/headers/core/SimplexNoise.d \
 ./src/headers/core/Stipple.d \
 ./src/headers/core/SystemTextures.d \
