@@ -1577,7 +1577,6 @@ void _Admin::init() {
 			Slider_Window.setRadius(10);
 			Slider_Window.setPos(-5, 0);
 			Slider_Window.resetScrollable();
-			Core::debug.log("DISABLE SCROLLABLE", Core::debug().RED);
 			Core::gui["GameMenu"]["Window 17"].add("Position", Slider_Window);
 
 			Core::GUI::Props_Slider con;
@@ -1605,7 +1604,6 @@ void _Admin::init() {
 			Slider_Window.modPos(0, 105);
 			Slider_Window.resetScrollable();
 //			Slider_Window.enableScissor();
-			Core::debug.log("DISABLE SCROLLABLE", Core::debug().RED);
 			Core::gui["GameMenu"]["Window 17"].add("Padding", Slider_Window);
 
 			con.setPos(0, 0);		con.setMinMax(-100, 100);		con.setStep(1.0f, 10.0f, 100.0f);

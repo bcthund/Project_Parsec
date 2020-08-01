@@ -92,11 +92,8 @@ namespace Core {
 				parent			= &p;
 
 				bLocalCon		= true;
-				Core::debug.log("(10): "+std::to_string(c.scroll.bScrollable), Core::debug().YELLOW);
 				con				= new Props_Window();
-				Core::debug.log("(11): "+std::to_string(c.scroll.bScrollable), Core::debug().YELLOW);
 				*con			= c;
-				Core::debug.log("(12): "+std::to_string(con->scroll.bScrollable), Core::debug().YELLOW);
 				iScrollIndex	= 0;
 			}
 

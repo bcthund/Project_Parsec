@@ -313,19 +313,15 @@ namespace Core {
 		 * ==========================================================
 		 */
 		GUI_Container & GUI_Container::pushData(std::string name, GUI_Container *data) {
-			Core::debug.log("(02): "+std::to_string(data->con->scroll.bScrollable), Core::debug().YELLOW);
 			data->init();
-			Core::debug.log("(03): "+std::to_string(data->con->scroll.bScrollable), Core::debug().YELLOW);
 			return *containers.add(name, data);
 		}
 
 		GUI_Container & GUI_Container::add(std::string containerName, Props_Window &c, Props *p) {
-			Core::debug.log("(00): "+std::to_string(c.scroll.bScrollable), Core::debug().YELLOW);
 			GUI_Container * container;
 			if(p!=nullptr) container = new GUI_Container(*p, containerName, c);
 			else container = new GUI_Container(*con, containerName, c);
 			container->con->bNoInput = true;
-			Core::debug.log("(01): "+std::to_string(c.scroll.bScrollable), Core::debug().YELLOW);
 			return pushData(containerName, container);
 		}
 
