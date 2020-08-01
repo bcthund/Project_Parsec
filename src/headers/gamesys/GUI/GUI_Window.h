@@ -198,10 +198,8 @@ namespace Core {
 				// Uncomment if object state can be set externally
 				//checkStatePtr();
 
-//				if(name=="World Scale 1") debug.log(name+": [0], "+std::to_string(eExternState));
-
 				// Generic state handler
-				if(!(eExternState&STATE_NONE) && !(eExternState&STATE_UPDATE)) {
+				if((eExternState!=STATE_NONE) && !(eExternState&STATE_UPDATE)) {
 					eObjectState = eExternState;
 				}
 				else {

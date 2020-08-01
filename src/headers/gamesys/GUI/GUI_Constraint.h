@@ -124,7 +124,7 @@ namespace Core {
 		// States for colors
 		// FIXME: Add a STATE_NODRAW, to update data but not draw to screen (use for tooltip autosize calc)
 		typedef int iState;
-		enum eObjectState  {	STATE_NONE		= 1,	// Nested item state can change freely
+		enum eObjectState  {	STATE_NONE		= 0,	// Nested item state can change freely
 								STATE_NOACTION	= 2,	// Nested item is drawn but state cannot change
 								STATE_FOCUS		= 4,	// General focus, mouse if over object but doesn't affect coloring
 								STATE_HOVER		= 8,

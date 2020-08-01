@@ -21,6 +21,7 @@ namespace Core {
 
 	//extern class GameSys::_GameTime	*	timeSys		= new GameSys::_GameTime();
 
+	extern class c_Scissor				scissor;
 	extern class _Debug					debug;
 	extern class _Groups				groups;
 	extern class _Mouse					*	mouse;

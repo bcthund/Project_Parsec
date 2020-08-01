@@ -260,7 +260,7 @@ namespace Core {
 				// Check for external state change, return early
 				checkStatePtr();
 
-				if(eExternState!=STATE_NONE && !(eExternState&STATE_UPDATE)) {
+				if((eExternState!=STATE_NONE) && !(eExternState&STATE_UPDATE)) {
 					eObjectState = eExternState;
 				}
 				else {

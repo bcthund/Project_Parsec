@@ -343,7 +343,7 @@ namespace Core {
 			void TextEdit::updateObjectState(iState eExternState) {
 				checkStatePtr();
 
-				if(eExternState!=STATE_NONE && !(eExternState&STATE_UPDATE)) {
+				if((eExternState!=STATE_NONE) && !(eExternState&STATE_UPDATE)) {
 					eObjectState = eExternState;
 				}
 				else {

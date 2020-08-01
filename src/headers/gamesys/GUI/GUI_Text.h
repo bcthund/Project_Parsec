@@ -107,7 +107,7 @@ namespace Core {
 			}
 
 			void Text::updateObjectState(iState eExternState) {
-				if(eExternState!=STATE_NONE && !(eExternState&STATE_UPDATE)) {
+				if((eExternState!=STATE_NONE) && !(eExternState&STATE_UPDATE)) {
 					eObjectState = eExternState;
 				}
 				else eObjectState = STATE_NONE;

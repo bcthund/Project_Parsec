@@ -222,14 +222,12 @@ namespace Core {
 
 			void ColorSwatch::updateObjectState(iState eExternState) {
 
-				// FIXME: Add Mouse hover, used for tooltip
-				if(!(eExternState&STATE_UPDATE)) {	// FIXME: Add to all abjects
-					// Check button input - Do this first so we can modify colors accordingly.
+				if(!(eExternState&STATE_NONE) && !(eExternState&STATE_UPDATE)) {
 					mState = Core::mouse->checkInput(gameVars->screen.half.x+con->pos.x, gameVars->screen.half.y-con->pos.y, con->size.x, con->size.y);
 				}
 				else this->mState = Core::_Mouse::MOUSE_NONE;
 
-				if(eExternState!=STATE_NONE && !(eExternState&STATE_UPDATE)) {
+				if((eExternState!=STATE_NONE) && !(eExternState&STATE_UPDATE)) {
 					eObjectState = eExternState;
 				}
 				else if (mState&Core::_Mouse::MOUSE_HOVER) {

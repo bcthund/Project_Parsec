@@ -327,7 +327,9 @@ namespace Core {
 				checkStatePtr();
 
 				// Generic state handler
-				if(eExternState!=STATE_NONE && !(eExternState&STATE_UPDATE)) eObjectState = eExternState;
+				if((eExternState!=STATE_NONE) && !(eExternState&STATE_UPDATE)) {
+					eObjectState = eExternState;
+				}
 				else {
 					if(!(eExternState&STATE_UPDATE)) {
 						Vector2f vPos = con->getScrollPos();

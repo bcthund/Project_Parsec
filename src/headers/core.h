@@ -536,6 +536,7 @@
 	#include "./core/functions.h"	// Always second
 	#include "./core/gmath.h"
 	#include "./core/Groups.h"
+	#include "./core/Scissor.h"
 	#include "./core/timer.h"
 	#include "./core/ptimer.h"
 	#include "./core/FrameRate.h"
@@ -625,8 +626,9 @@
 	#include "./settings.h"
 
 
-	#define MY_NAMESPACE Core	// This is just a test of making the namespace dynamic
-	namespace MY_NAMESPACE {
+	//#define MY_NAMESPACE Core	// This is just a test of making the namespace dynamic
+	//namespace MY_NAMESPACE {
+	namespace Core {
 
 		std::string sOffset = "";
 
@@ -662,6 +664,7 @@
 		 */
 
 		//Ptr<Matrix_System> matrix(new Matrix_System());
+		c_Scissor			scissor			= c_Scissor();
 		_Debug				debug			= _Debug();
 		_Groups				groups			= _Groups();
 		_Mouse				*	mouse		= new _Mouse();

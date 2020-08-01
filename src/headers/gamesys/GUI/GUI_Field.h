@@ -380,7 +380,9 @@ namespace Core {
 			template <class T> void Field<T>::updateObjectState(iState eExternState) {
 				checkStatePtr();
 
-				if(eExternState!=STATE_NONE && !(eExternState&STATE_UPDATE)) this->eObjectState = eExternState;
+				if((eExternState!=STATE_NONE) && !(eExternState&STATE_UPDATE)) {
+					this->eObjectState = eExternState;
+				}
 				else {
 
 					if(!(eExternState&STATE_UPDATE)) {

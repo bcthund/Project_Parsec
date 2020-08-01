@@ -519,7 +519,7 @@ namespace Core {
 			}
 
 			template <class T> void Slider<T>::updateObjectState(iState eExternState) {
-				if(eExternState!=STATE_NONE && !(eExternState&STATE_UPDATE)) {
+				if((eExternState!=STATE_NONE) && !(eExternState&STATE_UPDATE)) {
 					this->eObjectState = eExternState;
 				}
 				else {

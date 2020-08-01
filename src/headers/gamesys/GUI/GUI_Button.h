@@ -249,7 +249,7 @@ namespace Core {
 				checkStatePtr();
 
 				// Check external object state or update button state
-				if(eExternState!=STATE_NONE && !(eExternState&STATE_UPDATE)) {
+				if((eExternState!=STATE_NONE) && !(eExternState&STATE_UPDATE)) {
 					eObjectState = eExternState;
 				}
 				else {

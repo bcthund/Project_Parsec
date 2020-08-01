@@ -795,7 +795,8 @@ namespace Core {
 					con->exec();
 
 					// Always disable scissor before drawing a container
-					glDisable(GL_SCISSOR_TEST);
+					Core::scissor.disable();
+					//glDisable(GL_SCISSOR_TEST);
 					Object::Window::exec();
 
 					if(con->bScissor) {
@@ -808,8 +809,19 @@ namespace Core {
 						int x = ( (con->pos.x-(con->size.x/2)+con->vPadding.left )) + Core::gameVars->screen.half.x,
 							y = ( (con->pos.y-(con->size.y/2)+con->vPadding.bottom )) + Core::gameVars->screen.half.y;
 
-						glEnable(GL_SCISSOR_TEST);
-						glScissor(x, y, w, h);
+						// Doesn't Work
+						Core::scissor.push(x, y, w, h);
+
+						// Works
+						//Vector2i xy = Vector2i(x, y);
+						//Vector2i wh = Vector2i(w, h);
+						//Core::scissor.push(xy, wh);
+
+						// Works
+						//Core::scissor.push(std::make_pair(Vector2i(x, y), Vector2i(w, h)));
+
+						//glEnable(GL_SCISSOR_TEST);
+						//glScissor(x, y, w, h);
 					}
 
 					for (auto & window		: Window.windows)				window->exec();
@@ -826,6 +838,11 @@ namespace Core {
 					for (auto & progressBar	: ProgressBar.progressBars)		progressBar->exec();
 					for (auto & comboBox	: ComboBox.comboBoxes)			comboBox->exec();
 					for (auto & container	: containers)					container->execObjects();
+
+					if(con->bScissor) {
+						Core::scissor.pop();
+					}
+					Core::scissor.disable();
 				}
 				else {
 					// Update values for non-visible objects, as doing so may update object state conditions
@@ -842,7 +859,8 @@ namespace Core {
 
 		void GUI_Container::execToolTips() {
 			// Always disable scissor before drawing Tool Tips
-			glDisable(GL_SCISSOR_TEST);
+			//glDisable(GL_SCISSOR_TEST);
+			Core::scissor.disable();
 
 //			for (auto & window		: Window.windows)				window->exec();
 //			for (auto & label		: Label.labels)					label->exec();

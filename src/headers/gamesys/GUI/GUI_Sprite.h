@@ -141,7 +141,7 @@ namespace Core {
 				}
 				else mState = Core::_Mouse::MOUSE_NONE;
 
-				if(eExternState!=STATE_NONE && !(eExternState&STATE_UPDATE)) eObjectState = eExternState;
+				if((eExternState!=STATE_NONE) && !(eExternState&STATE_UPDATE)) eObjectState = eExternState;
 				else if (mState&Core::_Mouse::MOUSE_HOVER) eObjectState = STATE_HOVER;
 				else eObjectState = STATE_NONE;
 

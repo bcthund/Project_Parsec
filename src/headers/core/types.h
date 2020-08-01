@@ -195,6 +195,12 @@ namespace Core {
 			data[0] = x;
 			data[1] = y;
 		}
+
+//		Vector2i(const Vector2i &v) {
+//			data[0] = v[0];
+//			data[1] = v[1];
+//		}
+
 	} Vector2i;
 
 	typedef struct Vector2ui {
