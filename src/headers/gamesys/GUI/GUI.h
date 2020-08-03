@@ -221,7 +221,7 @@
  * 			[X] TextArea?
  * 			[X] TextEdit?
  *
- * TODO: [ ] Scrolling Window - This might be difficult
+ * TODO: [X] Scrolling Window - This might be difficult
  * 			[X] Scrolling text window
  * 			[X] Can use glScissor and glEnable/Disable(GL_SCISSOR_TEST). Use Window minus padding for drawable area.
  * 			[ ] Apply scrolling (per-pixel) to windows
@@ -237,8 +237,8 @@
  * 					[X] Use the STATE_FOCUS concept. if mouse is in glScissor area then enable objects.
  * 						- bActive added to scissor stack items, set with checkInput function
  * 				[X] Scroll position (int)
- * 				[ ] Maximum scroll position
- * 					[ ] Auto-calc somehow?
+ * 				[X] Maximum scroll position
+ * 					[X] Auto-calc somehow?
  * 					[X] Set by user
  * 				[X] Window scrolling disabled when any object is active
  * 					[X] If Interactive_Base::bFocusPresent then don't scroll
@@ -287,7 +287,7 @@
  * TODO: [ ] Change Map_si (t_Vector)
  * 			[X] Change from type to class containing both mapping and template vector for data type 'std::vector<T>'
  * 			[X] Create addItem(string/int)
- * 			[ ] Create removeItem(string/int)
+ * 			[X] Create removeItem(string/int)
  * 			[X] Create getID(string)
  * 			[ ] Create getString(id)
  * 			[X] Create getSize() function to return exact size
@@ -523,22 +523,6 @@ namespace Core {
 			 */
 			// Reset focus state
 			iGUIFocus = 0;
-
-//			if(con->bScissor) {
-//				int padLR = con->vPadding.left+con->vPadding.right;
-//				int padTB = con->vPadding.top+con->vPadding.bottom;
-//
-//				int w = con->size.x-padLR,
-//					h = con->size.y-padTB;
-//
-//				int x = ( (con->pos.x-(con->size.x/2)+con->vPadding.left )) + Core::gameVars->screen.half.x,
-//					y = ( (con->pos.y-(con->size.y/2)+con->vPadding.bottom )) + Core::gameVars->screen.half.y;
-//
-//				Core::scissor.push(x, y, w, h, false);
-//				Core::scissor.checkInput(Core::mouse->x, Core::mouse->y, Core::gameVars->screen.res);
-//
-//				if(con->bScissor) Core::scissor.enable();
-//			}
 
 			activeGUI = guiName;
 			guis[guiName]->exec();

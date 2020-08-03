@@ -1776,6 +1776,13 @@ namespace Core {
 				return map[name];
 			}
 
+			std::string getName(int id) {
+				for (const auto& item : map) {
+					if(item.second == id) return item.first;
+				}
+				return "";
+			}
+
 			int size() {
 				return typeList.size();
 			}
