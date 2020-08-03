@@ -508,7 +508,6 @@ namespace Core {
 					v.x = pos.x+scroll.getX();
 					v.y = pos.y+scroll.getY();
 					return v;
-					//return Vector2f(pos.x+scroll.getX(), pos.y+scroll.getY());
 				}
 				Vector2f getPos()													{	return Vector2f(pos.x, pos.y);	}
 				Vector2f getSize()													{	return Vector2f(size.x, size.y);	}
@@ -530,12 +529,8 @@ namespace Core {
 				void setMinHeight(int i)											{	size.constraint.yMin = i;	}
 				void setMaxHeight(int i)											{	size.constraint.yMax = i;	}
 				void setText(std::string s)											{	text = s;	}
-//				void setScrollable()												{	scroll.makeLocal(); scroll.enable(true); }
-//				void resetScrollable()												{	scroll.unBind(); }
 				void setScrollable()												{	scroll.enable(true); }
 				void resetScrollable()												{	scroll.enable(false); }
-				//void setScrollable()												{	scroll.bScrollable = true; }
-				//void resetScrollable()												{	scroll.bScrollable = false; }
 				void enableFocusLock()												{	bFocusLock = true; }
 				void disableFocusLock()												{	bFocusLock = false; }
 
@@ -619,10 +614,6 @@ namespace Core {
 				}
 		};
 
-		//bool Props::ToolTip::bShow;
-		//int  Props::ToolTip::showDelay;
-		//int  Props::ToolTip::hideDelay;
-
 		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 		// 			Object Options
@@ -661,56 +652,6 @@ namespace Core {
 				void setToggle(bool b)									{	bToggle = b;		}
 				Props_Addon_Toggle() : bToggle(false)/*, initialState(STATE_NONE)*/ {}
 		};
-
-//		/**
-//		 * \brief Allows an object to return multiple different states
-//		 *
-//		 * @tparam T
-//		 */
-//		class Props_Addon_DataSet {
-//			public:
-//				t_Vector< std::vector<t_BIFS> > states;
-//				Props_Addon_DataSet() {}
-//
-//				std::vector<t_BIFS> & operator[](std::string name)	{ return states[name]; }
-//				std::vector<t_BIFS> & operator[](int n)	{ return states[n]; }
-//
-//				/**
-//				 * @brief Create a new group but do not add any values to it
-//				 *
-//				 * @param name Name of the group
-//				 */
-//				void addGroup(std::string name) {
-//					std::vector<t_BIFS> base;
-//					states.add(name, base);
-//				}
-//
-//				/**
-//				 * @brief Create a group name or use the existing one with the given name and add a value at the next index.
-//				 * 		  The index cannot be chosen, so group items with a pattern to the index values must be constructed
-//				 * 		  in the same order.
-//				 *
-//				 * @param name The name of the group to create or use if already existing
-//				 * @param value The variant value to add to the group
-//				 */
-//				void addGroupState(std::string name, t_BIFS value) {
-//					std::vector<t_BIFS> base;
-//					states.add(name, base, false);	// Do not throw error, just continue...
-//					states[name].push_back(value);	//  and add element to existing group
-//				}
-//
-//				/**
-//				 * @brief Create a group name or use the existing one with the given name and add a list of values starting
-//				 * 		  at the next available index.
-//				 * 		  The index cannot be chosen, so group items with a pattern to the index values must be constructed
-//				 * 		  in the same order.
-//				 *
-//				 * @param name The name of the group to create or use if already existing
-//				 * @param base A vector of variants to add to the group
-//				 */
-//				void addGroupStates(std::string name, std::vector<t_BIFS> base) { states.add(name, base); }
-//				void addState(std::string name, t_BIFS value) { states[name].push_back(value); }
-//		};
 
 		/**
 		 * \brief Object has a stipple pattern
@@ -760,20 +701,6 @@ namespace Core {
 				bool			bNoInput;
 
 			public:
-//				struct Colors {
-//					private:
-//						struct {
-//							GUI_ColorBHA	back,
-//											border;
-//						} data;
-//
-//					public:
-//						GUI_ColorBHA &back()	{ return data.back; }
-//						GUI_ColorBHA &border()	{ return data.border; }
-//
-//					Colors() {}
-//				} color;
-
 				GUI_ColorBHA	colorBack, colorBorder;
 
 				bool			roundBorder;
@@ -859,26 +786,6 @@ namespace Core {
 			friend class Object::Label;
 
 			public:
-//				struct Colors {
-//					private:
-//						struct {
-//							GUI_ColorBHA	text;
-//							GUI_ColorBHA	*backPtr,
-//											*borderPtr;
-//						} data;
-//
-//					public:
-//						GUI_ColorBHA &text()	{ return data.text; }
-//						GUI_ColorBHA &back()	{ return *data.backPtr; }
-//						GUI_ColorBHA &border()	{ return *data.borderPtr; }
-//
-//
-//					Colors(GUI_ColorBHA *backPtr, GUI_ColorBHA *borderPtr) {
-//						data.backPtr = backPtr;
-//						data.borderPtr = borderPtr;
-//					}
-//				} color = Colors(&Props_Window::color.back(), &Props_Window::color.border());
-
 				GUI_ColorBHA	colorText;
 
 				bool			bShowBackground;
@@ -923,9 +830,6 @@ namespace Core {
 					bShowLabel		= false;
 					label.setPos(0, 0);
 
-//					label.bAutoSizeLabelX = true;
-//					label.bAutoSizeLabelY = true;
-
 					label.autoWidth();
 					label.autoHeight();
 				}
@@ -942,25 +846,6 @@ namespace Core {
 			friend class Object::Field;
 
 			public:
-//				struct Colors {
-//					private:
-//						struct {
-//							GUI_ColorBHA	text;
-//							GUI_ColorBHA	*backPtr,
-//											*borderPtr;
-//						} data;
-//
-//					public:
-//						GUI_ColorBHA &text()	{ return data.text; }
-//						GUI_ColorBHA &back()	{ return *data.backPtr; }
-//						GUI_ColorBHA &border()	{ return *data.borderPtr; }
-//
-//
-//					Colors(GUI_ColorBHA *backPtr, GUI_ColorBHA *borderPtr) {
-//						data.backPtr = backPtr;
-//						data.borderPtr = borderPtr;
-//					}
-//				} color = Colors(&Props_Window::color.back(), &Props_Window::color.border());
 				GUI_ColorBHA	colorText;
 
 				bool			bNumeric,
@@ -968,7 +853,6 @@ namespace Core {
 				int				precision;
 				float			minValue,
 								maxValue;
-				//Props_Window 	window;
 
 				void setPrecision(int i)									{ precision = i; }
 				void setMinMax(float min, float max)						{ minValue = min; maxValue = max; }
@@ -979,9 +863,6 @@ namespace Core {
 
 
 				Props_Field() {
-					//color.back = &colorWindow.back;
-					//color.border = &colorWindow.border;
-
 					bNumeric					= false;
 					precision					= 3;
 					bEditable					= true;
@@ -1049,7 +930,6 @@ namespace Core {
 				Props_Addon_Field() {
 					bShowField		= false;
 					field.setPos(0, 0);
-//					field.disablePadding();
 					field.setMinMaxWidth(10, 250);
 				}
 
@@ -1089,7 +969,6 @@ namespace Core {
 				int			precision,
 							iFieldSize;
 				bool 		bExactSize;
-				//float		fMinimumStep;
 				Vector3f	vStep;
 
 				Props_Window control;
@@ -1101,7 +980,6 @@ namespace Core {
 				void setFieldSizeAbsolute(int i)							{ bExactSize = true; iFieldSize = i; }		// iFieldSize = exact size
 				void setFieldSizeRelative(int i)							{ bExactSize = false; iFieldSize = i; }		// iFieldSize = minimum size
 				void setScrollSpeed(float f)								{ scrollSpeed = f; }
-				//void setMinimumStep(float f)								{ fMinimumStep = f; }
 				void setStep(float f)										{ vStep[0] = f; vStep[1] = f; vStep[2] = f; }
 				void setStep(float min, float std, float max)				{ vStep[0] = min; vStep[1] = std; vStep[2] = max; }
 				void swapOrientation() {
@@ -1143,7 +1021,6 @@ namespace Core {
 					minValue			= 0.0f;
 					maxValue			= 100.0f;
 					scrollSpeed			= 1.0f;
-					//fMinimumStep		= 0.5f;
 					vStep[0]			= 1.0f;
 					vStep[1]			= 5.0f;
 					vStep[2]			= 10.0f;
@@ -1237,45 +1114,6 @@ namespace Core {
 			friend class Object::Button;
 
 			public:
-//				struct Colors {
-//					public:
-//						struct {
-//							GUI_ColorBHA	text;
-//							GUI_ColorBHA	*backPtr,
-//											*borderPtr;
-//						} data;
-//
-//					public:
-//						GUI_ColorBHA &text()	{ return data.text; }
-//						GUI_ColorBHA &back()	{ return *data.backPtr; }
-//						GUI_ColorBHA &border()	{ return *data.borderPtr; }
-//
-//					Colors(GUI_ColorBHA *backPtr, GUI_ColorBHA *borderPtr) {
-//						data.backPtr = backPtr;
-//						data.borderPtr = borderPtr;
-//					}
-//
-//					Colors &operator=(const Colors &src) {
-//						data.text.active			= src.data.text.active;
-//						data.text.base				= src.data.text.base;
-//						data.text.highlight			= src.data.text.highlight;
-//
-//						//data.backPtr = this->Props_Window::color.back();
-//						data.backPtr = new GUI_ColorBHA();
-//						data.backPtr->active		= src.data.backPtr->active;
-//						data.backPtr->base			= src.data.backPtr->base;
-//						data.backPtr->highlight		= src.data.backPtr->highlight;
-//
-//						//data.borderPtr = this->Props_Window::color.border();
-//						data.borderPtr = new GUI_ColorBHA();
-//						data.borderPtr->active		= src.data.borderPtr->active;
-//						data.borderPtr->base		= src.data.borderPtr->base;
-//						data.borderPtr->highlight	= src.data.borderPtr->highlight;
-//
-//						return *this;
-//					}
-//
-//				} color = Colors(&Props_Window::color.back(), &Props_Window::color.border());
 				GUI_ColorBHA colorText;
 
 				iConstrain		eLabelAnchor;
@@ -1411,8 +1249,6 @@ namespace Core {
 			friend class Object::ToolTip;
 
 			private:
-				//using Props::enablePadding;
-				//using Props::disablePadding;
 
 			public:
 				Props_Text	text;
@@ -1432,17 +1268,12 @@ namespace Core {
 					text.bufferPtr = std::make_shared<std::string>(s);
 				}
 
-				//void setPadding(int i)												{	text.setPadding(i); }
-				//void setPadding(int t, int b, int l, int r)							{	text.setPadding(t, b, l, r); }
-				//void setPadding(Vector4i v)											{	text.setPadding(v); }
-
 				Props_TextArea() {
 					enableScrolling				= false;
 					iScrollSize					= 20;
 
 					setBorder(1, 1);
 					setRadius(0);
-					//Props::setPadding(0);
 					setPadding(0);
 
 					setScrolling(false);
@@ -1478,33 +1309,10 @@ namespace Core {
 			friend class Object::ColorSwatch;
 
 			public:
-//				struct Colors {
-//					private:
-//						struct {
-//							GUI_ColorBHA	swatchBorder;
-//							GUI_ColorBHA	*backPtr,
-//											*borderPtr;
-//						} data;
-//
-//					public:
-//						GUI_ColorBHA &swatchBorder()	{ return data.swatchBorder; }
-//						GUI_ColorBHA &back()			{ return *data.backPtr; }
-//						GUI_ColorBHA &border()			{ return *data.borderPtr; }
-//
-//
-//					Colors(GUI_ColorBHA *backPtr, GUI_ColorBHA *borderPtr) {
-//						data.backPtr = backPtr;
-//						data.borderPtr = borderPtr;
-//					}
-//				} color = Colors(&Props_Window::color.back(), &Props_Window::color.border());
 				GUI_ColorBHA	colorSwatchBorder;
 
-//				GUI_ColorB		colorBackground;
-
-//				void setColorBorderB(Color *v1)								{	colorBorder.base = v1;	}
 				int  getRadius() 											{	return radius;	}
 				bool getRoundBorder()										{	return roundBorder;	}
-//				int  getBorder()											{	return border;	}
 
 				Props_ColorSwatch() : Props_Addon_Slider(SLIDER_HORIZONTAL) {
 					colorSwatchBorder.base		= &Core::gameVars->pallette.gui.swatch.border.base;
@@ -1565,7 +1373,6 @@ namespace Core {
 			public:
 				Props_CheckBox() {
 					bToggle = true;
-//					initialState = STATE_NONE;
 
 					label.setOrigin(CONSTRAIN_LEFT);
 					label.setAnchor(CONSTRAIN_RIGHT);
@@ -1573,7 +1380,6 @@ namespace Core {
 					label.setPos(-10, 0);
 					label.autoWidth();
 					label.autoHeight();
-//					label.setLabelAutoSize(true, true);
 					showLabel();
 
 					setPadding(0);
@@ -1693,25 +1499,6 @@ namespace Core {
 			friend class Object::Sprite;
 
 			public:
-//				struct Colors {
-//					private:
-//							struct {
-//							GUI_ColorBHA	sprite;
-//							GUI_ColorBHA	*backPtr,
-//											*borderPtr;
-//						} data;
-//
-//					public:
-//						GUI_ColorBHA &sprite()	{ return data.sprite; }
-//						GUI_ColorBHA &back()	{ return *data.backPtr; }
-//						GUI_ColorBHA &border()	{ return *data.borderPtr; }
-//
-//
-//					Colors(GUI_ColorBHA *backPtr, GUI_ColorBHA *borderPtr) {
-//						data.backPtr = backPtr;
-//						data.borderPtr = borderPtr;
-//					}
-//				} color = Colors(&Props_Window::color.back(), &Props_Window::color.border());
 				GUI_ColorBHA	colorSprite;
 
 				std::string		spriteImage;
@@ -1827,7 +1614,6 @@ namespace Core {
 				Props_Window	itemList;		///< The container for additional items that show up when down arrow pressed
 				Props_Button 	itemButton,		///< Style information for each item in the item list
 								scrollButton;	///< Style information for scroll buttons
-				//Props_Icon		icon;			///< Button to enable dropdown
 
 				bool	bAutoHide;
 				int		iListLength;
@@ -1861,11 +1647,6 @@ namespace Core {
 					setPadding(5);
 					setWidth(150, GUI::SIZE_CONSTRAINT_ABSOLUTE);
 					setHeight(20, GUI::SIZE_CONSTRAINT_ABSOLUTE);
-
-					// Button to show itemList
-//					icon.setOrigin(Core::GUI::CONSTRAIN_RIGHT);
-//					icon.setAnchor(Core::GUI::CONSTRAIN_LEFT);
-//					icon.setButtonType(Core::GUI::BUTTON_TOGGLE);
 
 					// selectedItem will be parent
 					itemList.setOrigin(Core::GUI::CONSTRAIN_BOTTOM);

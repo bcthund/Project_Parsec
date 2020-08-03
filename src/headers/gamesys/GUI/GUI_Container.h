@@ -35,19 +35,12 @@
 
 namespace Core {
 	namespace GUI {
-		class GUI_Container : public Object::Window/*, private Object::Base::Interactive_Base*/ {
+		class GUI_Container : public Object::Window {
 			public:
-//				GUI_Container(std::string name, Props_Window &c) : Object::Window(name, c)				{	init();	}
-//				GUI_Container(std::string name, Props_Window *c) : Object::Window(name, c)				{	init();	}
-//				GUI_Container(Props &p, std::string name, Props_Window &c) : Object::Window(p, name, c)	{	init();	}
-//				GUI_Container(Props &p, std::string name, Props_Window *c) : Object::Window(p, name, c)	{	init();	}
-
-//				static GUI_Container*	activeContainer;
-
-				GUI_Container(std::string name, Props_Container &c) : Object::Window(name, c)				{	/*activeContainer=nullptr;*/	}
-				GUI_Container(std::string name, Props_Container *c) : Object::Window(name, c)				{	/*activeContainer=nullptr;*/	}
-				GUI_Container(Props &p, std::string name, Props_Container &c) : Object::Window(p, name, c)	{	/*activeContainer=nullptr;*/	}
-				GUI_Container(Props &p, std::string name, Props_Container *c) : Object::Window(p, name, c)	{	/*activeContainer=nullptr;*/	}
+				GUI_Container(std::string name, Props_Container &c) : Object::Window(name, c)				{		}
+				GUI_Container(std::string name, Props_Container *c) : Object::Window(name, c)				{		}
+				GUI_Container(Props &p, std::string name, Props_Container &c) : Object::Window(p, name, c)	{		}
+				GUI_Container(Props &p, std::string name, Props_Container *c) : Object::Window(p, name, c)	{		}
 
 				~GUI_Container() {}
 				void exec();
@@ -58,7 +51,6 @@ namespace Core {
 				void execObjects();
 				void execToolTips();
 				GUI_Container & pushData(std::string name, GUI_Container *data);
-//				bool								bIsActive;
 
 			public:
 				GUI_Container & add(std::string containerName, Props_Container &c, Props *p=nullptr);
@@ -423,6 +415,25 @@ namespace Core {
 			return pushData(buttonName, button);
 		}
 
+		// TODO:
+//		t_BIFS GUI_Container::CheckBoxInterface::groupState(int iGroup, int n) {
+//			for (auto & checkBox : checkBoxes) {
+//				if( (checkBox->con->iGroup == iGroup) && (checkBox->getState()) ) {
+//					return checkBox->getDataSetValue(n);
+//				}
+//			}
+//			return 0;
+//		}
+//
+//		t_BIFS GUI_Container::CheckBoxInterface::groupState(std::string sGroup, int n) {
+//			for (auto & checkBox : checkBoxes) {
+//				if( (checkBox->con->iGroup == Core::groups[sGroup].index) && (checkBox->getState()) ) {
+//					return checkBox->getDataSetValue(n);
+//				}
+//			}
+//			return 0;
+//		}
+
 		/*
 		 * ==========================================================
 		 *						Sliders
@@ -600,64 +611,22 @@ namespace Core {
 		}
 
 		t_BIFS GUI_Container::CheckBoxInterface::groupState(int iGroup, int n) {
-			//int iState = 0;
 			for (auto & checkBox : checkBoxes) {
 				if( (checkBox->con->iGroup == iGroup) && (checkBox->getState()) ) {
-					//iState |= checkBox->getDataSetValue(n);
-					// FIXME: Duplicates sometimes show up, fix (requires second loop to disable objects that were active before another object was set active)
-					//if(iState) break;	// Break at first success
 					return checkBox->getDataSetValue(n);
 				}
-
 			}
 			return 0;
 		}
 
 		t_BIFS GUI_Container::CheckBoxInterface::groupState(std::string sGroup, int n) {
-			//int iState = 0;
 			for (auto & checkBox : checkBoxes) {
 				if( (checkBox->con->iGroup == Core::groups[sGroup].index) && (checkBox->getState()) ) {
-					//iState |= checkBox->getDataSetValue(n);
-					// FIXME: Duplicates sometimes show up, fix (requires second loop to disable objects that were active before another object was set active)
-					//if(iState) break;	// Break at first success
 					return checkBox->getDataSetValue(n);
 				}
-
 			}
-			//return iState;
 			return 0;
 		}
-
-//		auto GUI_Container::CheckBoxInterface::groupState(std::string sGroup, int n) {
-//			//int iState = 0;
-//			for (auto & checkBox : checkBoxes) {
-//				if( (checkBox->con->iGroup == Core::groups[sGroup].index) && (checkBox->getState()) ) {
-//					//iState |= checkBox->getDataSetValue(n);
-//					// FIXME: Duplicates sometimes show up, fix (requires second loop to disable objects that were active before another object was set active)
-//					//if(iState) break;	// Break at first success
-//
-//					checkBox->getDataSetValue();
-//
-////					switch(checkBox->getDataSetValue(n).index()) {
-////						case 0:
-////							return std::get<bool>(checkBox->getDataSetValue(n));
-////							break;
-////						case 1:
-////							return std::get<int>(checkBox->getDataSetValue(n));
-////							break;
-////						case 2:
-////							return std::get<float>(checkBox->getDataSetValue(n));
-////							break;
-////							return std::get<std::string>(checkBox->getDataSetValue(n));
-////						case 3:
-////							break;
-////					}
-//				}
-//
-//			}
-//			//return iState;
-//			return 0;
-//		}
 
 		/*
 		 * ==========================================================
@@ -696,6 +665,25 @@ namespace Core {
 			else icon = new Object::Icon(*gui->con, iconName, b, c);
 			return pushData(iconName, icon);
 		}
+
+		// TODO:
+//		t_BIFS GUI_Container::CheckBoxInterface::groupState(int iGroup, int n) {
+//			for (auto & checkBox : checkBoxes) {
+//				if( (checkBox->con->iGroup == iGroup) && (checkBox->getState()) ) {
+//					return checkBox->getDataSetValue(n);
+//				}
+//			}
+//			return 0;
+//		}
+//
+//		t_BIFS GUI_Container::CheckBoxInterface::groupState(std::string sGroup, int n) {
+//			for (auto & checkBox : checkBoxes) {
+//				if( (checkBox->con->iGroup == Core::groups[sGroup].index) && (checkBox->getState()) ) {
+//					return checkBox->getDataSetValue(n);
+//				}
+//			}
+//			return 0;
+//		}
 
 		/*
 		 * ==========================================================
@@ -796,12 +784,7 @@ namespace Core {
 		void GUI_Container::execObjects() {
 			if(bInit) {
 				if(con->visibility) {
-
-//					activeContainer = this;
 					c_Generic_Base::activeContainer = this->con;
-
-					debug.log(con->text+": Scroll = "+std::to_string(activeContainer->scroll.getY())+"/"+std::to_string(activeContainer->scroll.iMaxScroll));
-
 					con->exec();
 
 					if(con->bScissor) {

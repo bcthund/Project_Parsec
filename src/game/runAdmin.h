@@ -1849,7 +1849,7 @@ void _Admin::run() {
 		Core::gui.exec("GameMenu");
 
 		if(Core::gui["GameMenu"]["Window 19"].Button["Erase Test"].getState()) {
-			Core::debug.log("ERASE");
+			Core::debug.log("ERASING 'Test Object 5' from 'ComboBox2'");
 			Core::gui["GameMenu"]["Window 19"].ComboBox["ComboBox2"].removeItem("Test Object 5");
 		}
 

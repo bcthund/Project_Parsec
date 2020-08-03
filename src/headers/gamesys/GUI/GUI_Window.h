@@ -287,16 +287,8 @@ namespace Core {
 
 //					// Object specific logic
 					if(enabled()) {
-						if(mState&Core::_Mouse::MOUSE_HOVER) {
-
-							//debug.log(Core::GUI::GUI::activeGUI->con->text);
-//							debug.log(Core::GUI::activeGUI->con->text);
-							//debug.log(Core::GUI::GUI_Base::activeGUI);
-
-//							debug.log("Active Container = "+activeContainer->text);
-
-							//if(con->scroll.bScrollable && (parent!=nullptr && parent->scroll.getEnabled()))
-							if(con->scroll.isScrollable()) updateScrollMouse();
+						if(con->scroll.isScrollable() && (mState&Core::_Mouse::MOUSE_HOVER)) {
+							updateScrollMouse();
 						}
 						eObjectState = STATE_NONE;
 					}
@@ -308,26 +300,6 @@ namespace Core {
 				// Report if mouse is in button space
 				if(!(mState&Core::_Mouse::MOUSE_NONE)) eObjectState = eObjectState|STATE_FOCUS;
 				else eObjectState = eObjectState&~STATE_FOCUS;
-
-				//if(Core::scissor.bEnabled) {
-//				if(name=="Window 1" || name=="Window 2") {
-//					Core::debug.bLogEnable = true;
-//					Vector2f vMouse = { float(Core::mouse->x), float(Core::mouse->y) };
-////					Vector2f vP1 = { (float)Core::scissor.get().x, Core::gameVars->screen.res.y-(float)Core::scissor.get().y };
-////					Vector2f vP2 = { vP1.x+Core::scissor.get().w, vP1.y-Core::scissor.get().h };
-//
-//					Vector2f vP1 = { (float)Core::scissor.get().x, Core::gameVars->screen.res.y-((float)Core::scissor.get().y+(float)Core::scissor.get().h) };
-//					Vector2f vP2 = { (float)Core::scissor.get().x+(float)Core::scissor.get().w, Core::gameVars->screen.res.y-(float)Core::scissor.get().y };
-//
-//					if(Core::debug.bLogEnable) Core::debug.log(name+": ("+std::to_string(vP1.x)+", "+std::to_string(vP1.y)+")");
-//					if(Core::debug.bLogEbScrollablenable) Core::debug.log(name+": ("+std::to_string(vP2.x)+", "+std::to_string(vP2.y)+")");
-//					//if (!Core::gmath.PointQuad2d(vMouse, vP1, vP2)) bIgnoreInput = true;
-//
-//					if (Core::gmath.PointQuad2d(vMouse, vP1, vP2)) {
-//						if(Core::debug.bLogEnable) Core::debug.log(name+": MOUSE IN SCISSOR");
-//					}
-//					Core::debug.bLogEnable = false;
-//				}
 
 				if(!enabled()) eObjectState |= STATE_DISABLED;
 
@@ -384,7 +356,6 @@ namespace Core {
 				if(bInit) {
 					if(con->visibility && ((parent!=nullptr && parent->visibility) || (parent==nullptr))) {
 						// Check scroll visibility
-						//if(con->scroll.bScrollable)
 						if(Core::scissor.getActive()) checkScrollVisibility();
 
 						// Update constaints in case they have changed
@@ -435,7 +406,6 @@ namespace Core {
 							// Only scroll this item if the parent has scrolling enabled
 							Vector2f vPos;
 							if(con->scroll.isScrollable() && (parent!=nullptr && parent->scroll.getEnabled())) vPos = con->getScrollPos();
-//							if((parent!=nullptr && parent->scroll.getEnabled())) vPos = con->getScrollPos();
 							else vPos = con->getPos();
 							matrix->Translate( vPos.x, vPos.y, 0.0 );
 
