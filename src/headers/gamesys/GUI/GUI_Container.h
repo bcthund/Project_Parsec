@@ -796,8 +796,8 @@ namespace Core {
 
 					// Always disable scissor before drawing a container
 					Core::scissor.disable();
-					//glDisable(GL_SCISSOR_TEST);
-					Object::Window::exec();
+//					//glDisable(GL_SCISSOR_TEST);
+//					Object::Window::exec();
 
 					if(con->bScissor) {
 						int padLR = con->vPadding.left+con->vPadding.right;
@@ -809,20 +809,42 @@ namespace Core {
 						int x = ( (con->pos.x-(con->size.x/2)+con->vPadding.left )) + Core::gameVars->screen.half.x,
 							y = ( (con->pos.y-(con->size.y/2)+con->vPadding.bottom )) + Core::gameVars->screen.half.y;
 
-						// Doesn't Work
-						Core::scissor.push(x, y, w, h);
+						Core::scissor.push(x, y, w, h, false);
+						Core::scissor.checkInput(Core::mouse->x, Core::mouse->y, Core::gameVars->screen.res);
 
-						// Works
-						//Vector2i xy = Vector2i(x, y);
-						//Vector2i wh = Vector2i(w, h);
-						//Core::scissor.push(xy, wh);
-
-						// Works
-						//Core::scissor.push(std::make_pair(Vector2i(x, y), Vector2i(w, h)));
-
-						//glEnable(GL_SCISSOR_TEST);
-						//glScissor(x, y, w, h);
+						// Check mouse container state
+//						Vector2f vMouse = { float(Core::mouse->x), float(Core::mouse->y) };
+//						Vector2f vP1 = { (float)Core::scissor.get().x, Core::gameVars->screen.res.y-((float)Core::scissor.get().y+(float)Core::scissor.get().h) };
+//						Vector2f vP2 = { (float)Core::scissor.get().x+(float)Core::scissor.get().w, Core::gameVars->screen.res.y-(float)Core::scissor.get().y };
+////
+//						if (Core::gmath.PointQuad2d(vMouse, vP1, vP2)) {
+//							Core::scissor.setActive(true);
+//							if(Core::debug.bLogEnable) Core::debug.log(name+": MOUSE IN SCISSOR");
+//						}
+//						else Core::scissor.setActive(false);
 					}
+
+//					Core::debug.bLogEnable = true;
+//					{
+//						Vector2f vP1 = { (float)Core::scissor.stack[Core::scissor.stack.size()-1][0].x, Core::gameVars->screen.res.y-(float)Core::scissor.stack[Core::scissor.stack.size()-1][0].y };
+//						Vector2f vP2 = { vP1.x+Core::scissor.stack[Core::scissor.stack.size()-1][1].x, vP1.y-Core::scissor.stack[Core::scissor.stack.size()-1][1].y };
+//						Core::debug.log(" [IN] "+con->text+": ("+std::to_string(vP1.x)+", "+std::to_string(vP1.y)+") - ("+std::to_string(vP2.x)+", "+std::to_string(vP2.y)+")");
+//					}
+//					{
+//						Vector2f vP1 = { (float)Core::scissor.get()[0].x, Core::gameVars->screen.res.y-(float)Core::scissor.get()[0].y };
+//						Vector2f vP2 = { vP1.x+Core::scissor.get()[1].x, vP1.y-Core::scissor.get()[1].y };
+//						Core::debug.log("[OUT] "+con->text+": ("+std::to_string(vP1.x)+", "+std::to_string(vP1.y)+") - ("+std::to_string(vP2.x)+", "+std::to_string(vP2.y)+")");
+//					}
+//					{
+//						Vector2f vP1 = { (float)Core::scissor.get()[0][0], Core::gameVars->screen.res.y-(float)Core::scissor.get()[0][1] };
+//						Vector2f vP2 = { vP1[0]+Core::scissor.get()[1][0], vP1[1]-Core::scissor.get()[1][1] };
+//						Core::debug.log("[OUT] "+con->text+": ("+std::to_string(vP1.x)+", "+std::to_string(vP1.y)+") - ("+std::to_string(vP2.x)+", "+std::to_string(vP2.y)+")");
+//					}
+//					std::cout << "\n--------------------------------\n\n";
+
+//					Core::scissor.disable();
+					Object::Window::exec();
+					if(con->bScissor) Core::scissor.enable();
 
 					for (auto & window		: Window.windows)				window->exec();
 					for (auto & label		: Label.labels)					label->exec();

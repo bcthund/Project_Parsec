@@ -233,10 +233,9 @@
  * 					[X] Mouse based scrolling
  * 					[X] External control (disable mouse but still update scrolling data) (Use to make a slide-in window?)
  *				[X] Manage wheel mouse scrolling
- * 				[ ] Add check to glScissor area, ignore input outside scissor area for nested objects
- * 					[ ] Use the STATE_FOCUS concept. if mouse is in glScissor area then enable objects.
- * 					[ ] Use Base::Interactive static for active window?
- * 					[ ] Add parent active pointer? Use nested structure like scrolling so children know if parent has focus.
+ * 				[X] Add check to glScissor area, ignore input outside scissor area for nested objects
+ * 					[X] Use the STATE_FOCUS concept. if mouse is in glScissor area then enable objects.
+ * 						- bActive added to scissor stack items, set with checkInput function
  * 				[X] Scroll position (int)
  * 				[ ] Maximum scroll position (auto calc???)
  * 				[X] Window scrolling disabled when any object is active
@@ -256,7 +255,7 @@
  * 			- This is difficult to implement with pointers to non-AnyType values
  * 			  so this should probably not be done and just keep original system.
  * 			[E] Fields (t_BIFS)
- * 			[E] Sliders	(t_BIF, can we implement Bool? Would be a cool way to make a slider switch)
+ * 			[E] Sliders	(t_BIF, can we implement Bool? Would be a cool way to make a slider switch, but int essentially already does this)
  * 			[ ] Separate slider into separate type definitions?
  * 				- Copies of Slider such as SliderInt, SliderFloat, SliderBool instead of AnySlider.
  * 			[ ] Separate fields in to FieldInt, FieldBool, FieldFloat, FieldString
@@ -303,17 +302,17 @@
  * 				[ ] GameSys
  * 					[ ] Flora (flora is currently broken in the particle system)
  * 					[ ] Satellite
- * 					[ ] GUI
+ * 					[X] GUI
  * 					[X] GUI_Container
- * 					[ ] GUI_ComboBox
+ * 					[X] GUI_ComboBox
  * 					[ ] TextSys
  *
- * TODO: [ ] Create a Scissor coordinates stack
- *			[ ] Push onto stack
+ * TODO: [X] Create a Scissor coordinates stack
+ *			[X] Push onto stack
  *				- Includes enable/disable
  *				- A disable stack does not require x,y,w,h
- *			[ ] Pop from stack
- *			[ ] exec stack
+ *			[X] Pop from stack
+ *			[X] exec stack
  *				- If nothing on stack, do not enable
  *
  * TODO: [ ] Window padding should automatically take border size into account?

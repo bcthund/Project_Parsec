@@ -148,11 +148,14 @@ namespace Core {
 		}
 	} MemBlock;
 
+	typedef int Data2i[2];
 	typedef struct Vector2i {
 		const int last = 1;
-		int data[2] = {0};
+		Data2i data = {0};
 		int &x = data[0],
 			&y = data[1];
+//		int &x,
+//			&y;
 
 		int			area()			{	return data[0]*data[1];	}
 		float		length()		{	return sqrtf((x*x)+(y*y));	}
@@ -169,31 +172,43 @@ namespace Core {
 		friend Vector2i operator/(Vector2i lhs, const Vector2i& rhs) {	Vector2i r;		r.x = lhs.x / rhs.x;	r.y = lhs.y / rhs.y;	return r;	}
 		friend Vector2i operator/(Vector2i lhs, const int& rhs)	 	 {	Vector2i r;		r.x = lhs.x / rhs;		r.y = lhs.y / rhs;		return r;	}
 
-		Vector2i operator= (const Vector2i& rhs)	{	x = rhs.x;		y = rhs.y;		return *this;	}
-		Vector2i operator+=(const Vector2i& rhs)	{	x += rhs.x;		y += rhs.y;		return *this;	}
-		Vector2i operator-=(const Vector2i& rhs)	{	x -= rhs.x;		y -= rhs.y;		return *this;	}
-		Vector2i operator*=(const Vector2i& rhs) 	{	x *= rhs.x;		y *= rhs.y;		return *this;	}
-		Vector2i operator= (const int& rhs)			{	x = rhs;		y = rhs;		return *this;	}
-		Vector2i operator+=(const int& rhs) 		{	x += rhs;		y += rhs;		return *this;	}
-		Vector2i operator-=(const int& rhs) 		{	x -= rhs;		y -= rhs;		return *this;	}
-		Vector2i operator*=(const int& rhs) 		{	x *= rhs;		y *= rhs;		return *this;	}
-		Vector2i operator++()						{	x++;			y ++;			return *this;	}
-		Vector2i operator--()						{	x--;			y --;			return *this;	}
-		int		&operator[](int i)					{	if(i>last) i=last;				return data[i]; }
+		Vector2i operator= (const Vector2i& rhs)	{	x = rhs.x;		y = rhs.y;		x = data[0];	y = data[1];	return *this;	}
+		Vector2i operator+=(const Vector2i& rhs)	{	x += rhs.x;		y += rhs.y;		x = data[0];	y = data[1];	return *this;	}
+		Vector2i operator-=(const Vector2i& rhs)	{	x -= rhs.x;		y -= rhs.y;		x = data[0];	y = data[1];	return *this;	}
+		Vector2i operator*=(const Vector2i& rhs) 	{	x *= rhs.x;		y *= rhs.y;		x = data[0];	y = data[1];	return *this;	}
+		Vector2i operator= (const int& rhs)			{	x = rhs;		y = rhs;		x = data[0];	y = data[1];	return *this;	}
+		Vector2i operator+=(const int& rhs) 		{	x += rhs;		y += rhs;		x = data[0];	y = data[1];	return *this;	}
+		Vector2i operator-=(const int& rhs) 		{	x -= rhs;		y -= rhs;		x = data[0];	y = data[1];	return *this;	}
+		Vector2i operator*=(const int& rhs) 		{	x *= rhs;		y *= rhs;		x = data[0];	y = data[1];	return *this;	}
+		Vector2i operator++()						{	x++;			y ++;			x = data[0];	y = data[1];	return *this;	}
+		Vector2i operator--()						{	x--;			y --;			x = data[0];	y = data[1];	return *this;	}
+		int		 &operator[](int i)					{	if(i>last) i=last;				return data[i]; }
 
-		Vector2i() {
-			data[0] = 0;
-			data[1] = 0;
+		Vector2i() : x(data[0]), y(data[1]) {
+//			data[0] = 0;
+//			data[1] = 0;
+//			x = data[0];
+//			y = data[1];
+			x = 0;
+			y = 0;
 		}
 
-		Vector2i(int v) {
-			data[0] = v;
-			data[1] = v;
+		Vector2i(const int &v) : x(data[0]), y(data[1]) {
+//			data[0] = v;
+//			data[1] = v;
+//			x = data[0];
+//			y = data[1];
+			x = v;
+			y = v;
 		}
 
-		Vector2i(int x, int y) {
-			data[0] = x;
-			data[1] = y;
+		Vector2i(const int &iX, const int &iY) : x(data[0]), y(data[1]) {
+//			data[0] = iX;
+//			data[1] = iY;
+//			x = data[0];
+//			y = data[1];
+			x = iX;
+			y = iY;
 		}
 
 //		Vector2i(const Vector2i &v) {
@@ -310,7 +325,7 @@ namespace Core {
 	typedef float Data2f[2];		// Vector of two floats used to send data to opengl
 	typedef struct Vector2f {
 		const int last = 1;
-		float data[2] = {0};
+		Data2f data = {0};
 		float &x = data[0],
 			  &y = data[1];
 
@@ -610,10 +625,10 @@ namespace Core {
 	typedef struct Vector4i {
 		const int last = 3;
 		int data[4] = {0};
-		int &x = data[0],
-			&y = data[1],
-			&z = data[2],
-			&w = data[3];
+//		int &x = data[0],
+//			&y = data[1],
+//			&z = data[2],
+//			&w = data[3];
 		int &r = data[0],
 			&g = data[1],
 			&b = data[2],
@@ -623,33 +638,37 @@ namespace Core {
 			&left	= data[2],
 			&right	= data[3];
 
-		float		length()		{	return sqrtf((x*x)+(y*y)+(z*z));	}
-		float		sudoLength()	{	return (x*x)+(y*y)+(z*z);	}
+		float		length()		{	return sqrtf((data[0]*data[0])+(data[1]*data[1])+(data[2]*data[2]+(data[3]*data[3])));	}
+		float		sudoLength()	{	return (data[0]*data[0])+(data[1]*data[1])+(data[2]*data[2]+(data[3]*data[3]));	}
 		Vector4i	normal()		{	Vector4i r;	r = *this * (1.0/length());	return r; }
 		Vector4i	invert()		{	Vector4i r;	r = *this * -1;				return r; }
-		int			top_bottom()	{	return x+y; }
-		int			left_right()	{	return z+w; }
+		int			top_bottom()	{	return data[0]+data[1]; }
+		int			left_right()	{	return data[2]+data[3]; }
 
-		friend Vector4i operator+(Vector4i lhs, const Vector4i& rhs)	{	Vector4i r;		r.x = lhs.x + rhs.x;	r.y = lhs.y + rhs.y;	r.z = lhs.z + rhs.z;	r.w = lhs.w + rhs.w;	return r;	}
-		friend Vector4i operator+(Vector4i lhs, const int& rhs)			{	Vector4i r;		r.x = lhs.x + rhs;		r.y = lhs.y + rhs;		r.z = lhs.z + rhs;		r.w = lhs.w + rhs;		return r;	}
-		friend Vector4i operator-(Vector4i lhs, const Vector4i& rhs)	{	Vector4i r;		r.x = lhs.x - rhs.x;	r.y = lhs.y - rhs.y;	r.z = lhs.z - rhs.z;	r.w = lhs.w - rhs.w;	return r;	}
-		friend Vector4i operator-(Vector4i lhs, const int& rhs)			{	Vector4i r;		r.x = lhs.x - rhs;		r.y = lhs.y - rhs;		r.z = lhs.z - rhs;		r.w = lhs.w - rhs;		return r;	}
-		friend Vector4i operator*(Vector4i lhs, const Vector4i& rhs)	{	Vector4i r;		r.x = lhs.x * rhs.x;	r.y = lhs.y * rhs.y;	r.z = lhs.z * rhs.z;	r.w = lhs.w * rhs.w;	return r;	}
-		friend Vector4i operator*(Vector4i lhs, const int& rhs)			{	Vector4i r;		r.x = lhs.x * rhs;		r.y = lhs.y * rhs;		r.z = lhs.z * rhs;		r.w = lhs.w * rhs;		return r;	}
-		friend Vector4i operator/(Vector4i lhs, const Vector4i& rhs)	{	Vector4i r;		r.x = lhs.x / rhs.x;	r.y = lhs.y / rhs.y;	r.z = lhs.z / rhs.z;	r.w = lhs.w / rhs.w;	return r;	}
-		friend Vector4i operator/(Vector4i lhs, const int& rhs)			{	Vector4i r;		r.x = lhs.x / rhs;		r.y = lhs.y / rhs;		r.z = lhs.z / rhs;		r.w = lhs.w / rhs;		return r;	}
+		friend Vector4i operator+(Vector4i lhs, const Vector4i& rhs)	{	Vector4i r;		r.data[0] = lhs.data[0] + rhs.data[0];	r.data[1] = lhs.data[1] + rhs.data[1];	r.data[2] = lhs.data[2] + rhs.data[2];	r.data[3] = lhs.data[3] + rhs.data[3];	return r;	}
+		friend Vector4i operator+(Vector4i lhs, const int& rhs)			{	Vector4i r;		r.data[0] = lhs.data[0] + rhs;		r.data[1] = lhs.data[1] + rhs;		r.data[2] = lhs.data[2] + rhs;		r.data[3] = lhs.data[3] + rhs;		return r;	}
+		friend Vector4i operator-(Vector4i lhs, const Vector4i& rhs)	{	Vector4i r;		r.data[0] = lhs.data[0] - rhs.data[0];	r.data[1] = lhs.data[1] - rhs.data[1];	r.data[2] = lhs.data[2] - rhs.data[2];	r.data[3] = lhs.data[3] - rhs.data[3];	return r;	}
+		friend Vector4i operator-(Vector4i lhs, const int& rhs)			{	Vector4i r;		r.data[0] = lhs.data[0] - rhs;		r.data[1] = lhs.data[1] - rhs;		r.data[2] = lhs.data[2] - rhs;		r.data[3] = lhs.data[3] - rhs;		return r;	}
+		friend Vector4i operator*(Vector4i lhs, const Vector4i& rhs)	{	Vector4i r;		r.data[0] = lhs.data[0] * rhs.data[0];	r.data[1] = lhs.data[1] * rhs.data[1];	r.data[2] = lhs.data[2] * rhs.data[2];	r.data[3] = lhs.data[3] * rhs.data[3];	return r;	}
+		friend Vector4i operator*(Vector4i lhs, const int& rhs)			{	Vector4i r;		r.data[0] = lhs.data[0] * rhs;		r.data[1] = lhs.data[1] * rhs;		r.data[2] = lhs.data[2] * rhs;		r.data[3] = lhs.data[3] * rhs;		return r;	}
+		friend Vector4i operator/(Vector4i lhs, const Vector4i& rhs)	{	Vector4i r;		r.data[0] = lhs.data[0] / rhs.data[0];	r.data[1] = lhs.data[1] / rhs.data[1];	r.data[2] = lhs.data[2] / rhs.data[2];	r.data[3] = lhs.data[3] / rhs.data[3];	return r;	}
+		friend Vector4i operator/(Vector4i lhs, const int& rhs)			{	Vector4i r;		r.data[0] = lhs.data[0] / rhs;		r.data[1] = lhs.data[1] / rhs;		r.data[2] = lhs.data[2] / rhs;		r.data[3] = lhs.data[3] / rhs;		return r;	}
 
-		Vector4i operator= (const Vector4i& rhs)	{	x = rhs.x;		y = rhs.y;		z = rhs.z;		w = rhs.w;		return *this;	}
-		Vector4i operator+=(const Vector4i& rhs)	{	x += rhs.x;		y += rhs.y;		z += rhs.z;		w += rhs.w;		return *this;	}
-		Vector4i operator-=(const Vector4i& rhs)	{	x -= rhs.x;		y -= rhs.y;		z -= rhs.z;		w -= rhs.w;		return *this;	}
-		Vector4i operator*=(const Vector4i& rhs) 	{	x *= rhs.x;		y *= rhs.y;		z *= rhs.z;		w *= rhs.w;		return *this;	}
-		Vector4i operator= (const int& rhs)			{	x = rhs;		y = rhs;		z = rhs;		w = rhs;		return *this;	}
-		Vector4i operator+=(const int& rhs) 		{	x += rhs;		y += rhs;		z += rhs;		w += rhs;		return *this;	}
-		Vector4i operator-=(const int& rhs) 		{	x -= rhs;		y -= rhs;		z -= rhs;		w -= rhs;		return *this;	}
-		Vector4i operator*=(const int& rhs) 		{	x *= rhs;		y *= rhs;		z *= rhs;		w *= rhs;		return *this;	}
-		Vector4i operator++()						{	x++;			y ++;			z ++;			w ++;			return *this;	}
-		Vector4i operator--()						{	x--;			y --;			z --;			w --;			return *this;	}
+		Vector4i operator= (const Vector4i& rhs)	{	data[0] = rhs.data[0];		data[1] = rhs.data[1];		data[2] = rhs.data[2];		data[3] = rhs.data[3];		return *this;	}
+		Vector4i operator+=(const Vector4i& rhs)	{	data[0] += rhs.data[0];		data[1] += rhs.data[1];		data[2] += rhs.data[2];		data[3] += rhs.data[3];		return *this;	}
+		Vector4i operator-=(const Vector4i& rhs)	{	data[0] -= rhs.data[0];		data[1] -= rhs.data[1];		data[2] -= rhs.data[2];		data[3] -= rhs.data[3];		return *this;	}
+		Vector4i operator*=(const Vector4i& rhs) 	{	data[0] *= rhs.data[0];		data[1] *= rhs.data[1];		data[2] *= rhs.data[2];		data[3] *= rhs.data[3];		return *this;	}
+		Vector4i operator= (const int& rhs)			{	data[0] = rhs;		data[1] = rhs;		data[2] = rhs;		data[3] = rhs;		return *this;	}
+		Vector4i operator+=(const int& rhs) 		{	data[0] += rhs;		data[1] += rhs;		data[2] += rhs;		data[3] += rhs;		return *this;	}
+		Vector4i operator-=(const int& rhs) 		{	data[0] -= rhs;		data[1] -= rhs;		data[2] -= rhs;		data[3] -= rhs;		return *this;	}
+		Vector4i operator*=(const int& rhs) 		{	data[0] *= rhs;		data[1] *= rhs;		data[2] *= rhs;		data[3] *= rhs;		return *this;	}
+		Vector4i operator++()						{	data[0]++;			data[1] ++;			data[2] ++;			data[3] ++;			return *this;	}
+		Vector4i operator--()						{	data[0]--;			data[1] --;			data[2] --;			data[3] --;			return *this;	}
 		int		&operator[](int i)					{	if(i>last) i=last;					return data[i]; }
+		int& x() { return data[0]; }
+		int& y() { return data[1]; }
+		int& z() { return data[2]; }
+		int& w() { return data[3]; }
 
 		Vector4i() {
 			data[0] = 0;
@@ -1638,6 +1657,19 @@ namespace Core {
 
 			int size() {
 				return typeList.size();
+			}
+
+			t_Vector1T(const t_Vector1T &src) {
+				for (auto & item : src) {
+					add(item);
+				}
+			}
+
+			t_Vector1T &operator=(const t_Vector1T &&src) {
+				for (auto & item : src) {
+					add(item);
+				}
+				return *this;
 			}
 
 			/*

@@ -82,6 +82,8 @@ namespace Core {
 				bLocalCon		= true;
 				con				= new Props_Window();
 				*con			= c;
+				if(con->text == "") con->text = n;
+
 				iScrollIndex	= 0;
 			}
 
@@ -94,6 +96,8 @@ namespace Core {
 				bLocalCon		= true;
 				con				= new Props_Window();
 				*con			= c;
+				if(con->text == "") con->text = n;
+
 				iScrollIndex	= 0;
 			}
 
@@ -105,6 +109,8 @@ namespace Core {
 
 				bLocalCon		= false;
 				con				= c;
+				if(con->text == "") con->text = n;
+
 				iScrollIndex	= 0;
 			}
 
@@ -116,6 +122,8 @@ namespace Core {
 
 				bLocalCon		= false;
 				con				= c;
+				if(con->text == "") con->text = n;
+
 				iScrollIndex	= 0;
 			}
 
@@ -206,8 +214,13 @@ namespace Core {
 					if(!(eExternState&STATE_UPDATE)) {
 						//if(con->scroll.getEnabled()) {
 						if(parent!=nullptr && parent->scroll.getEnabled()) {
+							if(name=="Window 1") Core::debug.bLogEnable = true;
+							else Core::debug.bLogEnable = false;
+							debug.log(name);
 							Vector2f vPos = con->getScrollPos();
 							mState = Core::mouse->checkInput(gameVars->screen.half.x+vPos.x, gameVars->screen.half.y-vPos.y, con->size.x, con->size.y);
+							//if(name=="Window 2")
+							Core::debug.bLogEnable = false;
 						}
 						else {
 							mState = Core::mouse->checkInput(gameVars->screen.half.x+con->pos.x, gameVars->screen.half.y-con->pos.y, con->size.x, con->size.y);
@@ -230,6 +243,26 @@ namespace Core {
 				// Report if mouse is in button space
 				if(!(mState&Core::_Mouse::MOUSE_NONE)) eObjectState = eObjectState|STATE_FOCUS;
 				else eObjectState = eObjectState&~STATE_FOCUS;
+
+				//if(Core::scissor.bEnabled) {
+//				if(name=="Window 1" || name=="Window 2") {
+//					Core::debug.bLogEnable = true;
+//					Vector2f vMouse = { float(Core::mouse->x), float(Core::mouse->y) };
+////					Vector2f vP1 = { (float)Core::scissor.get().x, Core::gameVars->screen.res.y-(float)Core::scissor.get().y };
+////					Vector2f vP2 = { vP1.x+Core::scissor.get().w, vP1.y-Core::scissor.get().h };
+//
+//					Vector2f vP1 = { (float)Core::scissor.get().x, Core::gameVars->screen.res.y-((float)Core::scissor.get().y+(float)Core::scissor.get().h) };
+//					Vector2f vP2 = { (float)Core::scissor.get().x+(float)Core::scissor.get().w, Core::gameVars->screen.res.y-(float)Core::scissor.get().y };
+//
+//					if(Core::debug.bLogEnable) Core::debug.log(name+": ("+std::to_string(vP1.x)+", "+std::to_string(vP1.y)+")");
+//					if(Core::debug.bLogEnable) Core::debug.log(name+": ("+std::to_string(vP2.x)+", "+std::to_string(vP2.y)+")");
+//					//if (!Core::gmath.PointQuad2d(vMouse, vP1, vP2)) bIgnoreInput = true;
+//
+//					if (Core::gmath.PointQuad2d(vMouse, vP1, vP2)) {
+//						if(Core::debug.bLogEnable) Core::debug.log(name+": MOUSE IN SCISSOR");
+//					}
+//					Core::debug.bLogEnable = false;
+//				}
 
 				if(!enabled()) eObjectState |= STATE_DISABLED;
 

@@ -355,48 +355,35 @@ namespace Core {
 		Vector2f vP2;
 		_Mouse::iMouseState mReturn = MOUSE_NONE;
 
-		if(bCentered) {
-			vP1    = { (float)x-(w/2.0f), (float)y-(h/2.0f) };
-			vP2    = { (float)x+(w/2.0f), (float)y+(h/2.0f) };
-		}
-		else {
-			vP1    = { (float)x, (float)y };
-			vP2    = { (float)x+w, (float)y+h };
+		// Ignore anything outside the current scissor stack (used for GUI discrimination)
+		bool bIgnoreInput = false;
+		if(Core::scissor.bEnabled && !Core::scissor.getActive()) {
+			bIgnoreInput = true;
 		}
 
-		// Stacking mouse events (bitmask)
-		if (Core::gmath.PointQuad2d(vMouse, vP1, vP2)) {
-			//mReturn = mReturn | MOUSE_HOVER;
-			mReturn = MOUSE_HOVER;
-			if (button.pressed[SDL_BUTTON_LEFT]) mReturn |= MOUSE_LEFT;
-			else if (button.held[SDL_BUTTON_LEFT]) mReturn |= MOUSE_LEFT_DOWN;
+		if(!bIgnoreInput) {
+			if(bCentered) {
+				vP1    = { (float)x-(w/2.0f), (float)y-(h/2.0f) };
+				vP2    = { (float)x+(w/2.0f), (float)y+(h/2.0f) };
+			}
+			else {
+				vP1    = { (float)x, (float)y };
+				vP2    = { (float)x+w, (float)y+h };
+			}
 
-			if (button.pressed[SDL_BUTTON_RIGHT]) mReturn |= MOUSE_RIGHT;
-			else if (button.held[SDL_BUTTON_RIGHT]) mReturn |= MOUSE_RIGHT_DOWN;
+			// Stacking mouse events (bitmask)
+			if (Core::gmath.PointQuad2d(vMouse, vP1, vP2)) {
+				mReturn = MOUSE_HOVER;
+				if (button.pressed[SDL_BUTTON_LEFT]) mReturn |= MOUSE_LEFT;
+				else if (button.held[SDL_BUTTON_LEFT]) mReturn |= MOUSE_LEFT_DOWN;
 
+				if (button.pressed[SDL_BUTTON_RIGHT]) mReturn |= MOUSE_RIGHT;
+				else if (button.held[SDL_BUTTON_RIGHT]) mReturn |= MOUSE_RIGHT_DOWN;
+
+			}
+			return mReturn;
 		}
-		return mReturn;
-
-
-		// IDEA: Make mouse events stack (left+right mouse, left+scroll, etc)
-//		if (button.pressed[SDL_BUTTON_LEFT] || button.held[SDL_BUTTON_LEFT]) {
-//			if (Core::gmath.PointQuad2d(vMouse, vP1, vP2)) {
-//				if (button.pressed[SDL_BUTTON_LEFT]) {
-//
-//					// FIXME: This timer breaks input checks if they happen really fast, such as in GUI (Why is this here anyways? Debounce?)
-//					//if (timer.get_ticks()>(fMouseDelay+fMouseDelayConst)) {
-//					//	fMouseDelay = timer.get_ticks();
-//						return MOUSE_LEFT;
-//					//}
-//				}
-//				else return MOUSE_LEFT_DOWN;
-//
-//			}
-//		}
-//		else if (Core::gmath.PointQuad2d(vMouse, vP1, vP2)) {
-//			return MOUSE_HOVER;
-//		}
-//		return MOUSE_NONE;
+		else return MOUSE_NONE;
 	}
 
 	/** ******************************************************************************************************************************

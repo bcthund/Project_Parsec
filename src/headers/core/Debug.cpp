@@ -18,6 +18,8 @@ namespace Core {
 		timerLog.start();
 		bDrawLog = true;
 		bDrawPrint = true;
+		bLogEnable = false;
+		bPrintEnable = false;
 
 		//ioctl(STDOUT_FILENO, TIOCGWINSZ, &size);
 		//auto const w(WEXITSTATUS(std::system("exit `tput cols`")));
@@ -64,7 +66,7 @@ namespace Core {
 	 * @param color Color from \p ConsoleColors to apply to text
 	 */
 	void _Debug::log(std::string buffer, ConsoleColors::eCOLOR color) {
-		if (bDrawLog) {
+		if (bDrawLog && bLogEnable) {
 			std::string timeStamp = "["+std::to_string(timerLog.get_ticks())+"]: ";
 			while(timeStamp.length() < 16) {
 				timeStamp.append(" ");
@@ -80,7 +82,7 @@ namespace Core {
 	 * @param color Color from \p ConsoleColors to apply to text
 	 */
 	void _Debug::print(std::string buffer, ConsoleColors::eCOLOR color) {
-		if (bDrawPrint) {
+		if (bDrawPrint && bPrintEnable) {
 			std::cout << consoleColors.colors[color] << sPrintIndent << buffer << consoleColors.colors[consoleColors.NC];
 		}
 	}

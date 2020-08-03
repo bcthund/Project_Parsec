@@ -72,6 +72,7 @@ namespace Core {
 			bool bDrawLog, bDrawPrint;
 			struct winsize size;
 			std::string sLogIndent, sPrintIndent;
+			bool bLogEnable, bPrintEnable;
 
 			void logIncreaseIndent();
 			void logDecreaseIndent();
