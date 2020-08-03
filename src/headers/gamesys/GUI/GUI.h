@@ -289,7 +289,7 @@
  * 			[X] Create addItem(string/int)
  * 			[X] Create removeItem(string/int)
  * 			[X] Create getID(string)
- * 			[ ] Create getString(id)
+ * 			[X] Create getString(id)
  * 			[X] Create getSize() function to return exact size
  * 			[X] Implement throw() for invalid access
  * 			[ ] Implement into systems using Map_si
@@ -433,6 +433,7 @@ namespace Core {
 		GUI::GUI() {
 			std::cout << "Construct GUI System.............................................";
 			activeGUI = "";
+			guis.setSource("GUI");
 			std::cout << "Done" << std::endl;
 		}
 

@@ -217,6 +217,8 @@ namespace Core {
 			 * 		  defined here.
 			 */
 			void ComboBox::init() {
+				items.setSource(name+" Items");
+
 				this->id = IDs.create();
 
 				if(bHasParent) {

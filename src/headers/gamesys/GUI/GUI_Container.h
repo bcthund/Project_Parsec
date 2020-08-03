@@ -37,10 +37,26 @@ namespace Core {
 	namespace GUI {
 		class GUI_Container : public Object::Window {
 			public:
-				GUI_Container(std::string name, Props_Container &c) : Object::Window(name, c)				{		}
-				GUI_Container(std::string name, Props_Container *c) : Object::Window(name, c)				{		}
-				GUI_Container(Props &p, std::string name, Props_Container &c) : Object::Window(p, name, c)	{		}
-				GUI_Container(Props &p, std::string name, Props_Container *c) : Object::Window(p, name, c)	{		}
+				GUI_Container(std::string name, Props_Container &c) : Object::Window(name, c)				{	setSources();	}
+				GUI_Container(std::string name, Props_Container *c) : Object::Window(name, c)				{	setSources();	}
+				GUI_Container(Props &p, std::string name, Props_Container &c) : Object::Window(p, name, c)	{	setSources();	}
+				GUI_Container(Props &p, std::string name, Props_Container *c) : Object::Window(p, name, c)	{	setSources();	}
+				void setSources() {
+					containers.setSource("["+name+"]: Containers");
+					Window.windows.setSource("["+name+"]: Windows");
+					Label.labels.setSource("["+name+"]: Labels");
+					Button.buttons.setSource("["+name+"]: Buttons");
+					Slider.sliders.setSource("["+name+"]: Sliders");
+					Field.fields.setSource("["+name+"]: Fields");
+					TextArea.textAreas.setSource("["+name+"]: TextAreas");
+					TextEdit.textEdits.setSource("["+name+"]: TextEdits");
+					ColorSwatch.colorSwatches.setSource("["+name+"]: ColorSwatches");
+					CheckBox.checkBoxes.setSource("["+name+"]: CheckBoxes");
+					Icon.icons.setSource("["+name+"]: Icons");
+					Sprite.sprites.setSource("["+name+"]: Sprites");
+					ProgressBar.progressBars.setSource("["+name+"]: ProgressBars");
+					ComboBox.comboBoxes.setSource("["+name+"]: ComboBoxes");
+				}
 
 				~GUI_Container() {}
 				void exec();

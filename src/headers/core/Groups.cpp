@@ -10,6 +10,7 @@
 namespace Core {
 
 	_Groups::_Groups() {
+		setSource("Groups");
 		add("None", false);		// Default 0 group (No group is still a group)
 	}
 

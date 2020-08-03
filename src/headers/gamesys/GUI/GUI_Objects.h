@@ -43,6 +43,10 @@ namespace Core {
 				struct c_ID {
 					t_VectorMap<int> list;				///< Unique object IDs (bool specifies in-use, for possible future use)
 
+					c_ID() {
+						list.setSource("GUI IDs");
+					}
+
 					/**
 					 * @brief Will create a new unique ID and assign it to the used ID list, then return the ID
 					 * @return The unique ID of this object
@@ -122,6 +126,7 @@ namespace Core {
 						bool bEnabled;
 
 						Generic() {
+//							IDs.list.setSource("GUI IDs");
 							mState			= Core::_Mouse::MOUSE_NONE;
 //							bCopied			= false;
 							con				= nullptr;

@@ -16,6 +16,7 @@ namespace Core {
 //	}
 
 	_Colors::_Colors() {
+		colors.setSource("Colors");
 
 //		vFrontColorMem		= new Color[STACK_SIZE];
 //		vBackColorMem		= new Color[STACK_SIZE];
@@ -1569,16 +1570,17 @@ namespace Core {
 	 */
 	int _Colors::AddColor(std::string name, Color color) {
 		Color *temp = new Color(color.r, color.g, color.b, color.a);
-		colors.push_back(temp);
+		//colors.push_back(temp);
+		colors.add(name, temp);
 //		colors.emplace_back(Color(color.r, color.g, color.b, color.a));
-		uint id = colors.size()-1;
-		map.insert(make_pair(name, id));
-		if(name == "White") std::cout << "Color: " << name << " [" << id << "]"  << " = (" << color.r << ", " << color.g << ", " << color.b << ", " << color.a << ")\n" ;
+		//uint id = colors.size()-1;
+		//map.insert(make_pair(name, id));
+//		if(name == "White") std::cout << "Color: " << name << " [" << id << "]"  << " = (" << color.r << ", " << color.g << ", " << color.b << ", " << color.a << ")\n" ;
 //		if(name == "White") std::cout << "Color: " << name << " [" << id << "]"  << " = (" << colors[id]->r << ", " << colors[id]->g << ", " << colors[id]->b << ", " << colors[id]->a << ")\n" ;
 //		if(name == "White") std::cout << "Color: " << name << " [" << map[name] << "]" << " = (" << colors[map[name]]->r << ", " << colors[map[name]]->g << ", " << colors[map[name]]->b << ", " << colors[map[name]]->a << ")\n" ;
-		if(name == "White") std::cout << "Color: " << name << " [" << id << "]"  << " = (" << colors[id]->r << ", " << colors[id]->g << ", " << colors[id]->b << ", " << colors[id]->a << ")\n" ;
-		if(name == "White") std::cout << "Color: " << name << " [" << map[name] << "]" << " = (" << colors[map[name]]->r << ", " << colors[map[name]]->g << ", " << colors[map[name]]->b << ", " << colors[map[name]]->a << ")\n" ;
-		return id;
+//		if(name == "White") std::cout << "Color: " << name << " [" << id << "]"  << " = (" << colors[id]->r << ", " << colors[id]->g << ", " << colors[id]->b << ", " << colors[id]->a << ")\n" ;
+//		if(name == "White") std::cout << "Color: " << name << " [" << map[name] << "]" << " = (" << colors[map[name]]->r << ", " << colors[map[name]]->g << ", " << colors[map[name]]->b << ", " << colors[map[name]]->a << ")\n" ;
+		return colors.getID(name);
 	}
 
 	/***
@@ -1613,7 +1615,7 @@ namespace Core {
 	 * @return Color defined by \p name
 	 */
 	Color & _Colors::GetColor(std::string name) {
-		return *colors[map[name]];
+		return *colors[name];
 	}
 
 	/***

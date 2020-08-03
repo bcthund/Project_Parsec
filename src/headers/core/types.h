@@ -1690,20 +1690,28 @@ namespace Core {
 	};
 
 	// TODO: Implement copy/move/assignment constructor
+//	char sErrorSource[] = "Undefined";
+//	template <typename T, char *sErrorSource>
 	template <typename T>
 	class t_VectorMap {
 		private:
+			std::string sErrorSource;
 			std::vector<T> typeList;
 			Map_si map;
 
 		public:
-			t_VectorMap() {}
+			t_VectorMap() {
+				sErrorSource = "Undefined";
+			}
+			t_VectorMap(std::string source) {
+				sErrorSource = source;
+			}
 			virtual ~t_VectorMap() {}
 
 			bool checkName(std::string name, bool bThrow=true) {
 				if(map.count(name)>0) return true;
 				else {
-					if (bThrow) throw std::runtime_error("Invalid Item Name: '"+name+"'");
+					if (bThrow) throw std::runtime_error("["+std::string(sErrorSource)+"] Invalid Item Name: '"+name+"'");
 					else return false;
 				}
 			}
@@ -1711,7 +1719,7 @@ namespace Core {
 			bool checkID(int id, bool bThrow=true) {
 				if(id >= 0 && id < typeList.size()) return true;
 				else {
-					if (bThrow) throw std::runtime_error("Invalid ID: '"+std::to_string(id)+"'");
+					if (bThrow) throw std::runtime_error("["+std::string(sErrorSource)+"] Invalid ID: '"+std::to_string(id)+"'");
 					else return false;
 				}
 			}
@@ -1724,6 +1732,10 @@ namespace Core {
 			virtual T & operator[](int id)	{
 				checkID(id);
 				return typeList[id];
+			}
+
+			virtual void setSource(std::string source) {
+				sErrorSource = source;
 			}
 
 //			int	operator()(std::string name) {

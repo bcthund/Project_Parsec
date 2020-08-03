@@ -10,6 +10,7 @@
 
 #include <iostream>
 #include "core_functions.h"
+//#include "types.h"
 
 namespace Core {
 	class _Colors {
@@ -64,8 +65,9 @@ namespace Core {
 			virtual ~_Colors();
 
 //			std::vector<Color>	colors;
-			std::vector<Color*>	colors;
-			Map_si	map;
+//			std::vector<Color*>	colors;
+//			Map_si	map;
+			t_VectorMap<Color*> colors;
 
 			int AddColor(std::string name, Color color);
 			int AddColor(std::string name, float r, float g, float b, float a);
@@ -1047,7 +1049,7 @@ namespace Core {
 			} Extended;
 
 			Colors_Extended &operator()()				{	return this->Extended;	}
-			Color &operator[](std::string name)			{	if(map.count(name)>0) return *colors[map[name]]; else throw std::runtime_error("Invalid Color: "+name);	}
+			Color &operator[](std::string name)			{	return *colors[name]; }
 
 			// FIXME: Create a pallette class (or modify pallette implementation here) (currently implemented into gameVars)
 			Color GetPallette(_PALLETTE_COLOR e);
