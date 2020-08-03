@@ -88,7 +88,8 @@ namespace Core {
 	}
 
 	bool c_Scissor::getActive() {
-		checkStack();
+		//checkStack();
+		if(stack.size()<=0) return false;
 		return stack[stack.size()-1].bActive;
 	}
 

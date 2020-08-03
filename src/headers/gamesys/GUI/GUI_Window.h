@@ -45,7 +45,70 @@
 namespace Core {
 	namespace GUI {
 		namespace Object {
-			class Window : public Base::Generic<Props_Window> {
+			// Dummy class for containers
+//			class Container : virtual public Base::Generic<Props_Container>, virtual public Window {
+//				Container() { iScrollIndex	= 0; }
+//
+//				Container(std::string n, Props_Container &c) {
+//					name			= n;
+//
+//					bHasParent		= false;
+//					parent			= nullptr;
+//
+//					bLocalCon		= true;
+//					con				= new Props_Container();
+//					*con			= c;
+//					if(con->text == "") con->text = n;
+//
+//					iScrollIndex	= 0;
+//				}
+//
+//				Container(Props &p, std::string n, Props_Container &c) {
+//					name			= n;
+//
+//					bHasParent		= true;
+//					parent			= &p;
+//
+//					bLocalCon		= true;
+//					con				= new Props_Container();
+//					*con			= c;
+//					if(con->text == "") con->text = n;
+//
+//					iScrollIndex	= 0;
+//				}
+//
+//				Container(std::string n, Props_Container *c) {
+//					name			= n;
+//
+//					bHasParent		= false;
+//					parent			= nullptr;
+//
+//					bLocalCon		= false;
+//					con				= c;
+//					if(con->text == "") con->text = n;
+//
+//					iScrollIndex	= 0;
+//				}
+//
+//				Container(Props &p, std::string n, Props_Container *c) {
+//					name			= n;
+//
+//					bHasParent		= true;
+//					parent			= &p;
+//
+//					bLocalCon		= false;
+//					con				= c;
+//					if(con->text == "") con->text = n;
+//
+//					iScrollIndex	= 0;
+//				}
+//
+//				~Container() {
+//					if(bLocalCon && con != nullptr) delete con;
+//				}
+//			};
+
+			class Window : virtual public Base::Generic<Props_Window> {
 //					friend class GUI_Container;
 //					friend class Window;
 				public:
@@ -68,7 +131,7 @@ namespace Core {
 					int iScrollIndex;
 					void updateObjectState(iState eExternState);
 					void updateScrollMouse();
-
+					void checkScrollVisibility();
 			};
 
 			Window::Window() { iScrollIndex	= 0; }
@@ -135,7 +198,7 @@ namespace Core {
 				this->id = IDs.create();
 
 				if(bHasParent) {
-					if(!con->scroll.getEnabled() && con->scroll.bScrollable) con->scroll.bind(*parent);
+					if(!con->scroll.getEnabled() && con->scroll.isScrollable()) con->scroll.bind(*parent);
 					con->exec(*parent);
 				}
 				else {
@@ -212,15 +275,9 @@ namespace Core {
 				}
 				else {
 					if(!(eExternState&STATE_UPDATE)) {
-						//if(con->scroll.getEnabled()) {
 						if(parent!=nullptr && parent->scroll.getEnabled()) {
-							if(name=="Window 1") Core::debug.bLogEnable = true;
-							else Core::debug.bLogEnable = false;
-							debug.log(name);
 							Vector2f vPos = con->getScrollPos();
 							mState = Core::mouse->checkInput(gameVars->screen.half.x+vPos.x, gameVars->screen.half.y-vPos.y, con->size.x, con->size.y);
-							//if(name=="Window 2")
-							Core::debug.bLogEnable = false;
 						}
 						else {
 							mState = Core::mouse->checkInput(gameVars->screen.half.x+con->pos.x, gameVars->screen.half.y-con->pos.y, con->size.x, con->size.y);
@@ -231,7 +288,15 @@ namespace Core {
 //					// Object specific logic
 					if(enabled()) {
 						if(mState&Core::_Mouse::MOUSE_HOVER) {
-							updateScrollMouse();
+
+							//debug.log(Core::GUI::GUI::activeGUI->con->text);
+//							debug.log(Core::GUI::activeGUI->con->text);
+							//debug.log(Core::GUI::GUI_Base::activeGUI);
+
+//							debug.log("Active Container = "+activeContainer->text);
+
+							//if(con->scroll.bScrollable && (parent!=nullptr && parent->scroll.getEnabled()))
+							if(con->scroll.isScrollable()) updateScrollMouse();
 						}
 						eObjectState = STATE_NONE;
 					}
@@ -255,7 +320,7 @@ namespace Core {
 //					Vector2f vP2 = { (float)Core::scissor.get().x+(float)Core::scissor.get().w, Core::gameVars->screen.res.y-(float)Core::scissor.get().y };
 //
 //					if(Core::debug.bLogEnable) Core::debug.log(name+": ("+std::to_string(vP1.x)+", "+std::to_string(vP1.y)+")");
-//					if(Core::debug.bLogEnable) Core::debug.log(name+": ("+std::to_string(vP2.x)+", "+std::to_string(vP2.y)+")");
+//					if(Core::debug.bLogEbScrollablenable) Core::debug.log(name+": ("+std::to_string(vP2.x)+", "+std::to_string(vP2.y)+")");
 //					//if (!Core::gmath.PointQuad2d(vMouse, vP1, vP2)) bIgnoreInput = true;
 //
 //					if (Core::gmath.PointQuad2d(vMouse, vP1, vP2)) {
@@ -283,7 +348,7 @@ namespace Core {
 
 							const Uint8 *keyState = SDL_GetKeyboardState(NULL);
 							if (keyState[SDL_SCANCODE_LSHIFT] || keyState[SDL_SCANCODE_RSHIFT])		modVal = 100;
-							else if (keyState[SDL_SCANCODE_LCTRL] || keyState[SDL_SCANCODE_RCTRL])	modVal = 20;
+							else if (keyState[SDL_SCANCODE_LCTRL] || keyState[SDL_SCANCODE_RCTRL])	modVal = 1;
 
 							switch(wheel) {
 								case Core::_Mouse::MOUSE_WHEEL_UP:		iScrollIndex -= modVal;	break;
@@ -291,7 +356,7 @@ namespace Core {
 							}
 
 							iScrollIndex = std::max(iScrollIndex, 0);
-							iScrollIndex = std::min(iScrollIndex, 5000);
+							iScrollIndex = std::min(iScrollIndex, activeContainer->scroll.iMaxScroll);
 						}
 					}
 					else if(!con->scroll.getEnabled()) {
@@ -303,9 +368,25 @@ namespace Core {
 				}
 			}
 
+			/**
+			 * @brief Check if this objects position is greater than max scroll value
+			 */
+			void Window::checkScrollVisibility() {
+				Vector2f vPos = con->getPos();
+				vPos.x += Core::gameVars->screen.half.x;
+				vPos.y = Core::gameVars->screen.half.y - vPos.y;
+
+				activeContainer->scroll.iMaxScroll = std::max(activeContainer->scroll.iMaxScroll, int(vPos.y));
+//				activeContainer->scroll.iMaxScroll = std::max(activeContainer->scroll.iMaxScroll, int(vPos.y-(con->size.y)));
+			}
+
 			void Window::exec(iState eExternState) {
 				if(bInit) {
 					if(con->visibility && ((parent!=nullptr && parent->visibility) || (parent==nullptr))) {
+						// Check scroll visibility
+						//if(con->scroll.bScrollable)
+						if(Core::scissor.getActive()) checkScrollVisibility();
+
 						// Update constaints in case they have changed
 						if(bHasParent) con->exec(*parent);
 						else con->exec();
@@ -353,7 +434,7 @@ namespace Core {
 
 							// Only scroll this item if the parent has scrolling enabled
 							Vector2f vPos;
-							if(con->scroll.bScrollable && (parent!=nullptr && parent->scroll.getEnabled())) vPos = con->getScrollPos();
+							if(con->scroll.isScrollable() && (parent!=nullptr && parent->scroll.getEnabled())) vPos = con->getScrollPos();
 //							if((parent!=nullptr && parent->scroll.getEnabled())) vPos = con->getScrollPos();
 							else vPos = con->getPos();
 							matrix->Translate( vPos.x, vPos.y, 0.0 );

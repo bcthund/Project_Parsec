@@ -34,6 +34,7 @@
 //#include "../core/matrix.h"
 //#include "../core/shader.h"
 #include <chrono>
+#include "GUI_Container.h"
 
 namespace Core {
 	namespace GUI {
@@ -67,6 +68,10 @@ namespace Core {
 						static bool bScrollFocus;				///< An object has scrolling focus
 						static std::string sScrollObject;		///< Object name preventing scrolling
 
+//						static GUI_Container* activeContainer;
+						static Props_Window* activeGUI;
+						static Props_Window* activeContainer;
+
 						c_Generic_Base() {}
 						~c_Generic_Base() {}
 				};
@@ -74,6 +79,9 @@ namespace Core {
 				std::string c_Generic_Base::sActiveObject	= "";
 				bool c_Generic_Base::bScrollFocus			= false;
 				std::string c_Generic_Base::sScrollObject	= "";
+//				GUI_Container* c_Generic_Base::activeContainer = nullptr;
+				Props_Window* c_Generic_Base::activeGUI = nullptr;
+				Props_Window* c_Generic_Base::activeContainer = nullptr;
 
 				template <class C>
 				class Generic : virtual public c_Generic_Base {

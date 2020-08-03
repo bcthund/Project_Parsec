@@ -281,7 +281,8 @@ namespace Core {
 
 				struct s_Scroll {
 					friend class Props;
-					public:
+					friend class Object::Window;
+					private:
 						bool bScrollable;							///< Master determining if this object is scrollable
 						bool *bEnablePtr;							///< Is scrolling enabled for this object
 						bool bLocalEn,								///< Is the enable locally defined or external
@@ -291,6 +292,8 @@ namespace Core {
 							*yOffsetPtr;							///< Used for scrolling
 
 					public:
+						int iMaxScroll;
+
 						bool& getEnabledRef() {
 							if(bEnablePtr!=nullptr) return *bEnablePtr;
 							else throw std::runtime_error("Cannot access bEnablePtr, did you forget to bind with Props::scroll.bind()?");
@@ -304,6 +307,10 @@ namespace Core {
 							else throw std::runtime_error("Cannot access yOffsetPtr, did you forget to bind with Props::scroll.bind()?");
 						}
 
+						bool isScrollable() {
+							return bScrollable;
+						}
+
 						bool getEnabled() {
 							if(bEnablePtr!=nullptr) return *bEnablePtr;
 							else return false;
@@ -313,6 +320,7 @@ namespace Core {
 							else return 0;
 						}
 						int getY() {
+
 							if(yOffsetPtr!=nullptr) return *yOffsetPtr;
 							else return 0;
 						}
@@ -419,6 +427,7 @@ namespace Core {
 						}
 
 						s_Scroll() {
+							iMaxScroll	= 0;
 							bScrollable	= true;
 							bLocalEn	= false;
 							bEnablePtr	= nullptr;
@@ -828,6 +837,16 @@ namespace Core {
 				Props_Addon_Background() {
 					bShowBackground	= true;
 				}
+		};
+
+		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		// 			Windows
+		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		class Props_Container:	virtual public Props_Window,
+								virtual public Props,
+								virtual public Props_Addon_Stipple {
 		};
 
 		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-

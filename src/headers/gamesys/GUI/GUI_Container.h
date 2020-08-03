@@ -42,10 +42,12 @@ namespace Core {
 //				GUI_Container(Props &p, std::string name, Props_Window &c) : Object::Window(p, name, c)	{	init();	}
 //				GUI_Container(Props &p, std::string name, Props_Window *c) : Object::Window(p, name, c)	{	init();	}
 
-				GUI_Container(std::string name, Props_Window &c) : Object::Window(name, c)				{		}
-				GUI_Container(std::string name, Props_Window *c) : Object::Window(name, c)				{		}
-				GUI_Container(Props &p, std::string name, Props_Window &c) : Object::Window(p, name, c)	{		}
-				GUI_Container(Props &p, std::string name, Props_Window *c) : Object::Window(p, name, c)	{		}
+//				static GUI_Container*	activeContainer;
+
+				GUI_Container(std::string name, Props_Container &c) : Object::Window(name, c)				{	/*activeContainer=nullptr;*/	}
+				GUI_Container(std::string name, Props_Container *c) : Object::Window(name, c)				{	/*activeContainer=nullptr;*/	}
+				GUI_Container(Props &p, std::string name, Props_Container &c) : Object::Window(p, name, c)	{	/*activeContainer=nullptr;*/	}
+				GUI_Container(Props &p, std::string name, Props_Container *c) : Object::Window(p, name, c)	{	/*activeContainer=nullptr;*/	}
 
 				~GUI_Container() {}
 				void exec();
@@ -59,8 +61,8 @@ namespace Core {
 //				bool								bIsActive;
 
 			public:
-				GUI_Container & add(std::string containerName, Props_Window &c, Props *p=nullptr);
-				GUI_Container & add(std::string containerName, Props_Window *c, Props *p=nullptr);
+				GUI_Container & add(std::string containerName, Props_Container &c, Props *p=nullptr);
+				GUI_Container & add(std::string containerName, Props_Container *c, Props *p=nullptr);
 				GUI_Container & operator[](std::string containerName)			{	return *containers[containerName];			}
 				Props_Window  & operator()(std::string containerName)			{	return *containers[containerName]->con;		}
 
@@ -307,6 +309,8 @@ namespace Core {
 				ComboBoxInterface ComboBox = ComboBoxInterface(this);
 		};
 
+//		GUI_Container*	GUI_Container::activeContainer = nullptr;
+
 		/*
 		 * ==========================================================
 		 *						Container
@@ -317,7 +321,7 @@ namespace Core {
 			return *containers.add(name, data);
 		}
 
-		GUI_Container & GUI_Container::add(std::string containerName, Props_Window &c, Props *p) {
+		GUI_Container & GUI_Container::add(std::string containerName, Props_Container &c, Props *p) {
 			GUI_Container * container;
 			if(p!=nullptr) container = new GUI_Container(*p, containerName, c);
 			else container = new GUI_Container(*con, containerName, c);
@@ -325,7 +329,7 @@ namespace Core {
 			return pushData(containerName, container);
 		}
 
-		GUI_Container & GUI_Container::add(std::string containerName, Props_Window *c, Props *p) {
+		GUI_Container & GUI_Container::add(std::string containerName, Props_Container *c, Props *p) {
 			GUI_Container * container;
 			if(p!=nullptr) container = new GUI_Container(*p, containerName, c);
 			else container = new GUI_Container(*con, containerName, c);
@@ -792,12 +796,13 @@ namespace Core {
 		void GUI_Container::execObjects() {
 			if(bInit) {
 				if(con->visibility) {
-					con->exec();
 
-					// Always disable scissor before drawing a container
-					Core::scissor.disable();
-//					//glDisable(GL_SCISSOR_TEST);
-//					Object::Window::exec();
+//					activeContainer = this;
+					c_Generic_Base::activeContainer = this->con;
+
+					debug.log(con->text+": Scroll = "+std::to_string(activeContainer->scroll.getY())+"/"+std::to_string(activeContainer->scroll.iMaxScroll));
+
+					con->exec();
 
 					if(con->bScissor) {
 						int padLR = con->vPadding.left+con->vPadding.right;
@@ -811,38 +816,10 @@ namespace Core {
 
 						Core::scissor.push(x, y, w, h, false);
 						Core::scissor.checkInput(Core::mouse->x, Core::mouse->y, Core::gameVars->screen.res);
-
-						// Check mouse container state
-//						Vector2f vMouse = { float(Core::mouse->x), float(Core::mouse->y) };
-//						Vector2f vP1 = { (float)Core::scissor.get().x, Core::gameVars->screen.res.y-((float)Core::scissor.get().y+(float)Core::scissor.get().h) };
-//						Vector2f vP2 = { (float)Core::scissor.get().x+(float)Core::scissor.get().w, Core::gameVars->screen.res.y-(float)Core::scissor.get().y };
-////
-//						if (Core::gmath.PointQuad2d(vMouse, vP1, vP2)) {
-//							Core::scissor.setActive(true);
-//							if(Core::debug.bLogEnable) Core::debug.log(name+": MOUSE IN SCISSOR");
-//						}
-//						else Core::scissor.setActive(false);
 					}
 
-//					Core::debug.bLogEnable = true;
-//					{
-//						Vector2f vP1 = { (float)Core::scissor.stack[Core::scissor.stack.size()-1][0].x, Core::gameVars->screen.res.y-(float)Core::scissor.stack[Core::scissor.stack.size()-1][0].y };
-//						Vector2f vP2 = { vP1.x+Core::scissor.stack[Core::scissor.stack.size()-1][1].x, vP1.y-Core::scissor.stack[Core::scissor.stack.size()-1][1].y };
-//						Core::debug.log(" [IN] "+con->text+": ("+std::to_string(vP1.x)+", "+std::to_string(vP1.y)+") - ("+std::to_string(vP2.x)+", "+std::to_string(vP2.y)+")");
-//					}
-//					{
-//						Vector2f vP1 = { (float)Core::scissor.get()[0].x, Core::gameVars->screen.res.y-(float)Core::scissor.get()[0].y };
-//						Vector2f vP2 = { vP1.x+Core::scissor.get()[1].x, vP1.y-Core::scissor.get()[1].y };
-//						Core::debug.log("[OUT] "+con->text+": ("+std::to_string(vP1.x)+", "+std::to_string(vP1.y)+") - ("+std::to_string(vP2.x)+", "+std::to_string(vP2.y)+")");
-//					}
-//					{
-//						Vector2f vP1 = { (float)Core::scissor.get()[0][0], Core::gameVars->screen.res.y-(float)Core::scissor.get()[0][1] };
-//						Vector2f vP2 = { vP1[0]+Core::scissor.get()[1][0], vP1[1]-Core::scissor.get()[1][1] };
-//						Core::debug.log("[OUT] "+con->text+": ("+std::to_string(vP1.x)+", "+std::to_string(vP1.y)+") - ("+std::to_string(vP2.x)+", "+std::to_string(vP2.y)+")");
-//					}
-//					std::cout << "\n--------------------------------\n\n";
-
-//					Core::scissor.disable();
+					// Always disable scissor before drawing a container
+					Core::scissor.disable();
 					Object::Window::exec();
 					if(con->bScissor) Core::scissor.enable();
 

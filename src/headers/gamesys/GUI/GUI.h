@@ -401,20 +401,19 @@ namespace Core {
 		class GUI {
 			private:
 				Core::t_VectorMap<GUI_Container*> guis;		///< Master GUI containers
-				//Core::t_Vector<std::string> IDs;			///< Unique object IDs
-//				static std::vector<std::string> IDs;		///< Unique object IDs
 
 			public:
 				GUI();
 				virtual ~GUI();
-				GUI_Container	* activeGUI;
 				void createGUI(std::string guiName);
-				void createGUI(std::string guiName, Props_Window &c);
+				void createGUI(std::string guiName, Props_Container &c);
 				Props * getGUI();
 				Props * getGUI(std::string guiName);
 				void setActiveGUI(std::string guiName);
 				bool hasFocus() { return iGUIFocus>0; };	// This GUI instance has focus
 				void exec(std::string guiName);
+
+				static std::string activeGUI;
 				static int iGUIFocus;	// If ANY GUI element has focus, then ignore input elsewhere. (Don't fire your gun while clicking on menu)
 
 				/**
@@ -422,15 +421,18 @@ namespace Core {
 				 * @param guiName
 				 * @return
 				 */
-				GUI_Container	&operator[](const std::string &guiName)	{	return *guis[guiName];	}
+				GUI_Container	&operator[](const std::string &guiName)	{
+					activeGUI = guiName;
+					return *guis[guiName];
+				}
 		};
 
 		int GUI::iGUIFocus = 0;
-//		std::vector<std::string> GUI::IDs;
+		std::string GUI::activeGUI = "";
 
 		GUI::GUI() {
 			std::cout << "Construct GUI System.............................................";
-			activeGUI = nullptr;
+			activeGUI = "";
 			std::cout << "Done" << std::endl;
 		}
 
@@ -447,7 +449,7 @@ namespace Core {
 		 * @param guiName
 		 * ****************************************************************************************************************************** */
 		void GUI::createGUI(std::string guiName) {
-			Props_Window c;
+			Props_Container c;
 			c.setOrigin(CONSTRAIN_CENTER);
 			c.setAnchor(CONSTRAIN_CENTER);
 			c.setPos(0, 0);
@@ -469,7 +471,7 @@ namespace Core {
 		 * @param guiName
 		 * @param c
 		 * ****************************************************************************************************************************** */
-		void GUI::createGUI(std::string guiName, Props_Window &c) {
+		void GUI::createGUI(std::string guiName, Props_Container &c) {
 			GUI_Container * gui = new GUI_Container(guiName, c);
 			guis.add(guiName, gui);
 			setActiveGUI(guiName);
@@ -480,7 +482,7 @@ namespace Core {
 		 * @return
 		 * ****************************************************************************************************************************** */
 		Props * GUI::getGUI() {
-			return activeGUI->con;
+			return guis[activeGUI]->con;
 		}
 
 		/** ******************************************************************************************************************************
@@ -501,7 +503,7 @@ namespace Core {
 		 * active window unless a new one is added.
 		 * ****************************************************************************************************************************** */
 		void GUI::setActiveGUI(std::string guiName) {
-			activeGUI = guis[guiName];
+			activeGUI = guiName;
 		}
 
 		void GUI::exec(std::string guiName) {
@@ -522,6 +524,23 @@ namespace Core {
 			// Reset focus state
 			iGUIFocus = 0;
 
+//			if(con->bScissor) {
+//				int padLR = con->vPadding.left+con->vPadding.right;
+//				int padTB = con->vPadding.top+con->vPadding.bottom;
+//
+//				int w = con->size.x-padLR,
+//					h = con->size.y-padTB;
+//
+//				int x = ( (con->pos.x-(con->size.x/2)+con->vPadding.left )) + Core::gameVars->screen.half.x,
+//					y = ( (con->pos.y-(con->size.y/2)+con->vPadding.bottom )) + Core::gameVars->screen.half.y;
+//
+//				Core::scissor.push(x, y, w, h, false);
+//				Core::scissor.checkInput(Core::mouse->x, Core::mouse->y, Core::gameVars->screen.res);
+//
+//				if(con->bScissor) Core::scissor.enable();
+//			}
+
+			activeGUI = guiName;
 			guis[guiName]->exec();
 		}
 	}

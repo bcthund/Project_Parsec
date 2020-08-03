@@ -42,12 +42,16 @@ namespace Core {
 	/**
 	 * \brief Check and reset timers per cycle, to be called at beginning of program loop
 	 */
-	void _Debug::update(int rate, bool bClear) {
+	void _Debug::update(int rate, bool bClear/*, bool bEnable*/) {
+		//bLogEnable = bEnable;
+		//bPrintEnable = bEnable;
 		maxRate = rate;
 		if(timerLog.get_splitdiff() > maxRate) {
 			bDrawLog = true;
 			bDrawPrint = true;
 			if(bClear) std::cout << "\033[2J\033[1;1H";	// 2J=clear from top(J) to bottom(2); Position cursor at row 1, column 1
+			if(!bLogEnable) exec(consoleColors.colors[consoleColors.RED]+"LOG SUPPRESSED\n"+consoleColors.colors[consoleColors.NC]);
+			if(!bPrintEnable) exec(consoleColors.colors[consoleColors.RED]+"PRINT SUPPRESSED\n"+consoleColors.colors[consoleColors.NC]);
 			timerLog.split();
 		}
 		else {
@@ -72,7 +76,10 @@ namespace Core {
 				timeStamp.append(" ");
 			}
 
-			std::cout << consoleColors.colors[color] << timeStamp << sLogIndent << buffer << consoleColors.colors[consoleColors.NC] << std::endl;
+			std::ostringstream out;
+			out << consoleColors.colors[color] << timeStamp << sLogIndent << buffer << consoleColors.colors[consoleColors.NC] << std::endl;
+			//std::cout << consoleColors.colors[color] << timeStamp << sLogIndent << buffer << consoleColors.colors[consoleColors.NC] << std::endl;
+			exec(out.str());
 		}
 	}
 
@@ -83,8 +90,15 @@ namespace Core {
 	 */
 	void _Debug::print(std::string buffer, ConsoleColors::eCOLOR color) {
 		if (bDrawPrint && bPrintEnable) {
-			std::cout << consoleColors.colors[color] << sPrintIndent << buffer << consoleColors.colors[consoleColors.NC];
+			std::ostringstream out;
+			out << consoleColors.colors[color] << sPrintIndent << buffer << consoleColors.colors[consoleColors.NC];
+			exec(out.str());
+//			std::cout << consoleColors.colors[color] << sPrintIndent << buffer << consoleColors.colors[consoleColors.NC];
 		}
+	}
+
+	void _Debug::exec(std::string buffer) {
+		std::cout << buffer;
 	}
 
 } /* namespace Core */

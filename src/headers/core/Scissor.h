@@ -99,7 +99,7 @@ namespace Core {
 			 t_DataSet data;	///< Extra data for stack
 
 			t_Scissor() {
-				data.addGroupState("Scrolling", false);
+				data.addGroupState("ScrollState", false);
 				x = 0;
 				y = 0;
 				w = 0;
@@ -107,7 +107,8 @@ namespace Core {
 				bActive = true;
 			}
 
-			t_Scissor(int iX, int iY, int iW, int iH, bool bScrolling=false) {
+			t_Scissor(int iX, int iY, int iW, int iH, bool bScrollState=false) {
+				data.addGroupState("ScrollState", bScrollState);
 				x = iX;
 				y = iY;
 				w = iW;

@@ -228,7 +228,7 @@ void _Admin::init() {
 	if (!bOneShot[1]) {
 		std::cout << "GUI: Loading #01: Windows ...................................... ";
 		//std::cout << "...............................................................";
-		Core::GUI::Props_Window cMaster;
+		Core::GUI::Props_Container cMaster;
 		cMaster.setOrigin(Core::GUI::CONSTRAIN_TOP_RIGHT);
 		cMaster.setAnchor(Core::GUI::CONSTRAIN_TOP_RIGHT);
 		cMaster.setPos(-10, -10);
@@ -298,7 +298,7 @@ void _Admin::init() {
 	if (!bOneShot[2]) {
 		std::cout << "GUI: Loading #02: Button window ................................ ";
 		//std::cout << "...............................................................";
-		Core::GUI::Props_Window con;
+		Core::GUI::Props_Container con;
 		con.setOrigin(Core::GUI::CONSTRAIN_TOP_RIGHT);
 		con.setAnchor(Core::GUI::CONSTRAIN_TOP_RIGHT);
 		con.setPos(-10, -560);
@@ -1565,7 +1565,7 @@ void _Admin::init() {
 		Core::gui["GameMenu"]["Window 17"].Sprite.add("Sprite", cSprite);
 
 		{
-			Core::GUI::Props_Window Slider_Window;
+			Core::GUI::Props_Container Slider_Window;
 			Slider_Window.setOrigin(Core::GUI::CONSTRAIN_BOTTOM_LEFT);
 			Slider_Window.setAnchor(Core::GUI::CONSTRAIN_BOTTOM_RIGHT);
 			Slider_Window.setWidth(500, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);

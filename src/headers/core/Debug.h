@@ -9,6 +9,7 @@
 #define HEADERS_CORE_DEBUG_H_
 
 #include <iostream>
+#include <sstream>
 #include "timer.h"
 #include <sys/ioctl.h> //ioctl() and TIOCGWINSZ
 #include <unistd.h> // for STDOUT_FILENO
@@ -61,6 +62,7 @@ namespace Core {
 					CYAN
 				};
 			} ConsoleColors;
+			void exec(std::string buffer);
 
 		public:
 			_Debug();
@@ -82,7 +84,7 @@ namespace Core {
 
 			ConsoleColors& operator()();
 
-			void update(int rate=500, bool bClear=true);
+			void update(int rate=500, bool bClear=true/*, bool bEnable=true*/);
 			void log(std::string buffer, ConsoleColors::eCOLOR color=ConsoleColors::eCOLOR(consoleColors.GREEN));
 			void print(std::string buffer, ConsoleColors::eCOLOR color=ConsoleColors::eCOLOR(consoleColors.NC));
 			virtual ~_Debug();
