@@ -96,8 +96,10 @@ namespace Core {
 		typedef struct t_Scissor {
 			int x, y, w, h;		///< Coordinates and size of scissor area (bottom-left origin)
 			bool bActive;		///< Is the stack item active. Can be set by external logic for additional use of data (ie. mouse in area)
+			 t_DataSet data;	///< Extra data for stack
 
 			t_Scissor() {
+				data.addGroupState("Scrolling", false);
 				x = 0;
 				y = 0;
 				w = 0;
@@ -105,7 +107,7 @@ namespace Core {
 				bActive = true;
 			}
 
-			t_Scissor(int iX, int iY, int iW, int iH) {
+			t_Scissor(int iX, int iY, int iW, int iH, bool bScrolling=false) {
 				x = iX;
 				y = iY;
 				w = iW;
@@ -113,7 +115,8 @@ namespace Core {
 				bActive = true;
 			}
 
-			t_Scissor &operator=(const t_Scissor &src) {
+			t_Scissor& operator=(const t_Scissor &src) {
+				data = src.data;
 				bActive = src.bActive;
 				x = src.x;
 				y = src.y;

@@ -237,7 +237,9 @@
  * 					[X] Use the STATE_FOCUS concept. if mouse is in glScissor area then enable objects.
  * 						- bActive added to scissor stack items, set with checkInput function
  * 				[X] Scroll position (int)
- * 				[ ] Maximum scroll position (auto calc???)
+ * 				[ ] Maximum scroll position
+ * 					[ ] Auto-calc somehow?
+ * 					[X] Set by user
  * 				[X] Window scrolling disabled when any object is active
  * 					[X] If Interactive_Base::bFocusPresent then don't scroll
  * 					[X] If an object has hover (slider, field, etc) then don't scroll (add new static to Base::Interactive)

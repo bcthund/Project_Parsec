@@ -1785,9 +1785,7 @@ namespace Core {
 			 *
 			 * Example:
 			 * 	t_Vector<T> items;
-			 * 	for(auto item : items) {
-			 * 		// Work with 'item'
-			 * 	}
+			 * 	for(auto item : items) {}
 			 */
 			typedef T* iterator;
 			typedef const T* const_iterator;
@@ -1848,6 +1846,39 @@ namespace Core {
 			 */
 			void addGroupStates(std::string name, std::vector<t_BIFS> base) { states.add(name, base); }
 			void addState(std::string name, t_BIFS value) { states[name].push_back(value); }
+
+			// Constructors/Operators
+			t_DataSet(const t_DataSet &other) {
+				states = other.states;
+			}
+
+			t_DataSet(t_DataSet &&other) {
+				states = other.states;
+//				for(auto items : other) {
+//					for(auto item : items) {
+//						item
+//					}
+//				}
+			}
+
+			t_DataSet& operator=(const t_DataSet &other) {
+				states = other.states;
+				return *this;
+			}
+
+			t_DataSet& operator=(t_DataSet &&other) {
+				states = other.states;
+				return *this;
+			}
+
+			// Allow iteration using
+			// for(auto item : items) {}
+			typedef std::vector<t_BIFS>* iterator;
+			typedef const std::vector<t_BIFS>* const_iterator;
+			iterator begin() 		{ return &states[0]; }
+			iterator end() 			{ return &states[states.size()]; }
+//			const_iterator begin() 	const	{ return &states[0]; }
+//			const_iterator end() 	const	{ return &states[states.size()]; }
 	};
 
 
