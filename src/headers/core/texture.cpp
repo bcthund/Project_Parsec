@@ -9,7 +9,7 @@
 #include "texture.h"
 
 namespace Core {
-	bool Texture::Begin(GLuint uiRequestedLayers) {
+	bool Texture::Begin(int uiRequestedLayers) {
 	   if (uiRequestedLayers <= 0) return false;
 	   uiNumLayers = uiRequestedLayers;
 
@@ -29,7 +29,7 @@ namespace Core {
 	/*
 	 * eWRap = GL_CLAMP_TO_EDGE, GL_CLAMP_TO_BORDER, GL_MIRRORED_REPEAT, GL_REPEAT, or GL_MIRROR_CLAMP_TO_EDGE
 	 */
-	bool Texture::Load(std::string cDir, std::string cFile, GLuint uiLayer, bool bAnisotropy, GLenum eFilter, GLenum eWrap) {
+	bool Texture::Load(std::string cDir, std::string cFile, int uiLayer, bool bAnisotropy, GLenum eFilter, GLenum eWrap) {
 	   try  {
 
 	   	    if (uiLayer > uiNumLayers) return false;

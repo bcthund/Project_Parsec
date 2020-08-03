@@ -86,8 +86,9 @@ namespace Core {
 			static const std::string STIPPLE_PUMICE;
 
 		private:
-			std::vector<Stipple_Pattern> stipples;
-			Map_si	  map;
+			//std::vector<Stipple_Pattern> stipples;
+			//Map_si	  map;
+			t_VectorMap<Stipple_Pattern> stipples;
 
 		public:
 			Stipple();
@@ -103,8 +104,8 @@ namespace Core {
 
 //			Colors_Extended &operator()()				{	return this->Extended;	}
 //			Stipple_Pattern &operator[](std::string name)		{	if(map.count(name)>0) return *colors[map[name]]; else throw std::runtime_error("Invalid Color: "+name);	}
-			Stipple_Pattern &operator[](std::string name)		{	if(map.count(name)>0) return stipples[map[name]]; else throw std::runtime_error("Invalid Stipple Pattern Name: "+name);	}
-			Stipple_Pattern &operator[](int id)					{	if(id<stipples.size()) return stipples[id]; else throw std::runtime_error("Invalid Stipple Pattern ID: "+id);	}
+			Stipple_Pattern &operator[](std::string name)		{	return stipples[name];	}
+			Stipple_Pattern &operator[](int id)					{	return stipples[id];	}
 			//Stipple_Pattern &operator[](t_BIFS id)				{	if(id<stipples.size()) return stipples[id]; else throw std::runtime_error("Invalid Stipple Pattern ID: "+id);	}
 //			Stipple_Pattern *operator[](std::string name)		{	if(map.count(name)>0) return &stipples[map[name]]; else throw std::runtime_error("Invalid Stipple Pattern: "+name);	}
 

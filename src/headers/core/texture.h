@@ -38,7 +38,8 @@ namespace Core {
 			GLfloat		fLargest;			// Maximum ANISOTROPY
 			GLuint		uiNumLayers;		// Maximum textures that can be loaded
 			GLuint		* glImage;			// OpenGL image id
-			Map_si		mapImage;			// ID/Filename pairing
+			//Map_si		mapImage;			// ID/Filename pairing
+			t_VectorMap<int> mapImage;
 			bool		* bFinished;		// Array confirming loaded textures
 			bool		bBeginCalled;		// If begin hasn't been called, then abort destruction
 //			struct _AtlasData {
@@ -55,13 +56,14 @@ namespace Core {
 
 		protected:
 			void LoadImageFromFile(std::string file, SDL_Surface * sdlImage);
-			inline void MakePair(std::string cName, GLuint uiNum) { mapImage.insert( std::make_pair(cName, uiNum) ); }
+//			inline void MakePair(std::string cName, GLuint uiNum) { mapImage.insert( std::make_pair(cName, uiNum) ); }
+			inline void MakePair(std::string cName, int uiNum) { mapImage.add(cName, uiNum); }
 
 		public:
 			int		iLoaded;			// Number of textures loaded, no relation to texture id number (id comes from file)
-			bool Begin(GLuint uiRequestedLayers);
+			bool Begin(int uiRequestedLayers);
 //			bool Load(std::string cDir, std::string cFile, GLuint uiLayer, bool bAnisotropy=false, GLenum eFilter=GL_LINEAR, GLenum eWrap=GL_CLAMP_TO_EDGE);
-			bool Load(std::string cDir, std::string cFile, GLuint uiLayer, bool bAnisotropy=false, GLenum eFilter=GL_LINEAR, GLenum eWrap=GL_REPEAT);
+			bool Load(std::string cDir, std::string cFile, int uiLayer, bool bAnisotropy=false, GLenum eFilter=GL_LINEAR, GLenum eWrap=GL_REPEAT);
 //			void CreateAtlas(int iWidth, int iHeight);
 			Texture() {
 				fLargest = 0.0f;
@@ -87,9 +89,15 @@ namespace Core {
 			}
 
 			inline int			Get(std::string cName)	{ return mapImage[cName]; }
-			inline void			Set(GLuint uiLayer)		{ glBindTexture(GL_TEXTURE_2D, glImage[uiLayer]); }
+			inline void			Set(int uiLayer)		{ glBindTexture(GL_TEXTURE_2D, glImage[uiLayer]); }
 			inline void 		Set(std::string cName)	{ glBindTexture(GL_TEXTURE_2D, glImage[mapImage[cName]]); }
-			inline std::string	Get(GLuint uiLayer)		{ for(auto const &ent1 : mapImage) { if (ent1.second == uiLayer) return ent1.first; } return 0; }
+			inline std::string	Get(int uiLayer)		{
+//				for(auto const &ent1 : mapImage) {
+//					if (ent1.second == uiLayer) return ent1.first;
+//				}
+//				return 0;
+				return mapImage.getName(uiLayer);
+			}
 	};
 }
 

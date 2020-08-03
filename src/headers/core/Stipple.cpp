@@ -52,6 +52,8 @@ namespace Core {
 
 
 	Stipple::Stipple() {
+		stipples.setSource("Stipple");
+
 		{
 			int stipple[] = {	0	};
 
@@ -854,9 +856,10 @@ namespace Core {
 
 	void Stipple::add(std::string name, Vector2i size, int pattern[]) {
 		Stipple_Pattern con = Stipple_Pattern(name, size, pattern);
-		stipples.push_back(con);
-		uint id = stipples.size()-1;
-		map.insert(make_pair(name, id));
+		//stipples.push_back(con);
+		//uint id = stipples.size()-1;
+		//map.insert(make_pair(name, id));
+		stipples.add(name, con);
 	}
 
 //	void Stipple::setScale(std::string name, float *scale) {
@@ -896,8 +899,7 @@ namespace Core {
 	}
 
 	Stipple_Pattern * Stipple::get(std::string name) {
-		uint stippleID = map[name];
-		return &stipples[stippleID];
+		return &stipples[name];
 	}
 
 	Stipple_Pattern * Stipple::get(int id) {

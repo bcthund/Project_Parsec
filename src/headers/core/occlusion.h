@@ -41,12 +41,7 @@ namespace Core {
 			GLuint		*uiQueryIds;					// Holds index of query
 			static const int	MAX_QUERIES	= 32;
 
-			_OcclusionData	*data;						//
-			//uint	  		uiNumData;					// Number of created _OCCLUSIONs
-			//static uint		MAXDATA = 8;				// Maximum number of _OCCLUSIONs
-			Map_si			map;						// string<->uint mapping, can specify OCCLUSION by name
-			Map_is			rmap;
-			//VAO				vao;
+			t_VectorMap<_OcclusionData*> data;
 
 		protected:
 
@@ -74,12 +69,9 @@ namespace Core {
 	_Occlusion::_Occlusion() {
 		//       .................................................................Done
 		std::cout << "Create Occlusion.................................................";
-			data = new _OcclusionData[MAX_QUERIES];
+			//data = new _OcclusionData[MAX_QUERIES];
+		data.setSource("Occlusion");
 			uiQueryIds = new GLuint[MAX_QUERIES];
-//			glGenQueries(MAX_QUERIES, uiQueryIds);
-//			for (int n=0; n<MAX_QUERIES; n++) {
-//				std::cout << "(" << uiQueryIds[n] << ")";
-//			}
 			uiNum = 0;
 		std::cout << "Done" << std::endl;
 	}
@@ -89,7 +81,10 @@ namespace Core {
 		std::cout << "Destroy Occlusion................................................";
 		glDeleteQueries(MAX_QUERIES,uiQueryIds);
 		delete[] uiQueryIds;
-		delete[] data;
+		//delete[] data;
+		for (auto & item : data) {
+			delete item;
+		}
 		std::cout << "Done" << std::endl;
 	}
 
@@ -107,196 +102,93 @@ namespace Core {
 		std::cout << "Init Occlusion...................................................";
 		glGenQueries(MAX_QUERIES, uiQueryIds);
 		for (int n=0; n<MAX_QUERIES; n++) {
-			//std::cout << "(" << uiQueryIds[n] << ")";
 		}
 		std::cout << "Done" << std::endl;
-//		if (uiNumData < MAXDATA) {
-////			map.insert(make_pair(name, uiNumData));
-////			int id						= map[name];
-////			data[uiNumData].uiQueryId	= new GLuint[num];
-////			data[id].uiNum				= num;
-////			data[id].uiType				= type;
-////			data[id].bIsAvailable		= false;
-////			data[id].bInUse				= new bool[num];
-////			data[id].uiResult			= new GLuint[num];
-////			for (int i=0; i<num; i++) {
-////				data[id].bInUse[i]		= false;
-////				data[id].uiResult[i]	= 0;
-////			}
-////			glGenQueries(num, data[uiNumData].uiQueryId);
-//
-//			data.uiQueryId			= new GLuint;
-//			data.uiNum				= num;
-//			data.uiType				= GL_SAMPLES_PASSED;
-//			data.bIsAvailable		= false;
-//			data.bInUse				= false;
-//			data.uiResult			= 0;
-////			for (int i=0; i<num; i++) {
-////				data.bInUse[i]		= false;
-////				data.uiResult[i]	= 0;
-////			}
-//			glGenQueries(num, data.uiQueryId);
-//			data.bCreated = true;
-//
-////			uiNumData++;
-////		}
 	}
 
-//	GLuint	_Occlusion::Add(std::string name, int type, Vector3f v) {
-//
-//	}
-//
-//	GLuint	_Occlusion::Add(std::string name, int type, int x, int y) {
-//
-//	}
-
 	GLuint _Occlusion::Add(std::string name, int type) {
-		if (uiNum < MAX_QUERIES) {
-			map.insert(make_pair(name, uiNum));
-////			int id						= map[name];
-			data[uiNum].uiQueryId		= &uiQueryIds[uiNum];
-			data[uiNum].uiType			= type;
-			data[uiNum].bIsAvailable	= false;
-			data[uiNum].bInUse			= false;
-			data[uiNum].uiResult		= 0;
-			data[uiNum].uiSamples		= 0;
-
-//			std::cout << "[Add Occlusion: " << name << " (" << uiNum << ", " << uiQueryIds[uiNum] << ", " << *data[uiNum].uiQueryId << ")]";
-////			for (int i=0; i<num; i++) {
-////				data[id].bInUse[i]		= false;
-////				data[id].uiResult[i]	= 0;
-////			}
-////			glGenQueries(num, data[uiNumData].uiQueryId);
-//
-//			data.uiQueryId			= new GLuint;
-//			data.uiNum				= num;
-//			data.uiType				= GL_SAMPLES_PASSED;
-//			data.bIsAvailable		= false;
-//			data.bInUse				= false;
-//			data.uiResult			= 0;
-////			for (int i=0; i<num; i++) {
-////				data.bInUse[i]		= false;
-////				data.uiResult[i]	= 0;
-////			}
-
-			data[uiNum].bCreated = true;
-
-			uiNum++;
-		}
-		return uiQueryIds[uiNum-1];
+		_OcclusionData *newData = new _OcclusionData;
+		newData->uiQueryId		= &uiQueryIds[uiNum];
+		newData->uiType			= type;
+		newData->bIsAvailable	= false;
+		newData->bInUse			= false;
+		newData->uiResult		= 0;
+		newData->uiSamples		= 0;
+		newData->bCreated 		= true;
+		data.add(name, newData);
+		uiNum = data.size();
+		return uiNum-1;
 	}
 
 	void _Occlusion::SetSamples(std::string name, uint uiSamples) {
-		//uint id = siMap[name];
-
-//		if(gameVars->screen.MultiSample) {
-//				sun.iQuadSamples = (sun.vQuadSize[0] * 0.5) * (sun.vQuadSize[1] * 0.5) * gameVars->screen.uiMultiSamples;
-//			} else {
-//				sun.iQuadSamples = (sun.vQuadSize[0] * 0.5) * (sun.vQuadSize[1] * 0.5);
-//		}
-
-//		std::cout << "[Set Samples: " << name << " (" << uiSamples << ")]";
-
-		int id = map[name];
-		data[id].uiSamples = uiSamples;
+		data[name]->uiSamples = uiSamples;
 	}
 
 	uint _Occlusion::GetSamples(std::string name) {
-		//uint id = siMap[name];
-
-//		if(gameVars->screen.MultiSample) {
-//				sun.iQuadSamples = (sun.vQuadSize[0] * 0.5) * (sun.vQuadSize[1] * 0.5) * gameVars->screen.uiMultiSamples;
-//			} else {
-//				sun.iQuadSamples = (sun.vQuadSize[0] * 0.5) * (sun.vQuadSize[1] * 0.5);
-//		}
-
-		int id = map[name];
-		return data[id].uiSamples;
+		return data[name]->uiSamples;
 	}
 
 	float _Occlusion::GetRatio(std::string name) {
-		int id = map[name];
+		int id = data.getID(name);
 		float fReturn = 0.0f;
-		if (data[id].uiSamples != 0 ) {
-			fReturn = fmin((float(data[id].uiResult)/float(data[id].uiSamples))/100.0f, 100.0f);
+		if (data[id]->uiSamples != 0 ) {
+			fReturn = fmin((float(data[id]->uiResult)/float(data[id]->uiSamples))/100.0f, 100.0f);
 		}
 		return fReturn;
 	}
 
 	void _Occlusion::StartQuery(std::string name, GLuint type) {
-//		try {
-		int id = map[name];
-		if (data[id].bCreated) {
-			if(!data[id].bInUse) {
-				//std::cout << "[Start Query: " << name << " (" << uiNum << ")]";
-				data[id].uiType = type;
-				glBeginQuery(data[id].uiType, *data[id].uiQueryId);
-				//std::cout << "[" << data.uiType << "] Begin Query" << std::endl;
+		int id = data.getID(name);
+		if (data[id]->bCreated) {
+			if(!data[id]->bInUse) {
+				data[id]->uiType = type;
+				glBeginQuery(data[id]->uiType, *data[id]->uiQueryId);
 			}
 		}
-//		else throw std::string("Query has not been initialized!");
-//		}
-//		catch(std::string &s) {
-//			std::cout << "Internal Exception: " << s << std::endl;
-//			std::exit(0);
-//		}
-//		catch(const char* c) {
-//			std::cout << "Internal Exception: " << c << std::endl;
-//			std::exit(0);
-//		}
-//		catch(...) {
-//			std::exit(0);
-//		}
 	}
 
 	bool _Occlusion::ReadAvailable(std::string name) {
-		int id = map[name];
+		int id = data.getID(name);
 		uint bResult = GL_FALSE;
-		glGetQueryObjectuiv(*data[id].uiQueryId, GL_QUERY_RESULT_AVAILABLE, &bResult);
-		if(bResult==GL_TRUE) data[id].bIsAvailable = true;
-		else data[id].bIsAvailable = false;
-		//cout << "bIsAvailable = " << data[id].bIsAvailable << endl;
-		return data[id].bIsAvailable;
+		glGetQueryObjectuiv(*data[id]->uiQueryId, GL_QUERY_RESULT_AVAILABLE, &bResult);
+		if(bResult==GL_TRUE) data[id]->bIsAvailable = true;
+		else data[id]->bIsAvailable = false;
+		return data[id]->bIsAvailable;
 	}
 
 	bool _Occlusion::GetAvailable(std::string name) {
-		int id = map[name];
-		return data[id].bIsAvailable;
+		int id = data.getID(name);
+		return data[id]->bIsAvailable;
 	}
 
 	GLuint _Occlusion::ReadResultui(std::string name) {
-		int id = map[name];
+		int id = data.getID(name);
 		if(ReadAvailable(name)) {
-			data[id].bInUse = false;
-			glGetQueryObjectuiv(*data[id].uiQueryId, GL_QUERY_RESULT, &data[id].uiResult);
-			//std::cout << "ReadResultui = " << data.uiResult << std::endl;
+			data[id]->bInUse = false;
+			glGetQueryObjectuiv(*data[id]->uiQueryId, GL_QUERY_RESULT, &data[id]->uiResult);
 		}
-		//else std::cout << ".";
-		return data[id].uiResult;	// Return stored result
+		return data[id]->uiResult;	// Return stored result
 	}
 
 	bool _Occlusion::ReadResultb(std::string name) {
-		int id = map[name];
+		int id = data.getID(name);
 		if(ReadAvailable(name)) {
-			glGetQueryObjectuiv(*data[id].uiQueryId, GL_QUERY_RESULT, &data[id].uiResult);
-//			return data.uiResult>=GL_TRUE;		// >= to catch if some or all samples passed if type==GL_SAMPLES_PASSED
+			glGetQueryObjectuiv(*data[id]->uiQueryId, GL_QUERY_RESULT, &data[id]->uiResult);
 		}
-		return data[id].uiResult>=GL_TRUE;	// Stored result
+		return data[id]->uiResult>=GL_TRUE;	// Stored result
 	}
 
 	GLuint _Occlusion::GetResultui(std::string name) {
-		//cout << "GetResultui = " << data[id].uiResult[num] << endl;
-		int id = map[name];
-		return data[id].uiResult;
+		int id = data.getID(name);
+		return data[id]->uiResult;
 	}
 
 	void _Occlusion::EndQuery(std::string name) {
-		int id = map[name];
-		if (data[id].bCreated) {
-			if(!data[id].bInUse) {
-				data[id].bInUse = true;			// Only set bInUse after the entire query is complete
-				glEndQuery(data[id].uiType);
-				//std::cout << "[" << data.uiType << "] Done" << std::endl;
+		int id = data.getID(name);
+		if (data[id]->bCreated) {
+			if(!data[id]->bInUse) {
+				data[id]->bInUse = true;			// Only set bInUse after the entire query is complete
+				glEndQuery(data[id]->uiType);
 			}
 		}
 	}

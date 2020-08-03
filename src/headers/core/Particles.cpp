@@ -21,15 +21,19 @@ namespace Core {
 	int					_ParticleDataOld::iLoadedTextues	= 0;
 
 	_Particles::_Particles(GameSys::Atmosphere &f, float fScale) : parent(f), fWorldScale(fScale) {
+		data.setSource("Particles");
 		iNumObjects = 0;
 		for (int n=0; n<32; n++) {
 			bErrorONS[n] = false;
 		}
-		data = new _ParticleDataOld[MAX_OBJECTS];
+		//data = new _ParticleDataOld[MAX_OBJECTS];
 	}
 
 	_Particles::~_Particles() {
-		delete[] data;
+		//delete[] data;
+		for (auto & item : data) {
+			delete item;
+		}
 	}
 
 	/*
@@ -84,12 +88,13 @@ namespace Core {
 	bool _Particles::add(_ParticleDataOld newData)   {
 		std::cout << sOffset << "[" << newData.sName << "]" << std::endl;
 
-		if (iNumObjects < MAX_OBJECTS) {
-			data[iNumObjects] = _ParticleDataOld(newData);
-			map.insert(make_pair(newData.sName, iNumObjects));
-			rmap.insert(make_pair(iNumObjects, newData.sName));
-			iNumObjects++;
-		}
+//			data[iNumObjects] = _ParticleDataOld(newData);
+//			map.insert(make_pair(newData.sName, iNumObjects));
+//			rmap.insert(make_pair(iNumObjects, newData.sName));
+
+			data.add(newData.sName, &newData);
+			iNumObjects = data.size();
+//		}
 		return true;
 	}
 
@@ -107,31 +112,31 @@ namespace Core {
 	}
 
 	bool _Particles::calc(std::string name, bool bUpdate/*, bool bMultiSample, uint uiSamples*/)   {
-		return calc(map[name], bUpdate/*, bMultiSample, uiSamples*/);
+		return calc(data.getID(name), bUpdate/*, bMultiSample, uiSamples*/);
 	}
 
 	bool _Particles::calc(uint id, bool bUpdate/*, bool bMultiSample, uint uiSamples*/)   {
-		std::cout << sOffset << "[" << rmap[id] << "]" << std::endl;
+		std::cout << sOffset << "[" << data.getName(id) << "]" << std::endl;
 
 
 		// ==================
 		//	PARTICLE_QUAD
 		// ------------------
-		if (data[id].eSystem == PARTICLE_QUAD) {
-			int iVerts = data[id].iNum*2; //Number of vertices
+		if (data[id]->eSystem == PARTICLE_QUAD) {
+			int iVerts = data[id]->iNum*2; //Number of vertices
 
 //			std::cout << "Creating " << tex.iLoaded << " VAO's...";
-			data[id].vao = new VAO[tex.iLoaded];
+			data[id]->vao = new VAO[tex.iLoaded];
 //			std::cout << "Done." << std::endl;
 
 //			std::cout << "  Creating " << tex.iLoaded << " arrays of " << iVerts << " vVerts...";
-			data[id].vVerts = new Data3f*[tex.iLoaded];
-			for(int i=0; i<tex.iLoaded; i++) data[id].vVerts[i] = new Data3f[iVerts];
+			data[id]->vVerts = new Data3f*[tex.iLoaded];
+			for(int i=0; i<tex.iLoaded; i++) data[id]->vVerts[i] = new Data3f[iVerts];
 //			std::cout << "Done." << std::endl;
 
 //			std::cout << "  Creating " << tex.iLoaded << " arrays of " << iVerts << " vSize...";
-			data[id].vSize = new Data3f*[tex.iLoaded];
-			for(int i=0; i<tex.iLoaded; i++) data[id].vSize[i] = new Data3f[iVerts];
+			data[id]->vSize = new Data3f*[tex.iLoaded];
+			for(int i=0; i<tex.iLoaded; i++) data[id]->vSize[i] = new Data3f[iVerts];
 //			std::cout << "Done." << std::endl;
 
 			update(id, true);
@@ -159,20 +164,20 @@ namespace Core {
 //						iMin = 0;
 //
 //					if (iResult <= 1) {
-//						iMin = data[id].iThreshold;
-//						iMax = 0.2*data[id].iRange;
+//						iMin = data[id]->iThreshold;
+//						iMax = 0.2*data[id]->iRange;
 //					}
 //					else if(iResult > 1 && iResult < 4) {
-//						iMin = 0.2*data[id].iRange;
-//						iMax = 0.4*data[id].iRange;
+//						iMin = 0.2*data[id]->iRange;
+//						iMax = 0.4*data[id]->iRange;
 //					}
 //					else if(iResult >= 4 && iResult < 11) {
-//						iMin = 0.4*data[id].iRange;
-//						iMax = 0.6*data[id].iRange;
+//						iMin = 0.4*data[id]->iRange;
+//						iMax = 0.6*data[id]->iRange;
 //					}
 //					else {
-//						iMin = 0.6*data[id].iRange;
-//						iMax = data[id].iRange;
+//						iMin = 0.6*data[id]->iRange;
+//						iMax = data[id]->iRange;
 //					}
 //
 //					float fDistance	= roll((float)iMin, (float)iMax);
@@ -181,44 +186,44 @@ namespace Core {
 //					float fX = (cos(fAngle)*fDistance)-vTarget.x;
 //					float fZ = (sin(fAngle)*fDistance)-vTarget.z;
 //					float fY = 0.0f;	//fY = -map.getHeight(-fX, -fZ)*gameVars.screen.iScale;		// TODO: [Particles] Implement Flora height checking
-//					float sX = roll(data[id].iMinWidth, data[id].iMaxWidth);
-//					float sY = roll(data[id].iMinHeight, data[id].iMaxHeight);
+//					float sX = roll(data[id]->iMinWidth, data[id]->iMaxWidth);
+//					float sY = roll(data[id]->iMinHeight, data[id]->iMaxHeight);
 //
-//					data[id].vVerts[t][i][0] = fX*fWorldScale;
-//					data[id].vVerts[t][i][1] = fY+sY*data[id].fScale;
-//					data[id].vVerts[t][i][2] = fZ*fWorldScale;
+//					data[id]->vVerts[t][i][0] = fX*fWorldScale;
+//					data[id]->vVerts[t][i][1] = fY+sY*data[id]->fScale;
+//					data[id]->vVerts[t][i][2] = fZ*fWorldScale;
 //
-//					data[id].vVerts[t][i+1][0] = fX*fWorldScale;
-//					data[id].vVerts[t][i+1][1] = fY;
-//					data[id].vVerts[t][i+1][2] = fZ*fWorldScale;
+//					data[id]->vVerts[t][i+1][0] = fX*fWorldScale;
+//					data[id]->vVerts[t][i+1][1] = fY;
+//					data[id]->vVerts[t][i+1][2] = fZ*fWorldScale;
 //
-//					data[id].vSize[t][i][0] = sX*data[id].fScale;
-//					data[id].vSize[t][i][1] = sY*data[id].fScale;
-//					data[id].vSize[t][i][2] = data[id].iRange;
+//					data[id]->vSize[t][i][0] = sX*data[id]->fScale;
+//					data[id]->vSize[t][i][1] = sY*data[id]->fScale;
+//					data[id]->vSize[t][i][2] = data[id]->iRange;
 //
-//					data[id].vSize[t][i+1][0] = sX*data[id].fScale;
-//					data[id].vSize[t][i+1][1] = sY*data[id].fScale;
-//					data[id].vSize[t][i+1][2] = data[id].iRange;
+//					data[id]->vSize[t][i+1][0] = sX*data[id]->fScale;
+//					data[id]->vSize[t][i+1][1] = sY*data[id]->fScale;
+//					data[id]->vSize[t][i+1][2] = data[id]->iRange;
 //
 //					/*
 //					 * TODO: [Particles] Retry if we spawned below water
 //					 */
-//					//if(data[id].vVerts[t][i+1][1] <= data[id].fFloor) i-=2;
-//					//else if(data[id].vVerts[t][i+1][1] >= data[id].fCeiling) i-=2;
+//					//if(data[id]->vVerts[t][i+1][1] <= data[id]->fFloor) i-=2;
+//					//else if(data[id]->vVerts[t][i+1][1] >= data[id]->fCeiling) i-=2;
 //				}
 //				std::cout << std::endl;
 //
 //				std::cout << "  Creating VAO #" << t << "...";
-//				//if(data[id].iInstance>0) data[id].vao[t].Begin(GL_POINTS, iVerts, 1, data[id].iInstance);
-//				//else data[id].vao[t].Begin(GL_LINES, iVerts, 1);
+//				//if(data[id]->iInstance>0) data[id]->vao[t].Begin(GL_POINTS, iVerts, 1, data[id]->iInstance);
+//				//else data[id]->vao[t].Begin(GL_LINES, iVerts, 1);
 //
-//				data[id].vao[t].Begin(GL_LINES, iVerts, iVerts, 1);
-//				//data[id].vao[t].Begin(GL_POINTS, iVerts, iVerts, 1);
+//				data[id]->vao[t].Begin(GL_LINES, iVerts, iVerts, 1);
+//				//data[id]->vao[t].Begin(GL_POINTS, iVerts, iVerts, 1);
 //
-//				data[id].vao[t].CopyData(GLA_VERTEX, data[id].vVerts[t]);
-//				data[id].vao[t].CopyData(GLA_NORMAL, data[id].vSize[t]);
-//				//if(data[id].iInstance>0) if(!bUpdate) data[id].vao[t].CopyData(GLA_POSITION, data[id].vPosition);
-//				data[id].vao[t].End();
+//				data[id]->vao[t].CopyData(GLA_VERTEX, data[id]->vVerts[t]);
+//				data[id]->vao[t].CopyData(GLA_NORMAL, data[id]->vSize[t]);
+//				//if(data[id]->iInstance>0) if(!bUpdate) data[id]->vao[t].CopyData(GLA_POSITION, data[id]->vPosition);
+//				data[id]->vao[t].End();
 //				std::cout << "Done." << std::endl;
 //			}
 		}
@@ -238,24 +243,24 @@ namespace Core {
 	}
 
 	void _Particles::update(std::string name, bool bCreateVao) {
-		update(map[name], bCreateVao);
+		update(data.getID(name), bCreateVao);
 	}
 
 	void _Particles::update(int id, bool bCreateVao) {
 		// ==================
 		//	PARTICLE_QUAD
 		// ------------------
-//		std::cout << "[" << data[id].eSystem << "][" << bCreateVao << "] vTarget = (" << data[id].vTarget->x << ", " << data[id].vTarget->y << ", " << data[id].vTarget->z << ")" << std::endl;
-		if (data[id].eSystem == PARTICLE_QUAD) updateQuad(id, bCreateVao);
+//		std::cout << "[" << data[id]->eSystem << "][" << bCreateVao << "] vTarget = (" << data[id]->vTarget->x << ", " << data[id]->vTarget->y << ", " << data[id]->vTarget->z << ")" << std::endl;
+		if (data[id]->eSystem == PARTICLE_QUAD) updateQuad(id, bCreateVao);
 	}
 
 	// ==================
 	//	PARTICLE_QUAD
 	// ------------------
 	void _Particles::updateQuad(int id, bool bCreateVao) {
-		if((timeSys->get_ticks() >= (data[id].fLast+data[id].iRate)) || bCreateVao) {	// TODO: [Particles] Flora time limiter
-			int iVerts = data[id].iNum*2;
-			Vector3f vDist = { data[id].vTarget->x*fWorldScale, data[id].vTarget->y*fWorldScale, data[id].vTarget->z*fWorldScale };
+		if((timeSys->get_ticks() >= (data[id]->fLast+data[id]->iRate)) || bCreateVao) {	// TODO: [Particles] Flora time limiter
+			int iVerts = data[id]->iNum*2;
+			Vector3f vDist = { data[id]->vTarget->x*fWorldScale, data[id]->vTarget->y*fWorldScale, data[id]->vTarget->z*fWorldScale };
 
 			for(int t=0; t<tex.iLoaded; t++) {
 				bool bMod = false;
@@ -264,11 +269,11 @@ namespace Core {
 					float fTargetDist;
 
 					if (!bCreateVao) {
-						fTargetDist = distanceXZpn(Vector3f(data[id].vVerts[t][i+1][0], data[id].vVerts[t][i+1][1], data[id].vVerts[t][i+1][2]), vDist);
+						fTargetDist = distanceXZpn(Vector3f(data[id]->vVerts[t][i+1][0], data[id]->vVerts[t][i+1][1], data[id]->vVerts[t][i+1][2]), vDist);
 //							std::cout << "fDist = " << fTargetDist << std::endl;
 					}
 
-					if ((fTargetDist > data[id].iRange*fWorldScale) || bCreateVao) {
+					if ((fTargetDist > data[id]->iRange*fWorldScale) || bCreateVao) {
 //							do {
 							float fDistance;
 							if (bCreateVao) {
@@ -294,53 +299,53 @@ namespace Core {
 									iMin = 0;
 
 								if (iResult <= 1) {
-									iMin = data[id].iThreshold;
-									iMax = 0.2*data[id].iRange;
+									iMin = data[id]->iThreshold;
+									iMax = 0.2*data[id]->iRange;
 								}
 								else if(iResult > 1 && iResult < 4) {
-									iMin = 0.2*data[id].iRange;
-									iMax = 0.4*data[id].iRange;
+									iMin = 0.2*data[id]->iRange;
+									iMax = 0.4*data[id]->iRange;
 								}
 								else if(iResult >= 4 && iResult < 11) {
-									iMin = 0.4*data[id].iRange;
-									iMax = 0.6*data[id].iRange;
+									iMin = 0.4*data[id]->iRange;
+									iMax = 0.6*data[id]->iRange;
 								}
 								else {
-									iMin = 0.6*data[id].iRange;
-									iMax = data[id].iRange;
+									iMin = 0.6*data[id]->iRange;
+									iMax = data[id]->iRange;
 								}
 
 								fDistance	= roll((float)iMin, (float)iMax);
 							}
-							else fDistance	= roll(0.8f*(float)data[id].iRange, (float)data[id].iRange);
+							else fDistance	= roll(0.8f*(float)data[id]->iRange, (float)data[id]->iRange);
 							float fAngle	= Core::Degrees(roll(0, 360)).toRadians();
 
-							float fX = (cos(fAngle)*fDistance)-(data[id].vTarget->x);
-							float fZ = (sin(fAngle)*fDistance)-(data[id].vTarget->z);
+							float fX = (cos(fAngle)*fDistance)-(data[id]->vTarget->x);
+							float fZ = (sin(fAngle)*fDistance)-(data[id]->vTarget->z);
 							float fY = 0.0f;	//float fY = -map.getHeight(-fX, -fZ)*gameVars.screen.iScale,		// TODO: [Particles] Implement Flora height checking
-							float sX = roll(data[id].iMinWidth, data[id].iMaxWidth);
-							float sY = roll(data[id].iMinHeight, data[id].iMaxHeight);
+							float sX = roll(data[id]->iMinWidth, data[id]->iMaxWidth);
+							float sY = roll(data[id]->iMinHeight, data[id]->iMaxHeight);
 
-							data[id].vVerts[t][i][0] = fX*fWorldScale;
-							data[id].vVerts[t][i][1] = fY+sY*data[id].fScale;
-							data[id].vVerts[t][i][2] = fZ*fWorldScale;
+							data[id]->vVerts[t][i][0] = fX*fWorldScale;
+							data[id]->vVerts[t][i][1] = fY+sY*data[id]->fScale;
+							data[id]->vVerts[t][i][2] = fZ*fWorldScale;
 
-							data[id].vVerts[t][i+1][0] = fX*fWorldScale;
-							data[id].vVerts[t][i+1][1] = fY;
-							data[id].vVerts[t][i+1][2] = fZ*fWorldScale;
+							data[id]->vVerts[t][i+1][0] = fX*fWorldScale;
+							data[id]->vVerts[t][i+1][1] = fY;
+							data[id]->vVerts[t][i+1][2] = fZ*fWorldScale;
 
-							data[id].vSize[t][i][0] = sX*data[id].fScale;
-							data[id].vSize[t][i][1] = sY*data[id].fScale;
-							data[id].vSize[t][i][2] = data[id].iRange;
+							data[id]->vSize[t][i][0] = sX*data[id]->fScale;
+							data[id]->vSize[t][i][1] = sY*data[id]->fScale;
+							data[id]->vSize[t][i][2] = data[id]->iRange;
 
-							data[id].vSize[t][i+1][0] = sX*data[id].fScale;
-							data[id].vSize[t][i+1][1] = sY*data[id].fScale;
-							data[id].vSize[t][i+1][2] = data[id].iRange;
+							data[id]->vSize[t][i+1][0] = sX*data[id]->fScale;
+							data[id]->vSize[t][i+1][1] = sY*data[id]->fScale;
+							data[id]->vSize[t][i+1][2] = data[id]->iRange;
 
 							/*
 							 * Retry if we spawned below water
 							 */
-							//if(data[id].vVerts[t][i+1][1] <= data[id].fFloor) bFail=true;
+							//if(data[id]->vVerts[t][i+1][1] <= data[id]->fFloor) bFail=true;
 							//else bFail=false;
 							bMod = true;
 //							} while(bFail);
@@ -348,25 +353,25 @@ namespace Core {
 				}
 
 				if (bCreateVao) {
-					//if(data[id].iInstance>0) data[id].vao[t].Begin(GL_POINTS, iVerts, 1, data[id].iInstance);
-					//else data[id].vao[t].Begin(GL_LINES, iVerts, 1);
+					//if(data[id]->iInstance>0) data[id]->vao[t].Begin(GL_POINTS, iVerts, 1, data[id]->iInstance);
+					//else data[id]->vao[t].Begin(GL_LINES, iVerts, 1);
 
-					data[id].vao[t].Begin(GL_LINES, iVerts, iVerts, 1);
-					//data[id].vao[t].Begin(GL_POINTS, iVerts, iVerts, 1);
+					data[id]->vao[t].Begin(GL_LINES, iVerts, iVerts, 1);
+					//data[id]->vao[t].Begin(GL_POINTS, iVerts, iVerts, 1);
 
-					data[id].vao[t].CopyData(GLA_VERTEX, data[id].vVerts[t]);
-					data[id].vao[t].CopyData(GLA_NORMAL, data[id].vSize[t]);
-					//if(data[id].iInstance>0) if(!bUpdate) data[id].vao[t].CopyData(GLA_POSITION, data[id].vPosition);
-					data[id].vao[t].End();
+					data[id]->vao[t].CopyData(GLA_VERTEX, data[id]->vVerts[t]);
+					data[id]->vao[t].CopyData(GLA_NORMAL, data[id]->vSize[t]);
+					//if(data[id]->iInstance>0) if(!bUpdate) data[id]->vao[t].CopyData(GLA_POSITION, data[id]->vPosition);
+					data[id]->vao[t].End();
 				}
 				else if(bMod) {
-					data[id].vao[t].CopyData(GLA_VERTEX, data[id].vVerts[t]);
-					data[id].vao[t].CopyData(GLA_NORMAL, data[id].vSize[t]);
-					data[id].vao[t].End();
+					data[id]->vao[t].CopyData(GLA_VERTEX, data[id]->vVerts[t]);
+					data[id]->vao[t].CopyData(GLA_NORMAL, data[id]->vSize[t]);
+					data[id]->vao[t].End();
 				}
 			}
 
-			data[id].fLast = timeSys->get_ticks();
+			data[id]->fLast = timeSys->get_ticks();
 		}
 	}
 
@@ -391,7 +396,7 @@ namespace Core {
 
 		std::cout << " - Drawing " << name << std::endl;
 
-		draw(map[name]);
+		draw(data.getID(name));
 	}
 
 	void _Particles::draw(int id) {
@@ -403,10 +408,10 @@ namespace Core {
 
 		for(int i=0; i<tex.iLoaded; i++) {
 			tex.Set(i);
-			data[id].vao[i].Draw();
+			data[id]->vao[i].Draw();
 			std::cout << ".";
-//				if(data[id].iInstance == 0) data[id].vao[i].Draw();
-//				else data[id].vao[i].Draw(GLM_DRAW_ARRAYS_INSTANCED, 1, data[id].iInstance);
+//				if(data[id]->iInstance == 0) data[id]->vao[i].Draw();
+//				else data[id]->vao[i].Draw(GLM_DRAW_ARRAYS_INSTANCED, 1, data[id]->iInstance);
 		}
 		std::cout << std::endl;
 		//glEnable(GL_CULL_FACE);

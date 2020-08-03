@@ -141,7 +141,12 @@ namespace Core {
 	namespace GameSys {		class Atmosphere; }
 	class _Particles {
 		public:
-			_ParticleDataOld * data;
+//			_ParticleDataOld * data;
+			//Core::Map_si	map;
+			//Core::Map_is	rmap;
+			t_VectorMap<_ParticleDataOld*> data;
+
+
 			_Particles(GameSys::Atmosphere &f, float fScale);
 			~_Particles();
 
@@ -168,8 +173,6 @@ namespace Core {
 
 			void		updateQuad(int id, bool bCreateVao=false);
 
-			Core::Map_si	map;
-			Core::Map_is	rmap;
 			bool bErrorONS[32];
 			int							iNumObjects;
 			static bool					bTexLoaded;			// Has the textures file been loaded yet
