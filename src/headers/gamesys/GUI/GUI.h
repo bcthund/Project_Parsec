@@ -224,7 +224,7 @@
  * TODO: [X] Scrolling Window - This might be difficult
  * 			[X] Scrolling text window
  * 			[X] Can use glScissor and glEnable/Disable(GL_SCISSOR_TEST). Use Window minus padding for drawable area.
- * 			[ ] Apply scrolling (per-pixel) to windows
+ * 			[X] Apply scrolling (per-pixel) to windows
  * 				[X] Create x/y offset pointers
  * 					[X] If object has a parent, then assign pointers to parent object
  * 					[X] If object doesn't have parent, then create local copy to be used as a parent
@@ -292,22 +292,22 @@
  * 			[X] Create getString(id)
  * 			[X] Create getSize() function to return exact size
  * 			[X] Implement throw() for invalid access
- * 			[ ] Implement into systems using Map_si
- * 				[ ] Core
- * 					[ ] Colors
- * 					[ ] FBO
- * 					[ ] Occlusion
- * 					[ ] Particles
- * 					[ ] PTimer
- * 					[ ] Stipple
- * 					[ ] Texture
- * 				[ ] GameSys
- * 					[ ] Flora (flora is currently broken in the particle system)
- * 					[ ] Satellite
+ * 			[X] Implement into systems using Map_si
+ * 				[X] Core
+ * 					[X] Colors
+ * 					[X] FBO
+ * 					[X] Occlusion
+ * 					[X] Particles
+ * 					[X] PTimer
+ * 					[X] Stipple
+ * 					[X] Texture
+ * 				[X] GameSys
+ * 					[X] Flora (flora is currently broken in the particle system)
+ * 					[X] Satellite
  * 					[X] GUI
  * 					[X] GUI_Container
  * 					[X] GUI_ComboBox
- * 					[ ] TextSys
+ * 					[X] TextSys
  *
  * TODO: [X] Create a Scissor coordinates stack
  *			[X] Push onto stack
@@ -319,8 +319,9 @@
  *
  * TODO: [ ] Window padding should automatically take border size into account?
  * 			- How does this work for negative? Ignore border?
+ * 			- Top border appears to already be used?
  *
- * TODO: [ ] Add STATE_FOCUS handler to all objects
+ * TODO: [ ] Add STATE_FOCUS handler to all (relavent) objects
  *
  * TODO: [ ] Object Sprites
  * 				[X] Allow a window to use a texture sprite instead of drawing generic quad
@@ -333,12 +334,12 @@
  * 				- Don't apply scissor to additional objects such as labels and fields.
  * 			- Scissor coordinates calculated in constrants exec?
  * 			[X] Allow scissoring to be disabled (So you can draw additional windows with another window as parent)
- * 			[ ] Scissor stack
- * 				[ ] Create a simple Scissor class
- * 				[ ] Use a Push and coordinates to set the current scissor area
- * 				[ ] Use Pop to return to the previous scissor area
- * 				[ ] Monitor for overflow/underflow of push/pop
- * 				[ ] Add an enable/disable option; Global and per stack item, so a Push can simply disable scissor for that item
+ * 			[X] Scissor stack
+ * 				[X] Create a simple Scissor class
+ * 				[X] Use a Push and coordinates to set the current scissor area
+ * 				[X] Use Pop to return to the previous scissor area
+ * 				[X] Monitor for overflow/underflow of push/pop
+ * 				[X] Add an enable/disable option; Global and per stack item, so a Push can simply disable scissor for that item
  *
  * TODO: [ ] GUI focus handing like button groups, GUI name defines focus group.
  * 			- Group focus allows window layers that won't interfere with each other.
