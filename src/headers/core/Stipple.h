@@ -86,8 +86,6 @@ namespace Core {
 			static const std::string STIPPLE_PUMICE;
 
 		private:
-			//std::vector<Stipple_Pattern> stipples;
-			//Map_si	  map;
 			t_VectorMap<Stipple_Pattern> stipples;
 
 		public:

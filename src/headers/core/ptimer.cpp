@@ -14,22 +14,22 @@ namespace Core {
 		//            .................................................................Done
 		std::cout << "Construct PTimer.................................................";
 		SDL_Init(SDL_INIT_TIMER);
-		iTimers			= 0;
-		iMaxTimers		= 100;
-		buffer			= new std::string[iMaxTimers];
-		started			= new bool[iMaxTimers];
-		splitTicks		= new uint[iMaxTimers];
-		startTicks		= new uint[iMaxTimers];
-		stopTicks		= new uint[iMaxTimers];
-		splitAverage	= new float[iMaxTimers];
-		splitMax		= new float[iMaxTimers];
-		splitMin		= new float[iMaxTimers];
-		splitNum		= new uint[iMaxTimers];
-		uiSamples		= new uint[iMaxTimers];
-		uiSamplesMem	= new uint[iMaxTimers];
-		fAverageMem		= new float[iMaxTimers];
-		rsStdDev		= new RunningStat[iMaxTimers];
-		uiTicksMem		= new uint[iMaxTimers];
+//		iTimers			= 0;
+//		iMaxTimers		= 100;
+//		buffer			= new std::string[iMaxTimers];
+//		started			= new bool[iMaxTimers];
+//		splitTicks		= new uint[iMaxTimers];
+//		startTicks		= new uint[iMaxTimers];
+//		stopTicks		= new uint[iMaxTimers];
+//		splitAverage	= new float[iMaxTimers];
+//		splitMax		= new float[iMaxTimers];
+//		splitMin		= new float[iMaxTimers];
+//		splitNum		= new uint[iMaxTimers];
+//		uiSamples		= new uint[iMaxTimers];
+//		uiSamplesMem	= new uint[iMaxTimers];
+//		fAverageMem		= new float[iMaxTimers];
+//		rsStdDev		= new RunningStat[iMaxTimers];
+//		uiTicksMem		= new uint[iMaxTimers];
 
 		std::cout << "Done" << std::endl;
 	}
@@ -37,166 +37,138 @@ namespace Core {
 	PTimer::~PTimer() {
 		//       .................................................................Done
 		std::cout << "Destroy PTimer...................................................";
-		delete [] buffer;
-		delete [] started;
-		delete [] splitTicks;
-		delete [] startTicks;
-		delete [] stopTicks;
-		delete [] splitAverage;
-		delete [] splitMax;
-		delete [] splitMin;
-		delete [] splitNum;
-		delete [] uiSamples;
-		delete [] uiSamplesMem;
-		delete [] fAverageMem;
-		delete [] rsStdDev;
-		delete [] uiTicksMem;
+//		delete [] buffer;
+//		delete [] started;
+//		delete [] splitTicks;
+//		delete [] startTicks;
+//		delete [] stopTicks;
+//		delete [] splitAverage;
+//		delete [] splitMax;
+//		delete [] splitMin;
+//		delete [] splitNum;
+//		delete [] uiSamples;
+//		delete [] uiSamplesMem;
+//		delete [] fAverageMem;
+//		delete [] rsStdDev;
+//		delete [] uiTicksMem;
+		for (auto &item : timers) {
+			delete item;
+		}
 		std::cout << "Done" << std::endl;
 	}
 
-	// Add a timer to the next available index
 	int PTimer::addTimer(std::string s) {
-		if (iTimers < iMaxTimers) {
-			iTimers++;
-			//started[iTimers] = new bool;
-			buffer[iTimers]			= "";
-			started[iTimers]		= false;
-			splitTicks[iTimers]		= 0;
-			startTicks[iTimers]		= 0;
-			stopTicks[iTimers]		= 0;
-			splitAverage[iTimers]	= 0;
-			splitMax[iTimers]		= 0.0f;
-			splitMin[iTimers]		= 99.0f;
-			splitNum[iTimers]		= 0;
-			uiSamples[iTimers]		= 0;
-			uiSamplesMem[iTimers]	= 0;
-			fAverageMem[iTimers]	= 0;
-			uiTicksMem[iTimers]		= 0;
+		t_PTimer *newTimer = new t_PTimer();
 
-			TimerId.insert(std::make_pair(s, iTimers));
-			return 1;
-		}
-		else {
-			return 0;
-		}
+		newTimer->buffer		= "";
+		newTimer->started		= false;
+		newTimer->splitTicks	= 0;
+		newTimer->startTicks	= 0;
+		newTimer->stopTicks		= 0;
+		newTimer->splitAverage	= 0;
+		newTimer->splitMax		= 0.0f;
+		newTimer->splitMin		= 99.0f;
+		newTimer->splitNum		= 0;
+		newTimer->uiSamples		= 0;
+		newTimer->uiSamplesMem	= 0;
+		newTimer->fAverageMem	= 0;
+		newTimer->uiTicksMem	= 0;
+
+		timers.add(s, newTimer);
+
+		return timers.getID(s);
 	}
 
-	std::string PTimer::getSplitTickString(std::string name) {
-		uint id = TimerId[name];
-		return getSplitTickString(id);
-	}
-
-	std::string PTimer::getSplitTickString(uint id) {
-		return buffer[id];
-	}
-
-	uint PTimer::getSplitTicks(std::string name) {
-		uint id = TimerId[name];
-		return getSplitTicks(id);
-	}
-
-	uint PTimer::getSplitTicks(uint id) {
-		return splitTicks[id];
-	}
-
-	uint PTimer::getTicks(std::string name) {
-		uint id = TimerId[name];
-		return getTicks(id);
-	}
-
-	uint PTimer::getTicks(uint id) {
-		return SDL_GetTicks() - startTicks[id];
-	}
+	std::string PTimer::getSplitTickString(std::string name)	{	return timers[name]->buffer;	}
+	std::string PTimer::getSplitTickString(uint id)				{	return timers[id]->buffer;			}
+	uint PTimer::getSplitTicks(std::string name)				{	return timers[name]->splitTicks;	}
+	uint PTimer::getSplitTicks(uint id)							{	return timers[id]->splitTicks;		}
+	uint PTimer::getTicks(std::string name)						{	return SDL_GetTicks() - timers[name]->startTicks;	}
+	uint PTimer::getTicks(uint id)								{	return SDL_GetTicks() - timers[id]->startTicks;		}
 
 	void PTimer::start(std::string name) {
-		uint id = TimerId[name];
-		start(id);
+		if (!timers[name]->started) {
+			timers[name]->started = true;
+			timers[name]->startTicks = SDL_GetTicks();
+		}
 	}
 
 	void PTimer::start(uint id) {
-		if (!started[id]) {
-			//Start the timer
-			started[id] = true;
-
-			//Get the current clock time
-			startTicks[id] = SDL_GetTicks();
-			//splitTicks[id] = startTicks[id];
+		if (!timers[id]->started) {
+			timers[id]->started = true;
+			timers[id]->startTicks = SDL_GetTicks();
 		}
 	}
 
 	void PTimer::update(std::string name) {
-		uint id = TimerId[name];
+		uint id = timers.getID(name);
 		update(id);
 	}
 
 	void PTimer::update(uint id) {
-		splitTicks[id]=SDL_GetTicks() - startTicks[id];
-		buffer[id]=itoa(splitTicks[id], 10);
+		timers[id]->splitTicks=SDL_GetTicks() - timers[id]->startTicks;
+		timers[id]->buffer=itoa(timers[id]->splitTicks, 10);
 
 		// Track Max
-		if (splitTicks[id] > splitMax[id]) splitMax[id] = splitTicks[id];
+		if (timers[id]->splitTicks > timers[id]->splitMax) timers[id]->splitMax = timers[id]->splitTicks;
 
 		// Track Min
-		if (splitTicks[id] < splitMin[id]) splitMin[id] = splitTicks[id];
+		if (timers[id]->splitTicks < timers[id]->splitMin) timers[id]->splitMin = timers[id]->splitTicks;
 
 		// Find average (bad method, us rsStdDev class)
-		splitAverage[id] = (splitAverage[id] + splitTicks[id]) / 2;
+		timers[id]->splitAverage = (timers[id]->splitAverage + timers[id]->splitTicks) / 2;
 
-		rsStdDev[id].Push(splitTicks[id]);
+		timers[id]->rsStdDev.Push(timers[id]->splitTicks);
 
-		uiSamples[id] += 1;
+		timers[id]->uiSamples += 1;
 	}
 
 	uint PTimer::stop(std::string name, bool bReset) {
-		uint id = TimerId[name];
+		uint id = timers.getID(name);
 		return stop(id, bReset);
 	}
 
 	uint PTimer::stop(uint id, bool bReset) {
-		started[id] = false;
-		splitTicks[id]=SDL_GetTicks() - startTicks[id];
-		buffer[id]=itoa(splitTicks[id], 10);
+		timers[id]->started = false;
+		timers[id]->splitTicks=SDL_GetTicks() - timers[id]->startTicks;
+		timers[id]->buffer=itoa(timers[id]->splitTicks, 10);
 
 		// Add to times taken
 	//	splitNum[id]++;
 
 		// Track Max
-		if (splitTicks[id] > splitMax[id]) splitMax[id] = splitTicks[id];
+		if (timers[id]->splitTicks > timers[id]->splitMax) timers[id]->splitMax = timers[id]->splitTicks;
 
 		// Track Min
-		if (splitTicks[id] < splitMin[id]) splitMin[id] = splitTicks[id];
+		if (timers[id]->splitTicks < timers[id]->splitMin) timers[id]->splitMin = timers[id]->splitTicks;
 
 		// Find average (bad method, us rsStdDev class)
-		splitAverage[id] = (splitAverage[id] + splitTicks[id]) / 2;
+		timers[id]->splitAverage = (timers[id]->splitAverage + timers[id]->splitTicks) / 2;
 
-		rsStdDev[id].Push(splitTicks[id]);
+		timers[id]->rsStdDev.Push(timers[id]->splitTicks);
 
-		uint uiCurrentSamples = uiSamples[id];
+		uint uiCurrentSamples = timers[id]->uiSamples;
 
-		if (!bReset) uiSamples[id] += 1;
-		else uiSamples[id] = 0;
+		if (!bReset) timers[id]->uiSamples += 1;
+		else timers[id]->uiSamples = 0;
 
 		return uiCurrentSamples;
 	}
 
 	float PTimer::GetStdDev(std::string name) {
-		uint id = TimerId[name];
-		return rsStdDev[id].StandardDeviation();
+		return timers[name]->rsStdDev.StandardDeviation();
 	}
 
 	float PTimer::GetMax(std::string name) {
-		uint id = TimerId[name];
-		return splitMax[id];
+		return timers[name]->splitMax;
 	}
 
 	float PTimer::GetMin(std::string name) {
-		uint id = TimerId[name];
-		return splitMin[id];
+		return timers[name]->splitMin;
 	}
 
 	uint PTimer::GetSamples(std::string name) {
-		uint id = TimerId[name];
-		return uiSamples[id];
+		return timers[name]->uiSamples;
 	}
 
 	float PTimer::GetAverage(std::string name, uint uiUpdateSamples, uint uiUpdateTicks) {
@@ -209,75 +181,68 @@ namespace Core {
 		 *
 		 * TODO: make this update limit apply to everything?
 		 */
-
-		uint id = TimerId[name];
-		uint uiSplitMem = SDL_GetTicks() - uiTicksMem[id];
+		uint uiSplitMem = SDL_GetTicks() - timers[name]->uiTicksMem;
 
 		//std::cout << std::to_string(SDL_GetTicks()) << " : " << std::to_string(uiSplitMem) << std::endl;
 
-		if((uiSamples[id] >= uiSamplesMem[id]+uiUpdateSamples) || (uiSplitMem >= uiUpdateTicks)) {
-			uiSamplesMem[id] = uiSamples[id];
-			uiTicksMem[id] = SDL_GetTicks();
+		if((timers[name]->uiSamples >= timers[name]->uiSamplesMem+uiUpdateSamples) || (uiSplitMem >= uiUpdateTicks)) {
+			timers[name]->uiSamplesMem = timers[name]->uiSamples;
+			timers[name]->uiTicksMem = SDL_GetTicks();
 			//fAverageMem[id] = splitAverage[id];
-			fAverageMem[id] = rsStdDev[id].Mean();
+			timers[name]->fAverageMem = timers[name]->rsStdDev.Mean();
 			//std::cout << std::to_string(splitAverage[id]) << " : " << std::to_string(rsStdDev[id].Mean()) << " : " << std::to_string(rsStdDev[id].Variance()) << std::endl;
 		}
 
-		return fAverageMem[id];
+		return timers[name]->fAverageMem;
 	}
 
 	void PTimer::ResetMin() {
-		for(uint i=0; i<=iTimers; i++) {
-			splitMin[i] = 99.0f;
+		for(auto &item : timers) {
+			item->splitMin = 99.0f;
 		}
 	}
 
 	void PTimer::ResetMin(std::string name) {
-		uint id = TimerId[name];
-		splitMin[id] = 99.0f;
+		timers[name]->splitMin = 99.0f;
 	}
 
 	void PTimer::ResetMax() {
-		for(uint i=0; i<=iTimers; i++) {
-			splitMax[i] = 0;
+		for(auto &item : timers) {
+			item->splitMax = 0;
 		}
 	}
 
 	void PTimer::ResetMax(std::string name) {
-		uint id = TimerId[name];
-		splitMax[id] = 0;
+		timers[name]->splitMax = 0;
 	}
 
 	void PTimer::ResetAverage() {
-		for(uint i=0; i<=iTimers; i++) {
-			splitAverage[i] = 0;
+		for(auto &item : timers) {
+			item->splitAverage = 0;
 		}
 	}
 
 	void PTimer::ResetAverage(std::string name) {
-		uint id = TimerId[name];
-		splitAverage[id] = 0;
+		timers[name]->splitAverage = 0;
 	}
 
 	void PTimer::ResetStdDev() {
-		for(uint i=0; i<=iTimers; i++) {
-			rsStdDev[i].Clear();
+		for(auto &item : timers) {
+			item->rsStdDev.Clear();
 		}
 	}
 
 	void PTimer::ResetStdDev(std::string name) {
-		uint id = TimerId[name];
-		rsStdDev[id].Clear();
+		timers[name]->rsStdDev.Clear();
 	}
 
 	void PTimer::ResetSamples() {
-		for(uint i=0; i<=iTimers; i++) {
-			uiSamples[i] = 0;
+		for(auto &item : timers) {
+			item->uiSamples = 0;
 		}
 	}
 
 	void PTimer::ResetSamples(std::string name) {
-		uint id = TimerId[name];
-		uiSamples[id] = 0;
+		timers[name]->uiSamples = 0;
 	}
 }

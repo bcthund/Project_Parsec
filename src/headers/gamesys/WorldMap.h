@@ -151,7 +151,7 @@ namespace Core {
 			atmosphere->update(atmosphere->MODE_FLORA);
 
 			// Draw atmosphere
-			//atmosphere->skybox.exosphere.draw();
+			atmosphere->skybox.exosphere.draw();
 
 			// Draw Map (After atmosphere, before objects)
 			//map->draw(GLS_PHONG);	// TODO: lights for map for GLS_PHONG
@@ -163,19 +163,19 @@ namespace Core {
 			o3d->draw(Core::GLS_PHONG, *lights);
 
 			// Pseudo distance sorting of satellites (only makes sense for two satellites)
-//			float fMoonDistActual = (atmosphere->satellite->getPosition("Moon")+atmosphere->satellite->getPosition("Sun")).length();
-//			if (fMoonDistActual>atmosphere->satellite->getPosition("Sun").length()) {
-//				atmosphere->draw(atmosphere->MODE_SATELLITE, "Moon");	// TODO: [Atmosphere] Add a target setting for satellites? Pointer to any existing object (Vector3f) or create new pointer for fixed position
-//				atmosphere->draw(atmosphere->MODE_SATELLITE, "Sun");
-//			}
-//			else {
-//				atmosphere->draw(atmosphere->MODE_SATELLITE, "Sun");
-//				atmosphere->draw(atmosphere->MODE_SATELLITE, "Moon");	// TODO: [Atmosphere] Add a target setting for satellites? Pointer to any existing object (Vector3f) or create new pointer for fixed position
-//			}
+			float fMoonDistActual = (atmosphere->satellite->getPosition("Moon")+atmosphere->satellite->getPosition("Sun")).length();
+			if (fMoonDistActual>atmosphere->satellite->getPosition("Sun").length()) {
+				atmosphere->draw(atmosphere->MODE_SATELLITE, "Moon");	// TODO: [Atmosphere] Add a target setting for satellites? Pointer to any existing object (Vector3f) or create new pointer for fixed position
+				atmosphere->draw(atmosphere->MODE_SATELLITE, "Sun");
+			}
+			else {
+				atmosphere->draw(atmosphere->MODE_SATELLITE, "Sun");
+				atmosphere->draw(atmosphere->MODE_SATELLITE, "Moon");	// TODO: [Atmosphere] Add a target setting for satellites? Pointer to any existing object (Vector3f) or create new pointer for fixed position
+			}
 
 			// Draw after other objects for proper alpha blending
 			// TODO: Move Flora to particle emitter class
-//			atmosphere->draw(atmosphere->MODE_FLORA, "Flora");
+			atmosphere->draw(atmosphere->MODE_FLORA, "Flora");
 		}
 	}
 } /* namespace Core */

@@ -9,6 +9,7 @@
 #define SRC_HEADERS_CORE_TYPES_H_
 
 #include <iostream>
+#include <sstream>
 #include <cstdio>
 #include <map>
 #include <cmath>
@@ -1609,6 +1610,122 @@ namespace Core {
 //		}
 //	} t_BIFS;
 
+	template <typename KEY, typename VALUE>
+	class t_Map {
+		private:
+			Map_si map;
+
+		public:
+			t_Map() {}
+			virtual ~t_Map() {}
+
+			bool checkKey(KEY key, bool bThrow=true) {
+				if(map.count(key)>0) return true;
+				else {
+					if (bThrow) {
+
+						// FIXME: Create a throwRuntimeError() function that accepts '<<'
+
+						std::ostringstream sMessage;
+						sMessage << "Invalid Key in t_Map: '" << key << "'";
+						throw std::runtime_error(sMessage.str());
+					}
+					else return false;
+				}
+			}
+
+//			bool checkValue(VALUE value, bool bThrow=true) {
+//				if(value >= 0 && value < map.size()) return true;
+//				else {
+//					if (bThrow) throw std::runtime_error("Invalid Value in t_Map '"+std::to_string(value)+"'");
+//					else return false;
+//				}
+//			}
+
+			virtual VALUE & operator[](KEY key)	{
+				checkKey(key);
+				return map[key];
+			}
+
+//			virtual KEY & operator[](VALUE value)	{
+//				checkValue(value);
+				//return map[value];
+//				return 0;
+//			}
+
+//			int	operator()(std::string name) {
+//				checkName(name);
+//				return groups[map[name]].index;
+//			}
+//
+//			int	operator()(int id) {
+//				checkID(id);
+//				return groups[id].index;
+//			}
+
+			virtual void add(KEY key, VALUE value, bool bThrow=true) {
+				if(!checkKey(key, false)) {
+					map.insert(make_pair(key, value));
+				}
+				else if(bThrow) {
+					std::ostringstream sMessage;
+					sMessage << "Duplicate Key in t_Map: '" << key << "'";
+					throw std::runtime_error(sMessage.str());
+				}
+
+			}
+
+			virtual void remove(KEY key, bool bThrow=true) {
+				if(checkKey(key, false)) {
+					map.erase(key);
+				}
+				else if(bThrow) {
+					std::ostringstream sMessage;
+					sMessage << "Duplicate Key in t_Map: '" << key << "'";
+					throw std::runtime_error(sMessage.str());
+				}
+
+			}
+
+			virtual VALUE & get(KEY key)	{
+				checkKey(key);
+				return map[key];
+			}
+
+//			virtual T & get(int id)	{
+//				checkID(id);
+//				return typeList[id];
+//			}
+
+//			int getID(std::string name) {
+//				return map[name];
+//			}
+
+			KEY getName(VALUE value) {
+				for (const auto& item : map) {
+					if(item.second == value) return item.first;
+				}
+				return KEY();
+			}
+
+			int size() {
+				return map.size();
+			}
+
+			/*
+			 * Allow Iteration
+			 *
+			 * Example:
+			 * 	t_Vector<T> items;
+			 * 	for(auto item : items) {}
+			 */
+//			typedef VALUE* iterator;
+//			typedef const VALUE* const_iterator;
+//			iterator begin() 		{ return &map[0]; }
+//			iterator end() 			{ return &map[map.size()]; }
+//			const_iterator begin() 	const	{ return &map[0]; }
+//			const_iterator end() 	const	{ return &map[map.size()]; }
+	};
 
 	// TODO: Implement copy/move/assignment constructor
 	template <typename T>
@@ -1689,9 +1806,22 @@ namespace Core {
 			const_iterator end() 	const	{ return &typeList[typeList.size()]; }
 	};
 
+//	template<unsigned N>
+//	struct FixedString {
+//		char buf[N + 1]{};
+//		constexpr FixedString(char const* s) {
+//			for (unsigned i = 0; i != N; ++i) buf[i] = s[i];
+//		}
+//		constexpr operator char const*() const { return buf; }
+//	};
+//	template<unsigned N> FixedString(char const (&)[N]) -> FixedString<N - 1>;
+
+//	template<class MyString = typestring_is("Hello!")>
+
 	// TODO: Implement copy/move/assignment constructor
 //	char sErrorSource[] = "Undefined";
-//	template <typename T, char *sErrorSource>
+//	template <typename T, char *T_ErrorSource="Undefined">
+//	template <typename T, FixedString S>
 	template <typename T>
 	class t_VectorMap {
 		private:
@@ -1700,6 +1830,7 @@ namespace Core {
 			Map_si map;
 
 		public:
+//			t_VectorMap(std::string source) {
 			t_VectorMap() {
 				sErrorSource = "Undefined";
 			}
@@ -1824,7 +1955,7 @@ namespace Core {
 	 */
 	class t_DataSet {
 		public:
-			t_VectorMap< std::vector<t_BIFS> > states;
+			t_VectorMap< std::vector<t_BIFS>> states;
 			t_DataSet() {}
 
 			std::vector<t_BIFS> & operator[](std::string name)	{ return states[name]; }

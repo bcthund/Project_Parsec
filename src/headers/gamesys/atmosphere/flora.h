@@ -23,7 +23,7 @@
 
 namespace Core {
 	namespace GameSys {
-		struct _FloraData {
+		struct t_FloraData {
 			std::string		sName;
 			Data3f		**	vVerts;			// Stored particles; first pointer = # of loaded sprites; second pointer = data
 			Vector4f	*	vPosition;		// Offset position
@@ -47,7 +47,7 @@ namespace Core {
 			bool 			bEnable;		// Show flora
 			VAO			*	vao;
 
-			_FloraData() {
+			t_FloraData() {
 				sName = "";
 				fScale = 0;
 				vVerts = nullptr;
@@ -75,7 +75,7 @@ namespace Core {
 				bEnable = false;
 			};
 
-			~_FloraData() {
+			~t_FloraData() {
 				delete[] vVerts;
 				delete[] vSize;
 				delete vPosition;
@@ -88,10 +88,14 @@ namespace Core {
 		//class _GameTime;
 		class _Flora /*: private _FloraData*/ {
 			public:
-				_FloraData * data;
+//				_FloraData * data;
+//				Core::Map_si	map;
+//				Core::Map_is	rmap;
+				t_VectorMap<t_FloraData*> data;
+
 				_Flora(Atmosphere &f);
 				~_Flora();
-				bool		add(_FloraData data);
+				bool		add(t_FloraData &data);
 
 				bool		calc(bool bUpdate=false/*bool bMultiSample=false, uint uiSamples=0*/);
 				bool		calc(std::string name, bool bUpdate=false/*, bool bMultiSample=false, uint uiSamples=0*/);
@@ -111,8 +115,6 @@ namespace Core {
 				static bool		bTexLoaded;			// Has the textures file been loaded yet
 				static Texture	tex;				// Global textures list, prevents copies of textures
 				bool			init();
-				Core::Map_si	map;
-				Core::Map_is	rmap;
 				bool bErrorONS[32];
 				int							iNumObjects;
 				static const uint			MAX_TEXTURES;
@@ -135,12 +137,15 @@ namespace Core {
 			for (int n=0; n<32; n++) {
 				bErrorONS[n] = false;
 			}
-			data = new _FloraData[MAX_OBJECTS];
+			//data = new t_FloraData[MAX_OBJECTS];
 			init();
 		}
 
 		_Flora::~_Flora() {
-			delete[] data;
+			//delete[] data;
+			for(auto &item : data) {
+				delete item;
+			}
 		}
 
 		bool _Flora::bTexLoaded = false;
@@ -191,15 +196,16 @@ namespace Core {
 		/*
 		 * load
 		 */
-		bool _Flora::add(_FloraData newData)   {
+		bool _Flora::add(t_FloraData &newData)   {
 			std::cout << "[" << newData.sName << "]";
 
-			if (iNumObjects < MAX_OBJECTS) {
-				data[iNumObjects] = _FloraData(newData);
-				map.insert(make_pair(newData.sName, iNumObjects));
-				rmap.insert(make_pair(iNumObjects, newData.sName));
-				iNumObjects++;
-			}
+//			if (iNumObjects < MAX_OBJECTS) {
+//				data[iNumObjects] = t_FloraData(newData);
+//				map.insert(make_pair(newData.sName, iNumObjects));
+//				rmap.insert(make_pair(iNumObjects, newData.sName));
+//				iNumObjects++;
+//			}
+			data.add(newData.sName, &newData);
 			return true;
 		}
 
@@ -217,11 +223,11 @@ namespace Core {
 		}
 
 		bool _Flora::calc(std::string name, bool bUpdate/*, bool bMultiSample, uint uiSamples*/)   {
-			return calc(map[name], bUpdate/*, bMultiSample, uiSamples*/);
+			return calc(data.getID(name), bUpdate/*, bMultiSample, uiSamples*/);
 		}
 
 		bool _Flora::calc(uint id, bool bUpdate/*, bool bMultiSample, uint uiSamples*/)   {
-			std::cout << "[" << rmap[id] << "]";
+			std::cout << "[" << data.getName(id) << "]";
 
 //			std::cout << std::endl;
 //			for (int n=0; n<20; n++) {
@@ -233,21 +239,21 @@ namespace Core {
 //								   1.0, 0.0,
 //								   1.0, 1.0 };
 
-			int iVerts = data[id].iNum*2; //Number of vertices
+			int iVerts = data[id]->iNum*2; //Number of vertices
 
 			if(!bUpdate) {
 				std::cout << "Creating " << tex.iLoaded << " VAO's...";
-				data[id].vao = new VAO[tex.iLoaded];
+				data[id]->vao = new VAO[tex.iLoaded];
 				std::cout << "Done." << std::endl;
 
 				std::cout << "  Creating " << tex.iLoaded << " arrays of " << iVerts << " vVerts...";
-				data[id].vVerts = new Data3f*[tex.iLoaded];
-				for(int i=0; i<tex.iLoaded; i++) data[id].vVerts[i] = new Data3f[iVerts];
+				data[id]->vVerts = new Data3f*[tex.iLoaded];
+				for(int i=0; i<tex.iLoaded; i++) data[id]->vVerts[i] = new Data3f[iVerts];
 				std::cout << "Done." << std::endl;
 
 				std::cout << "  Creating " << tex.iLoaded << " arrays of " << iVerts << " vSize...";
-				data[id].vSize = new Data3f*[tex.iLoaded];
-				for(int i=0; i<tex.iLoaded; i++) data[id].vSize[i] = new Data3f[iVerts];
+				data[id]->vSize = new Data3f*[tex.iLoaded];
+				for(int i=0; i<tex.iLoaded; i++) data[id]->vSize[i] = new Data3f[iVerts];
 				std::cout << "Done." << std::endl;
 			}
 
@@ -282,20 +288,20 @@ namespace Core {
 						iMin = 0;
 
 					if (iResult <= 1) {
-						iMin = data[id].iThreshold;
-						iMax = 0.2*data[id].iRange;
+						iMin = data[id]->iThreshold;
+						iMax = 0.2*data[id]->iRange;
 					}
 					else if(iResult > 1 && iResult < 4) {
-						iMin = 0.2*data[id].iRange;
-						iMax = 0.4*data[id].iRange;
+						iMin = 0.2*data[id]->iRange;
+						iMax = 0.4*data[id]->iRange;
 					}
 					else if(iResult >= 4 && iResult < 11) {
-						iMin = 0.4*data[id].iRange;
-						iMax = 0.6*data[id].iRange;
+						iMin = 0.4*data[id]->iRange;
+						iMax = 0.6*data[id]->iRange;
 					}
 					else {
-						iMin = 0.6*data[id].iRange;
-						iMax = data[id].iRange;
+						iMin = 0.6*data[id]->iRange;
+						iMax = data[id]->iRange;
 					}
 
 //					std::uniform_real_distribution<> rRange(iMin, iMax);
@@ -307,8 +313,8 @@ namespace Core {
 					float fX = (cos(fAngle)*fDistance)-gameVars->player.active->transform.pos[0];
 					float fZ = (sin(fAngle)*fDistance)-gameVars->player.active->transform.pos[2];
 					float fY = 0.0f;	//fY = -map.getHeight(-fX, -fZ)*gameVars->screen.iScale;		// TODO: Implement Flora height checking
-					float sX = roll(data[id].iMinWidth, data[id].iMaxWidth);
-					float sY = roll(data[id].iMinHeight, data[id].iMaxHeight);
+					float sX = roll(data[id]->iMinWidth, data[id]->iMaxWidth);
+					float sY = roll(data[id]->iMinHeight, data[id]->iMaxHeight);
 								//fX = (cos(fAngle)*fDistance)-(gameVars->player.active->transform.pos[0]*gameVars->screen.iScale);
 								//fZ = (sin(fAngle)*fDistance)-(gameVars->player.active->transform.pos[2]*gameVars->screen.iScale);
 
@@ -319,21 +325,21 @@ namespace Core {
 											{		 fW,	0.0f,	0.0, count+1	}	};
 					*/
 
-					data[id].vVerts[t][i][0] = fX*gameVars->screen.fScale;
-					data[id].vVerts[t][i][1] = fY+sY*data[id].fScale;
-					data[id].vVerts[t][i][2] = fZ*gameVars->screen.fScale;
+					data[id]->vVerts[t][i][0] = fX*gameVars->screen.fScale;
+					data[id]->vVerts[t][i][1] = fY+sY*data[id]->fScale;
+					data[id]->vVerts[t][i][2] = fZ*gameVars->screen.fScale;
 
-					data[id].vVerts[t][i+1][0] = fX*gameVars->screen.fScale;
-					data[id].vVerts[t][i+1][1] = fY;
-					data[id].vVerts[t][i+1][2] = fZ*gameVars->screen.fScale;
+					data[id]->vVerts[t][i+1][0] = fX*gameVars->screen.fScale;
+					data[id]->vVerts[t][i+1][1] = fY;
+					data[id]->vVerts[t][i+1][2] = fZ*gameVars->screen.fScale;
 
-					data[id].vSize[t][i][0] = sX*data[id].fScale;
-					data[id].vSize[t][i][1] = sY*data[id].fScale;
-					data[id].vSize[t][i][2] = data[id].iRange;
+					data[id]->vSize[t][i][0] = sX*data[id]->fScale;
+					data[id]->vSize[t][i][1] = sY*data[id]->fScale;
+					data[id]->vSize[t][i][2] = data[id]->iRange;
 
-					data[id].vSize[t][i+1][0] = sX*data[id].fScale;
-					data[id].vSize[t][i+1][1] = sY*data[id].fScale;
-					data[id].vSize[t][i+1][2] = data[id].iRange;
+					data[id]->vSize[t][i+1][0] = sX*data[id]->fScale;
+					data[id]->vSize[t][i+1][1] = sY*data[id]->fScale;
+					data[id]->vSize[t][i+1][2] = data[id]->iRange;
 
 //					std::cout << "Item: " << t << "-" << i << std::endl;
 //					std::cout << "(" << data[id].vVerts[t][i][0]   << ", " << data[id].vVerts[t][i][1]   << ", " << data[id].vVerts[t][i][2]   << ")" << std::endl;
@@ -354,13 +360,13 @@ namespace Core {
 				//else data[id].vao[t].Begin(GL_LINES, iVerts, 1);
 
 
-				data[id].vao[t].Begin(GL_LINES, iVerts, iVerts, 1);
+				data[id]->vao[t].Begin(GL_LINES, iVerts, iVerts, 1);
 				//data[id].vao[t].Begin(GL_POINTS, iVerts, iVerts, 1);
 
-				data[id].vao[t].CopyData(GLA_VERTEX, data[id].vVerts[t]);
-				data[id].vao[t].CopyData(GLA_NORMAL, data[id].vSize[t]);
+				data[id]->vao[t].CopyData(GLA_VERTEX, data[id]->vVerts[t]);
+				data[id]->vao[t].CopyData(GLA_NORMAL, data[id]->vSize[t]);
 				//if(data[id].iInstance>0) if(!bUpdate) data[id].vao[t].CopyData(GLA_POSITION, data[id].vPosition);
-				data[id].vao[t].End();
+				data[id]->vao[t].End();
 				std::cout << "Done." << std::endl;
 			}
 			return true;
@@ -379,18 +385,18 @@ namespace Core {
 		}
 
 		void _Flora::update(std::string name) {
-			update(map[name]);
+			update(data.getID(name));
 		}
 
 		void _Flora::update(int id) {
-			if(timeSys->get_ticks() >= (data[id].fLast+data[id].iRate)) {	// TODO: Flora time limiter
-				int iVerts = data[id].iNum*2;
+			if(timeSys->get_ticks() >= (data[id]->fLast+data[id]->iRate)) {	// TODO: Flora time limiter
+				int iVerts = data[id]->iNum*2;
 				for(int t=0; t<tex.iLoaded; t++) {
 					bool bMod = false;
 					for(int i=0; i<iVerts; i+=2) {
 						Vector3f fDist = { gameVars->player.active->transform.pos[0]*gameVars->screen.fScale, gameVars->player.active->transform.pos[1]*gameVars->screen.fScale, gameVars->player.active->transform.pos[2]*gameVars->screen.fScale };
 //						std::cout << "\tDistXZpn: " << distanceXZpn(data[id].vVerts[t][i+1], fDist) << "\tRange: " << data[id].iRange << std::endl;
-						if (distanceXZpn(Vector3f(data[id].vVerts[t][i+1][0], data[id].vVerts[t][i+1][1], data[id].vVerts[t][i+1][2]), fDist) > data[id].iRange*gameVars->screen.fScale) {
+						if (distanceXZpn(Vector3f(data[id]->vVerts[t][i+1][0], data[id]->vVerts[t][i+1][1], data[id]->vVerts[t][i+1][2]), fDist) > data[id]->iRange*gameVars->screen.fScale) {
 							//bool bFail=false;
 							//do {
 								/*
@@ -405,7 +411,7 @@ namespace Core {
 
 //								float fDistance	= rRange(RNG::eng);
 //								float fAngle	= M_DegToRad(dist(RNG::eng));
-								float fDistance	= roll(0.8f*(float)data[id].iRange, (float)data[id].iRange);
+								float fDistance	= roll(0.8f*(float)data[id]->iRange, (float)data[id]->iRange);
 								float fAngle	= Core::Degrees(roll(0, 360)).toRadians();
 
 //								std::cout << "[" << data[id].iRange << "] " << fDistance << "\t" << fAngle << std::endl;
@@ -416,24 +422,24 @@ namespace Core {
 								float fX = (cos(fAngle)*fDistance)-(gameVars->player.active->transform.pos[0]);
 								float fZ = (sin(fAngle)*fDistance)-(gameVars->player.active->transform.pos[2]);
 								float fY = 0.0f;	//float fY = -map.getHeight(-fX, -fZ)*gameVars->screen.iScale,		// TODO: Implement Flora height checking
-								float sX = roll(data[id].iMinWidth, data[id].iMaxWidth);
-								float sY = roll(data[id].iMinHeight, data[id].iMaxHeight);
+								float sX = roll(data[id]->iMinWidth, data[id]->iMaxWidth);
+								float sY = roll(data[id]->iMinHeight, data[id]->iMaxHeight);
 
-								data[id].vVerts[t][i][0] = fX*gameVars->screen.fScale;
-								data[id].vVerts[t][i][1] = fY+sY*data[id].fScale;
-								data[id].vVerts[t][i][2] = fZ*gameVars->screen.fScale;
+								data[id]->vVerts[t][i][0] = fX*gameVars->screen.fScale;
+								data[id]->vVerts[t][i][1] = fY+sY*data[id]->fScale;
+								data[id]->vVerts[t][i][2] = fZ*gameVars->screen.fScale;
 
-								data[id].vVerts[t][i+1][0] = fX*gameVars->screen.fScale;
-								data[id].vVerts[t][i+1][1] = fY;
-								data[id].vVerts[t][i+1][2] = fZ*gameVars->screen.fScale;
+								data[id]->vVerts[t][i+1][0] = fX*gameVars->screen.fScale;
+								data[id]->vVerts[t][i+1][1] = fY;
+								data[id]->vVerts[t][i+1][2] = fZ*gameVars->screen.fScale;
 
-								data[id].vSize[t][i][0] = sX*data[id].fScale;
-								data[id].vSize[t][i][1] = sY*data[id].fScale;
-								data[id].vSize[t][i][2] = data[id].iRange;
+								data[id]->vSize[t][i][0] = sX*data[id]->fScale;
+								data[id]->vSize[t][i][1] = sY*data[id]->fScale;
+								data[id]->vSize[t][i][2] = data[id]->iRange;
 
-								data[id].vSize[t][i+1][0] = sX*data[id].fScale;
-								data[id].vSize[t][i+1][1] = sY*data[id].fScale;
-								data[id].vSize[t][i+1][2] = data[id].iRange;
+								data[id]->vSize[t][i+1][0] = sX*data[id]->fScale;
+								data[id]->vSize[t][i+1][1] = sY*data[id]->fScale;
+								data[id]->vSize[t][i+1][2] = data[id]->iRange;
 
 //								std::cout << "(" << data[id].vVerts[t][i][0] << ", " << data[id].vVerts[t][i][2] << ")" << std::endl;
 
@@ -448,13 +454,13 @@ namespace Core {
 					}
 
 					if(bMod) {
-						data[id].vao[t].CopyData(GLA_VERTEX, data[id].vVerts[t]);
-						data[id].vao[t].CopyData(GLA_NORMAL, data[id].vSize[t]);
-						data[id].vao[t].End();
+						data[id]->vao[t].CopyData(GLA_VERTEX, data[id]->vVerts[t]);
+						data[id]->vao[t].CopyData(GLA_NORMAL, data[id]->vSize[t]);
+						data[id]->vao[t].End();
 					}
 				}
 
-				data[id].fLast = timeSys->get_ticks();
+				data[id]->fLast = timeSys->get_ticks();
 			}
 		}
 
@@ -476,7 +482,7 @@ namespace Core {
 //		}
 
 		void _Flora::draw(std::string name) {
-			draw(map[name]);
+			draw(data.getID(name));
 		}
 
 		void _Flora::draw(int id) {
@@ -484,7 +490,7 @@ namespace Core {
 			//glDisable(GL_CULL_FACE);
 			for(int i=0; i<tex.iLoaded; i++) {
 				tex.Set(i);
-				data[id].vao[i].Draw();
+				data[id]->vao[i].Draw();
 //				if(data[id].iInstance == 0) data[id].vao[i].Draw();
 //				else data[id].vao[i].Draw(GLM_DRAW_ARRAYS_INSTANCED, 1, data[id].iInstance);
 			}

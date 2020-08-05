@@ -482,6 +482,8 @@ void _Game::Update() {
 
 	/*
 	 * Clear screen and draw objects for radial blur (scattering) effect
+	 *
+	 * NOTE: Atmosphere is drawn here for Lens effect ONLY, actual drawing occurs in world->draw() above
 	 */
 	Core::postProcess->RenderLayer("Multisample");
 	Core::postProcess->RenderLayer("Layer1");
@@ -508,7 +510,7 @@ void _Game::Update() {
 //	Core::postProcess->RenderToWindow(ppRadial, Core::Vector3f( 360, -200, 0), 0.25f);
 	Core::profiles->runProfile(Core::profiles->builtIn.RunGame_PostProcess, false);
 
-	// Crosshair
+	// FIXME: Crosshair
 	Core::GameSys::drawSprite(Core::gameVars->screen.half.x-16, Core::gameVars->screen.half.y-16, 32, 32, "crosshair.png", false, false, Core::colors[Core::colors().Green]);
 
 	// Start orthographic routines (Overlays)

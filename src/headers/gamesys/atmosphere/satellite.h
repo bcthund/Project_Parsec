@@ -149,10 +149,14 @@ namespace Core {
 		class _Satellite {
 			public:
 				//std::vector<_SatelliteData> data;
-				_SatelliteData * data;
+				//_SatelliteData * data;
+				//Core::Map_si	map;
+				//Core::Map_is	rmap;
+				t_VectorMap<_SatelliteData*> data;
+
 				_Satellite(Atmosphere &f);
 				~_Satellite();
-				bool		add(_SatelliteData data);
+				bool		add(_SatelliteData *data);
 
 				bool		calc();
 				bool		calc(std::string name);
@@ -171,32 +175,31 @@ namespace Core {
 				void		drawFlare(std::string name);
 				void		drawFlare(int id);
 
-				Vector3f&	getPosition(std::string name)				{ return getPosition(map[name]); };
-				Vector3f&	getPosition(int id)							{ return data[id].vPosition; };
+				Vector3f&	getPosition(std::string name)				{ return getPosition(data.getID(name)); };
+				Vector3f&	getPosition(int id)							{ return data[id]->vPosition; };
 
-				void		setPosition(std::string name, Vector3f v)	{ setPosition(map[name], v); };
-				void		setPosition(int id, Vector3f v)				{ data[id].vPosition = v; };
+				void		setPosition(std::string name, Vector3f v)	{ setPosition(data.getID(name), v); };
+				void		setPosition(int id, Vector3f v)				{ data[id]->vPosition = v; };
 
 //				float		getAlpha(_SI siType)						{ if(siType.bString) return getAlpha(map[siType.name]); else return getAlpha(siType.id); };
-				float		getAlpha(std::string name)					{ return getAlpha(map[name]); };
-				float		getAlpha(int id)							{ return data[id].fFlareAlpha; };
+				float		getAlpha(std::string name)					{ return getAlpha(data.getID(name)); };
+				float		getAlpha(int id)							{ return data[id]->fFlareAlpha; };
 
 
-				//data[id].fFlareAlpha
+				//data[id]->fFlareAlpha
 
-				float		getScale(std::string name)					{ return getScale(map[name]); };
-				float		getScale(int id)							{ return data[id].fScale; };
+				float		getScale(std::string name)					{ return getScale(data.getID(name)); };
+				float		getScale(int id)							{ return data[id]->fScale; };
 
-				Core::Degrees	getZenith(std::string name)				{ return getZenith(map[name]); };
-				Core::Degrees	getZenith(int id)						{ return data[id].degInclination; };
+				Core::Degrees	getZenith(std::string name)				{ return getZenith(data.getID(name)); };
+				Core::Degrees	getZenith(int id)						{ return data[id]->degInclination; };
 
 			private:
 				Atmosphere		&parent;			// Access to parent class
 				static bool		bTexLoaded;			// Has the textures file been loaded yet
 				static Texture	tex;				// Global textures list, prevents copies of textures
 				bool			init();
-				Core::Map_si	map;
-				Core::Map_is	rmap;
+
 				//VAO	vaoPoint;
 				bool bErrorONS[32];
 				int							iNumObjects;
@@ -222,12 +225,15 @@ namespace Core {
 			for (int n=0; n<32; n++) {
 				bErrorONS[n] = false;
 			}
-			data = new _SatelliteData[MAX_OBJECTS];
+//			data = new _SatelliteData[MAX_OBJECTS];
 			init();
 		}
 
 		_Satellite::~_Satellite() {
-			delete[] data;
+			//delete[] data;
+			for (auto & item : data ) {
+				delete item;
+			}
 		}
 
 		bool _Satellite::bTexLoaded = false;
@@ -285,24 +291,30 @@ namespace Core {
 		/*
 		 * load
 		 */
-		bool _Satellite::add(_SatelliteData newData)   {
-			std::cout << sOffset << "[" << newData.sName << "]" << std::endl;
+		bool _Satellite::add(_SatelliteData *newData)   {
+			std::cout << sOffset << "[" << newData->sName << "]" << std::endl;
 
-			if (iNumObjects < MAX_OBJECTS) {
-				//data.push_back(newData);
-				data[iNumObjects] = _SatelliteData(newData);
-				map.insert(make_pair(newData.sName, iNumObjects));
-				rmap.insert(make_pair(iNumObjects, newData.sName));
-				//map.insert(make_pair(newData.sName, data.size()-1));
-				if (data[iNumObjects].bQuery) occlusion->Add(data[iNumObjects].sName, GL_SAMPLES_PASSED);
-				iNumObjects++;
-			}
+//			if (iNumObjects < MAX_OBJECTS) {
+//				//data.push_back(newData);
+//				data[iNumObjects] = _SatelliteData(newData);
+//				map.insert(make_pair(newData.sName, iNumObjects));
+//				rmap.insert(make_pair(iNumObjects, newData.sName));
+//				//map.insert(make_pair(newData.sName, data.size()-1));
+//				if (data[iNumObjects].bQuery) occlusion->Add(data[iNumObjects].sName, GL_SAMPLES_PASSED);
+//				iNumObjects++;
+//			}
+			data.add(newData->sName, newData);
+			if (newData->bQuery) occlusion->add(newData->sName, GL_SAMPLES_PASSED);
 			return true;
 		}
 
 		bool _Satellite::calc()   {
 			try {
-				for (int n=0; n<iNumObjects; n++) {
+//				for (int n=0; n<iNumObjects; n++) {
+//					calc(n);
+//				}
+
+				for (int n=0; n<data.size(); n++) {
 					calc(n);
 				}
 			}
@@ -314,23 +326,23 @@ namespace Core {
 		}
 
 		bool _Satellite::calc(std::string name)   {
-			return calc(map[name]);
+			return calc(data.getID(name));
 		}
 
 		bool _Satellite::calc(uint id)   {
-			std::cout << sOffset << "[" << rmap[id] << "]" << std::endl;
-			float iHalf = data[id].fQuadSize*data[id].fScale;
+			std::cout << sOffset << "[" << data.getName(id) << "]" << std::endl;
+			float iHalf = data[id]->fQuadSize*data[id]->fScale;
 
 			if(gameVars->screen.MultiSample) {
-				data[id].iQuadSamples = (data[id].fQuadSize * data[id].fQuadSize) * gameVars->screen.bpp;
+				data[id]->iQuadSamples = (data[id]->fQuadSize * data[id]->fQuadSize) * gameVars->screen.bpp;
 			} else {
-				data[id].iQuadSamples = (data[id].fQuadSize * data[id].fQuadSize);
+				data[id]->iQuadSamples = (data[id]->fQuadSize * data[id]->fQuadSize);
 			}
 
 			gameVars->screen.fScreenAspect;
 			gameVars->screen.fDistanceAspect;
 
-			if (data[id].bQuery) occlusion->SetSamples(data[id].sName, data[id].iQuadSamples);
+			if (data[id]->bQuery) occlusion->SetSamples(data[id]->sName, data[id]->iQuadSamples);
 
 			Data3f vVerts[] = { {-iHalf, -iHalf, 0},
 								{ iHalf,  iHalf, 0},
@@ -347,16 +359,16 @@ namespace Core {
 									{ 1, 0 },
 									{ 1, 1 } };
 
-			data[id].vao.Begin(GL_TRIANGLES, 6, 6, 1);
-			data[id].vao.CopyData(GLA_VERTEX, vVerts);
-			data[id].vao.CopyData(GLA_TEXTURE, vTexture, 0);
-			data[id].vao.End();
+			data[id]->vao.Begin(GL_TRIANGLES, 6, 6, 1);
+			data[id]->vao.CopyData(GLA_VERTEX, vVerts);
+			data[id]->vao.CopyData(GLA_TEXTURE, vTexture, 0);
+			data[id]->vao.End();
 			return true;
 		}
 
 		void _Satellite::update(bool bLensFlare) {
 			try {
-				for (int n=0; n<iNumObjects; n++) {
+				for (int n=0; n<data.size(); n++) {
 					update(n, bLensFlare);
 				}
 			}
@@ -367,7 +379,7 @@ namespace Core {
 		}
 
 		void _Satellite::update(std::string name, bool bLensFlare) {
-			update(map[name], bLensFlare);
+			update(data.getID(name), bLensFlare);
 		}
 
 		void _Satellite::update(int id, bool bLensFlare) {
@@ -385,12 +397,12 @@ namespace Core {
 			 * z = d*cos(t)
 			 */
 
-			data[id].fAltitude = timeSys->fTimeRaw * data[id].fSpeed;
-			//data[id].fAltitude = 30;
+			data[id]->fAltitude = timeSys->fTimeRaw * data[id]->fSpeed;
+			//data[id]->fAltitude = 30;
 
-			float	t = Core::Degrees(data[id].fAltitude).toRadians();
-			float	p = data[id].degAzimuth.toRadians();
-			float	d = data[id].fDistance*data[id].fScale;
+			float	t = Core::Degrees(data[id]->fAltitude).toRadians();
+			float	p = data[id]->degAzimuth.toRadians();
+			float	d = data[id]->fDistance*data[id]->fScale;
 			//float	d = 1;
 			float	x =  d*sin(p)*cos(t),
 					y =  d*sin(t),
@@ -401,12 +413,12 @@ namespace Core {
 			Vector4f vTempPos = Vector4f(x, y, z, 1.0f);
 
 			Matrix44f mRot;
-			mRot.Rotate(data[id].degInclination.toRadians(), 1.0f, 0.0f, 0.0f);
+			mRot.Rotate(data[id]->degInclination.toRadians(), 1.0f, 0.0f, 0.0f);
 			vTempPos = mRot * vTempPos;
 
-			data[id].vPosition.x = vTempPos.x;
-			data[id].vPosition.y = vTempPos.y;
-			data[id].vPosition.z = vTempPos.z;
+			data[id]->vPosition.x = vTempPos.x;
+			data[id]->vPosition.y = vTempPos.y;
+			data[id]->vPosition.z = vTempPos.z;
 
 //				// TODO: This is stupid, fix this
 //				float fSunFactor = y/(sun.fLightDistance/4);
@@ -436,7 +448,7 @@ namespace Core {
 			// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 			// Lens Flare calculations
-			if (bLensFlare || data[id].bQuery) {
+			if (bLensFlare || data[id]->bQuery) {
 
 				Vector2f CENTER_SCREEN = { 0.0, 0.0 };
 				float spacing = 0.25;
@@ -455,10 +467,10 @@ namespace Core {
 					// TODO: [SUN} FIX FLARE, WHY CAN'T I GET SCREEN COORDINATES?
 
 					Vector4f vSunPos;
-					vSunPos.x =  data[id].vPosition.x;
-					if (data[id].vPosition.z <= 0.0f) vSunPos.y =  data[id].vPosition.y;	// TODO: [SUN] Flare Calc Problem, only works N-S
-					else vSunPos.y = -data[id].vPosition.y;
-					vSunPos.z =  data[id].vPosition.z;
+					vSunPos.x =  data[id]->vPosition.x;
+					if (data[id]->vPosition.z <= 0.0f) vSunPos.y =  data[id]->vPosition.y;	// TODO: [SUN] Flare Calc Problem, only works N-S
+					else vSunPos.y = -data[id]->vPosition.y;
+					vSunPos.z =  data[id]->vPosition.z;
 					vSunPos.w =  1.0f;
 					std::string t = "vCamPos = " + std::to_string(Core::gameVars->player.active->transform.pos[0]) + ", " + std::to_string(Core::gameVars->player.active->transform.pos[1]) + ", " + std::to_string(Core::gameVars->player.active->transform.pos[2]);
 					if (bDebug) std::cout << t << std::endl;
@@ -466,7 +478,7 @@ namespace Core {
 					{
 						Core::Vector3f a = { 0, 0, 0 };
 						Core::Vector3f b;
-						if (data[id].vPosition.z <= 0.0f) b = Vector3f( vSunPos.x, vSunPos.y, vSunPos.z );			// TODO: [SUN] Flare Calc Problem, only works N-S
+						if (data[id]->vPosition.z <= 0.0f) b = Vector3f( vSunPos.x, vSunPos.y, vSunPos.z );			// TODO: [SUN] Flare Calc Problem, only works N-S
 						else b = Vector3f( vSunPos.x, -vSunPos.y, vSunPos.z );
 						Core::helper->drawLine(a, b, 2);
 					}
@@ -498,7 +510,7 @@ namespace Core {
 //				t = "sunCoords = " + std::to_string(sunCoords_w1.x) + ", " + std::to_string(sunCoords_w1.y) + ", " + std::to_string(sunCoords_w1.z) + ", " + std::to_string(sunCoords_w1.w);	//							gameSys.drawText(7, o++, t, Core::gameVars->color.orange);
 //				if (bDebug) std::cout << t << std::endl;
 
-				if (data[id].vPosition.z <= 0.0f) sunCoords_w2.x	= -(sunCoords.x/(sunCoords.w*0.3));		// TODO: [SUN] Flare Calc Problem, only works N-S
+				if (data[id]->vPosition.z <= 0.0f) sunCoords_w2.x	= -(sunCoords.x/(sunCoords.w*0.3));		// TODO: [SUN] Flare Calc Problem, only works N-S
 				else sunCoords_w2.x	=  (sunCoords.x/(sunCoords.w*0.3));
 				sunCoords_w2.y	= -(sunCoords.y/(sunCoords.w*0.325));
 //				sunCoords_w2.y	=  (sunCoords.y/(sunCoords.w*0.325));
@@ -531,8 +543,13 @@ namespace Core {
 				t = "brightness = " + std::to_string(brightness);													//					gameSys.drawText(8, o++, t, c);
 				if (bDebug) std::cout << t << std::endl;
 
-				float ratio = occlusion->GetRatio(data[id].sName);
-				data[id].fFlareAlpha = brightness * ratio;
+				t = "samples = " + std::to_string(occlusion->GetSamples(data[id]->sName));
+				if (bDebug) std::cout << t << std::endl;
+
+				float ratio = occlusion->GetRatio(data[id]->sName);
+				t = "ratio = " + std::to_string(ratio);
+				if (bDebug) std::cout << t << std::endl;
+				data[id]->fFlareAlpha = brightness * ratio;
 				t = "brightness * ratio = " + std::to_string(brightness * ratio);									//			gameSys.drawText(8, o++, t, c);
 				if (bDebug) std::cout << t << std::endl;
 //
@@ -545,7 +562,7 @@ namespace Core {
 //					Core::Vector3f b = { sunToCenter.x, sunToCenter.y, 0 };
 //					Core::helper->drawLine(a, b, 2);
 
-					if (data[id].fFlareAlpha > 0.0f) {
+					if (data[id]->fFlareAlpha > 0.0f) {
 						Vector2f direction;
 						for (int i = 0; i < 9; i++) {
 							Core::matrix->Push();
@@ -555,13 +572,13 @@ namespace Core {
 								direction.x *= (i*spacing);
 								direction.y *= (i*spacing);
 
-								data[id].vFlarePos[i].x =  ( (sunCoords_w2.x + direction.x) * Core::gameVars->screen.res.x );
-								data[id].vFlarePos[i].y =  ( (sunCoords_w2.y + direction.y) * Core::gameVars->screen.res.y );
+								data[id]->vFlarePos[i].x =  ( (sunCoords_w2.x + direction.x) * Core::gameVars->screen.res.x );
+								data[id]->vFlarePos[i].y =  ( (sunCoords_w2.y + direction.y) * Core::gameVars->screen.res.y );
 
 								// Debug drawing
-//								Core::matrix->Translate(data[id].vFlarePos[i].x, data[id].vFlarePos[i].y, 1.0f);
+//								Core::matrix->Translate(data[id]->vFlarePos[i].x, data[id]->vFlarePos[i].y, 1.0f);
 //								Core::matrix->SetTransform();
-//								helper->drawPoint(10.0f, Vector4f(0.0, 1.0, 0.0, data[id].fFlareAlpha), helper->GLPOINT_CIRCLE);
+//								helper->drawPoint(10.0f, Vector4f(0.0, 1.0, 0.0, data[id]->fFlareAlpha), helper->GLPOINT_CIRCLE);
 							Core::matrix->Pop();
 						}
 					}
@@ -578,9 +595,9 @@ namespace Core {
 			// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 			// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
-			if (data[id].fAltitude > (360.0f * data[id].fSpeed)) {
+			if (data[id]->fAltitude > (360.0f * data[id]->fSpeed)) {
 				timeSys->reset();
-				data[id].fAltitude = 0.0f;
+				data[id]->fAltitude = 0.0f;
 			}
 		}
 
@@ -597,12 +614,14 @@ namespace Core {
 		}
 
 		void _Satellite::draw(std::string name, bool bOcclusion) {
-			draw(map[name], bOcclusion);
+				draw(data.getID(name), bOcclusion);
 		}
 
 		void _Satellite::draw(int id, bool bOcclusion) {
 			glActiveTexture(GL_TEXTURE0);
-			if (bTexLoaded) tex.Set(data[id].sImage);
+			if (bTexLoaded) {
+				tex.Set(data[id]->sImage);
+			}
 			else {
 				sysTex->set(sysTex->TEX_TESTPATTERN);
 				if (!bErrorONS[0]) {
@@ -610,25 +629,26 @@ namespace Core {
 					bErrorONS[0] = true;
 				}
 			}
-			helper->drawPointSprite(data[id].fQuadSize*data[id].fScale, 0.0, colors.GetActive(), helper->GLPOINT_SQUARE);
 
-			if (bOcclusion && data[id].bQuery) {
-				occlusion->StartQuery(data[id].sName, GL_SAMPLES_PASSED);
+			helper->drawPointSprite(data[id]->fQuadSize*data[id]->fScale, 0.0, colors.GetActive(), helper->GLPOINT_SQUARE);
+
+			if (bOcclusion && data[id]->bQuery) {
+				occlusion->StartQuery(data[id]->sName, GL_SAMPLES_PASSED);
 				glActiveTexture(GL_TEXTURE0);
 				sysTex->set(sysTex->TEX_TESTPATTERN);
-				helper->drawPointSprite(data[id].fQuadSize*data[id].fScale, 0.0, Color(1.0, 1.0, 1.0, 0.0), helper->GLPOINT_SQUARE);
-				occlusion->EndQuery(data[id].sName);
+				helper->drawPointSprite(data[id]->fQuadSize*data[id]->fScale, 0.0, Color(1.0, 1.0, 1.0, 0.0), helper->GLPOINT_SQUARE);
+				occlusion->EndQuery(data[id]->sName);
 			}
 		}
 
 		void _Satellite::drawFlare(std::string name) {
-			drawFlare(map[name]);
+			drawFlare(data.getID(name));
 		}
 
 		void _Satellite::drawFlare(int id) {
 			// Only draw if query exists
-			if (bDebug) std::cout << "Draw Flares...[" << data[id].fFlareAlpha << "]";
-			if (data[id].bQuery && data[id].fFlareAlpha > 0.0f) {
+			if (bDebug) std::cout << "Draw Flares...[" << data[id]->fFlareAlpha << "]";
+			if (data[id]->bQuery && data[id]->fFlareAlpha > 0.0f) {
 
 				glActiveTexture(GL_TEXTURE0);
 
@@ -638,10 +658,10 @@ namespace Core {
 				Core::matrix->SetIdentity();
 				for (int n=0; n<9; n++) {
 					matrix->Push();
-						matrix->Translate(data[id].vFlarePos[n].x, data[id].vFlarePos[n].y, 0.0f);
+						matrix->Translate(data[id]->vFlarePos[n].x, data[id]->vFlarePos[n].y, 0.0f);
 						matrix->SetTransform();
-						tex.Set(data[id].sFlare[n]);
-						helper->drawPointSprite(data[id].vFlarePos[n].z, 0.0, Color(1.0, 1.0, 1.0, data[id].fFlareAlpha), helper->GLPOINT_CIRCLE);
+						tex.Set(data[id]->sFlare[n]);
+						helper->drawPointSprite(data[id]->vFlarePos[n].z, 0.0, Color(1.0, 1.0, 1.0, data[id]->fFlareAlpha), helper->GLPOINT_CIRCLE);
 					matrix->Pop();
 				}
 				Core::matrix->SetProjection(Core::matrix->MM_PERSPECTIVE);

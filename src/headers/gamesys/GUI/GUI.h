@@ -375,6 +375,12 @@
  * 			[ ] Window
  * 			[ ] GUI
  * --------------------------------------------------------------------------------------------------
+ * 	OTHER THINGS TO REMEMBER
+ * --------------------------------------------------------------------------------------------------
+ * TODO: [ ] Create a throwRuntimeError() function that accepts '<<'
+ * TODO: [ ] Create New/Delete overloads for custom types (t_VectorMap especially)
+ * TODO: [ ] Allow satellites to be defined as pointer or reference (use GUI method of bLocalPtr, create pointer if reference used)
+ * --------------------------------------------------------------------------------------------------
  *
  * TODO: [ ] (FIX) Implement copy/assignment constructors for all objects to prevent errant pointer destruction
  * 				- AndOrBase shows memory leaks

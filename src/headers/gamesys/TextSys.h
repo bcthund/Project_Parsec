@@ -30,7 +30,10 @@ namespace Core {
 			Timer cursorBlink;
 			bool bBlinkState;
 
-			Map_si	mapChar;
+//			Map_si	mapChar;
+			//t_Vector1T<std::string> mapChar;
+			t_Map<std::string, uint> mapChar;
+
 //			Matrix_System * matrix;
 //			Shader_System * shader;
 //			GLfloat (*pArray)[2];
@@ -1357,7 +1360,8 @@ namespace Core {
 
 				// Create a string<->uint mapping for VAO index
 				for (uint n=0; n<CHARS; n++) {
-					mapChar.insert(std::make_pair(temp[n], n));
+					//mapChar.insert(std::make_pair(temp[n], n));
+					mapChar.add(temp[n], n);
 				}
 
 				/*

@@ -28,28 +28,29 @@ namespace Core {
 	class PTimer
 	{
 		protected:
-			bool	*	started;		// Has the timer been started
-			uint	*	startTicks;		// Time when the timer starts
-			uint	*	stopTicks;		// Time when timer stopped
-			uint	*	splitTicks;		// Time difference after timer stopped
-			float	*	splitAverage;	// Running average for timer
-			float	*	splitMax;		//
-			float	*	splitMin;		//
-			uint	*	splitNum;		// Number of times timer value taken
-			uint		iTimers;		// Number of defined timers
-			uint		iMaxTimers;		// Maximum number of defined timers
-			std::string	*	buffer;		//
-			uint	*	uiSamples;		// Number of samples taken
-			uint	*	uiSamplesMem;	// Number of samples at last update
-			float	*	fAverageMem;	// Average reported at last update
-			RunningStat	*	rsStdDev;	// Statistics Class, used for standard deviation
-			uint	*	uiTicksMem;		// Ticks at time of last update
+			typedef struct t_PTimer {
+				bool		started;		///< Has the timer been started
+				uint		startTicks;		///< Time when the timer starts
+				uint		stopTicks;		///< Time when timer stopped
+				uint		splitTicks;		///< Time difference after timer stopped
+				float		splitAverage;	///< Running average for timer
+				float		splitMax;		///<
+				float		splitMin;		///<
+				uint		splitNum;		///< Number of times timer value taken
+				std::string	buffer;			///<
+				uint		uiSamples;		///< Number of samples taken
+				uint		uiSamplesMem;	///< Number of samples at last update
+				float		fAverageMem;	///< Average reported at last update
+				RunningStat	rsStdDev;		///< Statistics Class, used for standard deviation
+				uint		uiTicksMem;		///< Ticks at time of last update
+			} t_PTimer;
 
 		public:
 			PTimer();
 			~PTimer();
 
-			Map_si TimerId;			// Timer name<->id mapping
+			t_VectorMap<t_PTimer*> timers;
+
 			int addTimer(std::string s);		// Next available timer
 			std::string getSplitTickString(uint id);
 			std::string getSplitTickString(std::string name);

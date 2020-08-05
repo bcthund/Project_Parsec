@@ -56,7 +56,7 @@ namespace Core {
 			float	GetRatio(std::string name);
 //			GLuint	Add(std::string name, int type, Vector3f v);
 //			GLuint	Add(std::string name, int type, int x, int y);
-			GLuint	Add(std::string name, int type);
+			GLuint	add(std::string name, GLuint type);
 			void	StartQuery(std::string name, GLuint type=GL_SAMPLES_PASSED);						// Start running a query
 			bool	ReadAvailable(std::string name);					// Read the query availability result and store
 			bool	GetAvailable(std::string name);						// Get the stored availability
@@ -106,7 +106,7 @@ namespace Core {
 		std::cout << "Done" << std::endl;
 	}
 
-	GLuint _Occlusion::Add(std::string name, int type) {
+	GLuint _Occlusion::add(std::string name, GLuint type) {
 		_OcclusionData *newData = new _OcclusionData;
 		newData->uiQueryId		= &uiQueryIds[uiNum];
 		newData->uiType			= type;

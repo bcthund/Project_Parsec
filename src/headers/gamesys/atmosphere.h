@@ -1364,144 +1364,148 @@ namespace Core {
 					 */
 					//_Satellite newSatellite;
 					//satellite.push_back(newSatellite);
-					_SatelliteData data;
+					_SatelliteData *data = new _SatelliteData();
 
 					// =======================
 					//	SUN
 					// -----------------------
-					data.sName				= "Sun";
+					data->sName						= "Sun";
 
-					data.bQuery				= true;
+					data->bQuery					= true;
 
-					data.vPosition[0] 		= 0.0;
-					data.vPosition[1] 		= 200.0;
-					data.vPosition[2] 		= 0.0;
+					data->vPosition[0] 				= 0.0;
+					data->vPosition[1] 				= 200.0;
+					data->vPosition[2] 				= 0.0;
 
-					data.vAmbientBase[0] 	= 0.1f;
-					data.vAmbientBase[1] 	= 0.1f;
-					data.vAmbientBase[2] 	= 0.1f;
-					data.vAmbientBase[3] 	= 1.0f;
+					data->vAmbientBase[0] 			= 0.1f;
+					data->vAmbientBase[1] 			= 0.1f;
+					data->vAmbientBase[2] 			= 0.1f;
+					data->vAmbientBase[3] 			= 1.0f;
 
-					data.vAmbientColor[0] 	= data.vAmbientBase[0];
-					data.vAmbientColor[1] 	= data.vAmbientBase[1];
-					data.vAmbientColor[2] 	= data.vAmbientBase[2];
-					data.vAmbientColor[3] 	= data.vAmbientBase[3];
+					data->vAmbientColor[0] 			= data->vAmbientBase[0];
+					data->vAmbientColor[1] 			= data->vAmbientBase[1];
+					data->vAmbientColor[2] 			= data->vAmbientBase[2];
+					data->vAmbientColor[3] 			= data->vAmbientBase[3];
 
-					data.vDiffuseBase[0] 	= 1.0f;
-					data.vDiffuseBase[1] 	= 0.0f;
-					data.vDiffuseBase[2] 	= 0.0f;
-					data.vDiffuseBase[3]		= 1.0f;
+					data->vDiffuseBase[0] 			= 1.0f;
+					data->vDiffuseBase[1] 			= 0.0f;
+					data->vDiffuseBase[2] 			= 0.0f;
+					data->vDiffuseBase[3]			= 1.0f;
 
-					data.vDiffuseColor[0] 	= data.vDiffuseBase[0];
-					data.vDiffuseColor[1] 	= data.vDiffuseBase[1];
-					data.vDiffuseColor[2] 	= data.vDiffuseBase[2];
-					data.vDiffuseColor[3] 	= data.vDiffuseBase[3];
+					data->vDiffuseColor[0] 			= data->vDiffuseBase[0];
+					data->vDiffuseColor[1]		 	= data->vDiffuseBase[1];
+					data->vDiffuseColor[2]	 		= data->vDiffuseBase[2];
+					data->vDiffuseColor[3]	 		= data->vDiffuseBase[3];
 
-					data.vSpecularBase[0]	= 1.0f;
-					data.vSpecularBase[1]	= 1.0f;
-					data.vSpecularBase[2]	= 1.0f;
-					data.vSpecularBase[3]	= 1.0f;
+					data->vSpecularBase[0]			= 1.0f;
+					data->vSpecularBase[1]			= 1.0f;
+					data->vSpecularBase[2]			= 1.0f;
+					data->vSpecularBase[3]			= 1.0f;
 
-					data.vSpecularColor[0] 	= data.vSpecularBase[0];
-					data.vSpecularColor[1] 	= data.vSpecularBase[1];
-					data.vSpecularColor[2] 	= data.vSpecularBase[2];
-					data.vSpecularColor[3] 	= data.vSpecularBase[3];
+					data->vSpecularColor[0] 		= data->vSpecularBase[0];
+					data->vSpecularColor[1] 		= data->vSpecularBase[1];
+					data->vSpecularColor[2] 		= data->vSpecularBase[2];
+					data->vSpecularColor[3] 		= data->vSpecularBase[3];
 
-					data.fShinyBase				= 1.0f;
-					data.fShiny					= data.fShinyBase;
-					data.degAzimuth.degrees		= 0.0f;
-					data.fAltitude				= 80.0f;
-					data.fQuadSize				= 16;
-					data.fDistance				= 1000.0f;
-					data.degInclination.degrees	= -23.5f;
-//					data.degInclination.degrees	= 0.0f;
+					data->fShinyBase				= 1.0f;
+					data->fShiny					= data->fShinyBase;
+					data->degAzimuth.degrees		= 0.0f;
+					data->fAltitude					= 80.0f;
+					data->fQuadSize					= 16;
+					data->fDistance					= 1000.0f;
+					data->degInclination.degrees	= -23.5f;
+//					data->degInclination.degrees	= 0.0f;
 
-					data.sImage				= "sun_00.png";
-					data.sFlare[0]			= "tex6.png";
-					data.sFlare[1]			= "tex4.png";
-					data.sFlare[2]			= "tex2.png";
-					data.sFlare[3]			= "tex7.png";
-					data.sFlare[4]			= "tex3.png";
-					data.sFlare[5]			= "tex5.png";
-					data.sFlare[6]			= "tex4.png";
-					data.sFlare[7]			= "tex8.png";
-					data.sFlare[8]			= "tex9.png";
-					data.fSpeed				= 2.0f;
-					data.fScale				= 10.0f;
+					data->sImage					= "sun_00.png";
+					data->sFlare[0]					= "tex6.png";
+					data->sFlare[1]					= "tex4.png";
+					data->sFlare[2]					= "tex2.png";
+					data->sFlare[3]					= "tex7.png";
+					data->sFlare[4]					= "tex3.png";
+					data->sFlare[5]					= "tex5.png";
+					data->sFlare[6]					= "tex4.png";
+					data->sFlare[7]					= "tex8.png";
+					data->sFlare[8]					= "tex9.png";
+					data->fSpeed					= 2.0f;
+					data->fScale					= 10.0f;
 
-//					data.vFlarePos[0].z		= 100*0.5f;
-//					data.vFlarePos[1].z		= 100*0.23f;
-//					data.vFlarePos[2].z		= 100*0.1f;
-//					data.vFlarePos[3].z		= 100*0.05f;
-//					data.vFlarePos[4].z		= 100*0.06f;
-//					data.vFlarePos[5].z		= 100*0.07f;
-//					data.vFlarePos[6].z		= 100*0.4f;
-//					data.vFlarePos[7].z		= 100*0.6f;
-//					data.vFlarePos[8].z		= 100*0.05f;
+//					data->vFlarePos[0].z			= 100*0.5f;
+//					data->vFlarePos[1].z			= 100*0.23f;
+//					data->vFlarePos[2].z			= 100*0.1f;
+//					data->vFlarePos[3].z			= 100*0.05f;
+//					data->vFlarePos[4].z			= 100*0.06f;
+//					data.vFlarePos[5].z				= 100*0.07f;
+//					data.vFlarePos[6].z				= 100*0.4f;
+//					data.vFlarePos[7].z				= 100*0.6f;
+//					data.vFlarePos[8].z				= 100*0.05f;
 
 					satellite->add(data);
+				}
 
+				{
 					// =======================
 					//	MOON
 					// -----------------------
-					data.sName				= "Moon";
+					_SatelliteData *data = new _SatelliteData();
 
-					data.bQuery				= false;
+					data->sName						= "Moon";
 
-					data.vPosition[0] 		= 0.0;
-					data.vPosition[1] 		= 200.0;
-					data.vPosition[2] 		= 0.0;
+					data->bQuery					= false;
 
-					data.vAmbientBase[0] 	= 0.1f;
-					data.vAmbientBase[1] 	= 0.1f;
-					data.vAmbientBase[2] 	= 0.1f;
-					data.vAmbientBase[3] 	= 1.0f;
+					data->vPosition[0] 				= 0.0;
+					data->vPosition[1] 				= 200.0;
+					data->vPosition[2] 				= 0.0;
 
-					data.vAmbientColor[0] 	= data.vAmbientBase[0];
-					data.vAmbientColor[1] 	= data.vAmbientBase[1];
-					data.vAmbientColor[2] 	= data.vAmbientBase[2];
-					data.vAmbientColor[3] 	= data.vAmbientBase[3];
+					data->vAmbientBase[0] 			= 0.1f;
+					data->vAmbientBase[1] 			= 0.1f;
+					data->vAmbientBase[2] 			= 0.1f;
+					data->vAmbientBase[3] 			= 1.0f;
 
-					data.vDiffuseBase[0] 	= 1.0f;
-					data.vDiffuseBase[1] 	= 0.0f;
-					data.vDiffuseBase[2] 	= 0.0f;
-					data.vDiffuseBase[3]		= 1.0f;
+					data->vAmbientColor[0] 			= data->vAmbientBase[0];
+					data->vAmbientColor[1] 			= data->vAmbientBase[1];
+					data->vAmbientColor[2] 			= data->vAmbientBase[2];
+					data->vAmbientColor[3] 			= data->vAmbientBase[3];
 
-					data.vDiffuseColor[0] 	= data.vDiffuseBase[0];
-					data.vDiffuseColor[1] 	= data.vDiffuseBase[1];
-					data.vDiffuseColor[2] 	= data.vDiffuseBase[2];
-					data.vDiffuseColor[3] 	= data.vDiffuseBase[3];
+					data->vDiffuseBase[0] 			= 1.0f;
+					data->vDiffuseBase[1] 			= 0.0f;
+					data->vDiffuseBase[2] 			= 0.0f;
+					data->vDiffuseBase[3]			= 1.0f;
 
-					data.vSpecularBase[0]	= 1.0f;
-					data.vSpecularBase[1]	= 1.0f;
-					data.vSpecularBase[2]	= 1.0f;
-					data.vSpecularBase[3]	= 1.0f;
+					data->vDiffuseColor[0] 			= data->vDiffuseBase[0];
+					data->vDiffuseColor[1] 			= data->vDiffuseBase[1];
+					data->vDiffuseColor[2] 			= data->vDiffuseBase[2];
+					data->vDiffuseColor[3] 			= data->vDiffuseBase[3];
 
-					data.vSpecularColor[0] 	= data.vSpecularBase[0];
-					data.vSpecularColor[1] 	= data.vSpecularBase[1];
-					data.vSpecularColor[2] 	= data.vSpecularBase[2];
-					data.vSpecularColor[3] 	= data.vSpecularBase[3];
+					data->vSpecularBase[0]			= 1.0f;
+					data->vSpecularBase[1]			= 1.0f;
+					data->vSpecularBase[2]			= 1.0f;
+					data->vSpecularBase[3]			= 1.0f;
 
-					data.fShinyBase			= 1.0f;
-					data.fShiny				= data.fShinyBase;
-					data.degAzimuth.degrees	= 90.0f;
-					data.fAltitude			= 80.0f;
-					data.fQuadSize			= 16;
-					data.fDistance			= 500.0f;
-					data.degInclination.degrees		= 0.0f;
+					data->vSpecularColor[0] 		= data->vSpecularBase[0];
+					data->vSpecularColor[1] 		= data->vSpecularBase[1];
+					data->vSpecularColor[2] 		= data->vSpecularBase[2];
+					data->vSpecularColor[3] 		= data->vSpecularBase[3];
 
-					data.sImage				= "moon_00.png";
-					data.sFlare[0]			= "tex1.png";
-					data.sFlare[1]			= "tex2.png";
-					data.sFlare[2]			= "tex3.png";
-					data.sFlare[3]			= "tex4.png";
-					data.sFlare[4]			= "tex5.png";
-					data.sFlare[5]			= "tex6.png";
-					data.sFlare[6]			= "tex7.png";
-					data.sFlare[7]			= "tex8.png";
-					data.sFlare[8]			= "tex9.png";
-					data.fSpeed				= 10.0f;
-					data.fScale				= 5.0f;
+					data->fShinyBase				= 1.0f;
+					data->fShiny					= data->fShinyBase;
+					data->degAzimuth.degrees		= 90.0f;
+					data->fAltitude					= 80.0f;
+					data->fQuadSize					= 16;
+					data->fDistance					= 500.0f;
+					data->degInclination.degrees		= 0.0f;
+
+					data->sImage					= "moon_00.png";
+					data->sFlare[0]					= "tex1.png";
+					data->sFlare[1]					= "tex2.png";
+					data->sFlare[2]					= "tex3.png";
+					data->sFlare[3]					= "tex4.png";
+					data->sFlare[4]					= "tex5.png";
+					data->sFlare[5]					= "tex6.png";
+					data->sFlare[6]					= "tex7.png";
+					data->sFlare[7]					= "tex8.png";
+					data->sFlare[8]					= "tex9.png";
+					data->fSpeed					= 10.0f;
+					data->fScale					= 5.0f;
 
 					satellite->add(data);
 				}

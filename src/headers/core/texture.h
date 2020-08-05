@@ -38,7 +38,6 @@ namespace Core {
 			GLfloat		fLargest;			// Maximum ANISOTROPY
 			GLuint		uiNumLayers;		// Maximum textures that can be loaded
 			GLuint		* glImage;			// OpenGL image id
-			//Map_si		mapImage;			// ID/Filename pairing
 			t_VectorMap<int> mapImage;
 			bool		* bFinished;		// Array confirming loaded textures
 			bool		bBeginCalled;		// If begin hasn't been called, then abort destruction
@@ -56,7 +55,6 @@ namespace Core {
 
 		protected:
 			void LoadImageFromFile(std::string file, SDL_Surface * sdlImage);
-//			inline void MakePair(std::string cName, GLuint uiNum) { mapImage.insert( std::make_pair(cName, uiNum) ); }
 			inline void MakePair(std::string cName, int uiNum) { mapImage.add(cName, uiNum); }
 
 		public:
@@ -78,7 +76,6 @@ namespace Core {
 					for(uint i=0; i<uiNumLayers; i++) {
 						if(bFinished[i]) {
 							if(glIsTexture(glImage[i])) {
-								//cout << "Deleting Texture:" << i << ":" << glImage[i] << endl;
 								glDeleteTextures(1, &glImage[i]);
 							}
 						}
@@ -88,16 +85,10 @@ namespace Core {
 				}
 			}
 
-			inline int			Get(std::string cName)	{ return mapImage[cName]; }
-			inline void			Set(int uiLayer)		{ glBindTexture(GL_TEXTURE_2D, glImage[uiLayer]); }
-			inline void 		Set(std::string cName)	{ glBindTexture(GL_TEXTURE_2D, glImage[mapImage[cName]]); }
-			inline std::string	Get(int uiLayer)		{
-//				for(auto const &ent1 : mapImage) {
-//					if (ent1.second == uiLayer) return ent1.first;
-//				}
-//				return 0;
-				return mapImage.getName(uiLayer);
-			}
+			inline int			Get(std::string cName)	{	return mapImage[cName];	}
+			inline void			Set(int uiLayer)		{	glBindTexture(GL_TEXTURE_2D, glImage[uiLayer]);	}
+			inline void 		Set(std::string cName)	{	glBindTexture(GL_TEXTURE_2D, glImage[mapImage[cName]]);	}
+			inline std::string	Get(int uiLayer)		{	return mapImage.getName(uiLayer);	}
 	};
 }
 
