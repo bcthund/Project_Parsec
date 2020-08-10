@@ -119,6 +119,9 @@ elif [ "$mode" != "${mode#[3]}" ] ;then
         cmd "git merge ${MyBranch} --no-ff";
         cmd "git push";
         cmd "git branch -d ${MyBranch}";
+        cmd "git push origin --delete ${MyBranch}";
+        #cmd "git remote prune origin";
+        #cmd "git remote prune ${MyBranch}";
     fi
 
 fi
