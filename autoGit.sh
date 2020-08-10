@@ -32,6 +32,7 @@ echo -e -n "${GREEN}(1-3)? ${NC}"
 read mode
 if [ "$mode" != "${mode#[1]}" ] ;then
     cmd "git status"
+    cmd "git branch -a"
 elif [ "$mode" != "${mode#[2]}" ] ;then
     echo -e -n "${BLUE}Do you want to add, commit and push? ${GREEN}(y/n/a) ${NC}"
     read answer1
@@ -74,7 +75,7 @@ elif [ "$mode" != "${mode#[2]}" ] ;then
         fi
         
         if [ "$answer2" != "${answer2#[Yy]}" ] ;then
-            cmd "git push"
+            cmd "git push -u origin $(git branch --show-current)"
         fi
         
         # ==================================================================
@@ -95,11 +96,11 @@ elif [ "$mode" != "${mode#[2]}" ] ;then
 elif [ "$mode" != "${mode#[3]}" ] ;then
 
     echo -e -n "${BLUE}Branch Options:\n"
-    echo -e -n "${YELLOW}  1) New${NC}"
-    echo -e -n "${YELLOW}  2) Switch${NC}"
-    echo -e -n "${YELLOW}  3) Switch to Master${NC}"
-    echo -e -n "${YELLOW}  4) List${NC}"
-    echo -e -n "${YELLOW}  5) Merge${NC}"
+    echo -e -n "${YELLOW}  1) New${NC}\n"
+    echo -e -n "${YELLOW}  2) Switch${NC}\n"
+    echo -e -n "${YELLOW}  3) Switch to Master${NC}\n"
+    echo -e -n "${YELLOW}  4) List${NC}\n"
+    echo -e -n "${YELLOW}  5) Merge${NC}\n\n"
     echo -e -n "${GREEN}(1-5)? ${NC}"
     read answer1
     if [ "$answer1" != "${answer1#[1]}" ] ;then
@@ -115,7 +116,7 @@ elif [ "$mode" != "${mode#[3]}" ] ;then
     elif [ "$answer1" != "${answer1#[5]}" ] ;then
         MyBranch=$(git branch --show-current);
         cmd "git checkout master";
-        cmd "git merge ${MyBranch} -no-ff";
+        cmd "git merge ${MyBranch} --no-ff";
         cmd "git push";
         cmd "git branch -d ${MyBranch}";
     fi
