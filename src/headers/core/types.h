@@ -1634,33 +1634,14 @@ namespace Core {
 				}
 			}
 
-//			bool checkValue(VALUE value, bool bThrow=true) {
-//				if(value >= 0 && value < map.size()) return true;
-//				else {
-//					if (bThrow) throw std::runtime_error("Invalid Value in t_Map '"+std::to_string(value)+"'");
-//					else return false;
-//				}
-//			}
-
 			virtual VALUE & operator[](KEY key)	{
 				checkKey(key);
 				return map[key];
 			}
 
-//			virtual KEY & operator[](VALUE value)	{
-//				checkValue(value);
-				//return map[value];
-//				return 0;
-//			}
-
 //			int	operator()(std::string name) {
 //				checkName(name);
 //				return groups[map[name]].index;
-//			}
-//
-//			int	operator()(int id) {
-//				checkID(id);
-//				return groups[id].index;
 //			}
 
 			virtual void add(KEY key, VALUE value, bool bThrow=true) {
@@ -1691,15 +1672,6 @@ namespace Core {
 				checkKey(key);
 				return map[key];
 			}
-
-//			virtual T & get(int id)	{
-//				checkID(id);
-//				return typeList[id];
-//			}
-
-//			int getID(std::string name) {
-//				return map[name];
-//			}
 
 			KEY getName(VALUE value) {
 				for (const auto& item : map) {
@@ -2024,9 +1996,9 @@ namespace Core {
 			// Allow iteration using
 			// for(auto item : items) {}
 			typedef std::vector<t_BIFS>* iterator;
-			typedef const std::vector<t_BIFS>* const_iterator;
 			iterator begin() 		{ return &states[0]; }
 			iterator end() 			{ return &states[states.size()]; }
+//			typedef const std::vector<t_BIFS>* const_iterator;
 //			const_iterator begin() 	const	{ return &states[0]; }
 //			const_iterator end() 	const	{ return &states[states.size()]; }
 	};

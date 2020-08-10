@@ -132,7 +132,7 @@
  * TODO: [X] Fields Fixes
  * 			[X] Allow local values
  *
- * TODO: [X] Drop down (Combo Box)
+ * TODO: [ ] Drop down (Combo Box)
  * 			[X] Create new class
  * 				[X] Add Constraint definition
  * 				[X] Add to Containers
@@ -175,6 +175,7 @@
  * 			[X] Add autohide
  * 				[X] Monitor focus of itemList
  * 				[X] If mouse hover, then mouse leaves, auto hide.
+ * 				[ ] Close if escape key pressed
  * 			[X] Access Functions
  * 				[X] Add new item
  * 				[X] Remove item (maybe not do this, possible complications?)
@@ -277,6 +278,13 @@
  * 			[ ] Use shader to procedurally drop fragments outside circle area
  * 			[ ] Allow donut style as well, drop outer circle and smaller inner circle
  * 			[ ] Legend anchored externally to chart (L/TL/T/TR/R/BR/B/BL)
+ *
+ * TODO: [ ] Poly Button - Polygon shaped button
+ * 			[ ] Start with 4 sides
+ * 				[ ] Base class implementation
+ * 				[ ] point in quad test for mouse
+ * 				[ ]
+ * 			[ ] Allow more than 4 sides?
  *
  * TODO: [ ] Animation - Use animation system except draw with Props system to screen.
  * 			  - Animation can be repeating or one-shot controlled
