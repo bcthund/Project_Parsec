@@ -463,7 +463,7 @@ void _Admin::init() {
 		con_button.setToolTip("None.");
 		con_button.setPos(    0, -60);	Core::gui["GameMenu"]["Window 2"].Button.add("ComboBox",		false, con_button);
 		con_button.setToolTip("None.");
-		con_button.setPos(   98, -60);	Core::gui["GameMenu"]["Window 2"].Button.add("Spare 4",			false, con_button);
+		con_button.setPos(   98, -60);	Core::gui["GameMenu"]["Window 2"].Button.add("2D Slider",		false, con_button);
 		con_button.setToolTip("None.");
 		con_button.setPos(  196, -60);	Core::gui["GameMenu"]["Window 2"].Button.add("Spare 5",			false, con_button);
 
@@ -1838,6 +1838,31 @@ void _Admin::init() {
 		std::cout << "Done" << std::endl;
 	}
 
+	if (!bOneShot[45]) {
+		std::cout << "GUI: Loading #45: 2D Slider .................................... ";
+		//std::cout << "...............................................................";
+
+		Core::GUI::Props_Slider2D prop;
+		prop.setOrigin(Core::GUI::CONSTRAIN_BOTTOM);
+		prop.setAnchor(Core::GUI::CONSTRAIN_BOTTOM);
+		prop.setWidth(200, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+		prop.setHeight(200, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+		prop.setX_MinMax(0, 100);
+		prop.setY_MinMax(0, 100);
+		//prop.setStep(1.0f, 2.0f, 10.0f);
+		Core::gui["GameMenu"]["Window 20"].Slider2D.add("2D Slider", 25, 25, prop);
+
+		bOneShot[45] = true;
+		std::cout << "Done" << std::endl;
+	}
+
+//	if (!bOneShot[44]) {
+//		std::cout << "GUI: Loading #44: ComboBox ..................................... ";
+//		//std::cout << "...............................................................";
+//		bOneShot[44] = true;
+//		std::cout << "Done" << std::endl;
+//	}
+
 	bInit = true;
 }
 
@@ -2046,6 +2071,7 @@ void _Admin::run() {
 		else if(Core::gui["GameMenu"]["Window 2"].Button["Scissor"].getState())			Core::gui["GameMenu"]["Window 17"].show();
 		else if(Core::gui["GameMenu"]["Window 2"].Button["Progress Bar"].getState())	Core::gui["GameMenu"]["Window 18"].show();
 		else if(Core::gui["GameMenu"]["Window 2"].Button["ComboBox"].getState())		Core::gui["GameMenu"]["Window 19"].show();
+		else if(Core::gui["GameMenu"]["Window 2"].Button["2D Slider"].getState())		Core::gui["GameMenu"]["Window 20"].show();
 		else if(Core::gui["GameMenu"]["Window 2"].Button["Lighting"].getState())		Core::gui["GameMenu"]["Window 1"].show();
 		else if(Core::gui["GameMenu"]["Window 2"].Button["Skill Tree"].getState()) {
 			Core::gui["GameMenu"]["Window 14"].show();
