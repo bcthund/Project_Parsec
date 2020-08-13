@@ -1850,10 +1850,52 @@ void _Admin::init() {
 		prop.setX_MinMax(0, 100);
 		prop.setY_MinMax(0, 100);
 		prop.setY(100);
+		prop.setX(-20);
 		prop.control.setWidth(16, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
 		prop.control.setHeight(16, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
 		//prop.setStep(1.0f, 2.0f, 10.0f);
 		Core::gui["GameMenu"]["Window 20"].Slider2D.add("2D Slider", 25, 25, prop);
+
+		Core::GUI::Props_Slider prop2;
+		prop2.setOrigin(Core::GUI::CONSTRAIN_RIGHT);
+		prop2.setAnchor(Core::GUI::CONSTRAIN_RIGHT);					// Center of button
+		prop2.setWidth(20, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+		prop2.setHeight(300, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+		prop2.setOrientation(Core::GUI::SLIDER_VERTICAL);
+		prop2.control.setWidth(40, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+		prop2.control.setHeight(20, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+		prop2.showField();
+		prop2.field.setOrigin(Core::GUI::CONSTRAIN_BOTTOM);
+		prop2.field.setAnchor(Core::GUI::CONSTRAIN_TOP);
+		prop2.showLabel();
+		prop2.label.setOrigin(Core::GUI::CONSTRAIN_TOP);
+		prop2.label.setAnchor(Core::GUI::CONSTRAIN_BOTTOM);
+		prop2.setPrecision(5);
+		prop2.setX(-40);
+		prop2.setY(0);
+		prop2.setMinMax(0, 100);
+		prop2.setStep(1.0f, 5.0f, 10.0f);
+		prop2.setText("Y Value");
+		Core::gui["GameMenu"]["Window 20"].Slider.add("Y Value", &Core::gui["GameMenu"]["Window 20"].Slider2D["2D Slider"].getY_ValuePtr(), prop2);
+
+
+		prop2.setOrigin(Core::GUI::CONSTRAIN_TOP);
+		prop2.setAnchor(Core::GUI::CONSTRAIN_TOP);					// Center of button
+		prop2.setWidth(300, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+		prop2.setHeight(20, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+		prop2.setOrientation(Core::GUI::SLIDER_HORIZONTAL);
+		prop2.control.setWidth(20, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+		prop2.control.setHeight(40, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+		prop2.field.setOrigin(Core::GUI::CONSTRAIN_RIGHT);
+		prop2.field.setAnchor(Core::GUI::CONSTRAIN_LEFT);
+		prop2.label.setOrigin(Core::GUI::CONSTRAIN_LEFT);
+		prop2.label.setAnchor(Core::GUI::CONSTRAIN_RIGHT);
+		prop2.setX(0);
+		prop2.setY(-50);
+		prop2.setText("X Value");
+		Core::gui["GameMenu"]["Window 20"].Slider.add("X Value", &Core::gui["GameMenu"]["Window 20"].Slider2D["2D Slider"].getX_ValuePtr(), prop2);
+
+
 
 		bOneShot[45] = true;
 		std::cout << "Done" << std::endl;

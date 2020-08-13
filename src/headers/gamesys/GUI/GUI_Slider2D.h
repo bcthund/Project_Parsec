@@ -47,11 +47,14 @@ namespace Core {
 					int *yValuePtr;
 					bool bLocalXValue;
 					bool bLocalYValue;
-//					void setX_ValuePtr(int *xPtr);
-//					int & getX_ValuePtr();
-//					void setY_ValuePtr(int *yPtr);
-//					int & getY_ValuePtr();
-//					int getValue();
+
+					void setX_ValuePtr(int *xPtr);
+					int & getX_ValuePtr();
+					int getX_Value();
+
+					void setY_ValuePtr(int *yPtr);
+					int & getY_ValuePtr();
+					int getY_Value();
 
 					ToolTip toolTip;
 					void init();
@@ -84,13 +87,11 @@ namespace Core {
 					void updateObjectState(iState eExternState);
 
 					float getNormalized(int iCurrent, int iMin, int iMax);
-//					float getNormalized(T fCurrent, float fMin, float fMax);
 
 					int getX_ValueFromPos(int xVal);
 					int getY_ValueFromPos(int yVal);
-//					float getValueFromPos(float f);
-//					float getPosFromValue(T f);
 					void updateControlPos();
+					void updateInput();
 			};
 
 			Slider2D::Slider2D() {
@@ -372,29 +373,29 @@ namespace Core {
 				if(label != nullptr) delete label;
 			}
 
-//			void Slider2D::setValuePtr(T *ptr)	{
-//				if(bLocalValue && valuePtr != nullptr) delete valuePtr;
-//				bLocalValue = false;
-//				valuePtr = ptr;
-//			}
+			int & Slider2D::getX_ValuePtr() 		{	return *xValuePtr;	}
+			int Slider2D::getX_Value()				{	return *xValuePtr;	}
+			void Slider2D::setX_ValuePtr(int *xPtr) {
+				if(bLocalXValue && xValuePtr != nullptr)
+					delete xValuePtr;
+				bLocalXValue = false;
+				xValuePtr = xPtr;
+			}
 
-//			int & Slider2D::getValuePtr()	{
-//				return *valuePtr;
-//			}
-
-//			int Slider2D::getValue()	{
-//				return *valuePtr;
-//			}
+			int & Slider2D::getY_ValuePtr()			{	return *yValuePtr;	}
+			int Slider2D::getY_Value()				{	return *yValuePtr;	}
+			void Slider2D::setY_ValuePtr(int *yPtr) {
+				if(bLocalYValue && yValuePtr != nullptr)
+					delete yValuePtr;
+				bLocalYValue = false;
+				yValuePtr = yPtr;
+			}
 
 			void Slider2D::init() {
 				this->id = IDs.create();
 
 				// Setup contraints
-//				if(this->bHasParent) this->con->exec(*this->parent);
-//				else this->con->exec();
-
 				if(bHasParent) {
-					//if(!con->scroll.getEnabled()) con->scroll.bind(*parent);
 					con->scroll.bind(*parent);
 					con->exec(*parent);
 				}
@@ -512,9 +513,9 @@ namespace Core {
 				i4 = 0.0f;
 				i5 = f1 * i2 + i3 - i4;
 
-				debug.log("X: i0 = "+std::to_string(i0)+", f1 = "+std::to_string(f1)+", i2 = "+std::to_string(i2)+", i3 = "+std::to_string(i3)+", i4 = "+std::to_string(i4)+", i5 = "+std::to_string(i5));
-				//return int(i5/this->con->vStep[0])*this->con->vStep[0];		// Constrain value to minimum step size
-				return i5;
+//				debug.log("X: i0 = "+std::to_string(i0)+", f1 = "+std::to_string(f1)+", i2 = "+std::to_string(i2)+", i3 = "+std::to_string(i3)+", i4 = "+std::to_string(i4)+", i5 = "+std::to_string(i5));
+				return int(i5/this->con->vStep[0])*this->con->vStep[0];		// Constrain value to minimum step size
+//				return i5;
 			}
 
 			int Slider2D::getY_ValueFromPos(int yVal) {
@@ -538,13 +539,52 @@ namespace Core {
 				i4 = 0.0f;
 				i5 = f1 * i2 + i3 - i4;
 
-				debug.log("Y: i0 = "+std::to_string(i0)+", f1 = "+std::to_string(f1)+", i2 = "+std::to_string(i2)+", i3 = "+std::to_string(i3)+", i4 = "+std::to_string(i4)+", i5 = "+std::to_string(i5));
-				//return int(i5/this->con->vStep[0])*this->con->vStep[0];		// Constrain value to minimum step size
-				return i5;
+//				debug.log("Y: i0 = "+std::to_string(i0)+", f1 = "+std::to_string(f1)+", i2 = "+std::to_string(i2)+", i3 = "+std::to_string(i3)+", i4 = "+std::to_string(i4)+", i5 = "+std::to_string(i5));
+				return int(i5/this->con->vStep[0])*this->con->vStep[0];		// Constrain value to minimum step size
+//				return i5;
 			}
 
-			void Slider2D::updateScrollMouse() {
-//
+			void Slider2D::updateInput() {
+
+				// If THIS object is active, then monitor for input
+//				if(this->bFocusPresent && (this->sActiveObject == this->id)) {
+					SDL_PumpEvents();
+					keyboard.event = SDL_GetKeyboardState(NULL);
+					keyboard.update();
+
+					int xModVal = this->con->vStep[1];
+					int yModVal = this->con->vStep[1];
+
+					const Uint8 *keyState = SDL_GetKeyboardState(NULL);
+					if (keyState[SDL_SCANCODE_LSHIFT] || keyState[SDL_SCANCODE_RSHIFT]) {
+						xModVal = this->con->vStep[2];
+						yModVal = this->con->vStep[2];
+					}
+					else if (keyState[SDL_SCANCODE_LCTRL] || keyState[SDL_SCANCODE_RCTRL]) {
+						xModVal = this->con->vStep[0];
+						yModVal = this->con->vStep[0];
+					}
+
+					if(this->con->xMinValue > this->con->xMaxValue)	xModVal = -xModVal;
+					if(this->con->yMinValue > this->con->yMaxValue)	yModVal = -yModVal;
+
+					//case Core::_Mouse::MOUSE_WHEEL_DOWN:	*this->valuePtr -= modVal;	break;
+
+					if (keyboard.keys[SDLK_LEFT].bActive) {
+						*this->xValuePtr -= xModVal;
+					}
+					if (keyboard.keys[SDLK_RIGHT].bActive) {
+						*this->xValuePtr += xModVal;
+					}
+
+					if (keyboard.keys[SDLK_UP].bActive) {
+						*this->yValuePtr += yModVal;
+					}
+					if (keyboard.keys[SDLK_DOWN].bActive) {
+						*this->yValuePtr -= yModVal;
+					}
+//				}
+
 //				Core::_Mouse::MOUSE_STATE wheel = Core::mouse->checkWheel();
 //
 //				if(wheel != Core::_Mouse::MOUSE_NONE) {
@@ -581,7 +621,7 @@ namespace Core {
 					if(this->enabled()) {
 						// Modify slider value by mouse wheel
 						if(this->mState&Core::_Mouse::MOUSE_HOVER) {
-							updateScrollMouse();
+							updateInput();
 						}
 
 						if(!this->bHasFocus && ((this->mState&Core::_Mouse::MOUSE_LEFT) || (this->mState&Core::_Mouse::MOUSE_LEFT_DOWN))) {
@@ -631,8 +671,8 @@ namespace Core {
 
 			void Slider2D::exec(iState eExternState) {
 				if(this->bInit && this->con->visibility && ((this->parent!=nullptr && this->parent->visibility) || (this->parent==nullptr))) {
-					debug.log("x = "+std::to_string(*this->xValuePtr)+", xMin = "+std::to_string(xMinPos)+", xMax = "+std::to_string(xMaxPos)+", xSpanPos = "+std::to_string(xSpanPos)+", xSpanVal = "+std::to_string(xSpanValue));
-					debug.log("y = "+std::to_string(*this->yValuePtr)+", yMin = "+std::to_string(yMinPos)+", yMax = "+std::to_string(yMaxPos)+", ySpanPso = "+std::to_string(ySpanPos)+", ySpanVal = "+std::to_string(ySpanValue));
+//					debug.log("x = "+std::to_string(*this->xValuePtr)+", xMin = "+std::to_string(xMinPos)+", xMax = "+std::to_string(xMaxPos)+", xSpanPos = "+std::to_string(xSpanPos)+", xSpanVal = "+std::to_string(xSpanValue));
+//					debug.log("y = "+std::to_string(*this->yValuePtr)+", yMin = "+std::to_string(yMinPos)+", yMax = "+std::to_string(yMaxPos)+", ySpanPso = "+std::to_string(ySpanPos)+", ySpanVal = "+std::to_string(ySpanValue));
 
 
 					/*

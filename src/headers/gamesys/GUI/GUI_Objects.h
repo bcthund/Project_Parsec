@@ -95,7 +95,8 @@ namespace Core {
 
 						c_Generic_Base() {
 							if(!bKeyboardInit) {
-								keyboard.calc(Core::_Keyboard::KEYTYPE_ONESHOT);
+								//keyboard.calc(Core::_Keyboard::KEYTYPE_ONESHOT);
+								keyboard.calc(Core::_Keyboard::KEYTYPE_DEBOUNCE);
 								bKeyboardInit = true;
 							}
 						}
