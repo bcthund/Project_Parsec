@@ -23,26 +23,27 @@
 namespace Core {
 	namespace GUI {
 		namespace Object {
-			class FieldBase {
-				public:
-					static Core::_Keyboard keyboard;	//
-//					static bool bFocusPresent;			// True if ANY slider has focus, only one can have focus at a time
-					static bool bKeyboardInit;
-
-					FieldBase() {
-						if(!bKeyboardInit) {
-							keyboard.calc(Core::_Keyboard::KEYTYPE_ONESHOT);
-							bKeyboardInit = true;
-						}
-					}
-			};
-			Core::_Keyboard FieldBase::keyboard	= Core::_Keyboard();
-//			bool FieldBase::bFocusPresent		= false;
-			bool FieldBase::bKeyboardInit		= false;
+//			class FieldBase {
+//				public:
+//					static Core::_Keyboard keyboard;	//
+////					static bool bFocusPresent;			// True if ANY slider has focus, only one can have focus at a time
+//					static bool bKeyboardInit;
+//
+//					FieldBase() {
+//						if(!bKeyboardInit) {
+//							keyboard.calc(Core::_Keyboard::KEYTYPE_ONESHOT);
+//							bKeyboardInit = true;
+//						}
+//					}
+//			};
+//			Core::_Keyboard FieldBase::keyboard	= Core::_Keyboard();
+////			bool FieldBase::bFocusPresent		= false;
+//			bool FieldBase::bKeyboardInit		= false;
 
 			template <class T>
 //			class Field : public FieldBase, public Base::Interactive<Props_Field, T> {
-			class Field : public FieldBase, public Base::Interactive<Props_Field> {
+//			class Field : public FieldBase, public Base::Interactive<Props_Field> {
+			class Field : public Base::Interactive<Props_Field> {
 					friend class AnyField;
 				public:
 					Field();

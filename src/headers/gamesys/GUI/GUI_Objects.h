@@ -62,10 +62,27 @@ namespace Core {
 					void remove(std::string id) 		{	list.remove(id);	}
 					int & operator[](std::string id)	{	return list[id];	}
 				};
-				//t_Vector<bool> c_ID::list;
+
+//				class FieldBase {
+//					public:
+//						static Core::_Keyboard keyboard;
+//						static bool bKeyboardInit;
+//
+//						FieldBase() {
+//							if(!bKeyboardInit) {
+//								keyboard.calc(Core::_Keyboard::KEYTYPE_ONESHOT);
+//								bKeyboardInit = true;
+//							}
+//						}
+//				};
+//				Core::_Keyboard FieldBase::keyboard	= Core::_Keyboard();
+//				bool FieldBase::bKeyboardInit		= false;
 
 				struct c_Generic_Base {
 					public:
+						static Core::_Keyboard keyboard;
+						static bool bKeyboardInit;
+
 						static bool bFocusPresent;				///< An object currently has focus
 						static std::string sActiveObject;		///< Global active object, only one object can be active at a time (Field, slider, textedit, etc)
 
@@ -76,16 +93,25 @@ namespace Core {
 						static Props_Window* activeGUI;
 						static Props_Window* activeContainer;
 
-						c_Generic_Base() {}
+						c_Generic_Base() {
+							if(!bKeyboardInit) {
+								keyboard.calc(Core::_Keyboard::KEYTYPE_ONESHOT);
+								bKeyboardInit = true;
+							}
+						}
 						~c_Generic_Base() {}
 				};
-				bool c_Generic_Base::bFocusPresent			= false;
-				std::string c_Generic_Base::sActiveObject	= "";
-				bool c_Generic_Base::bScrollFocus			= false;
-				std::string c_Generic_Base::sScrollObject	= "";
-//				GUI_Container* c_Generic_Base::activeContainer = nullptr;
-				Props_Window* c_Generic_Base::activeGUI = nullptr;
-				Props_Window* c_Generic_Base::activeContainer = nullptr;
+				Core::_Keyboard c_Generic_Base::keyboard		= Core::_Keyboard();
+				bool c_Generic_Base::bKeyboardInit				= false;
+
+				bool c_Generic_Base::bFocusPresent				= false;
+				std::string c_Generic_Base::sActiveObject		= "";
+
+				bool c_Generic_Base::bScrollFocus				= false;
+				std::string c_Generic_Base::sScrollObject		= "";
+
+				Props_Window* c_Generic_Base::activeGUI			= nullptr;
+				Props_Window* c_Generic_Base::activeContainer	= nullptr;
 
 				template <class C>
 				class Generic : virtual public c_Generic_Base {

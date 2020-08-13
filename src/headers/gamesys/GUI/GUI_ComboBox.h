@@ -351,22 +351,15 @@ namespace Core {
 						}
 
 						// TODO: Escape closes list
-//						SDL_PumpEvents();
-//						keyboard.event = SDL_GetKeyboardState(NULL);
-//						keyboard.update();
-//						if (keyboard.keys[SDLK_ESCAPE].bActive) {
-//							bHasFocus = false;
-//							bFocusPresent = false;
-//							eObjectState = STATE_NONE;
-//							(*con->text.bufferPtr) = sEditBuffer;
-//						}
-
-//						Core::debug.log(name+"["+id+"]: eObjectstate = "+std::to_string(eObjectState));
-//						Core::debug.log(name+"["+id+"]:       mState = "+std::to_string(mState));
-//						Core::debug.log(name+"["+id+"]:       test 1 = "+std::to_string(con->bAutoHide));
-//						Core::debug.log(name+"["+id+"]:       test 2 = "+std::to_string(!(selectedItem->eObjectState&STATE_FOCUS)));
-//						Core::debug.log(name+"["+id+"]:       test 3 = "+std::to_string(!(itemList->eObjectState&STATE_FOCUS)));
-//						Core::debug.log(name+"["+id+"]:       test 4 = "+std::to_string(getState()));
+						if(getState()) {
+							SDL_PumpEvents();
+							keyboard.event = SDL_GetKeyboardState(NULL);
+							keyboard.update();
+							if (keyboard.keys[SDLK_ESCAPE].bActive) {
+								bFocusPresent = false;
+								eObjectState = STATE_NONE;
+							}
+						}
 
 						// Manage itemList visibility
 						if(con->bAutoHide && (!(selectedItem->eObjectState&STATE_FOCUS) && !(itemList->eObjectState&STATE_FOCUS)) && getState()) {
@@ -439,13 +432,6 @@ namespace Core {
 			void ComboBox::exec(iState eExternState) {
 				if(bInit && con->visibility && ((parent!=nullptr && parent->visibility) || (parent==nullptr))) {
 					if(items.size()>0) {
-//						updateScroll();
-
-//						if(!Base::Interactive_Base::bFocusPresent) {
-//							updateObjectState(eExternState);
-//							if(con->toolTip.bShow) toolTip.updateObjectState(eObjectState);
-//							else toolTip.updateObjectState(STATE_NONE);
-//						}
 
 						// Allow update only if No object active or this object active
 						if((con->bFocusLock && !bFocusPresent) || !con->bFocusLock || (sActiveObject==id)) {
@@ -463,30 +449,15 @@ namespace Core {
 						items[iSelected]->setState(true);
 
 						// Update selected item
-//						selectedItem->name = items[iSelected]->name;
 						selectedItem->con->text = items[iSelected]->con->text;
 						selectedItem->exec(STATE_NONE);
 
 						// Visibility and size
 						itemList->con->visibility = selectedItem->getState();
 
-						// Manage itemList visibility
-						//if(selectedItem->getState() && !getState()) getState() = true;
-//						else if(con->bAutoHide && (!(selectedItem->eObjectState&STATE_FOCUS) && !(itemList->eObjectState&STATE_FOCUS)) && getState()) {
-//						if(con->bAutoHide && (!(selectedItem->eObjectState&STATE_FOCUS) && !(itemList->eObjectState&STATE_FOCUS)) && getState()) {
-//							selectedItem->setState(false);
-//							getState() = false;
-//						}
-//						else if(!con->bAutoHide) {
-//							if((!(selectedItem->eObjectState&STATE_FOCUS) && !(itemList->eObjectState&STATE_FOCUS)) && getState() && Core::mouse->button.held[SDL_BUTTON_LEFT]) {
-//								selectedItem->setState(false);
-//								getState() = false;
-//							}
-//						}
-
 						// Draw itemList and items
 						if(getState()) {
-//							// Detect scroll button status
+							// Detect scroll button status
 							int iMem = iScrollIndex;
 							if(scrollUp->getState())   { iScrollIndex -= 1; }
 							if(scrollDown->getState()) { iScrollIndex += 1; }
@@ -503,8 +474,6 @@ namespace Core {
 							itemList->exec(STATE_NONE);
 
 							// Draw up button
-//							int xPos = con->scroll.getX(),
-//								yPos = con->scroll.getY();
 							int xPos = 0,
 								yPos = 0;
 							scrollUp->setEnabled(iScrollIndex>0);
