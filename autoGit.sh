@@ -27,8 +27,10 @@ cmd(){
 echo -e -n "${BLUE}What do you want to do?${NC}\n"
 echo -e -n "${YELLOW} 1) Status${NC}\n"
 echo -e -n "${YELLOW} 2) Commit${NC}\n"
-echo -e -n "${YELLOW} 3) Branch${NC}\n\n"
-echo -e -n "${GREEN}(1-3)? ${NC}"
+echo -e -n "${YELLOW} 3) Branch${NC}\n"
+echo -e -n "${YELLOW} 4) Tag${NC}\n"
+echo -e -n "${YELLOW} 5) Exit${NC}\n\n"
+echo -e -n "${GREEN}(1-5)? ${NC}"
 read mode
 if [ "$mode" != "${mode#[1]}" ] ;then
     cmd "git status"
@@ -100,8 +102,9 @@ elif [ "$mode" != "${mode#[3]}" ] ;then
     echo -e -n "${YELLOW}  2) Switch${NC}\n"
     echo -e -n "${YELLOW}  3) Switch to Master${NC}\n"
     echo -e -n "${YELLOW}  4) List${NC}\n"
-    echo -e -n "${YELLOW}  5) Merge${NC}\n\n"
-    echo -e -n "${GREEN}(1-5)? ${NC}"
+    echo -e -n "${YELLOW}  5) Merge${NC}\n"
+    echo -e -n "${YELLOW}  6) Exit${NC}\n\n"
+    echo -e -n "${GREEN}(1-6)? ${NC}"
     read answer1
     if [ "$answer1" != "${answer1#[1]}" ] ;then
         echo -e -n "${BLUE}New Branch Name${GREEN}? ${NC}"; read answer2;
@@ -127,7 +130,32 @@ elif [ "$mode" != "${mode#[3]}" ] ;then
         #cmd "git remote prune origin";
         #cmd "git remote prune ${MyBranch}";
     fi
-
+elif [ "$mode" != "${mode#[4]}" ] ;then
+    echo -e -n "${BLUE}Tag Options:\n"
+    echo -e -n "${YELLOW}  1) New Lightweight${NC}\n"
+    echo -e -n "${YELLOW}  2) New Annotated${NC}\n"
+    echo -e -n "${YELLOW}  3) Delete${NC}\n"
+    echo -e -n "${YELLOW}  4) List${NC}\n"
+    echo -e -n "${YELLOW}  5) Exit${NC}\n\n"
+    echo -e -n "${GREEN}(1-5)? ${NC}"
+    read answer1
+    if [ "$answer1" != "${answer1#[1]}" ] ;then
+        echo -e -n "${BLUE}New Lightweight Tag Name${GREEN}? ${NC}"; read answer2;
+        cmd "git tag -a ${answer2}"
+        cmd "git show ${answer2}"
+    elif [ "$answer1" != "${answer1#[2]}" ] ;then
+        echo -e -n "${BLUE}New Annotated Tag Name${GREEN}? ${NC}"; read answer2;
+        cmd "git tag ${answer2}"
+        cmd "git show ${answer2}"
+    elif [ "$answer1" != "${answer1#[3]}" ] ;then
+        cmd "git tag"
+        echo -e -n "${BLUE}Tag to delete${GREEN}? ${NC}"; read answer2;
+        cmd "git tag -d ${answer2}"
+        cmd "git push origin --delete ${answer2}"
+        cmd "git tag"
+    elif [ "$answer1" != "${answer1#[4]}" ] ;then
+        cmd "git tag"
+    fi
 fi
 
 echo -e -n "${GREEN}DONE!${NC}\n\n"
