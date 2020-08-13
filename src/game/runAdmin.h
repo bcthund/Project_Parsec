@@ -1849,6 +1849,9 @@ void _Admin::init() {
 		prop.setHeight(200, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
 		prop.setX_MinMax(0, 100);
 		prop.setY_MinMax(0, 100);
+		prop.setY(100);
+		prop.control.setWidth(16, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+		prop.control.setHeight(16, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
 		//prop.setStep(1.0f, 2.0f, 10.0f);
 		Core::gui["GameMenu"]["Window 20"].Slider2D.add("2D Slider", 25, 25, prop);
 

@@ -1110,34 +1110,33 @@ namespace Core {
 		class Props_Slider2D :	virtual public Props_Window,
 									public Props_Addon_Label {
 
-			template <class T>
-			friend class Object::Slider;
+			//friend class Object::Slider2D;
 
 			public:
-				float		xMinValue,
+				int			xMinValue,
 					  	  	xMaxValue;
-				float		yMinValue,
+				int			yMinValue,
 					  	  	yMaxValue;
-				int			precision;
-				Vector3f	vStep;
+//				int			precision;
+				Vector3i	vStep;
 
 				Props_Window control;
 
-				void setX_MinMax(float min, float max)						{ xMinValue = min; xMaxValue = max; }
-				void setY_MinMax(float min, float max)						{ yMinValue = min; yMaxValue = max; }
-				void setPrecision(int i)									{ precision = i; }
-				void setStep(float f)										{ vStep[0] = f; vStep[1] = f; vStep[2] = f; }
-				void setStep(float min, float std, float max)				{ vStep[0] = min; vStep[1] = std; vStep[2] = max; }
+				void setX_MinMax(int min, int max)				{ xMinValue = min; xMaxValue = max; }
+				void setY_MinMax(int min, int max)				{ yMinValue = min; yMaxValue = max; }
+//				void setPrecision(int i)						{ precision = i; }
+				void setStep(int i)								{ vStep[0] = i; vStep[1] = i; vStep[2] = i; }
+				void setStep(int min, int std, int max)			{ vStep[0] = min; vStep[1] = std; vStep[2] = max; }
 
 				Props_Slider2D() {
-					xMinValue			= 0.0f;
-					xMaxValue			= 100.0f;
-					yMinValue			= 0.0f;
-					yMaxValue			= 100.0f;
-					vStep[0]			= 1.0f;
-					vStep[1]			= 5.0f;
-					vStep[2]			= 10.0f;
-					precision			= 3;
+					xMinValue			= 0;
+					xMaxValue			= 100;
+					yMinValue			= 0;
+					yMaxValue			= 100;
+					vStep[0]			= 1;
+					vStep[1]			= 5;
+					vStep[2]			= 10;
+//					precision			= 3;
 
 					// Label
 					bShowLabel			= false;

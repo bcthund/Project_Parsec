@@ -62,29 +62,46 @@ namespace Core {
 				protected:
 					Window slider, control;
 					Object::Label		*label;		///< Show slider name if enabled
-					float	minPos,					///< Exact screen coordinate for minimum position
-							maxPos,					///< Exact screen coordinate for maximum position
-							spanPos,				///< Difference of min and max positions
-							spanValue;				///< Difference ofmin and max values (from constraints)
+					float	xMinPos,					///< Exact screen coordinate for minimum position
+							xMaxPos,					///< Exact screen coordinate for maximum position
+							yMinPos,
+							yMaxPos,
+							xSpanPos,				///< Difference of min and max positions
+							ySpanPos,
+							xSpanValue,				///< Difference ofmin and max values (from constraints)
+							ySpanValue;
 					int		lastValue;				///< Value at the last cycle, used to determine bValueChanged
 					Vector2f currentPos;			///< Current slider position based on currentValue
 					bool bHasFocus;
 					void update();
-//					void setValue();
-//					void setValue(T f);
+
+					void setX_Value();
+					void setX_Value(int xVal);
+					void setY_Value();
+					void setY_Value(int yVal);
+
 					void updateScrollMouse();
 					void updateObjectState(iState eExternState);
+
+					float getNormalized(int iCurrent, int iMin, int iMax);
 //					float getNormalized(T fCurrent, float fMin, float fMax);
+
+					int getX_ValueFromPos(int xVal);
+					int getY_ValueFromPos(int yVal);
 //					float getValueFromPos(float f);
 //					float getPosFromValue(T f);
 					void updateControlPos();
 			};
 
 			Slider2D::Slider2D() {
-				minPos				= 0.0f;
-				maxPos				= 100.0f;
-				spanPos				= 100.0f;
-				spanValue			= 0.0f;
+				xMinPos				= 0.0f;
+				xMaxPos				= 100.0f;
+				xSpanPos			= 100.0f;
+				yMinPos				= 0.0f;
+				yMaxPos				= 100.0f;
+				ySpanPos			= 100.0f;
+				xSpanValue			= 0.0f;
+				ySpanValue			= 0.0;
 				currentPos			= Vector2f(0.0f);
 				bHasFocus			= false;
 				label				= nullptr;
@@ -99,10 +116,14 @@ namespace Core {
 				lastValue			= 0;
 				currentPos			= Vector2f(0.0f);
 				bHasFocus			= false;
-				minPos				= 0.0f;
-				maxPos				= 100.0f;
-				spanPos				= 100.0f;
-				spanValue			= 0.0f;
+				xMinPos				= 0.0f;
+				xMaxPos				= 100.0f;
+				xSpanPos			= 100.0f;
+				yMinPos				= 0.0f;
+				yMaxPos				= 100.0f;
+				ySpanPos			= 100.0f;
+				xSpanValue			= 0.0f;
+				ySpanValue			= 0.0;
 				label				= nullptr;
 				this->name			= n;
 
@@ -127,10 +148,14 @@ namespace Core {
 				lastValue			= 0;
 				currentPos			= Vector2f(0.0f);
 				bHasFocus			= false;
-				minPos				= 0.0f;
-				maxPos				= 100.0f;
-				spanPos				= 100.0f;
-				spanValue			= 0.0f;
+				xMinPos				= 0.0f;
+				xMaxPos				= 100.0f;
+				xSpanPos			= 100.0f;
+				yMinPos				= 0.0f;
+				yMaxPos				= 100.0f;
+				ySpanPos			= 100.0f;
+				xSpanValue			= 0.0f;
+				ySpanValue			= 0.0;
 				label				= nullptr;
 				this->name			= n;
 
@@ -154,10 +179,14 @@ namespace Core {
 				lastValue			= 0;
 				currentPos			= Vector2f(0.0f);
 				bHasFocus			= false;
-				minPos				= 0.0f;
-				maxPos				= 100.0f;
-				spanPos				= 100.0f;
-				spanValue			= 0.0f;
+				xMinPos				= 0.0f;
+				xMaxPos				= 100.0f;
+				xSpanPos			= 100.0f;
+				yMinPos				= 0.0f;
+				yMaxPos				= 100.0f;
+				ySpanPos			= 100.0f;
+				xSpanValue			= 0.0f;
+				ySpanValue			= 0.0;
 				label				= nullptr;
 				this->name			= n;
 
@@ -182,10 +211,14 @@ namespace Core {
 				lastValue			= 0;
 				currentPos			= Vector2f(0.0f);
 				bHasFocus			= false;
-				minPos				= 0.0f;
-				maxPos				= 100.0f;
-				spanPos				= 100.0f;
-				spanValue			= 0.0f;
+				xMinPos				= 0.0f;
+				xMaxPos				= 100.0f;
+				xSpanPos			= 100.0f;
+				yMinPos				= 0.0f;
+				yMaxPos				= 100.0f;
+				ySpanPos			= 100.0f;
+				xSpanValue			= 0.0f;
+				ySpanValue			= 0.0;
 				label				= nullptr;
 				this->name			= n;
 
@@ -209,10 +242,14 @@ namespace Core {
 				lastValue			= 0;
 				currentPos			= Vector2f(0.0f);
 				bHasFocus			= false;
-				minPos				= 0.0f;
-				maxPos				= 100.0f;
-				spanPos				= 100.0f;
-				spanValue			= 0.0f;
+				xMinPos				= 0.0f;
+				xMaxPos				= 100.0f;
+				xSpanPos			= 100.0f;
+				yMinPos				= 0.0f;
+				yMaxPos				= 100.0f;
+				ySpanPos			= 100.0f;
+				xSpanValue			= 0.0f;
+				ySpanValue			= 0.0;
 				label				= nullptr;
 				this->name			= n;
 
@@ -238,10 +275,14 @@ namespace Core {
 				lastValue			= 0;
 				currentPos			= Vector2f(0.0f);
 				bHasFocus			= false;
-				minPos				= 0.0f;
-				maxPos				= 100.0f;
-				spanPos				= 100.0f;
-				spanValue			= 0.0f;
+				xMinPos				= 0.0f;
+				xMaxPos				= 100.0f;
+				xSpanPos			= 100.0f;
+				yMinPos				= 0.0f;
+				yMaxPos				= 100.0f;
+				ySpanPos			= 100.0f;
+				xSpanValue			= 0.0f;
+				ySpanValue			= 0.0;
 				label				= nullptr;
 				this->name			= n;
 
@@ -265,10 +306,14 @@ namespace Core {
 				lastValue			= 0;
 				currentPos			= Vector2f(0.0f);
 				bHasFocus			= false;
-				minPos				= 0.0f;
-				maxPos				= 100.0f;
-				spanPos				= 100.0f;
-				spanValue			= 0.0f;
+				xMinPos				= 0.0f;
+				xMaxPos				= 100.0f;
+				xSpanPos			= 100.0f;
+				yMinPos				= 0.0f;
+				yMaxPos				= 100.0f;
+				ySpanPos			= 100.0f;
+				xSpanValue			= 0.0f;
+				ySpanValue			= 0.0;
 				label				= nullptr;
 				this->name			= n;
 
@@ -293,10 +338,14 @@ namespace Core {
 				lastValue			= 0;
 				currentPos			= Vector2f(0.0f);
 				bHasFocus			= false;
-				minPos				= 0.0f;
-				maxPos				= 100.0f;
-				spanPos				= 100.0f;
-				spanValue			= 0.0f;
+				xMinPos				= 0.0f;
+				xMaxPos				= 100.0f;
+				xSpanPos			= 100.0f;
+				yMinPos				= 0.0f;
+				yMaxPos				= 100.0f;
+				ySpanPos			= 100.0f;
+				xSpanValue			= 0.0f;
+				ySpanValue			= 0.0;
 				label				= nullptr;
 				this->name			= n;
 
@@ -355,7 +404,8 @@ namespace Core {
 				initSound(3, 7, 8, -1, 0, false, true);
 
 				update();
-//				setValue(*this->valuePtr);
+				setX_Value(*this->xValuePtr);
+				setY_Value(*this->yValuePtr);
 
 				float offset = std::round((this->con->size.y+1)/2.0f);
 
@@ -384,100 +434,113 @@ namespace Core {
 			}
 
 			void Slider2D::update() {
-//				if(this->con->orientation == Core::GUI::SLIDER_HORIZONTAL) {
-//					minPos = this->con->pos.x-(this->con->size.x/2.0f);
-//					maxPos = this->con->pos.x+(this->con->size.x/2.0f);
-//					spanPos = abs(maxPos - minPos)-this->con->control.size.x;
-//					spanValue = abs(this->con->maxValue - this->con->minValue);
-//				}
-//				else if(this->con->orientation == Core::GUI::SLIDER_VERTICAL) {
-//					minPos = -this->con->pos.y+(this->con->size.y/2.0f);
-//					maxPos = -this->con->pos.y-(this->con->size.y/2.0f);
-//					spanPos = abs(minPos - maxPos)-this->con->control.size.y;
-//					spanValue = abs(this->con->maxValue - this->con->minValue);
-//				}
+				xMinPos = this->con->pos.x-(this->con->size.x/2.0f);
+				xMaxPos = this->con->pos.x+(this->con->size.x/2.0f);
+				xSpanPos = abs(xMaxPos - xMinPos)-this->con->control.size.x;
+				xSpanValue = abs(this->con->xMaxValue - this->con->xMinValue);
+
+				yMinPos = -this->con->pos.y+(this->con->size.y/2.0f);
+				yMaxPos = -this->con->pos.y-(this->con->size.y/2.0f);
+				ySpanPos = abs(yMinPos - yMaxPos)-this->con->control.size.y;
+				ySpanValue = abs(this->con->yMaxValue - this->con->yMinValue);
 			}
 
-//			float Slider2D::getNormalized(T fCurrent, float fMin, float fMax) {
-//				float f = fmin( fmax( (fCurrent-fMin)/(fMax-fMin), 0.0f), 1.0f);
-//				return f;
-//			}
+			void Slider2D::setX_Value() {
+				setX_Value(*this->xValuePtr);
+			}
 
-//			float Slider2D::getValueFromPos(float f) {
-//				float f0, f1, f2, f3, f4, f5;
-//				f0 = f;
-//				if(this->con->orientation == Core::GUI::SLIDER_HORIZONTAL)	{
-//					if(parent!=nullptr && parent->scroll.getEnabled()) f0 += con->scroll.getX();
-//					if(this->con->minValue<this->con->maxValue) {
-//						f1 = getNormalized(f0-Core::gameVars->screen.half.x, minPos, maxPos);
-//					}
-//					else {
-//						f1 = getNormalized(f0-Core::gameVars->screen.half.x, maxPos, minPos);
-//					}
-//				}
-//				else if(this->con->orientation == Core::GUI::SLIDER_VERTICAL)	{
-//					if(parent!=nullptr && parent->scroll.getEnabled()) f0 += con->scroll.getY();
-//					if(this->con->minValue<this->con->maxValue) {
-//						f1 = getNormalized(f0-Core::gameVars->screen.half.y, minPos, maxPos);
-//					}
-//					else {
-//						f1 = getNormalized(f0-Core::gameVars->screen.half.y, maxPos, minPos);
-//					}
-//				}
-//
-//				f2 = spanValue;
-//					if(this->con->minValue<this->con->maxValue) {
-//						f3 = this->con->minValue;
-//					}
-//					else {
-//						f3 = this->con->maxValue;
-//					}
-//				f4 = 0.0f;
-//				f5 = f1 * f2 + f3 - f4;
-//
-//				return int(f5/this->con->vStep[0])*this->con->vStep[0];		// Constrain value to minimum step size
-//			}
+			void Slider2D::setY_Value() {
+				setY_Value(*this->yValuePtr);
+			}
 
-//			float Slider2D::getPosFromValue(T f) {
-//				float f1, f2, f3, f4, f5;
-//				f1 = getNormalized(f, this->con->minValue, this->con->maxValue);
-//
-//				if(this->con->orientation == Core::GUI::SLIDER_HORIZONTAL) {
-//					f2 = spanPos;
-//					f4 = this->con->size.x/2.0f;
-//				}
-//				else if(this->con->orientation == Core::GUI::SLIDER_VERTICAL) {
-//					f2 = spanPos;
-//					f4 = this->con->size.y/2.0f;
-//				}
-//
-//				f3 = 0.0f;
-//				f5 = f1 * f2 + f3 - f4;
-//				return f5;
-//			}
+			void Slider2D::setX_Value(int xVal) {
+				if(this->con->xMinValue<this->con->xMaxValue)	*this->xValuePtr = std::max( std::min( xVal, this->con->xMaxValue ), this->con->xMinValue );
+				else											*this->xValuePtr = std::max( std::min( xVal, this->con->xMinValue ), this->con->xMaxValue );
 
-//			void Slider2D::setValue() {
-//				setValue(*this->valuePtr);
-//			}
+				float f1 = getNormalized(*this->xValuePtr, this->con->xMinValue, this->con->xMaxValue);
+				int i2 = xSpanPos;
+				int i3 = 0.0f;
+				int i4 = this->con->size.x/2.0f;
+				int i5 = f1 * i2 + i3 - i4;
 
-//			void Slider2D::setValue(T f) {
-//				if(this->con->minValue<this->con->maxValue)	*this->valuePtr = fmax( fmin( f, this->con->maxValue ), this->con->minValue );
-//				else										*this->valuePtr = fmax( fmin( f, this->con->minValue ), this->con->maxValue );
-//
-//				if(this->con->orientation == Core::GUI::SLIDER_HORIZONTAL) {
-//					currentPos.x = getPosFromValue(*this->valuePtr)+(this->con->control.size.x/2.0f);
-//					currentPos.y = 0.0f;
-//				}
-//				else if(this->con->orientation == Core::GUI::SLIDER_VERTICAL) {
-//					currentPos.x = 0.0f;
-//					currentPos.y = getPosFromValue(*this->valuePtr)+(this->con->control.size.y/2.0f);
-//				}
-//			}
+				currentPos.x = i5+(this->con->control.size.x/2.0f);
+			}
+
+			void Slider2D::setY_Value(int yVal) {
+				if(this->con->yMinValue<this->con->yMaxValue)	*this->yValuePtr = std::max( std::min( yVal, this->con->yMaxValue ), this->con->yMinValue );
+				else											*this->yValuePtr = std::max( std::min( yVal, this->con->yMinValue ), this->con->yMaxValue );
+
+				float f1 = getNormalized(*this->yValuePtr, this->con->yMinValue, this->con->yMaxValue);
+				int i2 = ySpanPos;
+				int i3 = 0.0f;
+				int i4 = this->con->size.y/2.0f;
+				int i5 = f1 * i2 + i3 - i4;
+
+				currentPos.y = i5+(this->con->control.size.y/2.0f);
+			}
+
+			float Slider2D::getNormalized(int iCurrent, int iMin, int iMax) {
+				float f = fmin( fmax( float(iCurrent-iMin)/float(iMax-iMin), 0.0f), 1.0f);
+				return f;
+			}
 
 			void Slider2D::updateControlPos() {
-//				if(this->con->orientation == Core::GUI::SLIDER_HORIZONTAL)	*this->valuePtr = getValueFromPos(Core::mouse->x);
-//				else if(this->con->orientation == Core::GUI::SLIDER_VERTICAL)	*this->valuePtr = getValueFromPos(Core::mouse->y);
-//				setValue();
+				*this->xValuePtr = getX_ValueFromPos(Core::mouse->x);
+				*this->yValuePtr = getY_ValueFromPos(Core::mouse->y);
+				setX_Value();
+				setY_Value();
+			}
+
+			int Slider2D::getX_ValueFromPos(int xVal) {
+				int i0, i2, i3, i4, i5;
+				float f1;
+				i0 = xVal;
+
+				if(parent!=nullptr && parent->scroll.getEnabled()) i0 += con->scroll.getX();
+				if(this->con->xMinValue<this->con->xMaxValue)
+					f1 = getNormalized(i0-Core::gameVars->screen.half.x, xMinPos, xMaxPos);
+				else
+					f1 = getNormalized(i0-Core::gameVars->screen.half.x, xMaxPos, xMinPos);
+
+				i2 = xSpanValue;
+
+				if(this->con->xMinValue<this->con->xMaxValue)
+					i3 = this->con->xMinValue;
+				else
+					i3 = this->con->xMaxValue;
+
+				i4 = 0.0f;
+				i5 = f1 * i2 + i3 - i4;
+
+				debug.log("X: i0 = "+std::to_string(i0)+", f1 = "+std::to_string(f1)+", i2 = "+std::to_string(i2)+", i3 = "+std::to_string(i3)+", i4 = "+std::to_string(i4)+", i5 = "+std::to_string(i5));
+				//return int(i5/this->con->vStep[0])*this->con->vStep[0];		// Constrain value to minimum step size
+				return i5;
+			}
+
+			int Slider2D::getY_ValueFromPos(int yVal) {
+				int i0, i2, i3, i4, i5;
+				float f1;
+				i0 = yVal;
+
+				if(parent!=nullptr && parent->scroll.getEnabled()) i0 += con->scroll.getY();
+				if(this->con->yMinValue<this->con->yMaxValue)
+					f1 = getNormalized(i0-Core::gameVars->screen.half.y, yMinPos, yMaxPos);
+				else
+					f1 = getNormalized(i0-Core::gameVars->screen.half.y, yMaxPos, yMinPos);
+
+				i2 = ySpanValue;
+
+				if(this->con->yMinValue<this->con->yMaxValue)
+					i3 = this->con->yMinValue;
+				else
+					i3 = this->con->yMaxValue;
+
+				i4 = 0.0f;
+				i5 = f1 * i2 + i3 - i4;
+
+				debug.log("Y: i0 = "+std::to_string(i0)+", f1 = "+std::to_string(f1)+", i2 = "+std::to_string(i2)+", i3 = "+std::to_string(i3)+", i4 = "+std::to_string(i4)+", i5 = "+std::to_string(i5));
+				//return int(i5/this->con->vStep[0])*this->con->vStep[0];		// Constrain value to minimum step size
+				return i5;
 			}
 
 			void Slider2D::updateScrollMouse() {
@@ -568,6 +631,10 @@ namespace Core {
 
 			void Slider2D::exec(iState eExternState) {
 				if(this->bInit && this->con->visibility && ((this->parent!=nullptr && this->parent->visibility) || (this->parent==nullptr))) {
+					debug.log("x = "+std::to_string(*this->xValuePtr)+", xMin = "+std::to_string(xMinPos)+", xMax = "+std::to_string(xMaxPos)+", xSpanPos = "+std::to_string(xSpanPos)+", xSpanVal = "+std::to_string(xSpanValue));
+					debug.log("y = "+std::to_string(*this->yValuePtr)+", yMin = "+std::to_string(yMinPos)+", yMax = "+std::to_string(yMaxPos)+", ySpanPso = "+std::to_string(ySpanPos)+", ySpanVal = "+std::to_string(ySpanValue));
+
+
 					/*
 					 * Update constraints
 					 */
@@ -591,10 +658,13 @@ namespace Core {
 					 * 	- Requires that min/max values be updated via update()
 					 * 	- If not moving slider then update value in case changed externally
 					 */
-//					if(this->eObjectState&STATE_ACTIVE) {
-//						updateControlPos();
-//					}
-//					else setValue();
+					if(this->eObjectState&STATE_ACTIVE) {
+						updateControlPos();
+					}
+					else {
+						setX_Value();
+						setY_Value();
+					}
 
 					// Check if value has changed
 //					if(lastValue != *this->valuePtr) {
@@ -602,15 +672,12 @@ namespace Core {
 //					}
 //					lastValue = *this->valuePtr;
 
-					debug.log("Drawing Slider2D");
-
 					// Draw Slider
 					slider.exec(this->eObjectState);
 
 					// Draw Control
 					control.con->setPos(currentPos);
 					control.exec(this->eObjectState);
-					//control.exec(STATE_NONE);
 
 					// Draw Label
 					if(this->con->bShowLabel)	label->exec(this->eObjectState);
