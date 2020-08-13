@@ -106,11 +106,14 @@ elif [ "$mode" != "${mode#[3]}" ] ;then
     if [ "$answer1" != "${answer1#[1]}" ] ;then
         echo -e -n "${BLUE}New Branch Name${GREEN}? ${NC}"; read answer2;
         cmd "git checkout -b ${answer2}"
+        cmd "git branch -a"
     elif [ "$answer1" != "${answer1#[2]}" ] ;then
         echo -e -n "${BLUE}Branch Name${GREEN}? ${NC}"; read answer2;
         cmd "git checkout ${answer2}"
+        cmd "git branch -a"
     elif [ "$answer1" != "${answer1#[3]}" ] ;then
         cmd "git checkout master"
+        cmd "git branch -a"
     elif [ "$answer1" != "${answer1#[4]}" ] ;then
         cmd "git branch -a"
     elif [ "$answer1" != "${answer1#[5]}" ] ;then
@@ -120,8 +123,11 @@ elif [ "$mode" != "${mode#[3]}" ] ;then
         cmd "git push";
         cmd "git branch -d ${MyBranch}";
         cmd "git push origin --delete ${MyBranch}";
+        cmd "git branch -a"
         #cmd "git remote prune origin";
         #cmd "git remote prune ${MyBranch}";
     fi
 
 fi
+
+echo -e -n "${GREEN}DONE!${NC}\n\n"
