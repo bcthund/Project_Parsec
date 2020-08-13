@@ -25,17 +25,17 @@ cmd(){
 
 
 echo -e -n "${BLUE}What do you want to do?${NC}\n"
-echo -e -n "${YELLOW} 1) Status${NC}\n"
-echo -e -n "${YELLOW} 2) Commit${NC}\n"
-echo -e -n "${YELLOW} 3) Branch${NC}\n"
-echo -e -n "${YELLOW} 4) Tag${NC}\n"
-echo -e -n "${YELLOW} 5) Exit${NC}\n\n"
+echo -e -n "${YELLOW} 1,S) Status${NC}\n"
+echo -e -n "${YELLOW} 2,C) Commit${NC}\n"
+echo -e -n "${YELLOW} 3,B) Branch${NC}\n"
+echo -e -n "${YELLOW} 4,T) Tag${NC}\n"
+echo -e -n "${YELLOW} 5,X) Exit${NC}\n\n"
 echo -e -n "${GREEN}(1-5)? ${NC}"
 read mode
-if [ "$mode" != "${mode#[1]}" ] ;then
+if [ "$mode" != "${mode#[1Ss]}" ] ;then
     cmd "git status"
     cmd "git branch -a"
-elif [ "$mode" != "${mode#[2]}" ] ;then
+elif [ "$mode" != "${mode#[2Cc]}" ] ;then
     echo -e -n "${BLUE}Do you want to add, commit and push? ${GREEN}(y/n/a) ${NC}"
     read answer1
     if [ "$answer1" != "${answer1#[YyAa]}" ] ;then
@@ -92,10 +92,8 @@ elif [ "$mode" != "${mode#[2]}" ] ;then
                 cmd "cat /dev/null > gitmessage.txt"
             fi
         fi
-        
-        echo -e "${GREEN} DONE!\n\n"
     fi
-elif [ "$mode" != "${mode#[3]}" ] ;then
+elif [ "$mode" != "${mode#[3Bb]}" ] ;then
 
     echo -e -n "${BLUE}Branch Options:\n"
     echo -e -n "${YELLOW}  1) New${NC}\n"
@@ -130,7 +128,7 @@ elif [ "$mode" != "${mode#[3]}" ] ;then
         #cmd "git remote prune origin";
         #cmd "git remote prune ${MyBranch}";
     fi
-elif [ "$mode" != "${mode#[4]}" ] ;then
+elif [ "$mode" != "${mode#[4Tt]}" ] ;then
     echo -e -n "${BLUE}Tag Options:\n"
     echo -e -n "${YELLOW}  1) New Lightweight${NC}\n"
     echo -e -n "${YELLOW}  2) New Annotated${NC}\n"
