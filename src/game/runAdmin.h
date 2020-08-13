@@ -1708,6 +1708,7 @@ void _Admin::init() {
 		std::cout << "GUI: Loading #44: ComboBox ..................................... ";
 		//std::cout << "...............................................................";
 
+		{
 		Core::GUI::Props_ComboBox prop;
 		prop.setOrigin(Core::GUI::CONSTRAIN_TOP_LEFT);
 		prop.setAnchor(Core::GUI::CONSTRAIN_TOP_LEFT);
@@ -1743,7 +1744,13 @@ void _Admin::init() {
 		//Core::gui["GameMenu"]["Window 19"].ComboBox["ComboBox1"].addItem("Item 4", 16);
 		//Core::gui["GameMenu"]["Window 19"].ComboBox["ComboBox1"].addItem("Item 5", 32);
 
+		}
 
+		{
+			using namespace Core::GUI::Object;
+		using namespace std;
+		using namespace Core;
+		Core::GUI::Props_ComboBox prop;
 		prop.setOrigin(Core::GUI::CONSTRAIN_TOP_RIGHT);
 		prop.setAnchor(Core::GUI::CONSTRAIN_TOP_RIGHT);
 		prop.setWidth(200, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
@@ -1772,6 +1779,7 @@ void _Admin::init() {
 																									make_pair("Test Object 3", 3),
 																									make_pair("Test Object 4", 4),
 																									make_pair("Test Object 5", 5) });
+		}
 
 		// Adding additional list items after ComboBox creation
 		Core::gui["GameMenu"]["Window 19"].ComboBox["ComboBox2"].addItem("Test Object 6", 6);

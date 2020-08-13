@@ -30,27 +30,28 @@ namespace Core {
 			 *  others from also being edited at the same time.
 			 *
 			 */
-			class TextEditBase {
-				public:
-					static Core::_Keyboard keyboard;	//
-					static bool bKeyboardInit;
-
-					TextEditBase() {
-						if(!bKeyboardInit) {
-							keyboard.calc(Core::_Keyboard::KEYTYPE_DEBOUNCE);
-							bKeyboardInit = true;
-						}
-					}
-			};
-			Core::_Keyboard TextEditBase::keyboard	= Core::_Keyboard();
-			bool TextEditBase::bKeyboardInit		= false;
+//			class TextEditBase {
+//				public:
+//					static Core::_Keyboard keyboard;	//
+//					static bool bKeyboardInit;
+//
+//					TextEditBase() {
+//						if(!bKeyboardInit) {
+//							keyboard.calc(Core::_Keyboard::KEYTYPE_DEBOUNCE);
+//							bKeyboardInit = true;
+//						}
+//					}
+//			};
+//			Core::_Keyboard TextEditBase::keyboard	= Core::_Keyboard();
+//			bool TextEditBase::bKeyboardInit		= false;
 
 			/** \class TextEdit
 			 *  \brief A copy of TextArea with cursor tracking and editing capability.
 			 *
 			 */
 //			class TextEdit : public Base::Interactive<Props_TextArea, std::string>, public TextEditBase {
-			class TextEdit : public Base::Interactive<Props_TextArea>, public TextEditBase {
+//			class TextEdit : public Base::Interactive<Props_TextArea>, public TextEditBase {
+			class TextEdit : public Base::Interactive<Props_TextArea> {
 				public:
 					TextEdit();
 					TextEdit(std::string n, Props_TextArea &c);

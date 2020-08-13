@@ -492,7 +492,7 @@
  *				[ ] Forest/Flora
  *			[ ] Draw Map
  *			[ ] Terrain Collision
- *			[ ] Gravity
+ *			[ ] Gravity (Should be part of atmosphere)
  *			[ ] Load Transition Map
  *			[ ] Draw Distance: Allow draw distance to be variable, any triangles outside are not drawn
  *			[ ] World Size: Like iTerrainGrid in past, determines maximum map size to be loaded
