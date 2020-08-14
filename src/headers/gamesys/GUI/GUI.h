@@ -264,14 +264,13 @@
  * 			[ ] Separate fields in to FieldInt, FieldBool, FieldFloat, FieldString
  * 			[ ] Or use GUI_Container templates for access to each type
  *
- * TODO: [ ] Slider2D - Like a slider but uses a point in 2D space controlling 2 values at once
- * 			[ ] Box for selection area (window using standard Props)
- * 			[ ] X-Axis Range (min, max), integer only
- * 			[ ] Y-Axis Range (min, max), integer only
- * 			[ ] Track mouse and mapped X-Y values (relative (0,0) is always bottom left.)
- * 			[ ] Show point (slider control, square) on current value coordinates
- * 			[ ] Clicking mouse/holding mouse sets values
- * 			[ ] Create float version
+ * TODO: [X] Slider2D - Like a slider but uses a point in 2D space controlling 2 values at once
+ * 			[X] Box for selection area (window using standard Props)
+ * 			[X] X-Axis Range (min, max), integer only
+ * 			[X] Y-Axis Range (min, max), integer only
+ * 			[X] Show point (slider control, square) on current value coordinates
+ * 			[X] Clicking mouse/holding mouse sets values
+ * 			[X] Create float version
  *
  * TODO: [ ] Pie Chart
  * 			[ ] Draw triangles for each quantity, larger than circle area
