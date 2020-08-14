@@ -1100,6 +1100,86 @@ namespace Core {
 				}
 		};
 
+		/** ******************************************************************************************************************************
+		 *  \class Slider
+		 *  \brief Creates a slider and control with optional label and field for value editing
+		 *
+		 *
+		 *
+		 * ****************************************************************************************************************************** */
+		class Props_Slider2D :	virtual public Props_Window,
+									public Props_Addon_Label {
+
+			//friend class Object::Slider2D;
+
+			public:
+				float	xMinValue,
+						xMaxValue;
+				float	yMinValue,
+						yMaxValue;
+//				int			precision;
+				Vector3i	vStep;
+
+				Props_Window control;
+
+				void setX_MinMax(int min, int max)				{ xMinValue = min; xMaxValue = max; }
+				void setY_MinMax(int min, int max)				{ yMinValue = min; yMaxValue = max; }
+//				void setPrecision(int i)						{ precision = i; }
+				void setStep(int i)								{ vStep[0] = i; vStep[1] = i; vStep[2] = i; }
+				void setStep(int min, int std, int max)			{ vStep[0] = min; vStep[1] = std; vStep[2] = max; }
+
+				Props_Slider2D() {
+					xMinValue			= 0;
+					xMaxValue			= 100;
+					yMinValue			= 0;
+					yMaxValue			= 100;
+					vStep[0]			= 1;
+					vStep[1]			= 5;
+					vStep[2]			= 10;
+//					precision			= 3;
+
+					// Label
+					bShowLabel			= false;
+					label.setOrigin(CONSTRAIN_TOP_LEFT);
+					label.setAnchor(CONSTRAIN_BOTTOM_LEFT);
+					label.setPadding(2);
+					label.setPos(0, 0);
+					label.setMinWidth(0);
+					label.colorText.base = &Core::gameVars->pallette.gui.slider.text.base;
+					label.colorText.highlight = &Core::gameVars->pallette.gui.slider.text.hover;
+					label.colorText.active = &Core::gameVars->pallette.gui.slider.text.active;
+
+					// Slider
+					setPadding(-8, -8, -8, -8);
+					setBorder(1, 1);
+					setRadius(0);
+					colorBack.base = &Core::gameVars->pallette.gui.slider.bar.base;
+					colorBack.highlight = &Core::gameVars->pallette.gui.slider.bar.hover;
+					colorBack.active = &Core::gameVars->pallette.gui.slider.bar.active;
+
+					colorBorder.base = &Core::gameVars->pallette.gui.slider.barBorder.base;
+					colorBorder.highlight = &Core::gameVars->pallette.gui.slider.barBorder.hover;
+					colorBorder.active = &Core::gameVars->pallette.gui.slider.barBorder.active;
+
+					// Control Handle
+					control.setWidth(8, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+					control.setHeight(8, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+
+					control.setBorder(1, 1);
+					control.setRadius(0);
+					control.colorBack.base = &Core::gameVars->pallette.gui.slider.control.base;
+					control.colorBack.highlight = &Core::gameVars->pallette.gui.slider.control.hover;
+					control.colorBack.active = &Core::gameVars->pallette.gui.slider.control.active;
+
+					control.colorBorder.base = &Core::gameVars->pallette.gui.slider.controlBorder.base;
+					control.colorBorder.highlight = &Core::gameVars->pallette.gui.slider.controlBorder.hover;
+					control.colorBorder.active = &Core::gameVars->pallette.gui.slider.controlBorder.active;
+				}
+
+				~Props_Slider2D() {
+				}
+		};
+
 
 		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-

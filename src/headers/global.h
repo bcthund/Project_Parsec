@@ -67,6 +67,36 @@ template <typename T> std::string to_string(T tValue, int precision=3) {
 	return buffer;
 }
 
+//std::variant<int, float> MinIF(std::variant<int, float> a, std::variant<int, float> b) {
+//	if(a<b) return a;
+//	else return b;
+//}
+
+//std::variant<int, float> MinIF(std::variant<int, float> a, int b) {
+//	if(a<b) return a;
+//	else return std::variant<int, float>(b);
+//}
+//
+//std::variant<int, float> MinIF(std::variant<int, float> a, float b) {
+//	if(a<b) return a;
+//	else return std::variant<int, float>(b);
+//}
+
+//std::variant<int, float> MaxIF(std::variant<int, float> a, std::variant<int, float> b) {
+//	if(a>b) return a;
+//	else return b;
+//}
+
+//std::variant<int, float> MaxIF(std::variant<int, float> a, int b) {
+//	if(a>b) return a;
+//	else return std::variant<int, float>(b);
+//}
+//
+//std::variant<int, float> MaxIF(std::variant<int, float> a, float b) {
+//	if(a>b) return a;
+//	else return std::variant<int, float>(b);
+//}
+
 //std::string from_variant(Core::t_BIFS v) {
 //	switch (v.index()) {
 //		case 0:

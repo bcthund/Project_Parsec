@@ -463,7 +463,7 @@ void _Admin::init() {
 		con_button.setToolTip("None.");
 		con_button.setPos(    0, -60);	Core::gui["GameMenu"]["Window 2"].Button.add("ComboBox",		false, con_button);
 		con_button.setToolTip("None.");
-		con_button.setPos(   98, -60);	Core::gui["GameMenu"]["Window 2"].Button.add("Spare 4",			false, con_button);
+		con_button.setPos(   98, -60);	Core::gui["GameMenu"]["Window 2"].Button.add("2D Slider",		false, con_button);
 		con_button.setToolTip("None.");
 		con_button.setPos(  196, -60);	Core::gui["GameMenu"]["Window 2"].Button.add("Spare 5",			false, con_button);
 
@@ -1838,6 +1838,135 @@ void _Admin::init() {
 		std::cout << "Done" << std::endl;
 	}
 
+	if (!bOneShot[45]) {
+		std::cout << "GUI: Loading #45: 2D Slider .................................... ";
+		//std::cout << "...............................................................";
+
+		{
+			Core::GUI::Props_Slider2D prop;
+			prop.setOrigin(Core::GUI::CONSTRAIN_BOTTOM);
+			prop.setAnchor(Core::GUI::CONSTRAIN_BOTTOM);
+			prop.setWidth(200, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+			prop.setHeight(200, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+			prop.setX_MinMax(0, 100);
+			prop.setY_MinMax(0, 100);
+			prop.setY(100);
+			prop.setX(-20);
+			prop.control.setWidth(16, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+			prop.control.setHeight(16, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+			prop.showLabel();
+			//prop.setStep(1.0f, 2.0f, 10.0f);
+			Core::gui["GameMenu"]["Window 20"].Slider2Di.add("2D Slider (Int)", 25, 25, prop);
+
+			Core::GUI::Props_Slider prop2;
+			prop2.setOrigin(Core::GUI::CONSTRAIN_RIGHT);
+			prop2.setAnchor(Core::GUI::CONSTRAIN_RIGHT);					// Center of button
+			prop2.setWidth(6, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+			prop2.setHeight(300, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+			prop2.setOrientation(Core::GUI::SLIDER_VERTICAL);
+			prop2.control.setWidth(20, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+			prop2.control.setHeight(10, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+			prop2.showField();
+			prop2.field.setOrigin(Core::GUI::CONSTRAIN_BOTTOM);
+			prop2.field.setAnchor(Core::GUI::CONSTRAIN_TOP);
+			prop2.showLabel();
+			prop2.label.setOrigin(Core::GUI::CONSTRAIN_TOP);
+			prop2.label.setAnchor(Core::GUI::CONSTRAIN_BOTTOM);
+			prop2.setPrecision(5);
+			prop2.setX(-40);
+			prop2.setY(0);
+			prop2.setMinMax(0, 100);
+			prop2.setStep(1.0f, 5.0f, 10.0f);
+			prop2.setText("Y Value");
+			Core::gui["GameMenu"]["Window 20"].Slider.add("Y (Int)", &Core::gui["GameMenu"]["Window 20"].Slider2Di["2D Slider (Int)"].getY_ValuePtr(), prop2);
+
+
+			prop2.setOrigin(Core::GUI::CONSTRAIN_TOP);
+			prop2.setAnchor(Core::GUI::CONSTRAIN_TOP);					// Center of button
+			prop2.setWidth(300, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+			prop2.setHeight(6, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+			prop2.setOrientation(Core::GUI::SLIDER_HORIZONTAL);
+			prop2.control.setWidth(10, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+			prop2.control.setHeight(20, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+			prop2.field.setOrigin(Core::GUI::CONSTRAIN_RIGHT);
+			prop2.field.setAnchor(Core::GUI::CONSTRAIN_LEFT);
+			prop2.label.setOrigin(Core::GUI::CONSTRAIN_LEFT);
+			prop2.label.setAnchor(Core::GUI::CONSTRAIN_RIGHT);
+			prop2.setX(0);
+			prop2.setY(-50);
+			prop2.setText("X Value");
+			Core::gui["GameMenu"]["Window 20"].Slider.add("X (Int)", &Core::gui["GameMenu"]["Window 20"].Slider2Di["2D Slider (Int)"].getX_ValuePtr(), prop2);
+		}
+
+		{
+			Core::GUI::Props_Slider2D prop;
+			prop.setOrigin(Core::GUI::CONSTRAIN_BOTTOM);
+			prop.setAnchor(Core::GUI::CONSTRAIN_BOTTOM);
+			prop.setWidth(200, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+			prop.setHeight(200, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+			prop.setX_MinMax(0, 100);
+			prop.setY_MinMax(0, 100);
+			prop.setY(-400);
+			prop.setX(-20);
+			prop.control.setWidth(16, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+			prop.control.setHeight(16, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+			prop.showLabel();
+//			prop.setStep(0.125f, 1.0f, 10.0f);
+			Core::gui["GameMenu"]["Window 20"].Slider2Df.add("2D Slider (Float)", 25.0f, 25.0f, prop);
+
+			Core::GUI::Props_Slider prop2;
+			prop2.setOrigin(Core::GUI::CONSTRAIN_RIGHT);
+			prop2.setAnchor(Core::GUI::CONSTRAIN_RIGHT);					// Center of button
+			prop2.setWidth(6, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+			prop2.setHeight(300, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+			prop2.setOrientation(Core::GUI::SLIDER_VERTICAL);
+			prop2.control.setWidth(20, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+			prop2.control.setHeight(10, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+			prop2.showField();
+			prop2.field.setOrigin(Core::GUI::CONSTRAIN_BOTTOM);
+			prop2.field.setAnchor(Core::GUI::CONSTRAIN_TOP);
+			prop2.showLabel();
+			prop2.label.setOrigin(Core::GUI::CONSTRAIN_TOP);
+			prop2.label.setAnchor(Core::GUI::CONSTRAIN_BOTTOM);
+			prop2.setPrecision(5);
+			prop2.setX(-40);
+			prop2.setY(-500);
+			prop2.setMinMax(0, 100);
+			prop2.setStep(0.125f, 1.0f, 10.0f);
+			prop2.setText("Y Value");
+			Core::gui["GameMenu"]["Window 20"].Slider.add("Y (Float)", &Core::gui["GameMenu"]["Window 20"].Slider2Df["2D Slider (Float)"].getY_ValuePtr(), prop2);
+
+
+			prop2.setOrigin(Core::GUI::CONSTRAIN_TOP);
+			prop2.setAnchor(Core::GUI::CONSTRAIN_TOP);					// Center of button
+			prop2.setWidth(300, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+			prop2.setHeight(6, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+			prop2.setOrientation(Core::GUI::SLIDER_HORIZONTAL);
+			prop2.control.setWidth(10, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+			prop2.control.setHeight(20, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+			prop2.field.setOrigin(Core::GUI::CONSTRAIN_RIGHT);
+			prop2.field.setAnchor(Core::GUI::CONSTRAIN_LEFT);
+			prop2.label.setOrigin(Core::GUI::CONSTRAIN_LEFT);
+			prop2.label.setAnchor(Core::GUI::CONSTRAIN_RIGHT);
+			prop2.setX(0);
+			prop2.setY(-550);
+			prop2.setText("X Value");
+			Core::gui["GameMenu"]["Window 20"].Slider.add("X (Float)", &Core::gui["GameMenu"]["Window 20"].Slider2Df["2D Slider (Float)"].getX_ValuePtr(), prop2);
+		}
+
+
+
+		bOneShot[45] = true;
+		std::cout << "Done" << std::endl;
+	}
+
+//	if (!bOneShot[44]) {
+//		std::cout << "GUI: Loading #44: ComboBox ..................................... ";
+//		//std::cout << "...............................................................";
+//		bOneShot[44] = true;
+//		std::cout << "Done" << std::endl;
+//	}
+
 	bInit = true;
 }
 
@@ -1855,6 +1984,9 @@ void _Admin::run() {
 		bHasFocus = !Core::gui["GameMenu"].isActive();
 		GetInput();
 		Core::gui.exec("GameMenu");
+
+//		int iVal = std::get<int>(Core::gui["GameMenu"]["Window 20"].Slider2D["2D Slider"].getVariant());
+//		Core::debug.log(std::to_string(iVal));
 
 		if(Core::gui["GameMenu"]["Window 19"].Button["Erase Test"].getState()) {
 			Core::debug.log("ERASING 'Test Object 5' from 'ComboBox2'");
@@ -2046,6 +2178,7 @@ void _Admin::run() {
 		else if(Core::gui["GameMenu"]["Window 2"].Button["Scissor"].getState())			Core::gui["GameMenu"]["Window 17"].show();
 		else if(Core::gui["GameMenu"]["Window 2"].Button["Progress Bar"].getState())	Core::gui["GameMenu"]["Window 18"].show();
 		else if(Core::gui["GameMenu"]["Window 2"].Button["ComboBox"].getState())		Core::gui["GameMenu"]["Window 19"].show();
+		else if(Core::gui["GameMenu"]["Window 2"].Button["2D Slider"].getState())		Core::gui["GameMenu"]["Window 20"].show();
 		else if(Core::gui["GameMenu"]["Window 2"].Button["Lighting"].getState())		Core::gui["GameMenu"]["Window 1"].show();
 		else if(Core::gui["GameMenu"]["Window 2"].Button["Skill Tree"].getState()) {
 			Core::gui["GameMenu"]["Window 14"].show();
