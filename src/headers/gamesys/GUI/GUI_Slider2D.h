@@ -29,32 +29,37 @@
 namespace Core {
 	namespace GUI {
 		namespace Object {
+			template <typename T>
 			class Slider2D : public Base::Interactive<Props_Slider2D>, public Base::AudioFeedback {
 				public:
 					Slider2D();
-					Slider2D(std::string n, int *xPtr, int *yPtr, Props_Slider2D &c);
-					Slider2D(std::string n, int *xPtr, int *yPtr, Props_Slider2D *c);
-					Slider2D(Props &p, std::string n, int *xPtr, int *yPtr, Props_Slider2D &c);
-					Slider2D(Props &p, std::string n, int *xPtr, int *yPtr, Props_Slider2D *c);
+					Slider2D(std::string n, T *xPtr, T *yPtr, Props_Slider2D &c);
+					Slider2D(std::string n, T *xPtr, T *yPtr, Props_Slider2D *c);
+					Slider2D(Props &p, std::string n, T *xPtr, T *yPtr, Props_Slider2D &c);
+					Slider2D(Props &p, std::string n, T *xPtr, T *yPtr, Props_Slider2D *c);
 
-					Slider2D(std::string n, int xVal, int yVal, Props_Slider2D &c);
-					Slider2D(std::string n, int xVal, int yVal, Props_Slider2D *c);
-					Slider2D(Props &p, std::string n, int xVal, int yVal, Props_Slider2D &c);
-					Slider2D(Props &p, std::string n, int xVal, int yVal, Props_Slider2D *c);
+					Slider2D(std::string n, T xVal, T yVal, Props_Slider2D &c);
+					Slider2D(std::string n, T xVal, T yVal, Props_Slider2D *c);
+					Slider2D(Props &p, std::string n, T xVal, T yVal, Props_Slider2D &c);
+					Slider2D(Props &p, std::string n, T xVal, T yVal, Props_Slider2D *c);
 					virtual ~Slider2D();
 
-					int *xValuePtr;
-					int *yValuePtr;
+					T *xValuePtr;
+					T *yValuePtr;
 					bool bLocalXValue;
 					bool bLocalYValue;
 
-					void setX_ValuePtr(int *xPtr);
-					int & getX_ValuePtr();
-					int getX_Value();
+					void setX_ValuePtr(T *xPtr);
+					T & getX_ValuePtr();
+					T getX_Value();
 
-					void setY_ValuePtr(int *yPtr);
-					int & getY_ValuePtr();
-					int getY_Value();
+//					std::variant<int, float> getVariant() {
+//						return *xValuePtr;
+//					}
+
+					void setY_ValuePtr(T *yPtr);
+					T & getY_ValuePtr();
+					T getY_Value();
 
 					ToolTip toolTip;
 					void init();
@@ -73,28 +78,28 @@ namespace Core {
 							ySpanPos,
 							xSpanValue,				///< Difference ofmin and max values (from constraints)
 							ySpanValue;
-					int		lastValue;				///< Value at the last cycle, used to determine bValueChanged
+					T		lastValue;				///< Value at the last cycle, used to determine bValueChanged
 					Vector2f currentPos;			///< Current slider position based on currentValue
 					bool bHasFocus;
 					void update();
 
 					void setX_Value();
-					void setX_Value(int xVal);
+					void setX_Value(T xVal);
 					void setY_Value();
-					void setY_Value(int yVal);
+					void setY_Value(T yVal);
 
 					void updateScrollMouse();
 					void updateObjectState(iState eExternState);
 
-					float getNormalized(int iCurrent, int iMin, int iMax);
+					float getNormalized(T iCurrent, T iMin, T iMax);
 
-					int getX_ValueFromPos(int xVal);
-					int getY_ValueFromPos(int yVal);
+					T getX_ValueFromPos(T xVal);
+					T getY_ValueFromPos(T yVal);
 					void updateControlPos();
 					void updateInput();
 			};
 
-			Slider2D::Slider2D() {
+			template <typename T> Slider2D<T>::Slider2D() {
 				xMinPos				= 0.0f;
 				xMaxPos				= 100.0f;
 				xSpanPos			= 100.0f;
@@ -113,7 +118,7 @@ namespace Core {
 				lastValue			= 0;
 			}
 
-			Slider2D::Slider2D(std::string n, int *xPtr, int *yPtr, Props_Slider2D &c) {
+			template <typename T> Slider2D<T>::Slider2D(std::string n, T *xPtr, T *yPtr, Props_Slider2D &c) {
 				lastValue			= 0;
 				currentPos			= Vector2f(0.0f);
 				bHasFocus			= false;
@@ -145,7 +150,7 @@ namespace Core {
 				if(this->con->text == "") this->con->text = n;
 			}
 
-			Slider2D::Slider2D(std::string n, int *xPtr, int *yPtr, Props_Slider2D *c) {
+			template <typename T> Slider2D<T>::Slider2D(std::string n, T *xPtr, T *yPtr, Props_Slider2D *c) {
 				lastValue			= 0;
 				currentPos			= Vector2f(0.0f);
 				bHasFocus			= false;
@@ -176,7 +181,7 @@ namespace Core {
 				if(this->con->text == "") this->con->text = n;
 			}
 
-			Slider2D::Slider2D(Props &p, std::string n, int *xPtr, int *yPtr, Props_Slider2D &c) {
+			template <typename T> Slider2D<T>::Slider2D(Props &p, std::string n, T *xPtr, T *yPtr, Props_Slider2D &c) {
 				lastValue			= 0;
 				currentPos			= Vector2f(0.0f);
 				bHasFocus			= false;
@@ -208,7 +213,7 @@ namespace Core {
 				if(this->con->text == "") this->con->text = n;
 			}
 
-			Slider2D::Slider2D(Props &p, std::string n, int *xPtr, int *yPtr, Props_Slider2D *c) {
+			template <typename T> Slider2D<T>::Slider2D(Props &p, std::string n, T *xPtr, T *yPtr, Props_Slider2D *c) {
 				lastValue			= 0;
 				currentPos			= Vector2f(0.0f);
 				bHasFocus			= false;
@@ -239,7 +244,7 @@ namespace Core {
 				if(this->con->text == "") this->con->text = n;
 			}
 
-			Slider2D::Slider2D(std::string n, int xVal, int yVal, Props_Slider2D &c) {
+			template <typename T> Slider2D<T>::Slider2D(std::string n, T xVal, T yVal, Props_Slider2D &c) {
 				lastValue			= 0;
 				currentPos			= Vector2f(0.0f);
 				bHasFocus			= false;
@@ -261,9 +266,9 @@ namespace Core {
 				this->statePtr		= new bool(false);
 
 				this->bLocalXValue	= true;
-				this->xValuePtr		= new int(xVal);
+				this->xValuePtr		= new T(xVal);
 				this->bLocalYValue	= true;
-				this->yValuePtr		= new int(yVal);
+				this->yValuePtr		= new T(yVal);
 
 
 				this->bLocalCon		= true;
@@ -272,7 +277,7 @@ namespace Core {
 				if(this->con->text == "") this->con->text = n;
 			}
 
-			Slider2D::Slider2D(std::string n, int xVal, int yVal, Props_Slider2D *c) {
+			template <typename T> Slider2D<T>::Slider2D(std::string n, T xVal, T yVal, Props_Slider2D *c) {
 				lastValue			= 0;
 				currentPos			= Vector2f(0.0f);
 				bHasFocus			= false;
@@ -294,16 +299,16 @@ namespace Core {
 				this->statePtr		= new bool(false);
 
 				this->bLocalXValue	= true;
-				this->xValuePtr		= new int(xVal);
+				this->xValuePtr		= new T(xVal);
 				this->bLocalYValue	= true;
-				this->yValuePtr		= new int(yVal);
+				this->yValuePtr		= new T(yVal);
 
 				this->bLocalCon		= false;
 				this->con			= c;
 				if(this->con->text == "") this->con->text = n;
 			}
 
-			Slider2D::Slider2D(Props &p, std::string n, int xVal, int yVal, Props_Slider2D &c) {
+			template <typename T> Slider2D<T>::Slider2D(Props &p, std::string n, T xVal, T yVal, Props_Slider2D &c) {
 				lastValue			= 0;
 				currentPos			= Vector2f(0.0f);
 				bHasFocus			= false;
@@ -325,9 +330,9 @@ namespace Core {
 				this->statePtr		= new bool(false);
 
 				this->bLocalXValue	= true;
-				this->xValuePtr		= new int(xVal);
+				this->xValuePtr		= new T(xVal);
 				this->bLocalYValue	= true;
-				this->yValuePtr		= new int(yVal);
+				this->yValuePtr		= new T(yVal);
 
 				this->bLocalCon		= true;
 				this->con			= new Props_Slider2D();
@@ -335,7 +340,7 @@ namespace Core {
 				if(this->con->text == "") this->con->text = n;
 			}
 
-			Slider2D::Slider2D(Props &p, std::string n, int xVal, int yVal, Props_Slider2D *c) {
+			template <typename T> Slider2D<T>::Slider2D(Props &p, std::string n, T xVal, T yVal, Props_Slider2D *c) {
 				lastValue			= 0;
 				currentPos			= Vector2f(0.0f);
 				bHasFocus			= false;
@@ -357,41 +362,41 @@ namespace Core {
 				this->statePtr		= new bool(false);
 
 				this->bLocalXValue	= true;
-				this->xValuePtr		= new int(xVal);
+				this->xValuePtr		= new T(xVal);
 				this->bLocalYValue	= true;
-				this->yValuePtr		= new int(yVal);
+				this->yValuePtr		= new T(yVal);
 
 				this->bLocalCon		= false;
 				this->con			= c;
 				if(this->con->text == "") this->con->text = n;
 			}
 
-			Slider2D::~Slider2D() {
+			template <typename T> Slider2D<T>::~Slider2D() {
 				if(this->bLocalCon && this->con != nullptr) delete this->con;
 				if(this->bLocalXValue && this->xValuePtr != nullptr) delete this->xValuePtr;
 				if(this->bLocalYValue && this->yValuePtr != nullptr) delete this->yValuePtr;
 				if(label != nullptr) delete label;
 			}
 
-			int & Slider2D::getX_ValuePtr() 		{	return *xValuePtr;	}
-			int Slider2D::getX_Value()				{	return *xValuePtr;	}
-			void Slider2D::setX_ValuePtr(int *xPtr) {
+			template <typename T> T & Slider2D<T>::getX_ValuePtr() 	{	return *xValuePtr;	}
+			template <typename T> T Slider2D<T>::getX_Value()		{	return *xValuePtr;	}
+			template <typename T> void Slider2D<T>::setX_ValuePtr(T *xPtr) {
 				if(bLocalXValue && xValuePtr != nullptr)
 					delete xValuePtr;
 				bLocalXValue = false;
 				xValuePtr = xPtr;
 			}
 
-			int & Slider2D::getY_ValuePtr()			{	return *yValuePtr;	}
-			int Slider2D::getY_Value()				{	return *yValuePtr;	}
-			void Slider2D::setY_ValuePtr(int *yPtr) {
+			template <typename T> T & Slider2D<T>::getY_ValuePtr()			{	return *yValuePtr;	}
+			template <typename T> T Slider2D<T>::getY_Value()				{	return *yValuePtr;	}
+			template <typename T> void Slider2D<T>::setY_ValuePtr(T *yPtr) {
 				if(bLocalYValue && yValuePtr != nullptr)
 					delete yValuePtr;
 				bLocalYValue = false;
 				yValuePtr = yPtr;
 			}
 
-			void Slider2D::init() {
+			template <typename T> void Slider2D<T>::init() {
 				this->id = IDs.create();
 
 				// Setup contraints
@@ -434,7 +439,7 @@ namespace Core {
 				this->bInit = true;
 			}
 
-			void Slider2D::update() {
+			template <typename T> void Slider2D<T>::update() {
 				xMinPos = this->con->pos.x-(this->con->size.x/2.0f);
 				xMaxPos = this->con->pos.x+(this->con->size.x/2.0f);
 				xSpanPos = abs(xMaxPos - xMinPos)-this->con->control.size.x;
@@ -446,54 +451,54 @@ namespace Core {
 				ySpanValue = abs(this->con->yMaxValue - this->con->yMinValue);
 			}
 
-			void Slider2D::setX_Value() {
+			template <typename T> void Slider2D<T>::setX_Value() {
 				setX_Value(*this->xValuePtr);
 			}
 
-			void Slider2D::setY_Value() {
+			template <typename T> void Slider2D<T>::setY_Value() {
 				setY_Value(*this->yValuePtr);
 			}
 
-			void Slider2D::setX_Value(int xVal) {
-				if(this->con->xMinValue<this->con->xMaxValue)	*this->xValuePtr = std::max( std::min( xVal, this->con->xMaxValue ), this->con->xMinValue );
-				else											*this->xValuePtr = std::max( std::min( xVal, this->con->xMinValue ), this->con->xMaxValue );
+			template <typename T> void Slider2D<T>::setX_Value(T xVal) {
+				if(this->con->xMinValue<this->con->xMaxValue)	*this->xValuePtr = fmax( fmin( xVal, this->con->xMaxValue ), this->con->xMinValue );
+				else											*this->xValuePtr = fmax( fmin( xVal, this->con->xMinValue ), this->con->xMaxValue );
 
 				float f1 = getNormalized(*this->xValuePtr, this->con->xMinValue, this->con->xMaxValue);
-				int i2 = xSpanPos;
-				int i3 = 0.0f;
-				int i4 = this->con->size.x/2.0f;
-				int i5 = f1 * i2 + i3 - i4;
+				T i2 = xSpanPos;
+				T i3 = 0.0f;
+				T i4 = this->con->size.x/2.0f;
+				T i5 = f1 * i2 + i3 - i4;
 
 				currentPos.x = i5+(this->con->control.size.x/2.0f);
 			}
 
-			void Slider2D::setY_Value(int yVal) {
-				if(this->con->yMinValue<this->con->yMaxValue)	*this->yValuePtr = std::max( std::min( yVal, this->con->yMaxValue ), this->con->yMinValue );
-				else											*this->yValuePtr = std::max( std::min( yVal, this->con->yMinValue ), this->con->yMaxValue );
+			template <typename T> void Slider2D<T>::setY_Value(T yVal) {
+				if(this->con->yMinValue<this->con->yMaxValue)	*this->yValuePtr = fmax( fmin( yVal, this->con->yMaxValue ), this->con->yMinValue );
+				else											*this->yValuePtr = fmax( fmin( yVal, this->con->yMinValue ), this->con->yMaxValue );
 
 				float f1 = getNormalized(*this->yValuePtr, this->con->yMinValue, this->con->yMaxValue);
-				int i2 = ySpanPos;
-				int i3 = 0.0f;
-				int i4 = this->con->size.y/2.0f;
-				int i5 = f1 * i2 + i3 - i4;
+				T i2 = ySpanPos;
+				T i3 = 0.0f;
+				T i4 = this->con->size.y/2.0f;
+				T i5 = f1 * i2 + i3 - i4;
 
 				currentPos.y = i5+(this->con->control.size.y/2.0f);
 			}
 
-			float Slider2D::getNormalized(int iCurrent, int iMin, int iMax) {
+			template <typename T> float Slider2D<T>::getNormalized(T iCurrent, T iMin, T iMax) {
 				float f = fmin( fmax( float(iCurrent-iMin)/float(iMax-iMin), 0.0f), 1.0f);
 				return f;
 			}
 
-			void Slider2D::updateControlPos() {
+			template <typename T> void Slider2D<T>::updateControlPos() {
 				*this->xValuePtr = getX_ValueFromPos(Core::mouse->x);
 				*this->yValuePtr = getY_ValueFromPos(Core::mouse->y);
 				setX_Value();
 				setY_Value();
 			}
 
-			int Slider2D::getX_ValueFromPos(int xVal) {
-				int i0, i2, i3, i4, i5;
+			template <typename T> T Slider2D<T>::getX_ValueFromPos(T xVal) {
+				T i0, i2, i3, i4, i5;
 				float f1;
 				i0 = xVal;
 
@@ -514,12 +519,12 @@ namespace Core {
 				i5 = f1 * i2 + i3 - i4;
 
 //				debug.log("X: i0 = "+std::to_string(i0)+", f1 = "+std::to_string(f1)+", i2 = "+std::to_string(i2)+", i3 = "+std::to_string(i3)+", i4 = "+std::to_string(i4)+", i5 = "+std::to_string(i5));
-				return int(i5/this->con->vStep[0])*this->con->vStep[0];		// Constrain value to minimum step size
+				return T(i5/this->con->vStep[0])*this->con->vStep[0];		// Constrain value to minimum step size
 //				return i5;
 			}
 
-			int Slider2D::getY_ValueFromPos(int yVal) {
-				int i0, i2, i3, i4, i5;
+			template <typename T> T Slider2D<T>::getY_ValueFromPos(T yVal) {
+				T i0, i2, i3, i4, i5;
 				float f1;
 				i0 = yVal;
 
@@ -540,11 +545,11 @@ namespace Core {
 				i5 = f1 * i2 + i3 - i4;
 
 //				debug.log("Y: i0 = "+std::to_string(i0)+", f1 = "+std::to_string(f1)+", i2 = "+std::to_string(i2)+", i3 = "+std::to_string(i3)+", i4 = "+std::to_string(i4)+", i5 = "+std::to_string(i5));
-				return int(i5/this->con->vStep[0])*this->con->vStep[0];		// Constrain value to minimum step size
+				return T(i5/this->con->vStep[0])*this->con->vStep[0];		// Constrain value to minimum step size
 //				return i5;
 			}
 
-			void Slider2D::updateInput() {
+			template <typename T> void Slider2D<T>::updateInput() {
 
 				// If THIS object is active, then monitor for input
 //				if(this->bFocusPresent && (this->sActiveObject == this->id)) {
@@ -552,8 +557,8 @@ namespace Core {
 					keyboard.event = SDL_GetKeyboardState(NULL);
 					keyboard.update();
 
-					int xModVal = this->con->vStep[1];
-					int yModVal = this->con->vStep[1];
+					T xModVal = this->con->vStep[1];
+					T yModVal = this->con->vStep[1];
 
 					const Uint8 *keyState = SDL_GetKeyboardState(NULL);
 					if (keyState[SDL_SCANCODE_LSHIFT] || keyState[SDL_SCANCODE_RSHIFT]) {
@@ -603,7 +608,7 @@ namespace Core {
 //				}
 			}
 
-			void Slider2D::updateObjectState(iState eExternState) {
+			template <typename T> void Slider2D<T>::updateObjectState(iState eExternState) {
 				if((eExternState!=STATE_NONE) && !(eExternState&STATE_UPDATE)) {
 					this->eObjectState = eExternState;
 				}
@@ -669,7 +674,7 @@ namespace Core {
 				updateStatePtr();
 			}
 
-			void Slider2D::exec(iState eExternState) {
+			template <typename T> void Slider2D<T>::exec(iState eExternState) {
 				if(this->bInit && this->con->visibility && ((this->parent!=nullptr && this->parent->visibility) || (this->parent==nullptr))) {
 //					debug.log("x = "+std::to_string(*this->xValuePtr)+", xMin = "+std::to_string(xMinPos)+", xMax = "+std::to_string(xMaxPos)+", xSpanPos = "+std::to_string(xSpanPos)+", xSpanVal = "+std::to_string(xSpanValue));
 //					debug.log("y = "+std::to_string(*this->yValuePtr)+", yMin = "+std::to_string(yMinPos)+", yMax = "+std::to_string(yMaxPos)+", ySpanPso = "+std::to_string(ySpanPos)+", ySpanVal = "+std::to_string(ySpanValue));
@@ -725,7 +730,7 @@ namespace Core {
 			}
 
 			// TODO: Add to all objects with nested objects
-			void Slider2D::execToolTip() {
+			template <typename T> void Slider2D<T>::execToolTip() {
 				toolTip.exec();
 			}
 
@@ -734,7 +739,7 @@ namespace Core {
 			 * @tparam T
 			 * @tparam T
 			 */
-			void Slider2D::updateNoFocus() {
+			template <typename T> void Slider2D<T>::updateNoFocus() {
 //				if(bHasFocus) {
 //					bHasFocus = false;
 //					this->bFocusPresent = false;

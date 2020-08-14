@@ -1113,10 +1113,10 @@ namespace Core {
 			//friend class Object::Slider2D;
 
 			public:
-				int			xMinValue,
-					  	  	xMaxValue;
-				int			yMinValue,
-					  	  	yMaxValue;
+				float	xMinValue,
+						xMaxValue;
+				float	yMinValue,
+						yMaxValue;
 //				int			precision;
 				Vector3i	vStep;
 
@@ -1150,9 +1150,7 @@ namespace Core {
 					label.colorText.active = &Core::gameVars->pallette.gui.slider.text.active;
 
 					// Slider
-//					if(orientation==SLIDER_HORIZONTAL) setPadding(-8, -8, -5, -5);
-//					else setPadding(-5, -5, -8, -8);
-					setPadding(0, 0, 0, 0);
+					setPadding(-8, -8, -8, -8);
 					setBorder(1, 1);
 					setRadius(0);
 					colorBack.base = &Core::gameVars->pallette.gui.slider.bar.base;
@@ -1164,15 +1162,6 @@ namespace Core {
 					colorBorder.active = &Core::gameVars->pallette.gui.slider.barBorder.active;
 
 					// Control Handle
-//					if(orientation==SLIDER_HORIZONTAL) {
-//						control.setWidth(8, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
-//						control.setHeight(16, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
-//					}
-//					else {
-//						control.setWidth(16, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
-//						control.setHeight(8, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
-//					}
-
 					control.setWidth(8, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
 					control.setHeight(8, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
 

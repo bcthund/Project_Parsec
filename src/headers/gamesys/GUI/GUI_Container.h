@@ -151,21 +151,21 @@ namespace Core {
 				class Slider2DInterface {
 						friend class GUI_Container;
 					private:
-						Core::t_VectorMap<Object::Slider2D*> slider2Ds;
+						Core::t_VectorMap<Object::Slider2D<int>*> slider2Ds;
 						GUI_Container * gui;
-						Object::Slider2D & pushData(std::string name, Object::Slider2D *data);
+						Object::Slider2D<int> & pushData(std::string name, Object::Slider2D<int> *data);
 
 					public:
-						Object::Slider2D & add(std::string sliderName, int *xPtr, int *yPtr, Props_Slider2D &c, Props *p=nullptr);
-						Object::Slider2D & add(std::string sliderName, int *xPtr, int *yPtr, Props_Slider2D *c, Props *p=nullptr);
-						Object::Slider2D & add(std::string sliderName, int xVal, int yVal, Props_Slider2D &c, Props *p=nullptr);
-						Object::Slider2D & add(std::string sliderName, int xVal, int yVal, Props_Slider2D *c, Props *p=nullptr);
-						Object::Slider2D & operator[](std::string sliderName)		{	return *slider2Ds[sliderName];	}
+						Object::Slider2D<int> & add(std::string sliderName, int *xPtr, int *yPtr, Props_Slider2D &c, Props *p=nullptr);
+						Object::Slider2D<int> & add(std::string sliderName, int *xPtr, int *yPtr, Props_Slider2D *c, Props *p=nullptr);
+						Object::Slider2D<int> & add(std::string sliderName, int xVal, int yVal, Props_Slider2D &c, Props *p=nullptr);
+						Object::Slider2D<int> & add(std::string sliderName, int xVal, int yVal, Props_Slider2D *c, Props *p=nullptr);
+						Object::Slider2D<int> & operator[](std::string sliderName)		{	return *slider2Ds[sliderName];	}
 //						Props_Slider	&operator()(std::string sliderName)			{	return *sliders[map[sliderName]]->con;	}
 						Slider2DInterface(GUI_Container * parent) { gui = parent; }
 						~Slider2DInterface() { for (auto & slider : slider2Ds) delete slider; }
 				};
-				Slider2DInterface Slider2D = Slider2DInterface(this);
+				Slider2DInterface Slider2Di = Slider2DInterface(this);
 
 				class FieldInterface {
 						friend class GUI_Container;
@@ -512,41 +512,41 @@ namespace Core {
 
 		/*
 		 * ==========================================================
-		 *						Slider2D
+		 *						Slider2D<int>
 		 * ==========================================================
 		 */
-		Object::Slider2D & GUI_Container::Slider2DInterface::pushData(std::string name, Object::Slider2D *data) {
+		Object::Slider2D<int> & GUI_Container::Slider2DInterface::pushData(std::string name, Object::Slider2D<int> *data) {
 			data->init();
 			return *slider2Ds.add(name, data);
 		}
 
-		Object::Slider2D & GUI_Container::Slider2DInterface::add(std::string sliderName, int *xPtr, int *yPtr, Props_Slider2D &c, Props *p) {
-			Object::Slider2D * slider2D;
-			if(p!=nullptr) slider2D = new Object::Slider2D(*p, sliderName, xPtr, yPtr, c);
-			else slider2D = new Object::Slider2D(*gui->con, sliderName, xPtr, yPtr, c);
+		Object::Slider2D<int> & GUI_Container::Slider2DInterface::add(std::string sliderName, int *xPtr, int *yPtr, Props_Slider2D &c, Props *p) {
+			Object::Slider2D<int> * slider2D;
+			if(p!=nullptr) slider2D = new Object::Slider2D<int>(*p, sliderName, xPtr, yPtr, c);
+			else slider2D = new Object::Slider2D<int>(*gui->con, sliderName, xPtr, yPtr, c);
 			return pushData(sliderName, slider2D);
 
 		}
 
-		Object::Slider2D & GUI_Container::Slider2DInterface::add(std::string sliderName, int *xPtr, int *yPtr, Props_Slider2D *c, Props *p) {
-			Object::Slider2D * slider2D;
-			if(p!=nullptr) slider2D = new Object::Slider2D(*p, sliderName, xPtr, yPtr, c);
-			else slider2D = new Object::Slider2D(*gui->con, sliderName, xPtr, yPtr, c);
+		Object::Slider2D<int> & GUI_Container::Slider2DInterface::add(std::string sliderName, int *xPtr, int *yPtr, Props_Slider2D *c, Props *p) {
+			Object::Slider2D<int> * slider2D;
+			if(p!=nullptr) slider2D = new Object::Slider2D<int>(*p, sliderName, xPtr, yPtr, c);
+			else slider2D = new Object::Slider2D<int>(*gui->con, sliderName, xPtr, yPtr, c);
 			return pushData(sliderName, slider2D);
 		}
 
-		Object::Slider2D & GUI_Container::Slider2DInterface::add(std::string sliderName, int xVal, int yVal, Props_Slider2D &c, Props *p) {
-			Object::Slider2D * slider2D;
-			if(p!=nullptr) slider2D = new Object::Slider2D(*p, sliderName, xVal, yVal, c);
-			else slider2D = new Object::Slider2D(*gui->con, sliderName, xVal, yVal, c);
+		Object::Slider2D<int> & GUI_Container::Slider2DInterface::add(std::string sliderName, int xVal, int yVal, Props_Slider2D &c, Props *p) {
+			Object::Slider2D<int> * slider2D;
+			if(p!=nullptr) slider2D = new Object::Slider2D<int>(*p, sliderName, xVal, yVal, c);
+			else slider2D = new Object::Slider2D<int>(*gui->con, sliderName, xVal, yVal, c);
 			return pushData(sliderName, slider2D);
 
 		}
 
-		Object::Slider2D & GUI_Container::Slider2DInterface::add(std::string sliderName, int xVal, int yVal, Props_Slider2D *c, Props *p) {
-			Object::Slider2D * slider2D;
-			if(p!=nullptr) slider2D = new Object::Slider2D(*p, sliderName, xVal, yVal, c);
-			else slider2D = new Object::Slider2D(*gui->con, sliderName, xVal, yVal, c);
+		Object::Slider2D<int> & GUI_Container::Slider2DInterface::add(std::string sliderName, int xVal, int yVal, Props_Slider2D *c, Props *p) {
+			Object::Slider2D<int> * slider2D;
+			if(p!=nullptr) slider2D = new Object::Slider2D<int>(*p, sliderName, xVal, yVal, c);
+			else slider2D = new Object::Slider2D<int>(*gui->con, sliderName, xVal, yVal, c);
 			return pushData(sliderName, slider2D);
 		}
 
@@ -895,7 +895,7 @@ namespace Core {
 					for (auto & sprite		: Sprite.sprites)				sprite->exec();
 					for (auto & progressBar	: ProgressBar.progressBars)		progressBar->exec();
 					for (auto & comboBox	: ComboBox.comboBoxes)			comboBox->exec();
-					for (auto & slider2D	: Slider2D.slider2Ds)			slider2D->exec();
+					for (auto & slider2D	: Slider2Di.slider2Ds)			slider2D->exec();
 					for (auto & container	: containers)					container->execObjects();
 
 					if(con->bScissor) {
@@ -911,7 +911,7 @@ namespace Core {
 					for (auto & icon		: Icon.icons)					icon->updateNoFocus();
 					for (auto & textEdit	: TextEdit.textEdits)			textEdit->updateNoFocus();
 					for (auto & slider		: Slider.sliders)				slider->updateNoFocus();
-					for (auto & slider2D	: Slider2D.slider2Ds)			slider2D->updateNoFocus();
+					for (auto & slider2D	: Slider2Di.slider2Ds)			slider2D->updateNoFocus();
 					for (auto & comboBox	: ComboBox.comboBoxes)			comboBox->updateNoFocus();
 				}
 			}
@@ -938,7 +938,7 @@ namespace Core {
 			for (auto & sprite		: Sprite.sprites)				sprite->execToolTip();
 			for (auto & progressBar	: ProgressBar.progressBars)		progressBar->execToolTip();
 			for (auto & comboBox	: ComboBox.comboBoxes)			comboBox->execToolTip();
-			for (auto & slider2D	: Slider2D.slider2Ds)			slider2D->execToolTip();
+			for (auto & slider2D	: Slider2Di.slider2Ds)			slider2D->execToolTip();
 			for (auto & container	: containers)					container->execToolTips();
 		}
 
