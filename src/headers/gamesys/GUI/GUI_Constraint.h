@@ -1798,6 +1798,66 @@ namespace Core {
 				}
 		};
 
+		/** ******************************************************************************************************************************
+		 *  \class Props_PieChart
+		 *  \brief Creates a slider and control with optional label and field for value editing
+		 *
+		 *
+		 *
+		 * ****************************************************************************************************************************** */
+		class Props_PieChart :	virtual public Props_Window,
+									public Props_Addon_Label {
+
+			friend class Object::Label;
+
+			public:
+				Props_Window	propLegend;		///< The container for additional items that show up when down arrow pressed
+
+				bool	bShowLegend;
+
+				void showLegend(bool b=true)	{	bShowLegend = b;	}
+
+				Props_PieChart() {
+					bShowLegend = true;
+
+					setOrigin(Core::GUI::CONSTRAIN_TOP);
+					setAnchor(Core::GUI::CONSTRAIN_TOP);
+
+					colorBack.base			= &Core::colors[Core::colors().Gray80];
+					colorBack.highlight		= &Core::colors[Core::colors().White];
+					colorBack.active		= &Core::colors[Core::colors().White];
+
+					colorBorder.base		= &Core::colors[Core::colors().Black];
+					colorBorder.highlight	= &Core::colors[Core::colors().Black];
+					colorBorder.active		= &Core::colors[Core::colors().Black];
+
+					setBorder(1, 1);
+					setResizeRadius(5);
+					setPadding(5);
+					setWidth(250, GUI::SIZE_CONSTRAINT_ABSOLUTE);
+					setHeight(250, GUI::SIZE_CONSTRAINT_ABSOLUTE);
+
+					// selectedItem will be parent
+					propLegend.setOrigin(Core::GUI::CONSTRAIN_TOP_RIGHT);
+					propLegend.setAnchor(Core::GUI::CONSTRAIN_TOP_LEFT);
+					propLegend.setNoInput(false);
+					propLegend.disablePadding();
+					propLegend.colorBack.base			= &Core::colors[Core::colors().Gray80];
+					propLegend.colorBack.highlight		= &Core::colors[Core::colors().White];
+					propLegend.colorBack.active			= &Core::colors[Core::colors().Yellow];
+
+					propLegend.colorBorder.base			= &Core::colors[Core::colors().Black];
+					propLegend.colorBorder.highlight	= &Core::colors[Core::colors().Black];
+					propLegend.colorBorder.active		= &Core::colors[Core::colors().Black];
+
+					propLegend.setBorder(1, 1);
+					propLegend.setResizeRadius(5);
+					propLegend.setPadding(5);
+					propLegend.setWidth(150, GUI::SIZE_CONSTRAINT_ABSOLUTE);
+					propLegend.setHeight(20, GUI::SIZE_CONSTRAINT_ABSOLUTE);	// Size set automatically later
+				}
+		};
+
 		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 		// 			General Functions

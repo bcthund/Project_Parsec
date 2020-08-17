@@ -31,6 +31,7 @@
 #include "GUI_ProgressBar.h"
 #include "GUI_ComboBox.h"
 #include "GUI_Slider2D.h"
+#include "GUI_PieChart.h"
 //#include "GUI_Custom.h"
 //#include "GUI_Dialog.h"
 
