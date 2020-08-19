@@ -28,9 +28,9 @@ namespace Core {
 				std::string sFilename,
 							sDir,
 							sTexDir;
-				void start(int x, int y, float w, float h, std::string sTex, bool textOffset, bool bNoTex, Core::_Colors::_ACTIVE_COLOR eColor=Core::_Colors::COLOR_FRONT, SHADER_PROGRAMS uiShader=GLS_FONT);
-				void update(SHADER_PROGRAMS uiShader);
-				void stop();
+//				void start(int x, int y, float w, float h, std::string sTex, bool textOffset, bool bNoTex, Core::_Colors::_ACTIVE_COLOR eColor=Core::_Colors::COLOR_FRONT, SHADER_PROGRAMS uiShader=GLS_FONT);
+//				void update(SHADER_PROGRAMS uiShader);
+//				void stop();
 				//uint checkInput(int x, int y, float w, float h );
 				//uint checkOver(int x, int y, float w, float h );
 				//bool gettingInput;	//IS THIS NEEDED?
@@ -42,18 +42,19 @@ namespace Core {
 
 			public:
 
-				uint draw(uint x, uint y, float s, std::string sTex, bool textOffset);
-				uint draw(uint x, uint y, float s, std::string sTex, bool textOffset, Color fontColor);
+				uint draw(int x, int y, float s, std::string sTex, bool textOffset);
+				uint draw(int x, int y, float s, std::string sTex, bool textOffset, Color fontColor);
 
-				uint draw(uint x, uint y, float w, float h, std::string sTex, bool textOffset);
-				uint draw(uint x, uint y, float w, float h, std::string sTex, bool textOffset, Color fontColor);
+				uint draw(int x, int y, float w, float h, std::string sTex, bool textOffset);
+				uint draw(int x, int y, float w, float h, std::string sTex, bool textOffset, Color fontColor);
 
 				_SpriteSys(/*Matrix_System &m, Shader_System &s*/);
 				//void draw(Atmosphere &a, uint x, uint y, uint z, float w, float h, GLuint uiShader=GLS_FONT); // Special drawing routine
-				void draw(uint x, uint y, float w, float h, GLuint uiTex, SHADER_PROGRAMS uiShader);	// Special drawing routine, specified texture
-				void draw(uint x, uint y, float w, float h, Color fontColor, GLuint uiTex, SHADER_PROGRAMS uiShader);	// Special drawing routine, specified texture
+				void draw(int x, int y, float w, float h, GLuint uiTex, SHADER_PROGRAMS uiShader);	// Special drawing routine, specified texture
+				void draw(int x, int y, float w, float h, Color fontColor, GLuint uiTex, SHADER_PROGRAMS uiShader);	// Special drawing routine, specified texture
 				//void draw(Atmosphere &a, uint x, uint y, float w, float h, Vector4f fontColor, GLuint uiTex, GLuint uiShader);	// Special drawing routine, specified texture
 
+				void draw(Core::GUI::Props *con, std::string sTex, Color color);
 				void draw(Core::GUI::Props *con, std::string texture);
 
 				bool load();
@@ -79,7 +80,9 @@ namespace Core {
 		bool _SpriteSys::load() {
 			try {
 				//            .................................................................Done
-				std::cout << "Load SpriteSys...................................................";
+				//std::cout << "Load SpriteSys...................................................";
+				std::cout << "Load SpriteSys {" << std::endl;
+				Core::sOffset = "    ";
 				MemBlock memBlock;
 				std::string theImage;
 				texture.Begin(uiNumTextures);
@@ -95,15 +98,19 @@ namespace Core {
 						if (memBlock.buffer[i+d]!=0) theImage+=(unsigned char)memBlock.buffer[i+d];
 						else break;
 
-					//if (Core::gameVars->debug.load) cout << theId << ".";
+					std::cout << sOffset << "[" << theId << "] " << theImage << "\n";
 					texture.Load(sTexDir, theImage, theId);
 				}
 				//if (Core::gameVars->debug.load) cout << "..";
-				std::cout << "Done" << std::endl;
+				//std::cout << "Done" << std::endl;
+				Core::sOffset = "";
+				std::cout << "}" << std::endl;
 				return true;
 			}
 			catch(...) {
-				std::cout << "Failed" << std::endl;
+				//std::cout << "Failed" << std::endl;
+				Core::sOffset = "";
+				std::cout << "} FAILED!" << std::endl;
 				return false;
 			}
 		}
@@ -155,39 +162,39 @@ namespace Core {
 			}
 		}
 
-		void _SpriteSys::start(int x, int y, float w, float h, std::string sTex, bool textOffset, bool bNoTex=false, Core::_Colors::_ACTIVE_COLOR eColor, SHADER_PROGRAMS uiShader) {
-			glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-			matrix->SetProjection(matrix->MM_ORTHO);
-			shader->use(uiShader);
+//		void _SpriteSys::start(int x, int y, float w, float h, std::string sTex, bool textOffset, bool bNoTex=false, Core::_Colors::_ACTIVE_COLOR eColor, SHADER_PROGRAMS uiShader) {
+//			glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+//			matrix->SetProjection(matrix->MM_ORTHO);
+//			shader->use(uiShader);
+//
+//			glDisable(GL_DEPTH_TEST);
+//			matrix->Push();
+//
+//			if (textOffset) {
+//				matrix->Translate( (Core::gameVars->font.vSize[0]*x)+Core::gameVars->font.screenCoords[0]+(w*32), (-Core::gameVars->font.vSize[1]*y)+Core::gameVars->font.screenCoords[1]-(h*32), 0.0 );
+//			}
+//			else {
+//				matrix->Translate( x+Core::gameVars->screen.origin[0]+(w*32), -y+Core::gameVars->screen.origin[1]-(h*32), 0.0 );
+//			}
+//
+//			matrix->Scale(w,h,1);
+//
+//			colors.SetActive(eColor);
+//
+//			// Do not set texture if bNoSet true, texture is set elsewhere
+//			if (!bNoTex) texture.Set(sTex);
+//		}
 
-			glDisable(GL_DEPTH_TEST);
-			matrix->Push();
+//		void _SpriteSys::update(SHADER_PROGRAMS uiShader=GLS_FONT) {
+//			matrix->SetTransform();
+//			shader->getUniform(uiShader);
+//		}
 
-			if (textOffset) {
-				matrix->Translate( (Core::gameVars->font.vSize[0]*x)+Core::gameVars->font.screenCoords[0]+(w*32), (-Core::gameVars->font.vSize[1]*y)+Core::gameVars->font.screenCoords[1]-(h*32), 0.0 );
-			}
-			else {
-				matrix->Translate( x+Core::gameVars->screen.origin[0]+(w*32), -y+Core::gameVars->screen.origin[1]-(h*32), 0.0 );
-			}
-
-			matrix->Scale(w,h,1);
-
-			colors.SetActive(eColor);
-
-			// Do not set texture if bNoSet true, texture is set elsewhere
-			if (!bNoTex) texture.Set(sTex);
-		}
-
-		void _SpriteSys::update(SHADER_PROGRAMS uiShader=GLS_FONT) {
-			matrix->SetTransform();
-			shader->getUniform(uiShader);
-		}
-
-		void _SpriteSys::stop() {
-			matrix->Pop();
-			matrix->SetProjection(matrix->MM_PERSPECTIVE);
-			glEnable(GL_DEPTH_TEST);
-		}
+//		void _SpriteSys::stop() {
+//			matrix->Pop();
+//			matrix->SetProjection(matrix->MM_PERSPECTIVE);
+//			glEnable(GL_DEPTH_TEST);
+//		}
 
 		/*
 		 * textOffset flag tells the start() function id we are using
@@ -201,7 +208,7 @@ namespace Core {
 			glEnable(GL_CULL_FACE);
 		}
 
-		uint _SpriteSys::draw(uint x, uint y, float s, std::string sTex, bool textOffset) {
+		uint _SpriteSys::draw(int x, int y, float s, std::string sTex, bool textOffset) {
 			Vector4f fontColor = {1.0, 1.0, 1.0, 1.0};
 			return draw(x, y, s*64, s*64, sTex, textOffset);
 		}
@@ -211,7 +218,7 @@ namespace Core {
 //			return draw(x, y, w, h, sTex, textOffset, fontColor);
 //		}
 
-		uint _SpriteSys::draw(uint x, uint y, float s, std::string sTex, bool textOffset, Color fontColor) {
+		uint _SpriteSys::draw(int x, int y, float s, std::string sTex, bool textOffset, Color fontColor) {
 			colors.PushFront(fontColor);
 			return draw(x, y, s*64, s*64, sTex, textOffset);
 			colors.PopFront();
@@ -234,31 +241,37 @@ namespace Core {
 		 * 	be modified by the fragment shader->
 		 *
 		 */
-		void _SpriteSys::draw(uint x, uint y, float w, float h, Color fontColor, GLuint uiTex, SHADER_PROGRAMS uiShader=GLS_FONT) {
-			colors.PushFront(fontColor);
-			draw(x, y, w, h, uiTex, uiShader);
+//		void _SpriteSys::draw(uint x, uint y, float w, float h, Color fontColor, GLuint uiTex, SHADER_PROGRAMS uiShader=GLS_FONT) {
+//			colors.PushFront(fontColor);
+//			draw(x, y, w, h, uiTex, uiShader);
+//			colors.PopFront();
+//		}
+//
+//		void _SpriteSys::draw(uint x, uint y, float w, float h, GLuint uiTex, SHADER_PROGRAMS uiShader=GLS_FONT) {
+//
+//			// We need to disable face culling for quads that need
+//			//	to get flipped. This is common when working with
+//			//	FBOs because they are always upside down.
+//			glDisable(GL_CULL_FACE);
+//
+////			w=w/64;
+////			h=h/64;
+//
+//			start(x, y, w, h, "none", false, true, Core::_Colors::COLOR_FRONT, uiShader);
+//			glActiveTexture(GL_TEXTURE0);
+//			glBindTexture(GL_TEXTURE_2D, uiTex);
+//			update(uiShader);
+//
+//			vao.Draw();
+//			stop();
+//
+//			glEnable(GL_CULL_FACE);
+//		}
+
+		void _SpriteSys::draw(Core::GUI::Props *con, std::string sTex, Color color) {
+			colors.PushFront(color);
+			draw(con, sTex);
 			colors.PopFront();
-		}
-
-		void _SpriteSys::draw(uint x, uint y, float w, float h, GLuint uiTex, SHADER_PROGRAMS uiShader=GLS_FONT) {
-
-			// We need to disable face culling for quads that need
-			//	to get flipped. This is common when working with
-			//	FBOs because they are always upside down.
-			glDisable(GL_CULL_FACE);
-
-//			w=w/64;
-//			h=h/64;
-
-			start(x, y, w, h, "none", false, true, Core::_Colors::COLOR_FRONT, uiShader);
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, uiTex);
-			update(uiShader);
-
-			vao.Draw();
-			stop();
-
-			glEnable(GL_CULL_FACE);
 		}
 
 		void _SpriteSys::draw(Core::GUI::Props *con, std::string sTex) {
@@ -270,34 +283,24 @@ namespace Core {
 			glDisable(GL_DEPTH_TEST);
 			matrix->Push();
 
-			Vector2f vPos = con->getPos();
-			if(con->scroll.getEnabled()) {
-				vPos.x += con->scroll.getX();
-				vPos.y += con->scroll.getY();
-			}
-			matrix->Translate( vPos.x, vPos.y, 0.0f );
-//			matrix->Translate( con->pos.x, con->pos.y, 0.0 );
-//			matrix->Scale( con->size.x/64, con->size.y/64, 1);		// FIXME: Make VAO unit normal, get rid of "/64"
-			matrix->Scale( con->size.x, con->size.y, 1);			// FIXME: Make VAO unit normal, get rid of "/64"
+				Vector2f vPos = con->getPos();
+				if(con->scroll.getEnabled()) {
+					vPos.x += con->scroll.getX();
+					vPos.y += con->scroll.getY();
+				}
+				matrix->Translate( vPos.x, vPos.y, 0.0f );
+	//			matrix->Scale( con->size.x/64, con->size.y/64, 1);		// FIXME: Make VAO unit normal, get rid of "/64"
+				matrix->Scale( con->size.x, con->size.y, 1);			// FIXME: Make VAO unit normal, get rid of "/64"
 
-//			colors.SetActive(eColor);
+				glActiveTexture(GL_TEXTURE0);
+				texture.Set(sTex);
 
-			// Do not set texture if bNoSet true, texture is set elsewhere
-//			if (!bNoTex) texture.Set(sTex);
-//			texture.Set(sTex);
+				//update(uiShader);
+				matrix->SetTransform();
+				shader->getUniform(GLS_FONT);
 
+				vao.Draw();
 
-			glActiveTexture(GL_TEXTURE0);
-//			glBindTexture(GL_TEXTURE_2D, uiTex);
-			texture.Set(sTex);
-
-			//update(uiShader);
-			matrix->SetTransform();
-			shader->getUniform(GLS_FONT);
-
-			vao.Draw();
-
-			// stop();
 			matrix->Pop();
 			matrix->SetProjection(matrix->MM_PERSPECTIVE);
 			glEnable(GL_DEPTH_TEST);
@@ -383,18 +386,88 @@ namespace Core {
 		/*
 		 * Primary draw routine, all others lead here
 		 */
-		uint _SpriteSys::draw(uint x, uint y, float w, float h, std::string sTex, bool textOffset, Color fontColor) {
+		uint _SpriteSys::draw(int x, int y, float w, float h, std::string sTex, bool textOffset, Color fontColor) {
 			colors.PushFront(fontColor);
 			uint r = draw(x, y, w, h, sTex, textOffset);
 			colors.PopFront();
 			return r;
 		}
 
-		uint _SpriteSys::draw(uint x, uint y, float w, float h, std::string sTex, bool textOffset) {
-			start(x, y, w, h, sTex, textOffset);
-			update();
-			vao.Draw();
-			stop();
+		uint _SpriteSys::draw(int x, int y, float w, float h, std::string sTex, bool textOffset) {
+			glDisable(GL_CULL_FACE);
+			glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+			matrix->SetProjection(matrix->MM_ORTHO);
+			shader->use(GLS_FONT);
+
+			glDisable(GL_DEPTH_TEST);
+			matrix->Push();
+				matrix->Translate( x, y, 0.0f );
+//				if (textOffset) matrix->Translate( (Core::gameVars->font.vSize[0]*x)+Core::gameVars->font.screenCoords[0]+(w*32), (-Core::gameVars->font.vSize[1]*y)+Core::gameVars->font.screenCoords[1]-(h*32), 0.0 );
+//				else matrix->Translate( x+Core::gameVars->screen.origin[0]+(w*32), -y+Core::gameVars->screen.origin[1]-(h*32), 0.0 );
+
+				matrix->Scale( w, h, 1);
+
+				glActiveTexture(GL_TEXTURE0);
+				texture.Set(sTex);
+
+				//update(uiShader);
+				matrix->SetTransform();
+				shader->getUniform(GLS_FONT);
+
+				vao.Draw();
+
+			matrix->Pop();
+			matrix->SetProjection(matrix->MM_PERSPECTIVE);
+			glEnable(GL_DEPTH_TEST);
+
+			glEnable(GL_CULL_FACE);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//			debug.log("Drawing '"+sTex+"' @ ("+std::to_string(x)+", "+std::to_string(y)+"); ("+std::to_string(w)+", "+std::to_string(h)+")");
+//			colors.SetActive(colors.COLOR_FRONT);
+//			debug.log("\tColor = ("+std::to_string(colors.GetActive().r)+", "+std::to_string(colors.GetActive().g)+", "+std::to_string(colors.GetActive().b)+", "+std::to_string(colors.GetActive().a)+")");
+//			//start(x, y, w, h, sTex, textOffset);
+//			//update();
+//
+//			glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+//			shader->use(GLS_FONT);
+//
+//			glDisable(GL_DEPTH_TEST);
+//			matrix->SetProjection(matrix->MM_ORTHO);
+//			matrix->Push();
+//				if (textOffset) matrix->Translate( (Core::gameVars->font.vSize[0]*x)+Core::gameVars->font.screenCoords[0]+(w*32), (-Core::gameVars->font.vSize[1]*y)+Core::gameVars->font.screenCoords[1]-(h*32), 0.0 );
+//				else matrix->Translate( x+Core::gameVars->screen.origin[0]+(w*32), -y+Core::gameVars->screen.origin[1]-(h*32), 0.0 );
+//
+//				matrix->Scale(w,h,1);
+//				//colors.SetActive(eColor);
+//				// Do not set texture if bNoSet true, texture is set elsewhere
+//				//if (!bNoTex) texture.Set(sTex);
+//				texture.Set(sTex);
+//
+//				matrix->SetTransform();
+//				shader->getUniform(GLS_FONT);
+//
+//				vao.Draw();
+//			matrix->Pop();
+//			matrix->SetProjection(matrix->MM_PERSPECTIVE);
+//			glEnable(GL_DEPTH_TEST);
+//
+//			//stop();
 
 			return Core::mouse->MOUSE_NONE;
 		}

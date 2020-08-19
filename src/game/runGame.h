@@ -511,7 +511,8 @@ void _Game::Update() {
 	Core::profiles->runProfile(Core::profiles->builtIn.RunGame_PostProcess, false);
 
 	// FIXME: Crosshair
-	Core::GameSys::drawSprite(Core::gameVars->screen.half.x-16, Core::gameVars->screen.half.y-16, 32, 32, "crosshair.png", false, false, Core::colors[Core::colors().Green]);
+//	Core::GameSys::drawSprite(Core::gameVars->screen.half.x-16, Core::gameVars->screen.half.y-16, 32, 32, "crosshair.png", false, false, Core::colors[Core::colors().Green]);
+	Core::GameSys::drawSprite(0, 0, 32, 32, "crosshair.png", false, false, Core::colors[Core::colors().Green]);
 
 	// Start orthographic routines (Overlays)
 //	uint iX = 0,
@@ -546,15 +547,28 @@ void _Game::Update() {
 	Core::GameSys::checkIcon(iX+=20, iY, 20, 20, 6, "1800_icons_2.svg", true, false);
 	Core::GameSys::checkIcon(iX+=20, iY, 20, 20, 7, "1800_icons_2.svg", true, false);
 
-	// TODO: 1x1 results in 64x64, whether in Text Offset mode or not, fix this
 	// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 	// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 	// 			2D Orthographic Sprites
 	// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 	// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 	Core::profiles->runProfile(Core::profiles->builtIn.RunGame_DrawSprite, true);
-	Core::spriteSys->draw(iX+=74, iY, 1, 1, "TestPattern.png", false, Core::colors[Core::colors().White]);
-	Core::spriteSys->draw(iX+=74, iY, 1, 1, "TestPattern.png", true, Core::colors[Core::colors().White]);
+
+	Core::GUI::Props prop;
+	prop.setPos(-Core::gameVars->screen.half.x-115+iX, Core::gameVars->screen.half.y-32);
+	prop.setWidth(64);
+	prop.setHeight(64);
+	prop.exec();
+//	Core::spriteSys->draw(iX+=74, iY, 1, 1, "TestPattern.png", false, Core::colors[Core::colors().White]);
+	Core::spriteSys->draw(&prop, "TestPattern.png", Core::colors[Core::colors().White]);
+
+	prop.modPos(74, 0);
+	prop.setWidth(64);
+	prop.setHeight(64);
+	prop.exec();
+//	Core::spriteSys->draw(iX+=74, iY, 1, 1, "TestPattern.png", true, Core::colors[Core::colors().White]);
+	Core::spriteSys->draw(&prop, "TestPattern.png", Core::colors[Core::colors().White]);
+
 	Core::profiles->runProfile(Core::profiles->builtIn.RunGame_DrawSprite, false);
 
 	iX=0;
