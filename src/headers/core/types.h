@@ -1804,7 +1804,7 @@ namespace Core {
 		public:
 //			t_VectorMap(std::string source) {
 			t_VectorMap() {
-				sErrorSource = "Undefined";
+				sErrorSource = "Undefined Source";
 			}
 			t_VectorMap(std::string source) {
 				sErrorSource = source;

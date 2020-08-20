@@ -465,7 +465,7 @@ void _Admin::init() {
 		con_button.setToolTip("None.");
 		con_button.setPos(   98, -60);	Core::gui["GameMenu"]["Window 2"].Button.add("2D Slider",		false, con_button);
 		con_button.setToolTip("None.");
-		con_button.setPos(  196, -60);	Core::gui["GameMenu"]["Window 2"].Button.add("Spare 5",			false, con_button);
+		con_button.setPos(  196, -60);	Core::gui["GameMenu"]["Window 2"].Button.add("PieChart",		false, con_button);
 
 
 
@@ -1960,6 +1960,25 @@ void _Admin::init() {
 		std::cout << "Done" << std::endl;
 	}
 
+	if (!bOneShot[46]) {
+		std::cout << "GUI: Loading #46: PieChart ..................................... ";
+		//std::cout << "...............................................................";
+
+		Core::GUI::Props_PieChart prop;
+		prop.setOrigin(Core::GUI::CONSTRAIN_CENTER);
+		prop.setAnchor(Core::GUI::CONSTRAIN_CENTER);
+		prop.setWidth(100, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+		prop.setHeight(200, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+		prop.setBorder(1, 0);
+		//prop.setRadius(100);
+//		prop.setRadius(0);
+		prop.setPadding(0);
+		Core::gui["GameMenu"]["Window 21"].PieChart.add("My Pie Chart", prop);
+
+		bOneShot[46] = true;
+		std::cout << "Done" << std::endl;
+	}
+
 //	if (!bOneShot[44]) {
 //		std::cout << "GUI: Loading #44: ComboBox ..................................... ";
 //		//std::cout << "...............................................................";
@@ -2179,6 +2198,7 @@ void _Admin::run() {
 		else if(Core::gui["GameMenu"]["Window 2"].Button["Progress Bar"].getState())	Core::gui["GameMenu"]["Window 18"].show();
 		else if(Core::gui["GameMenu"]["Window 2"].Button["ComboBox"].getState())		Core::gui["GameMenu"]["Window 19"].show();
 		else if(Core::gui["GameMenu"]["Window 2"].Button["2D Slider"].getState())		Core::gui["GameMenu"]["Window 20"].show();
+		else if(Core::gui["GameMenu"]["Window 2"].Button["PieChart"].getState())		Core::gui["GameMenu"]["Window 21"].show();
 		else if(Core::gui["GameMenu"]["Window 2"].Button["Lighting"].getState())		Core::gui["GameMenu"]["Window 1"].show();
 		else if(Core::gui["GameMenu"]["Window 2"].Button["Skill Tree"].getState()) {
 			Core::gui["GameMenu"]["Window 14"].show();

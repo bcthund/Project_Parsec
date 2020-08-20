@@ -78,6 +78,11 @@ int main(int argc, char* argv[]) {
 	// Start timers
 	Core::timeSys->start();
 
+	//std::srand(std::time(0));
+//	std::srand((unsigned) time(0));
+
+	std::cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
+
 	do {
 		/*
 		 * Check for SDL events

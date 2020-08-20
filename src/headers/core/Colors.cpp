@@ -1646,6 +1646,7 @@ namespace Core {
 	void _Colors::PushFront()										{	uiFrontStack = std::min(++uiFrontStack, STACK_SIZE-1);	}
 	void _Colors::PopFront()										{	uiFrontStack = std::max(--uiFrontStack, 0);	}
 	Color _Colors::GetFront()										{	return vFrontColor[uiFrontStack];	}
+	Color& _Colors::GetFrontPtr()									{	return vFrontColor[uiFrontStack];	}
 
 	/*
 	 *
