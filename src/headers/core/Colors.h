@@ -77,6 +77,7 @@ namespace Core {
 //			Color &operator[](int id)					{	return *colors[id];	}
 
 			struct Colors_Extended {
+				int FIRST;
 				std::string Black = "Black";								//0.00, 0.00, 0.00
 				std::string Eerie_black = "Eerie_black";								//0.11, 0.11, 0.11
 				std::string Seal_brown = "Seal_brown";								//0.20, 0.08, 0.08

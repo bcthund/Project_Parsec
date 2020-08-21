@@ -795,6 +795,10 @@ namespace Core {
 				Props_Label() {
 					setMinMaxWidth(50, 200);
 
+					// Always auto size by default, it's needed for anchoring
+					autoWidth();
+					autoHeight();
+
 					bShowBackground				= false;
 					setPadding(2);
 					roundBorder					= true;
@@ -1811,7 +1815,8 @@ namespace Core {
 			friend class Object::Label;
 
 			public:
-				Props_Window	propLegend;		///< The container for additional items that show up when down arrow pressed
+				Props_Window	propLegend;		///< The container for legend items, main window that is drawn
+				Props_Window	propLegendItem;	///< The container for color and title group drawn in legend as list
 
 				bool	bShowLegend;
 
@@ -1833,18 +1838,43 @@ namespace Core {
 
 					setBorder(1, 1);
 					setResizeRadius(5);
-					setPadding(5);
+					setPadding(0, 0, -10, -10);
+					enablePadding(PADDING_ALL);
 					setWidth(250, GUI::SIZE_CONSTRAINT_ABSOLUTE);
 					setHeight(250, GUI::SIZE_CONSTRAINT_ABSOLUTE);
 
+					label.setOrigin(Core::GUI::CONSTRAIN_TOP_RIGHT);
+					label.setAnchor(Core::GUI::CONSTRAIN_BOTTOM_LEFT);
+//					label.setX(10);
+					label.colorBorder.active = &gameVars->pallette.gui.toolTip.header.border;
+					label.colorBack.active = &gameVars->pallette.gui.toolTip.header.background;
+					label.colorText.active = &gameVars->pallette.gui.toolTip.header.text;
+					label.showBackground();
+					label.setBorder(1, 1);
+					label.setRadius(0);
+					label.setRoundBorder(false);
+					label.setPadding(2);
+					label.autoHeight();
+//					label.enablePadding(PADDING_ALL);
+					label.autoWidth(false);
+					label.setStipplePattern(&Core::stipple[Core::stipple.STIPPLE_SHADE_50]);
+					label.setStippleColorA(&colors[colors().Gray50]);
+					label.setStippleColorB(&colors[colors().Gray50]);
+					label.setStippleColorH(&colors[colors().Gray50]);
+//					label.setStippleColorA(&colors[colors().Red]);
+//					label.setStippleColorB(&colors[colors().Red]);
+//					label.setStippleColorH(&colors[colors().Red]);
+
 					// selectedItem will be parent
+					propLegend.enablePadding(PADDING_ALL);
 					propLegend.setOrigin(Core::GUI::CONSTRAIN_TOP_RIGHT);
 					propLegend.setAnchor(Core::GUI::CONSTRAIN_TOP_LEFT);
 					propLegend.setNoInput(false);
-					propLegend.disablePadding();
-					propLegend.colorBack.base			= &Core::colors[Core::colors().Gray80];
+//					propLegend.disablePadding();
+//					propLegend.setX(10);
+					propLegend.colorBack.base			= &Core::colors[Core::colors().White];
 					propLegend.colorBack.highlight		= &Core::colors[Core::colors().White];
-					propLegend.colorBack.active			= &Core::colors[Core::colors().Yellow];
+					propLegend.colorBack.active			= &Core::colors[Core::colors().White];
 
 					propLegend.colorBorder.base			= &Core::colors[Core::colors().Black];
 					propLegend.colorBorder.highlight	= &Core::colors[Core::colors().Black];
@@ -1852,9 +1882,20 @@ namespace Core {
 
 					propLegend.setBorder(1, 1);
 					propLegend.setResizeRadius(5);
-					propLegend.setPadding(5);
+					propLegend.setPadding(2);
 					propLegend.setWidth(150, GUI::SIZE_CONSTRAINT_ABSOLUTE);
 					propLegend.setHeight(20, GUI::SIZE_CONSTRAINT_ABSOLUTE);	// Size set automatically later
+
+					propLegendItem.setOrigin(CONSTRAIN_TOP);
+					propLegendItem.setAnchor(CONSTRAIN_TOP);
+					propLegendItem.setWidth(100, SIZE_CONSTRAINT_RELATIVE);
+					propLegendItem.setHeight(25, SIZE_CONSTRAINT_ABSOLUTE);
+					propLegendItem.disableScissor();
+					propLegendItem.setBorder(0, 0);
+					propLegendItem.setPadding(2);
+					propLegendItem.colorBack.base = &colors[colors().Transparent];
+					propLegendItem.colorBack.active = &colors[colors().Transparent];
+					propLegendItem.colorBack.highlight = &colors[colors().Transparent];
 				}
 		};
 

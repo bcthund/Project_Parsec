@@ -113,6 +113,7 @@ namespace Core {
 //					friend class Window;
 				public:
 					Window();
+//					Window(const Window src);
 					Window(std::string n, Props_Window &c);
 					Window(Props &p,std::string n, Props_Window &c);
 					Window(std::string n, Props_Window *c);
@@ -135,6 +136,11 @@ namespace Core {
 			};
 
 			Window::Window() { iScrollIndex	= 0; }
+
+//			Window::Window(const Window src) {
+//				Base::Generic<Props_Window>.Generic<Props_Window>(src);
+//
+//			}
 
 			Window::Window(std::string n, Props_Window &c) {
 				name			= n;

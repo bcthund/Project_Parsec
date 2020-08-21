@@ -1970,9 +1970,7 @@ void _Admin::init() {
 		prop.setWidth(100, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
 		prop.setHeight(200, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
 		prop.setBorder(1, 0);
-		//prop.setRadius(100);
-//		prop.setRadius(0);
-		prop.setPadding(0);
+		prop.setX(-100);
 		Core::gui["GameMenu"]["Window 21"].PieChart.add("My Pie Chart", prop);
 
 		bOneShot[46] = true;

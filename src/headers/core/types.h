@@ -1851,6 +1851,21 @@ namespace Core {
 //				return groups[id].index;
 //			}
 
+			// DO NOT USE, Breaks Mapping and just not worth it
+//			virtual T & insert(std::string name, T t, bool bThrow=true) {
+//				if(!checkName(name, false)) {
+//					typeList.insert(typeList.begin(), t);
+//					int id = 1;
+//					map.insert(make_pair(name, id));
+//					return typeList[map[name]];
+//				}
+//				else {
+//					if(bThrow) throw std::runtime_error("Duplicate name in t_Vector: '"+name+"'");
+//					else return typeList[map[name]];
+//				}
+//
+//			}
+
 			virtual T & add(std::string name, T t, bool bThrow=true) {
 				if(!checkName(name, false)) {
 					//typeList.emplace_back(t);
