@@ -1932,9 +1932,6 @@ namespace Core {
 			const_iterator end() 	const	{ return &typeList[typeList.size()]; }
 	};
 
-	typedef std::pair<std::string, Core::t_BIFS> t_ComboBoxItem;
-	typedef std::vector<t_ComboBoxItem> t_ComboBoxItems;
-
 	/**
 	 * \brief Allows an object to return multiple different states
 	 *

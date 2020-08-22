@@ -125,7 +125,7 @@ namespace Core {
 					void update();
 //					void toggle()	{	con->visibility = !con->visibility;	}
 //					void exec(bool bActive);
-					void exec(iState eExternState=STATE_NONE);
+					iState exec(iState eExternState=STATE_NONE);
 
 				protected:
 					VAO vao;
@@ -297,6 +297,10 @@ namespace Core {
 							updateScrollMouse();
 						}
 						eObjectState = STATE_NONE;
+
+						if(this->mState&Core::_Mouse::MOUSE_HOVER) this->eObjectState = this->eObjectState|STATE_HOVER;
+						else this->eObjectState = this->eObjectState&~STATE_HOVER;
+
 					}
 					else {
 						eObjectState = STATE_NONE;
@@ -358,7 +362,7 @@ namespace Core {
 //				activeContainer->scroll.iMaxScroll = std::max(activeContainer->scroll.iMaxScroll, int(vPos.y-(con->size.y)));
 			}
 
-			void Window::exec(iState eExternState) {
+			iState Window::exec(iState eExternState) {
 				if(bInit) {
 					if(con->visibility && ((parent!=nullptr && parent->visibility) || (parent==nullptr))) {
 						// Check scroll visibility
@@ -447,8 +451,16 @@ namespace Core {
 						glEnable(GL_CULL_FACE);
 						glEnable(GL_DEPTH_TEST);
 					}
+
+					return eObjectState;
 				}
+
+				return STATE_NONE;
 			}
+
+
+
+
 		}
 	}
 } /* namespace Core */

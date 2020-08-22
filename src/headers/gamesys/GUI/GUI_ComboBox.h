@@ -29,6 +29,9 @@ namespace Core {
 
 		using namespace Core::GUI;
 
+		typedef std::pair<std::string, Core::t_BIFS> t_ComboBoxItem;
+		typedef std::vector<t_ComboBoxItem> t_ComboBoxItems;
+
 		namespace Object {
 			class ComboBox : public Base::Interactive<Props_ComboBox> {
 				public:

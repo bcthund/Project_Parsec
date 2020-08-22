@@ -1709,76 +1709,77 @@ void _Admin::init() {
 		//std::cout << "...............................................................";
 
 		{
-		Core::GUI::Props_ComboBox prop;
-		prop.setOrigin(Core::GUI::CONSTRAIN_TOP_LEFT);
-		prop.setAnchor(Core::GUI::CONSTRAIN_TOP_LEFT);
-		//prop.setWidth(100, Core::GUI::SIZE_CONSTRAINT_RELATIVE);
-		//prop.setHeight(100, Core::GUI::SIZE_CONSTRAINT_RELATIVE);
-		prop.setPos(0, -40);
-		prop.setToolTip("This is a ComboBox test that should show the\n"\
-						"currently selected item and also when a button\n"\
-						"is pressed a list is shown with alternate options\n"\
-						"to choose from. This combo box uses default\n"\
-						"settings which include an auto-hide of the item\n"\
-						"list when the mouse leaves the combo box area.");
+			Core::GUI::Props_ComboBox prop;
+			prop.setOrigin(Core::GUI::CONSTRAIN_TOP_LEFT);
+			prop.setAnchor(Core::GUI::CONSTRAIN_TOP_LEFT);
+			//prop.setWidth(100, Core::GUI::SIZE_CONSTRAINT_RELATIVE);
+			//prop.setHeight(100, Core::GUI::SIZE_CONSTRAINT_RELATIVE);
+			prop.setPos(0, -40);
+			prop.setToolTip("This is a ComboBox test that should show the\n"\
+							"currently selected item and also when a button\n"\
+							"is pressed a list is shown with alternate options\n"\
+							"to choose from. This combo box uses default\n"\
+							"settings which include an auto-hide of the item\n"\
+							"list when the mouse leaves the combo box area.");
 
-		using namespace Core::GUI::Object;
-		using namespace std;
-		using namespace Core;
+			using namespace Core::GUI;
+			using namespace Core::GUI::Object;
+			using namespace std;
+			using namespace Core;
 
-		Core::gui["GameMenu"]["Window 19"].ComboBox.add("ComboBox1", prop).addItems(t_ComboBoxItems{make_pair("Item 0",1),
-																								    make_pair("Item 1",2),
-																									make_pair("Item 2",4),
-																									make_pair("Item 3",8),
-																									make_pair("Item 4",16),
-																									make_pair("Item 5",32) });
+			Core::gui["GameMenu"]["Window 19"].ComboBox.add("ComboBox1", prop).addItems(t_ComboBoxItems{make_pair("Item 0",1),
+																										make_pair("Item 1",2),
+																										make_pair("Item 2",4),
+																										make_pair("Item 3",8),
+																										make_pair("Item 4",16),
+																										make_pair("Item 5",32) });
 
-		//Core::gui["GameMenu"]["Window 19"].ComboBox.add("ComboBox1", prop);
+			//Core::gui["GameMenu"]["Window 19"].ComboBox.add("ComboBox1", prop);
 
-		//Core::gui["GameMenu"]["Window 19"].ComboBox.add("ComboBox1", prop).addItems(std::vector{std::pair<std::string, Core::t_BIFS>("test", 1)});
+			//Core::gui["GameMenu"]["Window 19"].ComboBox.add("ComboBox1", prop).addItems(std::vector{std::pair<std::string, Core::t_BIFS>("test", 1)});
 
-//		Core::gui["GameMenu"]["Window 19"].ComboBox.add("ComboBox1", prop);
-		//Core::gui["GameMenu"]["Window 19"].ComboBox["ComboBox1"].addItem("Item 1", 2);
-		//Core::gui["GameMenu"]["Window 19"].ComboBox["ComboBox1"].addItem("Item 2", 4);
-		//Core::gui["GameMenu"]["Window 19"].ComboBox["ComboBox1"].addItem("Item 3", 8);
-		//Core::gui["GameMenu"]["Window 19"].ComboBox["ComboBox1"].addItem("Item 4", 16);
-		//Core::gui["GameMenu"]["Window 19"].ComboBox["ComboBox1"].addItem("Item 5", 32);
-
+	//		Core::gui["GameMenu"]["Window 19"].ComboBox.add("ComboBox1", prop);
+			//Core::gui["GameMenu"]["Window 19"].ComboBox["ComboBox1"].addItem("Item 1", 2);
+			//Core::gui["GameMenu"]["Window 19"].ComboBox["ComboBox1"].addItem("Item 2", 4);
+			//Core::gui["GameMenu"]["Window 19"].ComboBox["ComboBox1"].addItem("Item 3", 8);
+			//Core::gui["GameMenu"]["Window 19"].ComboBox["ComboBox1"].addItem("Item 4", 16);
+			//Core::gui["GameMenu"]["Window 19"].ComboBox["ComboBox1"].addItem("Item 5", 32);
 		}
 
 		{
+			using namespace Core::GUI;
 			using namespace Core::GUI::Object;
-		using namespace std;
-		using namespace Core;
-		Core::GUI::Props_ComboBox prop;
-		prop.setOrigin(Core::GUI::CONSTRAIN_TOP_RIGHT);
-		prop.setAnchor(Core::GUI::CONSTRAIN_TOP_RIGHT);
-		prop.setWidth(200, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
-		prop.itemList.setPadding(1);
-		//prop.setHeight(100, Core::GUI::SIZE_CONSTRAINT_RELATIVE);
-		prop.setPos(0, -40);
-		//prop.setPadding(0);
-		prop.setToolTip("This is another combo box to showcase a larger\n"\
-						"list of items with scrolling capability. This\n"\
-						"combo box also has:\n\n"\
-						" - Two different methods of adding items to the list\n"\
-						" - Uses auto width/height\n"\
-						" - Doesn't auto hide item list\n"\
-						" - itemList padding set to 1 (border size)\n"\
-						" - No border on up/down buttons");
+			using namespace std;
+			using namespace Core;
+			Core::GUI::Props_ComboBox prop;
+			prop.setOrigin(Core::GUI::CONSTRAIN_TOP_RIGHT);
+			prop.setAnchor(Core::GUI::CONSTRAIN_TOP_RIGHT);
+			prop.setWidth(200, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+			prop.itemList.setPadding(1);
+			//prop.setHeight(100, Core::GUI::SIZE_CONSTRAINT_RELATIVE);
+			prop.setPos(0, -40);
+			//prop.setPadding(0);
+			prop.setToolTip("This is another combo box to showcase a larger\n"\
+							"list of items with scrolling capability. This\n"\
+							"combo box also has:\n\n"\
+							" - Two different methods of adding items to the list\n"\
+							" - Uses auto width/height\n"\
+							" - Doesn't auto hide item list\n"\
+							" - itemList padding set to 1 (border size)\n"\
+							" - No border on up/down buttons");
 
-		prop.autoWidth();
-		prop.autoHeight();
-		prop.setAutoHide(false);
-		prop.scrollButton.setBorder(0, 0);
-		//prop.item.autoHeight();	// FIXME: Doesn't work, likely because itemList sets height first and never updates after autoheight calculated
+			prop.autoWidth();
+			prop.autoHeight();
+			prop.setAutoHide(false);
+			prop.scrollButton.setBorder(0, 0);
+			//prop.item.autoHeight();	// FIXME: Doesn't work, likely because itemList sets height first and never updates after autoheight calculated
 
-		// Adding some initial items at ComboBox creation
-		Core::gui["GameMenu"]["Window 19"].ComboBox.add("ComboBox2", prop).addItems(t_ComboBoxItems{make_pair("Test Object 1", 1),
-																									make_pair("Test Object 2", 2),
-																									make_pair("Test Object 3", 3),
-																									make_pair("Test Object 4", 4),
-																									make_pair("Test Object 5", 5) });
+			// Adding some initial items at ComboBox creation
+			Core::gui["GameMenu"]["Window 19"].ComboBox.add("ComboBox2", prop).addItems(t_ComboBoxItems{make_pair("Test Object 1", 1),
+																										make_pair("Test Object 2", 2),
+																										make_pair("Test Object 3", 3),
+																										make_pair("Test Object 4", 4),
+																										make_pair("Test Object 5", 5) });
 		}
 
 		// Adding additional list items after ComboBox creation
@@ -1967,9 +1968,10 @@ void _Admin::init() {
 		Core::GUI::Props_PieChart prop;
 		prop.setOrigin(Core::GUI::CONSTRAIN_CENTER);
 		prop.setAnchor(Core::GUI::CONSTRAIN_CENTER);
-		prop.setWidth(100, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
-		prop.setHeight(200, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
-		prop.setBorder(1, 0);
+		//prop.setWidth(100, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+		//prop.setHeight(200, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+		prop.setRadius(100);
+		prop.setBorder(1, 4);
 		prop.setX(-100);
 		Core::gui["GameMenu"]["Window 21"].PieChart.add("My Pie Chart", prop);
 

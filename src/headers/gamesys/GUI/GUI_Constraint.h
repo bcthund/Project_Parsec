@@ -52,7 +52,8 @@ namespace Core {
 						class Icon;\
 						class Sprite;\
 						class ProgressBar;\
-						class ComboBox
+						class ComboBox;\
+						class PieChart
 
 		#define FRIENDS friend class GUI_Container;\
 						friend class Window;\
@@ -69,7 +70,8 @@ namespace Core {
 						friend class Icon;\
 						friend class Sprite;\
 						friend class ProgressBar;\
-						friend class ComboBox
+						friend class ComboBox;\
+						friend class PieChart
 
 
 
@@ -106,6 +108,7 @@ namespace Core {
 		class Props_Sprite;
 		class Props_ProgressBar;
 		class Props_ComboBox;
+		class Props_PieChart;
 
 		enum eButtonType {	BUTTON_ONESHOT,		// Button is active for one cycle
 							BUTTON_MOMENTARY,	// Button is active as long as pressed
@@ -1812,11 +1815,17 @@ namespace Core {
 		class Props_PieChart :	virtual public Props_Window,
 									public Props_Addon_Label {
 
-			friend class Object::Label;
+			//friend class Object::Label;
+			friend class Object::PieChart;
+
+			private:
+				using Props_Window::setWidth;
+				using Props_Window::setHeight;
 
 			public:
 				Props_Window	propLegend;		///< The container for legend items, main window that is drawn
 				Props_Window	propLegendItem;	///< The container for color and title group drawn in legend as list
+				Props_Window	propColorBox;	///< The properties for the color box in the legend (intended for setting size only)
 
 				bool	bShowLegend;
 
@@ -1840,8 +1849,9 @@ namespace Core {
 					setResizeRadius(5);
 					setPadding(0, 0, -10, -10);
 					enablePadding(PADDING_ALL);
-					setWidth(250, GUI::SIZE_CONSTRAINT_ABSOLUTE);
-					setHeight(250, GUI::SIZE_CONSTRAINT_ABSOLUTE);
+					//setWidth(250, GUI::SIZE_CONSTRAINT_ABSOLUTE);
+					//setHeight(250, GUI::SIZE_CONSTRAINT_ABSOLUTE);
+					setRadius(200);
 
 					label.setOrigin(Core::GUI::CONSTRAIN_TOP_RIGHT);
 					label.setAnchor(Core::GUI::CONSTRAIN_BOTTOM_LEFT);
@@ -1893,9 +1903,15 @@ namespace Core {
 					propLegendItem.disableScissor();
 					propLegendItem.setBorder(0, 0);
 					propLegendItem.setPadding(2);
-					propLegendItem.colorBack.base = &colors[colors().Transparent];
-					propLegendItem.colorBack.active = &colors[colors().Transparent];
-					propLegendItem.colorBack.highlight = &colors[colors().Transparent];
+					propLegendItem.colorBack.base = &colors[colors().White];
+					propLegendItem.colorBack.active = &colors[colors().Yellow];
+					propLegendItem.colorBack.highlight = &colors[colors().Yellow];
+
+					propColorBox.setOrigin(CONSTRAIN_LEFT);
+					propColorBox.setAnchor(CONSTRAIN_LEFT);
+					propColorBox.setWidth(25);
+					propColorBox.setHeight(15);
+					propColorBox.setPadding(-5);
 				}
 		};
 
