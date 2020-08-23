@@ -208,7 +208,7 @@ _Admin::_Admin(_Game *gamePtr) :
 }
 
 #include "runAdmin/SkillTree.h"
-//#include "runAdmin/Colors.h"
+#include "runAdmin/Colors.h"
 
 /** ******************************************************************************************************************************
  *
@@ -1502,7 +1502,7 @@ void _Admin::init() {
 	if (!bOneShot[39]) {
 		std::cout << "GUI: Loading #39: Colors ....................................... ";
 
-		//initColors();
+		initColors();
 
 		bOneShot[39] = true;
 		std::cout << "Done" << std::endl;
@@ -1966,14 +1966,23 @@ void _Admin::init() {
 		//std::cout << "...............................................................";
 
 		Core::GUI::Props_PieChart prop;
-		prop.setOrigin(Core::GUI::CONSTRAIN_CENTER);
-		prop.setAnchor(Core::GUI::CONSTRAIN_CENTER);
-		//prop.setWidth(100, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
-		//prop.setHeight(200, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+		prop.setOrigin(Core::GUI::CONSTRAIN_TOP);
+		prop.setAnchor(Core::GUI::CONSTRAIN_TOP);
 		prop.setRadius(100);
-		prop.setBorder(1, 4);
+		prop.setBorder(2, 4);
+		prop.setY(-50);
 		prop.setX(-100);
 		Core::gui["GameMenu"]["Window 21"].PieChart.add("My Pie Chart", prop);
+		Core::gui["GameMenu"]["Window 21"].PieChart["My Pie Chart"].addItem("Test 0", 8);		// 8 %
+		Core::gui["GameMenu"]["Window 21"].PieChart["My Pie Chart"].addItem("Test 1", 2);		// 10 %
+		Core::gui["GameMenu"]["Window 21"].PieChart["My Pie Chart"].addItem("Test 2", 5);		// 15 %
+		Core::gui["GameMenu"]["Window 21"].PieChart["My Pie Chart"].addItem("Test 3", 1);		// 16 %
+		Core::gui["GameMenu"]["Window 21"].PieChart["My Pie Chart"].addItem("Test 4", 30);		// 46 %
+		Core::gui["GameMenu"]["Window 21"].PieChart["My Pie Chart"].addItem("Test 5", 10);		// 56 %
+		Core::gui["GameMenu"]["Window 21"].PieChart["My Pie Chart"].addItem("Test 6", 38, Core::colors[Core::colors().Dark_red], Core::colors[Core::colors().Red]);		// 94 %
+
+		prop.modY(-250);
+		Core::gui["GameMenu"]["Window 21"].PieChart.add("Another Chart", prop);
 
 		bOneShot[46] = true;
 		std::cout << "Done" << std::endl;

@@ -1828,11 +1828,14 @@ namespace Core {
 				Props_Window	propColorBox;	///< The properties for the color box in the legend (intended for setting size only)
 
 				bool	bShowLegend;
+				int		iBlinkRate;
 
 				void showLegend(bool b=true)	{	bShowLegend = b;	}
+				void setBlinkRate(int i)		{	iBlinkRate = i;		}
 
 				Props_PieChart() {
 					bShowLegend = true;
+					iBlinkRate = 250;
 
 					setOrigin(Core::GUI::CONSTRAIN_TOP);
 					setAnchor(Core::GUI::CONSTRAIN_TOP);

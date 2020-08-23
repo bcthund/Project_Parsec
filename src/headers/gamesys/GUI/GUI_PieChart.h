@@ -143,6 +143,8 @@ namespace Core {
 					Core::t_VectorMap<t_PieItem*> items;										///< List of pie/legend items
 					Window	*legend;															///< Legend window container
 					Label	*label;																///< Object title, displayed as legend title bar
+					Timer	blink;
+					bool	bBlinkState;
 
 					void updateObjectState(iState eExternState);								///< Update the internal state of the object (eObjectState)
 					void updateInput();															///< Update internal state and/or local values from keyboard/mouse input
@@ -151,6 +153,7 @@ namespace Core {
 			PieChart::PieChart() {
 				legend			= nullptr;
 				label			= nullptr;
+				bBlinkState		= false;
 			}
 
 			PieChart::PieChart(std::string n, Props_PieChart &c) {
@@ -166,6 +169,7 @@ namespace Core {
 
 				legend			= nullptr;
 				label			= nullptr;
+				bBlinkState		= false;
 			}
 
 			PieChart::PieChart(std::string n, Props_PieChart *c) {
@@ -180,6 +184,7 @@ namespace Core {
 
 				legend			= nullptr;
 				label			= nullptr;
+				bBlinkState		= false;
 			}
 
 			PieChart::PieChart(Props &p, std::string n, Props_PieChart &c) {
@@ -195,6 +200,7 @@ namespace Core {
 
 				legend			= nullptr;
 				label			= nullptr;
+				bBlinkState		= false;
 			}
 
 			PieChart::PieChart(Props &p, std::string n, Props_PieChart *c) {
@@ -209,6 +215,7 @@ namespace Core {
 
 				legend			= nullptr;
 				label			= nullptr;
+				bBlinkState		= false;
 			}
 
 			PieChart::~PieChart() {
@@ -295,23 +302,24 @@ namespace Core {
 				// ==========================================
 				//	Create temporary test items
 				// ------------------------------------------
-				addItem("Test 0", 8);		// 8 %
-				addItem("Test 1", 2);		// 10 %
-				addItem("Test 2", 5);		// 15 %
-				addItem("Test 3", 1);		// 16 %
-				addItem("Test 4", 30);		// 46 %
-				addItem("Test 5", 10);		// 56 %
-				addItem("Test 6", 38);		// 94 %
+//				addItem("Test 0", 8);		// 8 %
+//				addItem("Test 1", 2);		// 10 %
+//				addItem("Test 2", 5);		// 15 %
+//				addItem("Test 3", 1);		// 16 %
+//				addItem("Test 4", 30);		// 46 %
+//				addItem("Test 5", 10);		// 56 %
+//				addItem("Test 6", 38);		// 94 %
 
-				items["Test 2"]->colorBox->con->setStipplePattern(&stipple[stipple.STIPPLE_CROSSES]);
-				items["Test 4"]->colorBox->con->setStipplePattern(&stipple[stipple.STIPPLE_INSULATION]);
-				items["Test 6"]->colorBox->con->setStipplePattern(&stipple[stipple.STIPPLE_SHAKES]);
+//				items["Test 2"]->colorBox->con->setStipplePattern(&stipple[stipple.STIPPLE_CROSSES]);
+//				items["Test 4"]->colorBox->con->setStipplePattern(&stipple[stipple.STIPPLE_INSULATION]);
+//				items["Test 6"]->colorBox->con->setStipplePattern(&stipple[stipple.STIPPLE_SHAKES]);
 
 				// ==========================================
 				//	Setup Tooltip
 				// ------------------------------------------
 				toolTip.init(*con, name);
 
+				blink.start();
 //				timeFocusDebounce.start();
 				bInit = true;
 			}
@@ -579,7 +587,12 @@ namespace Core {
 
 							// Only scroll this item if the parent has scrolling enabled
 							Vector2f vSize = con->getSize()/2.0f;
-							Vector2f vPos = con->getPos();
+
+							Vector2f vPos;
+							if(con->scroll.isScrollable() && (parent!=nullptr && parent->scroll.getEnabled())) vPos = con->getScrollPos();
+							else vPos = con->getPos();
+							//Vector2f vPos = con->getPos();
+
 							matrix->Translate( vPos.x, vPos.y, 0.0 );
 							matrix->Scale(vSize.x, vSize.y, 1);
 //							matrix->Rotate(Degrees(3.6).toRadians(), 0, 0, 1);
@@ -609,7 +622,7 @@ namespace Core {
 								// Make sure item exists
 								if(index<items.size()) {
 
-									if((items[index]->base->eObjectState&STATE_HOVER) || (items[index]->base->eObjectState&STATE_ACTIVE)) {
+									if(bBlinkState && ((items[index]->base->eObjectState&STATE_HOVER) || (items[index]->base->eObjectState&STATE_ACTIVE)) ) {
 										colors.PushFront(items[index]->colorBox->con->colorBack.highlight);
 										colors.PushBack(items[index]->colorBox->con->colorBorder.highlight);
 										border = con->borderHover;
@@ -637,7 +650,7 @@ namespace Core {
 									// Undefined Area, fill remaining space
 									//colors.PushFront(items["Undefined"]->color);
 									//colors.PushFront(items["Undefined"]->colorBox->con->colorBack.base);
-									if((items["Undefined"]->base->eObjectState&STATE_HOVER) || (items["Undefined"]->base->eObjectState&STATE_ACTIVE)) {
+									if(bBlinkState && ((items["Undefined"]->base->eObjectState&STATE_HOVER) || (items["Undefined"]->base->eObjectState&STATE_ACTIVE)) ) {
 										colors.PushFront(items["Undefined"]->colorBox->con->colorBack.highlight);
 										colors.PushBack(items["Undefined"]->colorBox->con->colorBorder.highlight);
 										border = con->borderHover;
@@ -676,20 +689,29 @@ namespace Core {
 						glEnable(GL_CULL_FACE);
 						glEnable(GL_DEPTH_TEST);
 
-						label->exec();
-						legend->exec(STATE_NONE);
+						if(con->bShowLegend) {
+							label->exec();
+							legend->exec(STATE_NONE);
 
-						// Draw Legend Colors and Labels, skip Undefined if no value
-						int n = 1;
-						if(items["Undefined"]->getValue()>0) n = 0;
+							// Draw Legend Colors and Labels, skip Undefined if no value
+							int n = 1;
+							if(items["Undefined"]->getValue()>0) n = 0;
 
-						for( ; n<items.size(); n++) {
-							iState baseState = items[n]->base->exec(STATE_NONE);
+							for( ; n<items.size(); n++) {
+								//iState baseState = items[n]->base->exec(STATE_NONE);
+								//items[n]->colorBox->exec(baseState);
 
-							//items[n]->base->eObjectState
+								items[n]->base->exec(STATE_NONE);
+								items[n]->colorBox->exec(STATE_NONE);
+								items[n]->label->exec(STATE_NONE);
+							}
 
-							items[n]->colorBox->exec(baseState);
-							items[n]->label->exec(STATE_NONE);
+							// Update highlight blink
+							if(blink.get_splitdiff() > con->iBlinkRate) {
+								blink.split();
+								bBlinkState = !bBlinkState;
+							}
+							debug.log(std::to_string(bBlinkState));
 						}
 
 					}
