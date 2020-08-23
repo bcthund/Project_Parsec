@@ -18,6 +18,7 @@
 #include "GUI_Constraint.h"
 //#include "GUI_ToolTip.h"
 #include "GUI_Objects.h"
+#include "GUI_Window.h"
 #include "GUI_Label.h"
 
 // TODO: Allow pie to have an arbitrary size instead of just 100%
@@ -126,7 +127,7 @@ namespace Core {
 					PieChart(Props &p,std::string n, Props_PieChart *c);
 					~PieChart();
 
-					ToolTip toolTip;															///< Tooltip info for this object
+//					ToolTip toolTip;															///< Tooltip info for this object
 					void init();																///< Initialize thie object and its children
 					void update();																///< Update local constraints, values, etc.
 					void exec(iState eExternState=STATE_NONE);									///< Execute this object, draw if initialized
@@ -143,12 +144,15 @@ namespace Core {
 					Core::t_VectorMap<t_PieItem*> items;										///< List of pie/legend items
 					Window	*legend;															///< Legend window container
 					Label	*label;																///< Object title, displayed as legend title bar
-					Timer	blink;
-					bool	bBlinkState;
+					static Timer blink;															///< Timer for blinking wedge highlight
+					static bool	bBlinkState;													///< Current toggle state of blinking wedge highlight
 
 					void updateObjectState(iState eExternState);								///< Update the internal state of the object (eObjectState)
 					void updateInput();															///< Update internal state and/or local values from keyboard/mouse input
 			};
+
+			Timer PieChart::blink;
+			bool  PieChart::bBlinkState;
 
 			PieChart::PieChart() {
 				legend			= nullptr;
@@ -260,14 +264,15 @@ namespace Core {
 				legend->init();
 
 				// Set width to largest
-				if(legend->con->size.x > label->con->size.x) {
-					label->con->setWidth(legend->con->size.x);
-					label->con->exec();
-				}
-				else {
-					legend->con->setWidth(label->con->size.x);
-					legend->con->exec();
-				}
+//				if(legend->con->size.x > label->con->size.x) {
+//					label->con->setWidth(legend->con->size.x);
+//					label->con->exec();
+//				}
+//				else {
+//					legend->con->setWidth(label->con->size.x);
+//					legend->con->exec();
+//				}
+//				update();
 
 				// Get legend item data prepped
 				con->propLegendItem.exec();
@@ -317,7 +322,12 @@ namespace Core {
 				// ==========================================
 				//	Setup Tooltip
 				// ------------------------------------------
-				toolTip.init(*con, name);
+//				toolTip.init(*con, name);
+
+				// ==========================================
+				//	Update
+				// ------------------------------------------
+//				update();
 
 				blink.start();
 //				timeFocusDebounce.start();
@@ -418,7 +428,7 @@ namespace Core {
 			 * @param title Name of item to remove
 			 */
 			void PieChart::removeItem(std::string label) {
-				items.remove(label);
+				if(label != "Undefined") items.remove(label);
 			}
 
 			t_PieItem& PieChart::getItem(std::string label) {
@@ -430,16 +440,45 @@ namespace Core {
 				con->setWidth(con->radius*2);
 				con->setHeight(con->radius*2);
 
-				// Update legend dimensions
+				// Calculate and Set legend height
 				if(items.size()>0) {
 					int iHeight = items.size();
 					legend->con->setHeight( ((iHeight)*con->propLegendItem.size.y + legend->con->vPadding.top_bottom()), SIZE_CONSTRAINT_ABSOLUTE);
+				}
 
-					// Set width to largest (in case new items are added)
-					if(legend->con->size.x > label->con->size.x)
-						label->con->setWidth(legend->con->size.x);
-					else
-						legend->con->setWidth(label->con->size.x);
+				// ==========================================
+				//	Calculate and Set legend width
+				// ------------------------------------------
+				int iWidth = 0;
+
+				// Start with title width
+//				if(legend->con->size.x > label->con->size.x) iWidth = legend->con->size.x;
+//				else iWidth = label->con->size.x;
+				iWidth = label->con->size.x;
+
+				// Find widest legend item including padding (this is effectively the minimum width)
+				if(items.size()>0) {
+					for(auto item : items) {
+						int iItemWidth =	std::abs(item->base->con->vPadding.left_right()) +
+											item->colorBox->con->size.x +
+											std::abs(item->colorBox->con->vPadding.left_right()) +
+											item->label->con->size.x +
+											std::abs(item->label->con->vPadding.left_right());
+
+						iWidth = std::max(iWidth, iItemWidth);
+					}
+				}
+
+				// If autowidth then set, otherwise just check as minimum width
+				if(con->bLegendAutoWidth) {
+					label->con->setWidth(iWidth, SIZE_CONSTRAINT_ABSOLUTE);
+					legend->con->setWidth(iWidth, SIZE_CONSTRAINT_ABSOLUTE);
+				}
+				else {
+					if( (legend->con->size.x < iWidth) || (label->con->size.x < iWidth) ) {
+						label->con->setWidth(iWidth, SIZE_CONSTRAINT_ABSOLUTE);
+						legend->con->setWidth(iWidth, SIZE_CONSTRAINT_ABSOLUTE);
+					}
 				}
 
 				// Set undefined range (For legend)
@@ -450,8 +489,6 @@ namespace Core {
 				items["Undefined"]->setValue(iRem);
 			}
 
-			// TODO: Update with Triangle detection? Lots of triangles to check.
-			//		- Alternate, highlight based on legend instead
 			void PieChart::updateObjectState(iState eExternState) {
 //				// Uncomment if object state can be set externally
 //				//checkStatePtr();
@@ -544,44 +581,14 @@ namespace Core {
 
 						matrix->SetProjection(matrix->MM_ORTHO);
 						shader->use(GLS_MENU);
-//						Core::sysTex->set(Core::sysTex->TEX_TESTPATTERN);
-
-						//if(!bFocusPresent) updateObjectState(eExternState);
-//						updateObjectState(eExternState);
 
 						// Allow update only if No object active or this object active
-						if((con->bFocusLock && !bFocusPresent) || !con->bFocusLock || (sActiveObject==id)) {
-							updateObjectState(eExternState);
-
-							if(this->con->toolTip.bShow) this->toolTip.updateObjectState(this->eObjectState);
-							else this->toolTip.updateObjectState(STATE_NONE);
-						}
-
-						// TODO: Implement highlighting for wedges (would need to be moved below)
-//						if(eObjectState&STATE_DISABLED) {
-//							if(eObjectState&STATE_HOVER) {
-//								colors.PushFront(gameVars->pallette.gui.disabled.base.hover);
-//								colors.PushBack(gameVars->pallette.gui.disabled.border.hover);
-//							}
-//							else {
-//								colors.PushFront(gameVars->pallette.gui.disabled.base.base);
-//								colors.PushBack(gameVars->pallette.gui.disabled.border.base);
-//							}
+//						if((con->bFocusLock && !bFocusPresent) || !con->bFocusLock || (sActiveObject==id)) {
+//							updateObjectState(eExternState);
+//
+//							if(this->con->toolTip.bShow) this->toolTip.updateObjectState(this->eObjectState);
+//							else this->toolTip.updateObjectState(STATE_NONE);
 //						}
-//						else if(eObjectState&STATE_ACTIVE) {
-//							colors.PushFront(*con->colorBack.active);
-//							colors.PushBack(*con->colorBorder.active);
-//						}
-//						else if(eObjectState&STATE_HOVER) {
-//							colors.PushFront(*con->colorBack.highlight);
-//							colors.PushBack(*con->colorBorder.highlight);
-//						}
-//						else {
-//							colors.PushFront(*con->colorBack.base);
-//							colors.PushBack(*con->colorBorder.base);
-//						}
-//						colors.PushFront(colors[colors().Green]);
-						colors.PushBack(colors[colors().Black]);
 
 						matrix->Push();
 
@@ -591,28 +598,14 @@ namespace Core {
 							Vector2f vPos;
 							if(con->scroll.isScrollable() && (parent!=nullptr && parent->scroll.getEnabled())) vPos = con->getScrollPos();
 							else vPos = con->getPos();
-							//Vector2f vPos = con->getPos();
 
 							matrix->Translate( vPos.x, vPos.y, 0.0 );
 							matrix->Scale(vSize.x, vSize.y, 1);
-//							matrix->Rotate(Degrees(3.6).toRadians(), 0, 0, 1);
 
 							shader->data.GLS_MENU.vPos				= vPos;
 							shader->data.GLS_MENU.vSize				= con->getSize();
 							shader->data.GLS_MENU.iRadius			= con->getRadius();
 							shader->data.GLS_MENU.bRoundBorder		= con->getRoundBorder();
-//							shader->data.GLS_MENU.bEnableStipple	= con->bEnableStipple;
-//							if(con->bEnableStipple) {
-//								shader->data.GLS_MENU.stipple = con->stipple;
-//
-//								if(eObjectState&STATE_DISABLED) {
-//									if(eObjectState&STATE_HOVER)	shader->data.GLS_MENU.stippleColor = &gameVars->pallette.gui.disabled.stipple.hover;
-//									else							shader->data.GLS_MENU.stippleColor = &gameVars->pallette.gui.disabled.stipple.base;
-//								}
-//								else if(eObjectState&STATE_ACTIVE) shader->data.GLS_MENU.stippleColor = con->stippleColor.active;
-//								else if(eObjectState&STATE_HOVER) shader->data.GLS_MENU.stippleColor = con->stippleColor.highlight;
-//								else shader->data.GLS_MENU.stippleColor = con->stippleColor.base;
-//							}
 
 							int index = 1;	// Current item index
 							int pre = 0;	// Total from previous item
@@ -648,8 +641,6 @@ namespace Core {
 								}
 								else {
 									// Undefined Area, fill remaining space
-									//colors.PushFront(items["Undefined"]->color);
-									//colors.PushFront(items["Undefined"]->colorBox->con->colorBack.base);
 									if(bBlinkState && ((items["Undefined"]->base->eObjectState&STATE_HOVER) || (items["Undefined"]->base->eObjectState&STATE_ACTIVE)) ) {
 										colors.PushFront(items["Undefined"]->colorBox->con->colorBack.highlight);
 										colors.PushBack(items["Undefined"]->colorBox->con->colorBorder.highlight);
@@ -673,7 +664,8 @@ namespace Core {
 								colors.PopFront();
 							}
 
-							// Draw all slices same color (keep for possible future reference, draws a nice circle)
+							// Draw all slices same color
+							//  - keep for possible future reference, draws a nice circle
 //							for(int n=0; n<100; n++) {
 //								matrix->SetTransform();
 //								shader->getUniform(GLS_MENU);
@@ -698,9 +690,6 @@ namespace Core {
 							if(items["Undefined"]->getValue()>0) n = 0;
 
 							for( ; n<items.size(); n++) {
-								//iState baseState = items[n]->base->exec(STATE_NONE);
-								//items[n]->colorBox->exec(baseState);
-
 								items[n]->base->exec(STATE_NONE);
 								items[n]->colorBox->exec(STATE_NONE);
 								items[n]->label->exec(STATE_NONE);
@@ -711,7 +700,6 @@ namespace Core {
 								blink.split();
 								bBlinkState = !bBlinkState;
 							}
-							debug.log(std::to_string(bBlinkState));
 						}
 
 					}
@@ -721,9 +709,9 @@ namespace Core {
 			/**
 			 * @brief Draw tooltip
 			 */
-			void PieChart::execToolTip() {
-				toolTip.exec();
-			}
+//			void PieChart::execToolTip() {
+//				toolTip.exec();
+//			}
 
 			/***
 			 * \brief Calls to run when object not visible/not in focus. This function is especially

@@ -1828,13 +1828,16 @@ namespace Core {
 				Props_Window	propColorBox;	///< The properties for the color box in the legend (intended for setting size only)
 
 				bool	bShowLegend;
+				bool	bLegendAutoWidth;
 				int		iBlinkRate;
 
 				void showLegend(bool b=true)	{	bShowLegend = b;	}
 				void setBlinkRate(int i)		{	iBlinkRate = i;		}
+				void setLegendAutoWidth(bool b)	{	bLegendAutoWidth = b;	}
 
 				Props_PieChart() {
 					bShowLegend = true;
+					bLegendAutoWidth = true;
 					iBlinkRate = 250;
 
 					setOrigin(Core::GUI::CONSTRAIN_TOP);
@@ -1896,7 +1899,7 @@ namespace Core {
 					propLegend.setBorder(1, 1);
 					propLegend.setResizeRadius(5);
 					propLegend.setPadding(2);
-					propLegend.setWidth(150, GUI::SIZE_CONSTRAINT_ABSOLUTE);
+					propLegend.setWidth(200, GUI::SIZE_CONSTRAINT_ABSOLUTE);
 					propLegend.setHeight(20, GUI::SIZE_CONSTRAINT_ABSOLUTE);	// Size set automatically later
 
 					propLegendItem.setOrigin(CONSTRAIN_TOP);
