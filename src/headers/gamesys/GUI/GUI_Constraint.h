@@ -1830,15 +1830,18 @@ namespace Core {
 				bool	bShowLegend;
 				bool	bLegendAutoWidth;
 				int		iBlinkRate;
+				bool	bAutoValue;
 
 				void showLegend(bool b=true)	{	bShowLegend = b;	}
 				void setBlinkRate(int i)		{	iBlinkRate = i;		}
 				void setLegendAutoWidth(bool b)	{	bLegendAutoWidth = b;	}
+				void setAutoValue(bool b=true)	{	bAutoValue = b;		}
 
 				Props_PieChart() {
 					bShowLegend = true;
 					bLegendAutoWidth = true;
 					iBlinkRate = 250;
+					bAutoValue = false;
 
 					setOrigin(Core::GUI::CONSTRAIN_TOP);
 					setAnchor(Core::GUI::CONSTRAIN_TOP);

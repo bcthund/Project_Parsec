@@ -1881,9 +1881,26 @@ namespace Core {
 
 			}
 
+			// DO NOT USE, Breaks Mapping. Would have to update map, but could break external references as well.
+//			virtual T & insert(std::string name, T t, int pos, bool bThrow=true) {
+//				if(!checkName(name, false)) {
+//					//typeList.emplace_back(t);
+//					typeList.insert(pos, t);
+//					int id = typeList.size() - 1;
+//					map.insert(make_pair(name, id));
+//					return typeList[map[name]];
+//				}
+//				else {
+//					if(bThrow) throw std::runtime_error("Duplicate name in t_Vector: '"+name+"'");
+//					else return typeList[map[name]];
+//				}
+//
+//			}
+
 			virtual void remove(std::string name, bool bThrow=true) {
 				if(checkName(name, false)) {
 					typeList.erase(typeList.begin() + map[name]);
+					//typeList.delete(typeList.begin() + map[name]);
 					map.erase(name);
 				}
 				else {

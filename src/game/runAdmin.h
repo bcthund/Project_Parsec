@@ -1747,10 +1747,11 @@ void _Admin::init() {
 		}
 
 		{
-			using namespace Core::GUI;
-			using namespace Core::GUI::Object;
 			using namespace std;
 			using namespace Core;
+			using namespace Core::GUI;
+			using namespace Core::GUI::Object;
+
 			Core::GUI::Props_ComboBox prop;
 			prop.setOrigin(Core::GUI::CONSTRAIN_TOP_RIGHT);
 			prop.setAnchor(Core::GUI::CONSTRAIN_TOP_RIGHT);
@@ -1975,18 +1976,37 @@ void _Admin::init() {
 		prop.setLegendAutoWidth(false);
 		prop.propLegend.setWidth(50);
 		Core::gui["GameMenu"]["Window 21"].PieChart.add("My Pie Chart", prop);
-		Core::gui["GameMenu"]["Window 21"].PieChart["My Pie Chart"].addItem("Test 0", 8);		// 8 %
-		Core::gui["GameMenu"]["Window 21"].PieChart["My Pie Chart"].addItem("Test 1", 2);		// 10 %
-		Core::gui["GameMenu"]["Window 21"].PieChart["My Pie Chart"].addItem("Test 2", 5);		// 15 %
-		Core::gui["GameMenu"]["Window 21"].PieChart["My Pie Chart"].addItem("Test 3 - min width check", 1);		// 16 %
-		Core::gui["GameMenu"]["Window 21"].PieChart["My Pie Chart"].addItem("Test 4", 30);		// 46 %
-		Core::gui["GameMenu"]["Window 21"].PieChart["My Pie Chart"].addItem("Test 5", 10);		// 56 %
+		Core::gui["GameMenu"]["Window 21"].PieChart["My Pie Chart"].addItem("Test 0", 8);
+		Core::gui["GameMenu"]["Window 21"].PieChart["My Pie Chart"].addItem("Test 1", 2);
+		Core::gui["GameMenu"]["Window 21"].PieChart["My Pie Chart"].addItem("Test 2", 5);
+		Core::gui["GameMenu"]["Window 21"].PieChart["My Pie Chart"].addItem("Test 3 - min width check", 1);
+		Core::gui["GameMenu"]["Window 21"].PieChart["My Pie Chart"].addItem("Test 4", 30);
+		Core::gui["GameMenu"]["Window 21"].PieChart["My Pie Chart"].addItem("Test 5", 10);
 		Core::gui["GameMenu"]["Window 21"].PieChart["My Pie Chart"].addItem("Test 6", 38, Core::colors[Core::colors().Dark_red], Core::colors[Core::colors().Red]);		// 94 %
 
+		Core::gui["GameMenu"]["Window 21"].PieChart["My Pie Chart"].getItem("Test 4").colorBox->con->setStipplePattern(&Core::stipple[Core::stipple.STIPPLE_EARTH]);
+		Core::gui["GameMenu"]["Window 21"].PieChart["My Pie Chart"]["Test 6"].setStipplePattern(&Core::stipple[Core::stipple.STIPPLE_INSULATION]);
+
+		using namespace std;
+		using namespace Core;
+		using namespace Core::GUI;
+		using namespace Core::GUI::Object;
 		prop.modY(-250);
 		prop.setLegendAutoWidth(true);
 		prop.propLegend.setWidth(300);
-		Core::gui["GameMenu"]["Window 21"].PieChart.add("Another Chart", prop);
+		Core::gui["GameMenu"]["Window 21"].PieChart.add("Another Chart", prop).addItems(t_PieItems{	make_pair("Test Object 1", 10),
+																									make_pair("Test Object 2", 25),
+																									make_pair("Test Object 3", 15),
+																									make_pair("Test Object 4", 25),
+																									make_pair("Test Object 5", 25) });
+
+		prop.modY(-250);
+		prop.setAutoValue(true);
+		Core::gui["GameMenu"]["Window 21"].PieChart.add("Auto Chart", prop).addItems(t_PieItems{	make_pair("Test Object 1", 100),
+																									make_pair("Test Object 2", 250),
+																									make_pair("Test Object 3", 150),
+																									make_pair("Test Object 4", 350),
+																									make_pair("Test Object 5", 500) });
 
 		bOneShot[46] = true;
 		std::cout << "Done" << std::endl;

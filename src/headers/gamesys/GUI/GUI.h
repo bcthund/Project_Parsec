@@ -446,6 +446,7 @@ namespace Core {
 
 		GUI::GUI() {
 			std::cout << "Construct GUI System.............................................";
+			std::srand((unsigned) time(0));
 			activeGUI = "";
 			guis.setSource("GUI");
 			std::cout << "Done" << std::endl;

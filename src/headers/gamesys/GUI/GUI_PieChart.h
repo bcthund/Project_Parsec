@@ -21,11 +21,6 @@
 #include "GUI_Window.h"
 #include "GUI_Label.h"
 
-// TODO: Allow pie to have an arbitrary size instead of just 100%
-//			- Item sizes are translated into 1% slices for drawing
-
-// TODO: Draw lines between wedges after line is implemented into GUI
-
 namespace Core {
 	namespace GUI {
 		namespace Object {
@@ -35,10 +30,9 @@ namespace Core {
 				private:
 					int *value;
 					bool bLocal;
+					int iPercent;
 
 				public:
-					// TODO: Remove color, use window for color. Will need to define in constructor
-//					Color *color;
 					Props_Window pWin;
 					Window *base;
 					Window *colorBox;
@@ -47,64 +41,12 @@ namespace Core {
 					t_PieItem() {
 						value = new int(0);
 						bLocal = true;
-
-//						int iColor = colors().FIRST + std::rand() % (colors.colors.size()-(colors().FIRST+1));
-//						color = &colors[iColor];
+						iPercent = 0;
 
 						base = nullptr;
 						colorBox = nullptr;
 						label = nullptr;
-
-//						pWin.colorBack.base = &colors[iColor];
-						//window = new Window(*newData->base->con, label, pWin);
-						//window->init();
 					}
-
-//					t_PieItem(std::string l, int iValue, Color &c) {
-//						this->value = new int(iValue);
-//						this->bLocal = true;
-////						this->color = &c;
-//
-//						base = nullptr;
-//						colorBox = nullptr;
-//						label = nullptr;
-//					}
-//
-//					t_PieItem(std::string l, int *iValue, Color &c) {
-//						this->value = iValue;
-//						this->bLocal = false;
-////						this->color = &c;
-//
-//						base = nullptr;
-//						colorBox = nullptr;
-//						label = nullptr;
-//					}
-//
-//					t_PieItem(const t_PieItem &src) {
-//						bLocal = src.bLocal;
-//						value = src.value;
-////						color = src.color;
-//						base = src.base;
-//						colorBox = src.colorBox;
-//						label = src.label;
-//					}
-//
-//					t_PieItem &operator=(const t_PieItem &src) {
-//						bLocal = src.bLocal;
-//						value = src.value;
-////						color = src.color;
-//						base = src.base;
-//						colorBox = src.colorBox;
-//						label = src.label;
-//						return *this;
-//					}
-//
-//					~t_PieItem(){
-//						if(bLocal && value!=nullptr) delete value;
-//						if(base != nullptr) delete base;
-//						if(colorBox != nullptr) delete colorBox;
-//						if(label != nullptr) delete label;
-//					}
 
 					void setValuePtr(int *ptr) {
 						if(bLocal) delete value;
@@ -113,10 +55,12 @@ namespace Core {
 					}
 
 					void setValue(int n)				{	*value = n;		}
-//					void setColor(Color &c)				{	color = &c;		}
 					int getValue()						{	return *value;	}
 					int & getValuePtr()					{	return *value;	}
 			};
+
+			typedef std::pair<std::string, int> t_PieItemPair;
+			typedef std::vector<t_PieItemPair> t_PieItems;
 
 			class PieChart : virtual public Base::Generic<Props_PieChart> {
 				public:
@@ -126,6 +70,7 @@ namespace Core {
 					PieChart(Props &p,std::string n, Props_PieChart &c);
 					PieChart(Props &p,std::string n, Props_PieChart *c);
 					~PieChart();
+					Props_Window& operator[](std::string label);
 
 //					ToolTip toolTip;															///< Tooltip info for this object
 					void init();																///< Initialize thie object and its children
@@ -136,6 +81,7 @@ namespace Core {
 					void addItem(std::string label, int iValue, Color &base, Color &hover);		///< Add a pie/legend item using a specific value and use custom color
 					void addItem(std::string label, int *iValuePtr);							///< Add a pie/legend item using a pointer to a value
 					void addItem(std::string label, int *iValuePtr, Color &base, Color &hover);	///< Add a pie/legend item using a pointer to a value and use custom color
+					void addItems(t_PieItems vItems);											///< Add a list of items in a single call
 					void removeItem(std::string label);											///< Remove an item from the pie/legend
 					t_PieItem& getItem(std::string label);										///< Get a pie/legend item reference, so it can be modified/updated externally
 
@@ -144,8 +90,10 @@ namespace Core {
 					Core::t_VectorMap<t_PieItem*> items;										///< List of pie/legend items
 					Window	*legend;															///< Legend window container
 					Label	*label;																///< Object title, displayed as legend title bar
+					Label	*percent;															///< Object to show percent value for highlighted wedge
 					static Timer blink;															///< Timer for blinking wedge highlight
 					static bool	bBlinkState;													///< Current toggle state of blinking wedge highlight
+					int iTotal;																	///< Total of all items, used for auto values
 
 					void updateObjectState(iState eExternState);								///< Update the internal state of the object (eObjectState)
 					void updateInput();															///< Update internal state and/or local values from keyboard/mouse input
@@ -157,7 +105,9 @@ namespace Core {
 			PieChart::PieChart() {
 				legend			= nullptr;
 				label			= nullptr;
+				percent			= nullptr;
 				bBlinkState		= false;
+				iTotal			= 0;
 			}
 
 			PieChart::PieChart(std::string n, Props_PieChart &c) {
@@ -173,7 +123,9 @@ namespace Core {
 
 				legend			= nullptr;
 				label			= nullptr;
+				percent			= nullptr;
 				bBlinkState		= false;
+				iTotal			= 0;
 			}
 
 			PieChart::PieChart(std::string n, Props_PieChart *c) {
@@ -188,7 +140,9 @@ namespace Core {
 
 				legend			= nullptr;
 				label			= nullptr;
+				percent			= nullptr;
 				bBlinkState		= false;
+				iTotal			= 0;
 			}
 
 			PieChart::PieChart(Props &p, std::string n, Props_PieChart &c) {
@@ -204,7 +158,9 @@ namespace Core {
 
 				legend			= nullptr;
 				label			= nullptr;
+				percent			= nullptr;
 				bBlinkState		= false;
+				iTotal			= 0;
 			}
 
 			PieChart::PieChart(Props &p, std::string n, Props_PieChart *c) {
@@ -219,7 +175,9 @@ namespace Core {
 
 				legend			= nullptr;
 				label			= nullptr;
+				percent			= nullptr;
 				bBlinkState		= false;
+				iTotal			= 0;
 			}
 
 			PieChart::~PieChart() {
@@ -228,9 +186,13 @@ namespace Core {
 				if(label != nullptr) delete label;
 			}
 
+			Props_Window& PieChart::operator[](std::string label) {
+				return *items[label]->colorBox->con;
+			}
+
 			void PieChart::init() {
 				// Initialize srand for random color assignment
-				std::srand((unsigned) time(0));
+//				std::srand((unsigned) time(0));
 
 				// ==========================================
 				//	Configure Pie Size from Radius
@@ -263,19 +225,16 @@ namespace Core {
 				legend->con->enablePadding(PADDING_ALL);
 				legend->init();
 
-				// Set width to largest
-//				if(legend->con->size.x > label->con->size.x) {
-//					label->con->setWidth(legend->con->size.x);
-//					label->con->exec();
-//				}
-//				else {
-//					legend->con->setWidth(label->con->size.x);
-//					legend->con->exec();
-//				}
-//				update();
-
 				// Get legend item data prepped
 				con->propLegendItem.exec();
+
+				// ==========================================
+				//	Setup percent display
+				// ------------------------------------------
+				Props_Label pLabel;
+				pLabel.showBackground();
+				percent = new Object::Label(*con, "Percent", pLabel);
+				percent->init();
 
 				// ==========================================
 				//	Create Triangle Wedge
@@ -300,37 +259,14 @@ namespace Core {
 				// ==========================================
 				//	Create default undefined item
 				// ------------------------------------------
-				//addItem("Undefined", 0, colors[colors().Gray50], colors[colors().Gray80]);	// 0 %
 				addItem("Undefined", 0, colors[colors().Gray50], colors[colors().Bright_green]);	// 0 %
 				items["Undefined"]->colorBox->con->setStipplePattern(&stipple[stipple.STIPPLE_DOTS]);
 
 				// ==========================================
-				//	Create temporary test items
-				// ------------------------------------------
-//				addItem("Test 0", 8);		// 8 %
-//				addItem("Test 1", 2);		// 10 %
-//				addItem("Test 2", 5);		// 15 %
-//				addItem("Test 3", 1);		// 16 %
-//				addItem("Test 4", 30);		// 46 %
-//				addItem("Test 5", 10);		// 56 %
-//				addItem("Test 6", 38);		// 94 %
-
-//				items["Test 2"]->colorBox->con->setStipplePattern(&stipple[stipple.STIPPLE_CROSSES]);
-//				items["Test 4"]->colorBox->con->setStipplePattern(&stipple[stipple.STIPPLE_INSULATION]);
-//				items["Test 6"]->colorBox->con->setStipplePattern(&stipple[stipple.STIPPLE_SHAKES]);
-
-				// ==========================================
-				//	Setup Tooltip
+				//	Finalize
 				// ------------------------------------------
 //				toolTip.init(*con, name);
-
-				// ==========================================
-				//	Update
-				// ------------------------------------------
-//				update();
-
 				blink.start();
-//				timeFocusDebounce.start();
 				bInit = true;
 			}
 
@@ -350,6 +286,10 @@ namespace Core {
 			 * @param iValue Value of item
 			 */
 			void PieChart::addItem(std::string label, int iValue, Color &base, Color &hover) {
+				// Keep undefined as last item
+				if(label!="Undefined") items.remove("Undefined");
+
+				// Add New Item
 				t_PieItem * newData = new t_PieItem();
 				newData->setValue(iValue);
 				newData->base = new Window(*legend->con, label, con->propLegendItem);
@@ -370,7 +310,13 @@ namespace Core {
 				items.add(label, newData);
 
 				// Prep for next item
-				con->propLegendItem.modPos(0, -con->propLegendItem.size.y);
+				if(label!="Undefined") con->propLegendItem.modPos(0, -con->propLegendItem.size.y);
+
+				// Keep undefined as last item
+				if(label!="Undefined") {
+					addItem("Undefined", 0, colors[colors().Gray50], colors[colors().Bright_green]);	// 0 %
+					items["Undefined"]->colorBox->con->setStipplePattern(&stipple[stipple.STIPPLE_DOTS]);
+				}
 			}
 
 			/**
@@ -389,6 +335,10 @@ namespace Core {
 			 * @param iValue Value of item
 			 */
 			void PieChart::addItem(std::string label, int *iValuePtr, Color &base, Color &hover) {
+				// Keep undefined as last item
+				if(label!="Undefined") items.remove("Undefined");
+
+				// Add New Item
 				t_PieItem * newData = new t_PieItem();
 				newData->setValuePtr(iValuePtr);
 				newData->base = new Window(*legend->con, label, con->propLegendItem);
@@ -409,19 +359,24 @@ namespace Core {
 				items.add(label, newData);
 
 				// Prep for next item
-				con->propLegendItem.modPos(0, -con->propLegendItem.size.y);
+				if(label!="Undefined") con->propLegendItem.modPos(0, -con->propLegendItem.size.y);
+
+				// Keep undefined as last item
+				if(label!="Undefined") {
+					addItem("Undefined", 0, colors[colors().Gray50], colors[colors().Bright_green]);	// 0 %
+					items["Undefined"]->colorBox->con->setStipplePattern(&stipple[stipple.STIPPLE_DOTS]);
+				}
 			}
 
 			/**
 			 * @brief Add a list of items all at once
 			 * @param vItems Vector of <title, value> pairs to set
 			 */
-			// TODO: Implement addItems (direct value only)
-//			void ComboBox::addItems(t_ComboBoxItems vItems) {
-//				for (auto const& vItem : std::as_const(vItems)) {
-//					addItem(vItem.first, vItem.second);
-//				}
-//			}
+			void PieChart::addItems(t_PieItems vItems) {
+				for (auto const& vItem : std::as_const(vItems)) {
+					addItem(vItem.first, vItem.second);
+				}
+			}
 
 			/**
 			 * @brief Remove an item defined by \p title from list
@@ -436,6 +391,39 @@ namespace Core {
 			}
 
 			void PieChart::update() {
+				// Auto value calculations
+				if(con->bAutoValue) {
+					iTotal = 0;
+					if(items.size()>0) {
+						// Find Total
+						for(auto item: items) {
+							iTotal += *item->value;
+						}
+
+						// Set percentage for items
+						for(auto &item: items) {
+							item->iPercent = (((float)item->getValue()/(float)iTotal) * 100.0f) + 0.5f;
+						}
+
+					}
+				}
+				else {
+					for(auto &item: items) {
+						item->iPercent = *item->value;
+					}
+				}
+
+
+				// Set undefined range (For legend)
+				// Do this first so legend height can be set right
+				int iRem = 100;
+				if(con->bAutoValue) iRem = iTotal;
+
+				if(items.size()>0) {
+					for(int n=0; n<items.size()-1; n++) iRem -= items[n]->getValue();
+				}
+				items["Undefined"]->setValue(iRem);
+
 				// Update pie dimensions in case resized (maybe use radius only? disable width/height in props)
 				con->setWidth(con->radius*2);
 				con->setHeight(con->radius*2);
@@ -443,6 +431,8 @@ namespace Core {
 				// Calculate and Set legend height
 				if(items.size()>0) {
 					int iHeight = items.size();
+					if(items["Undefined"]->getValue()<=0) iHeight-=1;
+//					debug.log("Undefined value = "+std::to_string(items["Undefined"]->getValue())+"; iHeight = "+std::to_string(iHeight) );
 					legend->con->setHeight( ((iHeight)*con->propLegendItem.size.y + legend->con->vPadding.top_bottom()), SIZE_CONSTRAINT_ABSOLUTE);
 				}
 
@@ -452,8 +442,6 @@ namespace Core {
 				int iWidth = 0;
 
 				// Start with title width
-//				if(legend->con->size.x > label->con->size.x) iWidth = legend->con->size.x;
-//				else iWidth = label->con->size.x;
 				iWidth = label->con->size.x;
 
 				// Find widest legend item including padding (this is effectively the minimum width)
@@ -481,12 +469,6 @@ namespace Core {
 					}
 				}
 
-				// Set undefined range (For legend)
-				int iRem = 100;
-				if(items.size()>1) {
-					for(int n=2; n<items.size(); n++) iRem -= items[n]->getValue();
-				}
-				items["Undefined"]->setValue(iRem);
 			}
 
 			void PieChart::updateObjectState(iState eExternState) {
@@ -607,56 +589,71 @@ namespace Core {
 							shader->data.GLS_MENU.iRadius			= con->getRadius();
 							shader->data.GLS_MENU.bRoundBorder		= con->getRoundBorder();
 
-							int index = 1;	// Current item index
+							int index = 0;	// Current item index
 							int pre = 0;	// Total from previous item
 							for(int n=0; n<100; n++) {
 								matrix->Rotate(Degrees(3.6).toRadians(), 0, 0, -1);
 
-								// Make sure item exists
-								if(index<items.size()) {
+//								if(con->bAutoValue) {
+//								}
+//								else {
+									// Make sure item exists
+									if(index<items.size()) {
+										if(bBlinkState && ((items[index]->base->eObjectState&STATE_HOVER) || (items[index]->base->eObjectState&STATE_ACTIVE)) ) {
+											colors.PushFront(items[index]->colorBox->con->colorBack.highlight);
+											colors.PushBack(items[index]->colorBox->con->colorBorder.highlight);
+											border = con->borderHover;
+										}
+										else {
+											colors.PushFront(items[index]->colorBox->con->colorBack.base);
+											colors.PushBack(items[index]->colorBox->con->colorBorder.base);
+											border = con->borderNormal;
+										}
 
-									if(bBlinkState && ((items[index]->base->eObjectState&STATE_HOVER) || (items[index]->base->eObjectState&STATE_ACTIVE)) ) {
-										colors.PushFront(items[index]->colorBox->con->colorBack.highlight);
-										colors.PushBack(items[index]->colorBox->con->colorBorder.highlight);
-										border = con->borderHover;
+										shader->data.GLS_MENU.iBorder = border;
+										shader->data.GLS_MENU.bEnableStipple = items[index]->colorBox->con->bEnableStipple;
+										if(items[index]->colorBox->con->bEnableStipple) {
+											shader->data.GLS_MENU.stipple = items[index]->colorBox->con->stipple;
+											shader->data.GLS_MENU.stippleColor = items["Undefined"]->colorBox->con->stippleColor.base;
+										}
+
+//										if(con->bAutoValue) {
+//
+////											debug.log(std::to_string(pre+items[index]->iPercent));
+//
+											// Prep for next item
+											if(n >= (pre+items[index]->iPercent)) {
+												pre += items[index]->iPercent;
+												index++;
+											}
+//										}
+//										else {
+//											// Prep for next item
+//											if(n >= (pre+items[index]->getValue())) {
+//												pre += items[index]->getValue();
+//												index++;
+//											}
+//										}
 									}
 									else {
-										colors.PushFront(items[index]->colorBox->con->colorBack.base);
-										colors.PushBack(items[index]->colorBox->con->colorBorder.base);
-										border = con->borderNormal;
-									}
+										// Undefined Area, fill remaining space
+										if(bBlinkState && ((items["Undefined"]->base->eObjectState&STATE_HOVER) || (items["Undefined"]->base->eObjectState&STATE_ACTIVE)) ) {
+											colors.PushFront(items["Undefined"]->colorBox->con->colorBack.highlight);
+											colors.PushBack(items["Undefined"]->colorBox->con->colorBorder.highlight);
+											border = con->borderHover;
+										}
+										else {
+											colors.PushFront(items["Undefined"]->colorBox->con->colorBack.base);
+											colors.PushBack(items["Undefined"]->colorBox->con->colorBorder.base);
+											border = con->borderNormal;
+										}
 
-									shader->data.GLS_MENU.iBorder = border;
-									shader->data.GLS_MENU.bEnableStipple = items[index]->colorBox->con->bEnableStipple;
-									if(items[index]->colorBox->con->bEnableStipple) {
-										shader->data.GLS_MENU.stipple = items[index]->colorBox->con->stipple;
+										shader->data.GLS_MENU.iBorder = border;
+										shader->data.GLS_MENU.bEnableStipple = items["Undefined"]->colorBox->con->bEnableStipple;
+										shader->data.GLS_MENU.stipple = items["Undefined"]->colorBox->con->stipple;
 										shader->data.GLS_MENU.stippleColor = items["Undefined"]->colorBox->con->stippleColor.base;
 									}
-
-									// Prep for next item
-									if(n >= (pre+items[index]->getValue())) {
-										pre += items[index]->getValue();
-										index++;
-									}
-								}
-								else {
-									// Undefined Area, fill remaining space
-									if(bBlinkState && ((items["Undefined"]->base->eObjectState&STATE_HOVER) || (items["Undefined"]->base->eObjectState&STATE_ACTIVE)) ) {
-										colors.PushFront(items["Undefined"]->colorBox->con->colorBack.highlight);
-										colors.PushBack(items["Undefined"]->colorBox->con->colorBorder.highlight);
-										border = con->borderHover;
-									}
-									else {
-										colors.PushFront(items["Undefined"]->colorBox->con->colorBack.base);
-										colors.PushBack(items["Undefined"]->colorBox->con->colorBorder.base);
-										border = con->borderNormal;
-									}
-
-									shader->data.GLS_MENU.iBorder = border;
-									shader->data.GLS_MENU.bEnableStipple = items["Undefined"]->colorBox->con->bEnableStipple;
-									shader->data.GLS_MENU.stipple = items["Undefined"]->colorBox->con->stipple;
-									shader->data.GLS_MENU.stippleColor = items["Undefined"]->colorBox->con->stippleColor.base;
-								}
+//								}
 
 								matrix->SetTransform();
 								shader->getUniform(GLS_MENU);
@@ -686,13 +683,20 @@ namespace Core {
 							legend->exec(STATE_NONE);
 
 							// Draw Legend Colors and Labels, skip Undefined if no value
-							int n = 1;
-							if(items["Undefined"]->getValue()>0) n = 0;
+							int nEnd = items.size();
+							if(items["Undefined"]->getValue()<=0) nEnd-=1;
 
-							for( ; n<items.size(); n++) {
+							for(int n=0 ; n<nEnd; n++) {
 								items[n]->base->exec(STATE_NONE);
 								items[n]->colorBox->exec(STATE_NONE);
 								items[n]->label->exec(STATE_NONE);
+
+								if( ((items[n]->base->eObjectState&STATE_HOVER) || (items[n]->base->eObjectState&STATE_ACTIVE)) ) {
+									//percent->con->setText(items[n]->label->name);
+									percent->con->setText(std::to_string(items[n]->iPercent)+"%");
+//									percent->con->setText(std::to_string(items[n]->iPercent));
+									percent->exec();
+								}
 							}
 
 							// Update highlight blink
@@ -700,6 +704,7 @@ namespace Core {
 								blink.split();
 								bBlinkState = !bBlinkState;
 							}
+
 						}
 
 					}
