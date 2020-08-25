@@ -212,10 +212,10 @@ namespace Core {
 			y = iY;
 		}
 
-//		Vector2i(const Vector2i &v) {
-//			data[0] = v[0];
-//			data[1] = v[1];
-//		}
+		Vector2i(Vector2i &v) {
+			data[0] = v[0];
+			data[1] = v[1];
+		}
 
 	} Vector2i;
 
@@ -364,6 +364,11 @@ namespace Core {
 		Vector2f(float v) {
 			data[0] = v;
 			data[1] = v;
+		}
+
+		Vector2f(Vector2f &d) {
+			data[0] = d[0];
+			data[1] = d[1];
 		}
 
 		Vector2f(Data2f d) {

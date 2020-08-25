@@ -20,6 +20,7 @@
 #include "GUI_Objects.h"
 #include "GUI_Window.h"
 #include "GUI_Label.h"
+#include "GUI_Line.h"
 
 namespace Core {
 	namespace GUI {
@@ -91,9 +92,11 @@ namespace Core {
 					Window	*legend;															///< Legend window container
 					Label	*label;																///< Object title, displayed as legend title bar
 					Label	*percent;															///< Object to show percent value for highlighted wedge
+					Line	*line;
 					static Timer blink;															///< Timer for blinking wedge highlight
 					static bool	bBlinkState;													///< Current toggle state of blinking wedge highlight
 					int iTotal;																	///< Total of all items, used for auto values
+					float fX, fY;
 
 					void updateObjectState(iState eExternState);								///< Update the internal state of the object (eObjectState)
 					void updateInput();															///< Update internal state and/or local values from keyboard/mouse input
@@ -106,8 +109,11 @@ namespace Core {
 				legend			= nullptr;
 				label			= nullptr;
 				percent			= nullptr;
+				line			= nullptr;
 				bBlinkState		= false;
 				iTotal			= 0;
+				fX				= 0.0f;
+				fY				= 0.0f;
 			}
 
 			PieChart::PieChart(std::string n, Props_PieChart &c) {
@@ -124,8 +130,11 @@ namespace Core {
 				legend			= nullptr;
 				label			= nullptr;
 				percent			= nullptr;
+				line			= nullptr;
 				bBlinkState		= false;
 				iTotal			= 0;
+				fX				= 0.0f;
+				fY				= 0.0f;
 			}
 
 			PieChart::PieChart(std::string n, Props_PieChart *c) {
@@ -141,8 +150,11 @@ namespace Core {
 				legend			= nullptr;
 				label			= nullptr;
 				percent			= nullptr;
+				line			= nullptr;
 				bBlinkState		= false;
 				iTotal			= 0;
+				fX				= 0.0f;
+				fY				= 0.0f;
 			}
 
 			PieChart::PieChart(Props &p, std::string n, Props_PieChart &c) {
@@ -159,8 +171,11 @@ namespace Core {
 				legend			= nullptr;
 				label			= nullptr;
 				percent			= nullptr;
+				line			= nullptr;
 				bBlinkState		= false;
 				iTotal			= 0;
+				fX				= 0.0f;
+				fY				= 0.0f;
 			}
 
 			PieChart::PieChart(Props &p, std::string n, Props_PieChart *c) {
@@ -176,8 +191,11 @@ namespace Core {
 				legend			= nullptr;
 				label			= nullptr;
 				percent			= nullptr;
+				line			= nullptr;
 				bBlinkState		= false;
 				iTotal			= 0;
+				fX				= 0.0f;
+				fY				= 0.0f;
 			}
 
 			PieChart::~PieChart() {
@@ -241,8 +259,8 @@ namespace Core {
 				// ------------------------------------------
 				float fRadius = 1.0f;;
 				float fR = Degrees(1.8).toRadians();
-				float fX = std::sin(fR) * fRadius;
-				float fY = std::cos(fR) * fRadius;
+				fX = std::sin(fR) * fRadius;
+				fY = std::cos(fR) * fRadius;
 				Data3f vVerts[] = { { 0.0f, 0.0f, 0},
 									{   fX,  fY, 0},
 									{  -fX,  fY, 0} };
@@ -255,6 +273,16 @@ namespace Core {
 				vao.CopyData(GLA_VERTEX, vVerts);
 				vao.CopyData(GLA_TEXTURE, vTexture, 0);
 				vao.End();
+
+				// ==========================================
+				//	Create Line object aligned to first wedge
+				// -----------------------------------------
+				Core::GUI::Props_Line pLine;
+				pLine.setOrigin(Core::GUI::CONSTRAIN_CENTER);
+				pLine.setAnchor(Core::GUI::CONSTRAIN_CENTER);
+//				line = new Line(*con, name, Vector2i(0, 0), Vector2i(fX*con->radius, fY*con->radius), pLine);
+				line = new Line(*con, name, Vector2f(0, 0), Vector2f(fX, fY), pLine);
+				line->init();
 
 				// ==========================================
 				//	Create default undefined item
@@ -424,9 +452,15 @@ namespace Core {
 				}
 				items["Undefined"]->setValue(iRem);
 
-				// Update pie dimensions in case resized (maybe use radius only? disable width/height in props)
+				// Update pie dimensions in case resized
 				con->setWidth(con->radius*2);
 				con->setHeight(con->radius*2);
+
+				//line = new Line(*con, name, Vector2i(0, 0), Vector2i(fX*con->radius, fY*con->radius), pLine);
+				//line->setPointA();
+				//line->setPointB(Vector2i(fX*con->radius, fY*con->radius));
+//				line->setPointB(Vector2f(fX*1.0f, fY*1.0f));
+//				debug.log("("+std::to_string(fX)+", "+std::to_string(fY)+")");
 
 				// Calculate and Set legend height
 				if(items.size()>0) {
@@ -591,8 +625,15 @@ namespace Core {
 
 							int index = 0;	// Current item index
 							int pre = 0;	// Total from previous item
+							bool bDrawDivide = false;
+							bool bDrawDivideMem = false;
 							for(int n=0; n<100; n++) {
 								matrix->Rotate(Degrees(3.6).toRadians(), 0, 0, -1);
+								if(bDrawDivide) {
+//									line->exec();
+									bDrawDivide = false;
+									bDrawDivideMem = true;
+								}
 
 //								if(con->bAutoValue) {
 //								}
@@ -625,6 +666,7 @@ namespace Core {
 											if(n >= (pre+items[index]->iPercent)) {
 												pre += items[index]->iPercent;
 												index++;
+												bDrawDivide = true;
 											}
 //										}
 //										else {
@@ -655,11 +697,25 @@ namespace Core {
 									}
 //								}
 
+								shader->use(GLS_MENU);
 								matrix->SetTransform();
 								shader->getUniform(GLS_MENU);
 								vao.Draw();
+//								if(bDrawDivide) line->exec();
+								if(bDrawDivideMem) {
+									matrix->Rotate(Degrees(3.6).toRadians(), 0, 0, 1);
+									line->exec();
+									matrix->Rotate(Degrees(3.6).toRadians(), 0, 0, -1);
+									bDrawDivideMem = false;
+								}
 								colors.PopFront();
+
+//								if(bDrawDivide) line->exec();
+//								line->exec();
 							}
+
+							// Draw final seperator (only if more than 1 item exist)
+							if(items.size()>1) line->exec();
 
 							// Draw all slices same color
 							//  - keep for possible future reference, draws a nice circle

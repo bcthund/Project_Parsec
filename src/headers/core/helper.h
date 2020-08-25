@@ -22,6 +22,8 @@
 namespace Core {
 	class _Helper {
 		private:
+			void SetLine(Vector2f a, Vector2f b, float fScale, Color vColorA=Color(1.0f), Color vColorB=Color(1.0f));
+			void SetLine(Vector2i a, Vector2i b, float fScale, Color vColorA=Color(1.0f), Color vColorB=Color(1.0f));
 			void SetLine(Vector3f a, Vector3f b, float fScale, Color vColorA=Color(1.0f), Color vColorB=Color(1.0f));
 			/*Matrix_System *matrix;
 			Shader_System *shader;*/
@@ -55,7 +57,7 @@ namespace Core {
 
 			void drawPoint(float fSize=2.0f, float fRotation=0.0, Color vColor=Color(1.0f), _PointStyle eStyle=GLPOINT_SQUARE_ALPHA, int iSpikes=5, float fThickness=0.25);
 			void drawPointSprite(float fSize=2.0f, float fRotation=0.0, Color vColor=Color(1.0f), _PointStyle eStyle=GLPOINT_SQUARE_ALPHA, int iSpikes=5, float fThickness=0.25);
-			void drawLine();
+			//void drawLine();
 			void drawPosition(float fWidth, float fScale);
 			void drawPosition(float fWidth, float fScale, Vector3f pos, Vector3f rot);
 
@@ -64,6 +66,8 @@ namespace Core {
 
 			void drawPoint(Vector3f position, float fWidth);
 			//void drawLine(_Joint &joint, Matrix_System &matrix, Shader_System &shader);
+			void drawLine(Vector2f a, Vector2f b, float fWidth=1.0f, float fScale=1.0f, Color vColorA=Color(1.0f, 0.0f, 0.0f, 1.0f), Color vColorB=Color(0.0f, 0.0f, 1.0f, 1.0f));
+			void drawLine(Vector2i a, Vector2i b, float fWidth=1.0f, float fScale=1.0f, Color vColorA=Color(1.0f, 0.0f, 0.0f, 1.0f), Color vColorB=Color(0.0f, 0.0f, 1.0f, 1.0f));
 			void drawLine(Vector3f a, Vector3f b, float fWidth=1.0f, float fScale=1.0f, Color vColorA=Color(1.0f, 0.0f, 0.0f, 1.0f), Color vColorB=Color(0.0f, 0.0f, 1.0f, 1.0f));
 
 			// Add overloads

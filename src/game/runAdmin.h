@@ -266,7 +266,13 @@ void _Admin::init() {
 		Core::gui["GameMenu"].add("Window 19", cMaster);
 //		cMaster.resetScrollable();
 		Core::gui["GameMenu"].add("Window 20", cMaster);
+//		cMaster.disableScissor();
 		Core::gui["GameMenu"].add("Window 21", cMaster);
+		Core::gui["GameMenu"].add("Window 22", cMaster);
+		Core::gui["GameMenu"].add("Window 23", cMaster);
+		Core::gui["GameMenu"].add("Window 24", cMaster);
+		Core::gui["GameMenu"].add("Window 25", cMaster);
+		Core::gui["GameMenu"].add("Window 26", cMaster);
 
 
 		cMaster.setOrigin(Core::GUI::CONSTRAIN_TOP_RIGHT);
@@ -304,7 +310,7 @@ void _Admin::init() {
 		con.setPos(-10, -560);
 		con.setWidth(500, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
 //		con.setWidth(40, Core::GUI::SIZE_CONSTRAINT_RELATIVE);
-		con.setHeight(100, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+		con.setHeight(110, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
 		con.setBorder(1, true);
 		con.setRadius(5);
 		con.setVisibility(true);
@@ -330,6 +336,7 @@ void _Admin::init() {
 		con.enablePadding(Core::GUI::PADDING_ALL);
 		con.setMinWidth(100);
 		con.showBackground();
+		con.autoWidth(false);
 		con.colorBack.base = &Core::colors[Core::colors().Gray_web];
 //		con.setLabelAutoSize(true, true);
 		//con.autoWidth(false);
@@ -358,6 +365,11 @@ void _Admin::init() {
 		Core::gui["GameMenu"]["Window 19"].Label.add("Window 19", con);
 		Core::gui["GameMenu"]["Window 20"].Label.add("Window 20", con);
 		Core::gui["GameMenu"]["Window 21"].Label.add("Window 21", con);
+		Core::gui["GameMenu"]["Window 22"].Label.add("Window 22", con);
+		Core::gui["GameMenu"]["Window 23"].Label.add("Window 23", con);
+		Core::gui["GameMenu"]["Window 24"].Label.add("Window 24", con);
+		Core::gui["GameMenu"]["Window 25"].Label.add("Window 25", con);
+		Core::gui["GameMenu"]["Window 26"].Label.add("Window 26", con);
 
 		bOneShot[3] = true;
 		std::cout << "Done" << std::endl;
@@ -466,6 +478,17 @@ void _Admin::init() {
 		con_button.setPos(   98, -60);	Core::gui["GameMenu"]["Window 2"].Button.add("2D Slider",		false, con_button);
 		con_button.setToolTip("None.");
 		con_button.setPos(  196, -60);	Core::gui["GameMenu"]["Window 2"].Button.add("PieChart",		false, con_button);
+
+		con_button.setToolTip("None.");
+		con_button.setPos( -196, -80);	Core::gui["GameMenu"]["Window 2"].Button.add("Spare 1",			false, con_button);
+		con_button.setToolTip("None.");
+		con_button.setPos(  -98, -80);	Core::gui["GameMenu"]["Window 2"].Button.add("Spare 2",			false, con_button);
+		con_button.setToolTip("None.");
+		con_button.setPos(    0, -80);	Core::gui["GameMenu"]["Window 2"].Button.add("Spare 3",			false, con_button);
+		con_button.setToolTip("None.");
+		con_button.setPos(   98, -80);	Core::gui["GameMenu"]["Window 2"].Button.add("Spare 4",			false, con_button);
+		con_button.setToolTip("None.");
+		con_button.setPos(  196, -80);	Core::gui["GameMenu"]["Window 2"].Button.add("Spare 5",			false, con_button);
 
 
 
@@ -2012,6 +2035,21 @@ void _Admin::init() {
 		std::cout << "Done" << std::endl;
 	}
 
+	if (!bOneShot[47]) {
+		std::cout << "GUI: Loading #47: Lines ........................................ ";
+		//std::cout << "...............................................................";
+
+		Core::GUI::Props_Line prop;
+		prop.setOrigin(Core::GUI::CONSTRAIN_TOP_LEFT);
+		prop.setAnchor(Core::GUI::CONSTRAIN_LEFT);
+		prop.setY(-50);
+//		Core::gui["GameMenu"]["Window 22"].Line.add("Line Test", Core::Vector2i(0, 0), Core::Vector2i((int)Core::gameVars->screen.half.x, (int)Core::gameVars->screen.half.y), prop);
+		Core::gui["GameMenu"]["Window 22"].Line.add("Line Test", Core::Vector2f(0, 0), Core::Vector2f(100, 0), prop);
+
+		bOneShot[47] = true;
+		std::cout << "Done" << std::endl;
+	}
+
 //	if (!bOneShot[44]) {
 //		std::cout << "GUI: Loading #44: ComboBox ..................................... ";
 //		//std::cout << "...............................................................";
@@ -2213,8 +2251,14 @@ void _Admin::run() {
 		Core::gui["GameMenu"]["Window 19"].hide();
 		Core::gui["GameMenu"]["Window 20"].hide();
 		Core::gui["GameMenu"]["Window 21"].hide();
+		Core::gui["GameMenu"]["Window 22"].hide();
+		Core::gui["GameMenu"]["Window 23"].hide();
+		Core::gui["GameMenu"]["Window 24"].hide();
+		Core::gui["GameMenu"]["Window 25"].hide();
+		Core::gui["GameMenu"]["Window 26"].hide();
 
-		if(Core::gui["GameMenu"]["Window 2"].Button["Simplex"].getState())				Core::gui["GameMenu"]["Window 3"].show();
+		if(Core::gui["GameMenu"]["Window 2"].Button["Lighting"].getState())				Core::gui["GameMenu"]["Window 1"].show();
+		else if(Core::gui["GameMenu"]["Window 2"].Button["Simplex"].getState())			Core::gui["GameMenu"]["Window 3"].show();
 		else if(Core::gui["GameMenu"]["Window 2"].Button["Fractal"].getState())			Core::gui["GameMenu"]["Window 4"].show();
 		else if(Core::gui["GameMenu"]["Window 2"].Button["Sliders"].getState())			Core::gui["GameMenu"]["Window 5"].show();
 		else if(Core::gui["GameMenu"]["Window 2"].Button["Text Boxes"].getState())		Core::gui["GameMenu"]["Window 6"].show();
@@ -2232,7 +2276,12 @@ void _Admin::run() {
 		else if(Core::gui["GameMenu"]["Window 2"].Button["ComboBox"].getState())		Core::gui["GameMenu"]["Window 19"].show();
 		else if(Core::gui["GameMenu"]["Window 2"].Button["2D Slider"].getState())		Core::gui["GameMenu"]["Window 20"].show();
 		else if(Core::gui["GameMenu"]["Window 2"].Button["PieChart"].getState())		Core::gui["GameMenu"]["Window 21"].show();
-		else if(Core::gui["GameMenu"]["Window 2"].Button["Lighting"].getState())		Core::gui["GameMenu"]["Window 1"].show();
+		else if(Core::gui["GameMenu"]["Window 2"].Button["Spare 1"].getState())			Core::gui["GameMenu"]["Window 22"].show();
+		else if(Core::gui["GameMenu"]["Window 2"].Button["Spare 2"].getState())			Core::gui["GameMenu"]["Window 23"].show();
+		else if(Core::gui["GameMenu"]["Window 2"].Button["Spare 3"].getState())			Core::gui["GameMenu"]["Window 24"].show();
+		else if(Core::gui["GameMenu"]["Window 2"].Button["Spare 4"].getState())			Core::gui["GameMenu"]["Window 25"].show();
+		else if(Core::gui["GameMenu"]["Window 2"].Button["Spare 5"].getState())			Core::gui["GameMenu"]["Window 26"].show();
+
 		else if(Core::gui["GameMenu"]["Window 2"].Button["Skill Tree"].getState()) {
 			Core::gui["GameMenu"]["Window 14"].show();
 			// These are oneshot controlled windows

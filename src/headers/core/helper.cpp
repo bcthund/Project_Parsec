@@ -566,6 +566,34 @@ namespace Core {
 //		else std::cout << "Invalid shader [" << eShader << "] requested for point sprite, sprite not drawn." << std::endl;
 	}
 
+	void _Helper::SetLine(Vector2i a, Vector2i b, float fScale, Color vColorA, Color vColorB) {
+
+		Data4f vVerts[]		= {	{	a.x*fScale,	a.y*fScale,	1.0f,	1.0f	},
+								{	b.x*fScale,	b.y*fScale,	1.0f,	1.0f	}	};
+
+		Data4f vColor[]		= {	{	vColorA.r,	vColorA.g,	vColorA.b,	vColorA.a	},
+								{	vColorB.r,	vColorB.g,	vColorB.b,	vColorB.a	}	};
+
+		vaoLine.Begin(GL_LINES, 2, 2, 0);
+		vaoLine.CopyData(GLA_VERTEX, vVerts);
+		vaoLine.CopyData(GLA_COLOR, vColor);
+		vaoLine.End();
+	}
+
+	void _Helper::SetLine(Vector2f a, Vector2f b, float fScale, Color vColorA, Color vColorB) {
+
+		Data4f vVerts[]		= {	{	a.x*fScale,	a.y*fScale,	1.0f,	1.0f	},
+								{	b.x*fScale,	b.y*fScale,	1.0f,	1.0f	}	};
+
+		Data4f vColor[]		= {	{	vColorA.r,	vColorA.g,	vColorA.b,	vColorA.a	},
+								{	vColorB.r,	vColorB.g,	vColorB.b,	vColorB.a	}	};
+
+		vaoLine.Begin(GL_LINES, 2, 2, 0);
+		vaoLine.CopyData(GLA_VERTEX, vVerts);
+		vaoLine.CopyData(GLA_COLOR, vColor);
+		vaoLine.End();
+	}
+
 	void _Helper::SetLine(Vector3f a, Vector3f b, float fScale, Color vColorA, Color vColorB) {
 
 		Data4f vVerts[]		= {	{	a.x*fScale,	a.y*fScale,	a.z*fScale,	1.0f	},
@@ -583,6 +611,32 @@ namespace Core {
 //	void _Helper::drawLine(_Joint &joint, Matrix_System &matrix, Shader_System &shader) {
 //		drawLine(joint.vOrigin, joint.vConnections[0], matrix, shader, 5.0f, 1.0f);
 //	}
+
+	void _Helper::drawLine(Vector2i a, Vector2i b, float fWidth, float fScale, Color vColorA, Color vColorB) {
+		SetLine(a, b, fScale, vColorA, vColorB);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		glLineWidth(fWidth);
+		matrix->Push();
+			matrix->SetTransform();
+			shader->use(GLS_LINES);
+			shader->getUniform(GLS_LINES);
+			vaoLine.Draw();
+		matrix->Pop();
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	}
+
+	void _Helper::drawLine(Vector2f a, Vector2f b, float fWidth, float fScale, Color vColorA, Color vColorB) {
+		SetLine(a, b, fScale, vColorA, vColorB);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		glLineWidth(fWidth);
+		matrix->Push();
+			matrix->SetTransform();
+			shader->use(GLS_LINES);
+			shader->getUniform(GLS_LINES);
+			vaoLine.Draw();
+		matrix->Pop();
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	}
 
 	void _Helper::drawLine(Vector3f a, Vector3f b, float fWidth, float fScale, Color vColorA, Color vColorB) {
 		SetLine(a, b, fScale, vColorA, vColorB);

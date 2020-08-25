@@ -1924,6 +1924,43 @@ namespace Core {
 				}
 		};
 
+		/** ******************************************************************************************************************************
+		 *  \class Props_PieChart
+		 *  \brief Creates a slider and control with optional label and field for value editing
+		 *
+		 *
+		 *
+		 * ****************************************************************************************************************************** */
+		class Props_Line :	virtual public Props {
+
+			//friend class Object::Label;
+			friend class Object::PieChart;
+
+			private:
+				using Props::setWidth;
+				using Props::setHeight;
+				using Props::setMaxHeight;
+				using Props::setMaxWidth;
+				using Props::setMinHeight;
+				using Props::setMinMaxHeight;
+				using Props::setMinWidth;
+				using Props::setPadding;
+				using Props::setScrollable;
+				using Props::setText;
+				using Props::setToolTip;
+
+			public:
+				Vector2i vPointA;			///< Starting point relative to origin and anchor
+				Vector2i vPointB;			///< Ending point relative to first point
+				int iWidth;					///< Line width
+
+				void setWidth(int i) {	iWidth = i;	}
+
+				Props_Line() {
+					iWidth = 2;
+				}
+		};
+
 		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 		// 			General Functions
