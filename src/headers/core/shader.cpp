@@ -108,7 +108,7 @@ namespace Core {
 			case(Core::GLS_MENU):
 				sFileName	= "menu";
 				std::cout << sOffset << "[" << sFileName << "]";
-				uiGLA		= GLASet.VERTEX;
+				uiGLA		= GLASet.VERTEX_TEXTURE0;
 				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
 				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
 				break;
@@ -773,6 +773,13 @@ namespace Core {
 				GLint locStipplePattern	= glGetUniformLocation(uiShaders[eShader], "stipplePattern");
 				GLint locStippleColor	= glGetUniformLocation(uiShaders[eShader], "stippleColor");
 				GLint locStippleScale	= glGetUniformLocation(uiShaders[eShader], "stippleScale");
+				GLint locTextured		= glGetUniformLocation(uiShaders[eShader], "bTextured");
+				if(data.GLS_MENU.bTextured) {
+					locTexture0			= glGetUniformLocation(uiShaders[eShader], "colorMap");
+					GLint locScroll 	= glGetUniformLocation(uiShaders[eShader], "fScroll");
+					glUniform1i(locTexture0,	0);
+					glUniform1f(locScroll, data.GLS_MENU.fScroll);
+				}
 
 				glUniform2fv(locRes,			1,	data.vRes->data);
 				glUniform2fv(locPos,			1,	data.GLS_MENU.vPos.data);
@@ -784,6 +791,7 @@ namespace Core {
 				glUniform4fv(locWindowColor,	1,	colors.GetFront().data);
 				glUniform4fv(locBorderColor,	1,	colors.GetBack().data);
 				glUniform1i(locEnableStipple, 	data.GLS_MENU.bEnableStipple);
+				glUniform1i(locTextured, 		data.GLS_MENU.bTextured);
 
 				if(data.GLS_MENU.bEnableStipple) {
 					glUniform2iv(locStippleSize, 1,	data.GLS_MENU.stipple->size.data);

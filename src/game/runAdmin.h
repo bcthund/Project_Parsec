@@ -243,7 +243,6 @@ void _Admin::init() {
 		cMaster.setScrollable();
 		Core::gui["GameMenu"].add("Window 1", cMaster);
 		Core::gui["GameMenu"].add("Window 3", cMaster);
-		Core::gui["GameMenu"].add("Window 4", cMaster);
 		Core::gui["GameMenu"].add("Window 5", cMaster);
 		Core::gui["GameMenu"].add("Window 6", cMaster);
 		Core::gui["GameMenu"].add("Window 7", cMaster);
@@ -267,14 +266,38 @@ void _Admin::init() {
 //		cMaster.resetScrollable();
 		Core::gui["GameMenu"].add("Window 20", cMaster);
 //		cMaster.disableScissor();
-		Core::gui["GameMenu"].add("Window 21", cMaster);
-		Core::gui["GameMenu"].add("Window 22", cMaster);
+		//Core::gui["GameMenu"].add("Window 22", cMaster);
 		Core::gui["GameMenu"].add("Window 23", cMaster);
 		Core::gui["GameMenu"].add("Window 24", cMaster);
 		Core::gui["GameMenu"].add("Window 25", cMaster);
 		Core::gui["GameMenu"].add("Window 26", cMaster);
 
+		//cMaster.setTextured();
+		cMaster.setTexture(Core::sysTex->TEX_GRASSYROCK, Core::sysTex->get());
+		cMaster.setTextureScrollRate(2.0f);
+		cMaster.colorBack.base		= &Core::colors[Core::colors().White];
+		cMaster.colorBack.active	= &Core::colors[Core::colors().White];
+		cMaster.colorBack.highlight	= &Core::colors[Core::colors().White];
+		Core::gui["GameMenu"].add("Window 4", cMaster);
+		cMaster.setTexture(Core::sysTex->TEX_GRASS, Core::sysTex->get());
+		cMaster.setTextureScrollRate(0.5f);
+		cMaster.colorBack.base		= &Core::colors[Core::colors().White];
+		cMaster.colorBack.active	= &Core::colors[Core::colors().White];
+		cMaster.colorBack.highlight	= &Core::colors[Core::colors().White];
+		Core::gui["GameMenu"].add("Window 21", cMaster);
+		cMaster.setTexture(Core::sysTex->TEX_GRASSYDIRT, Core::sysTex->get());
+		cMaster.setTextureScrollRate(-0.2f);
+		cMaster.colorBack.base		= &Core::colors[Core::colors().Gray50];
+		cMaster.colorBack.active	= &Core::colors[Core::colors().White];
+		cMaster.colorBack.highlight	= &Core::colors[Core::colors().White];
+		Core::gui["GameMenu"].add("Window 22", cMaster);
+		//cMaster.setTextured(false);
+		cMaster.resetTexture();
 
+
+		cMaster.colorBack.base		= &Core::colors[Core::colors().Sky_blue];
+		cMaster.colorBack.active	= &Core::colors[Core::colors().Sky_blue];
+		cMaster.colorBack.highlight	= &Core::colors[Core::colors().Sky_blue];
 		cMaster.setOrigin(Core::GUI::CONSTRAIN_TOP_RIGHT);
 		cMaster.setAnchor(Core::GUI::CONSTRAIN_TOP_RIGHT);
 		cMaster.setPos(-510, -10);
@@ -294,6 +317,7 @@ void _Admin::init() {
 		Core::gui["GameMenu"].add("Window 14-6", cMaster);
 		Core::gui["GameMenu"].add("Window 14-7", cMaster);
 		Core::gui["GameMenu"].add("Window 14-8", cMaster);
+
 		bOneShot[1] = true;
 		std::cout << "Done" << std::endl;
 	}
@@ -633,6 +657,7 @@ void _Admin::init() {
 		con.setHeight(4, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
 		con.showField();
 		con.showLabel();
+		con.label.showBackground();
 		con.setPrecision(5);
 
 		//

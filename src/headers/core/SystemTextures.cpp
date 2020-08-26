@@ -81,6 +81,14 @@ namespace Core {
 		texture.Set(e);
 	}
 
+//	GLuint& _SystemTextures::get(eTexList e)	{
+//		return texture.Get(e);
+//	}
+
+	Texture& _SystemTextures::get()	{
+		return texture;
+	}
+
 } /* namespace Core */
 
 

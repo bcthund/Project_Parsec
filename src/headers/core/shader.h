@@ -104,7 +104,9 @@ namespace Core {
 					int			iRadius,
 								iBorder;
 					bool		bRoundBorder,
-								bEnableStipple;
+								bEnableStipple,
+								bTextured;
+					float		fScroll;
 					Vector2f	vPos,
 								vSize;
 
@@ -116,6 +118,8 @@ namespace Core {
 						iBorder = 1;
 						bRoundBorder = false;
 						bEnableStipple = false;
+						bTextured = false;
+						fScroll = 0.0f;
 						stipple = nullptr;
 						stippleColor = nullptr;
 					}

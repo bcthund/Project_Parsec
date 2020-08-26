@@ -37,6 +37,7 @@ namespace Core {
 //			void set(uint id);
 //			void set(std::string s);
 			void set(eTexList e);
+			Texture& get();
 
 		private:
 			Texture		texture;

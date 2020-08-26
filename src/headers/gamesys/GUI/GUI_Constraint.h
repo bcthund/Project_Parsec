@@ -732,30 +732,51 @@ namespace Core {
 
 			private:
 				bool			bNoInput;
+				bool			bTextured;
+				float			fTextureScrollRate;
 
 			public:
 				GUI_ColorBHA	colorBack, colorBorder;
+				Texture			*tex;							///< Pointer to texture object containing the texture to be used
+//				std::string		texName;						///< The name of the texture to be used
+				std::variant<int, std::string> texRef;
+				//GLuint			*textureID;					///< The GLuint id number from a loaded texture (use texture.get("name") method)
 
 				bool			roundBorder;
 				int				radius;
 				bool			bResizeRadius;
 				bool			bScissor;
 
-				void setRadius(int i)										{	radius = i;	}
-				void setRoundBorder(bool b=true)							{	roundBorder = b;	}
-				int  getRadius() 											{	return radius;	}
-				bool getRoundBorder()										{	return roundBorder;	}
-				void setScissor(bool b)										{	bScissor = b;	}
-				void enableScissor()										{	bScissor = true;	}
-				void disableScissor()										{	bScissor = false;	}
-				void setResizeRadius(bool b=true)							{	bResizeRadius = b; }
-				void setNoInput(bool b=true)								{	bNoInput = b;	}
-				//void setScrollable(bool b)									{	scroll.bEnable = b;	}
+				void setRadius(int i)											{	radius = i;			}
+				void setRoundBorder(bool b=true)								{	roundBorder = b;	}
+				int  getRadius() 												{	return radius;		}
+				bool getRoundBorder()											{	return roundBorder;	}
+				void setScissor(bool b)											{	bScissor = b;		}
+				void enableScissor()											{	bScissor = true;	}
+				void disableScissor()											{	bScissor = false;	}
+				void setResizeRadius(bool b=true)								{	bResizeRadius = b;	}
+				void setNoInput(bool b=true)									{	bNoInput = b;		}
+				void setTexture(std::variant<int, std::string> ref, Texture &t)	{	texRef = ref; tex = &t; bTextured = true;	}
+				void resetTexture()												{	tex = nullptr; bTextured = false;	}
+				void setTextured(bool b=true)									{	bTextured = b;		}
+				void setTextureScrollRate(float f)								{	fTextureScrollRate = f;		}
 
 				Props_Window() {
+					tex = nullptr;
+//					texName = "";
+					texRef = "";
+
+//					tex = &sysTex->get();
+//					texRef = sysTex->TEX_GRASS;
+					//textureID				= 0;
+					//textureID				= sysTex->get(sysTex->TEX_GRASSYROCK);
+					//textureID				= &sysTex->get(sysTex->TEX_GRASS);
+
 					bScissor				= true;
 					bNoInput				= true;
 					bResizeRadius			= true;
+					bTextured				= false;
+					fTextureScrollRate		= 0.5f;
 
 					roundBorder				= true;
 					radius					= 0;
