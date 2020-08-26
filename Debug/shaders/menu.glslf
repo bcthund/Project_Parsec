@@ -1,4 +1,5 @@
 #version 330 core
+in vec2 vPassTexCoords;
 uniform vec2 vRes;
 uniform vec2 vPos;
 uniform vec2 vSize;
@@ -12,6 +13,9 @@ uniform ivec2 stippleSize = ivec2(0, 0);
 uniform int stipplePattern[256];
 uniform float stippleScale = 1.0;	// Scale doesn't work
 uniform vec4 stippleColor = vec4(0.0, 0.0, 0.0, 1.0);
+uniform bool bTextured = false;
+//uniform float fScroll;
+uniform sampler2D colorMap;
 layout (location = 0) out vec4 vFragColor;
 //int stipplePatternScaled[1024];
 //int stippleScaleActual;
@@ -96,6 +100,9 @@ void main(void) {
 		else if (bEnableStipple && bStipple) {
 			vFragColor = stippleColor;
 		}
-		else vFragColor = vWindowColor;
+		else {
+            if (bTextured) vFragColor = texture(colorMap, vPassTexCoords.st) * vWindowColor;
+            else vFragColor = vWindowColor;
+        }
 	}
 }

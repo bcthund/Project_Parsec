@@ -330,7 +330,7 @@ namespace Core {
 
 							const Uint8 *keyState = SDL_GetKeyboardState(NULL);
 							if (keyState[SDL_SCANCODE_LSHIFT] || keyState[SDL_SCANCODE_RSHIFT])		modVal = 100;
-							else if (keyState[SDL_SCANCODE_LCTRL] || keyState[SDL_SCANCODE_RCTRL])	modVal = 1;
+							else if (keyState[SDL_SCANCODE_LCTRL] || keyState[SDL_SCANCODE_RCTRL])	modVal = 5;
 
 							switch(wheel) {
 								case Core::_Mouse::MOUSE_WHEEL_UP:		iScrollIndex -= modVal;	break;
@@ -373,6 +373,10 @@ namespace Core {
 						else con->exec();
 
 						update();
+
+						glActiveTexture(0);
+//						sysTex->set(sysTex->TEX_GRASS);
+						sysTex->set(sysTex->TEX_GRASSYROCK);
 
 						glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 						glDisable(GL_DEPTH_TEST);
@@ -430,6 +434,13 @@ namespace Core {
 							shader->data.GLS_MENU.iBorder			= border;
 							shader->data.GLS_MENU.bRoundBorder		= con->getRoundBorder();
 							shader->data.GLS_MENU.bEnableStipple	= con->bEnableStipple;
+
+							shader->data.GLS_MENU.bTextured		= con->bTextured;
+							if(con->bTextured) {
+								shader->data.GLS_MENU.fScroll	= (con->getScrollPos().y/vSize.y)*con->fTextureScrollRate;
+							}
+							else shader->data.GLS_MENU.fScroll	= 0.0f;
+
 							if(con->bEnableStipple) {
 								shader->data.GLS_MENU.stipple = con->stipple;
 

@@ -732,6 +732,8 @@ namespace Core {
 
 			private:
 				bool			bNoInput;
+				bool			bTextured;
+				float			fTextureScrollRate;
 
 			public:
 				GUI_ColorBHA	colorBack, colorBorder;
@@ -741,21 +743,24 @@ namespace Core {
 				bool			bResizeRadius;
 				bool			bScissor;
 
-				void setRadius(int i)										{	radius = i;	}
+				void setRadius(int i)										{	radius = i;			}
 				void setRoundBorder(bool b=true)							{	roundBorder = b;	}
-				int  getRadius() 											{	return radius;	}
+				int  getRadius() 											{	return radius;		}
 				bool getRoundBorder()										{	return roundBorder;	}
-				void setScissor(bool b)										{	bScissor = b;	}
+				void setScissor(bool b)										{	bScissor = b;		}
 				void enableScissor()										{	bScissor = true;	}
 				void disableScissor()										{	bScissor = false;	}
-				void setResizeRadius(bool b=true)							{	bResizeRadius = b; }
-				void setNoInput(bool b=true)								{	bNoInput = b;	}
-				//void setScrollable(bool b)									{	scroll.bEnable = b;	}
+				void setResizeRadius(bool b=true)							{	bResizeRadius = b;	}
+				void setNoInput(bool b=true)								{	bNoInput = b;		}
+				void setTextured(bool b=true)								{	bTextured = b;		}
+				void setTextureScrollRate(float f)							{	fTextureScrollRate = f;		}
 
 				Props_Window() {
 					bScissor				= true;
 					bNoInput				= true;
 					bResizeRadius			= true;
+					bTextured				= false;
+					fTextureScrollRate		= 0.5f;
 
 					roundBorder				= true;
 					radius					= 0;
