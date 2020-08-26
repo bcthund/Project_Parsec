@@ -277,11 +277,9 @@ namespace Core {
 				// ==========================================
 				//	Create Line object aligned to first wedge
 				// -----------------------------------------
-				Core::GUI::Props_Line pLine;
-				pLine.setOrigin(Core::GUI::CONSTRAIN_CENTER);
-				pLine.setAnchor(Core::GUI::CONSTRAIN_CENTER);
-//				line = new Line(*con, name, Vector2i(0, 0), Vector2i(fX*con->radius, fY*con->radius), pLine);
-				line = new Line(*con, name, Vector2f(0, 0), Vector2f(fX, fY), pLine);
+				line = new Line(*con, name, Vector2f(0, 0), Vector2f(fX, fY), &con->propLine);
+				line->con->setOrigin(Core::GUI::CONSTRAIN_NONE);
+				line->con->setAnchor(Core::GUI::CONSTRAIN_NONE);
 				line->init();
 
 				// ==========================================
@@ -378,7 +376,7 @@ namespace Core {
 				newData->colorBox->con->colorBack.highlight = &hover;
 				newData->colorBox->init();
 
-				Props_Label * pLabel = new Props_Label();;
+				Props_Label * pLabel = new Props_Label();
 				pLabel->setOrigin(CONSTRAIN_RIGHT);
 				pLabel->setAnchor(CONSTRAIN_LEFT);
 				newData->label = new Label(*newData->colorBox->con, label, pLabel);
@@ -456,17 +454,14 @@ namespace Core {
 				con->setWidth(con->radius*2);
 				con->setHeight(con->radius*2);
 
-				//line = new Line(*con, name, Vector2i(0, 0), Vector2i(fX*con->radius, fY*con->radius), pLine);
-				//line->setPointA();
-				//line->setPointB(Vector2i(fX*con->radius, fY*con->radius));
-//				line->setPointB(Vector2f(fX*1.0f, fY*1.0f));
-//				debug.log("("+std::to_string(fX)+", "+std::to_string(fY)+")");
+				// Update wedge dividers
+				line->setPointB(Vector2f(fX, fY));
+//				line->con->setWidth(con->iLineWidth);
 
 				// Calculate and Set legend height
 				if(items.size()>0) {
 					int iHeight = items.size();
 					if(items["Undefined"]->getValue()<=0) iHeight-=1;
-//					debug.log("Undefined value = "+std::to_string(items["Undefined"]->getValue())+"; iHeight = "+std::to_string(iHeight) );
 					legend->con->setHeight( ((iHeight)*con->propLegendItem.size.y + legend->con->vPadding.top_bottom()), SIZE_CONSTRAINT_ABSOLUTE);
 				}
 
@@ -508,12 +503,12 @@ namespace Core {
 			void PieChart::updateObjectState(iState eExternState) {
 //				// Uncomment if object state can be set externally
 //				//checkStatePtr();
-//
-//				// Generic state handler
-//				if((eExternState!=STATE_NONE) && !(eExternState&STATE_UPDATE)) {
-//					eObjectState = eExternState;
-//				}
-//				else {
+
+				// Generic state handler
+				if((eExternState!=STATE_NONE) && !(eExternState&STATE_UPDATE)) {
+					eObjectState = eExternState;
+				}
+				else {
 //					if(!(eExternState&STATE_UPDATE)) {
 //						if(parent!=nullptr && parent->scroll.getEnabled()) {
 //							Vector2f vPos = con->getScrollPos();
@@ -524,25 +519,25 @@ namespace Core {
 //						}
 //					}
 //					else mState = Core::_Mouse::MOUSE_NONE;
-//
+
 ////					// Object specific logic
 //					if(enabled()) {
 //						if(con->scroll.isScrollable() && (mState&Core::_Mouse::MOUSE_HOVER)) {
 //							updateScrollMouse();
 //						}
-//						eObjectState = STATE_NONE;
+						eObjectState = STATE_NONE;
 //					}
 //					else {
 //						eObjectState = STATE_NONE;
 //					}
-//				}
-//
+				}
+
 //				// Report if mouse is in button space
 //				if(!(mState&Core::_Mouse::MOUSE_NONE)) eObjectState = eObjectState|STATE_FOCUS;
 //				else eObjectState = eObjectState&~STATE_FOCUS;
-//
-//				if(!enabled()) eObjectState |= STATE_DISABLED;
-//
+
+				if(!enabled()) eObjectState |= STATE_DISABLED;
+
 //				// Update the state value according to object state results
 //				//updateStatePtr();
 			}
@@ -584,19 +579,11 @@ namespace Core {
 				if(bInit) {
 					if(con->visibility && ((parent!=nullptr && parent->visibility) || (parent==nullptr))) {
 
-
 						// Update constaints in case they have changed
 						if(bHasParent) con->exec(*parent);
 						else con->exec();
 
 						update();
-
-						glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-						glDisable(GL_DEPTH_TEST);
-						glDisable(GL_CULL_FACE);
-
-						matrix->SetProjection(matrix->MM_ORTHO);
-						shader->use(GLS_MENU);
 
 						// Allow update only if No object active or this object active
 //						if((con->bFocusLock && !bFocusPresent) || !con->bFocusLock || (sActiveObject==id)) {
@@ -606,8 +593,17 @@ namespace Core {
 //							else this->toolTip.updateObjectState(STATE_NONE);
 //						}
 
-						matrix->Push();
+						// ==========================================
+						//	Draw Pie Wedges
+						// ------------------------------------------
+						glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+						glDisable(GL_DEPTH_TEST);
+						glDisable(GL_CULL_FACE);
 
+						matrix->SetProjection(matrix->MM_ORTHO);
+						shader->use(GLS_MENU);
+						matrix->Push();
+//						{
 							// Only scroll this item if the parent has scrolling enabled
 							Vector2f vSize = con->getSize()/2.0f;
 
@@ -625,97 +621,69 @@ namespace Core {
 
 							int index = 0;	// Current item index
 							int pre = 0;	// Total from previous item
-							bool bDrawDivide = false;
-							bool bDrawDivideMem = false;
 							for(int n=0; n<100; n++) {
 								matrix->Rotate(Degrees(3.6).toRadians(), 0, 0, -1);
-								if(bDrawDivide) {
-//									line->exec();
-									bDrawDivide = false;
-									bDrawDivideMem = true;
-								}
 
-//								if(con->bAutoValue) {
-//								}
-//								else {
-									// Make sure item exists
-									if(index<items.size()) {
-										if(bBlinkState && ((items[index]->base->eObjectState&STATE_HOVER) || (items[index]->base->eObjectState&STATE_ACTIVE)) ) {
-											colors.PushFront(items[index]->colorBox->con->colorBack.highlight);
-											colors.PushBack(items[index]->colorBox->con->colorBorder.highlight);
-											border = con->borderHover;
-										}
-										else {
-											colors.PushFront(items[index]->colorBox->con->colorBack.base);
-											colors.PushBack(items[index]->colorBox->con->colorBorder.base);
-											border = con->borderNormal;
-										}
-
-										shader->data.GLS_MENU.iBorder = border;
-										shader->data.GLS_MENU.bEnableStipple = items[index]->colorBox->con->bEnableStipple;
-										if(items[index]->colorBox->con->bEnableStipple) {
-											shader->data.GLS_MENU.stipple = items[index]->colorBox->con->stipple;
-											shader->data.GLS_MENU.stippleColor = items["Undefined"]->colorBox->con->stippleColor.base;
-										}
-
-//										if(con->bAutoValue) {
-//
-////											debug.log(std::to_string(pre+items[index]->iPercent));
-//
-											// Prep for next item
-											if(n >= (pre+items[index]->iPercent)) {
-												pre += items[index]->iPercent;
-												index++;
-												bDrawDivide = true;
-											}
-//										}
-//										else {
-//											// Prep for next item
-//											if(n >= (pre+items[index]->getValue())) {
-//												pre += items[index]->getValue();
-//												index++;
-//											}
-//										}
+								// Make sure item exists
+								if(index<items.size()) {
+									if(bBlinkState && ((items[index]->base->eObjectState&STATE_HOVER) || (items[index]->base->eObjectState&STATE_ACTIVE)) ) {
+										colors.PushFront(items[index]->colorBox->con->colorBack.highlight);
+										colors.PushBack(items[index]->colorBox->con->colorBorder.highlight);
+										shader->data.GLS_MENU.stippleColor = items[index]->colorBox->con->stippleColor.highlight;
+										border = con->borderHover;
 									}
 									else {
-										// Undefined Area, fill remaining space
-										if(bBlinkState && ((items["Undefined"]->base->eObjectState&STATE_HOVER) || (items["Undefined"]->base->eObjectState&STATE_ACTIVE)) ) {
-											colors.PushFront(items["Undefined"]->colorBox->con->colorBack.highlight);
-											colors.PushBack(items["Undefined"]->colorBox->con->colorBorder.highlight);
-											border = con->borderHover;
-										}
-										else {
-											colors.PushFront(items["Undefined"]->colorBox->con->colorBack.base);
-											colors.PushBack(items["Undefined"]->colorBox->con->colorBorder.base);
-											border = con->borderNormal;
-										}
+										colors.PushFront(items[index]->colorBox->con->colorBack.base);
+										colors.PushBack(items[index]->colorBox->con->colorBorder.base);
+										shader->data.GLS_MENU.stippleColor = items[index]->colorBox->con->stippleColor.base;
+										border = con->borderNormal;
+									}
 
-										shader->data.GLS_MENU.iBorder = border;
+									shader->data.GLS_MENU.iBorder = border;
+//									if(items[index]->colorBox->con->bEnableStipple) {
+										shader->data.GLS_MENU.bEnableStipple = items[index]->colorBox->con->bEnableStipple;
+										shader->data.GLS_MENU.stipple = items[index]->colorBox->con->stipple;
+//										shader->data.GLS_MENU.stippleColor = items["Undefined"]->colorBox->con->stippleColor.base;
+//									}
+//
+									// Prep for next item
+									if(n >= (pre+items[index]->iPercent)) {
+										pre += items[index]->iPercent;
+										index++;
+//										bDrawDivide = true;
+									}
+								}
+								else {
+									// Undefined Area, fill remaining space
+									if(bBlinkState && ((items["Undefined"]->base->eObjectState&STATE_HOVER) || (items["Undefined"]->base->eObjectState&STATE_ACTIVE)) ) {
+										colors.PushFront(items["Undefined"]->colorBox->con->colorBack.highlight);
+										colors.PushBack(items["Undefined"]->colorBox->con->colorBorder.highlight);
+										shader->data.GLS_MENU.stippleColor = items["Undefined"]->colorBox->con->stippleColor.highlight;
+										border = con->borderHover;
+									}
+									else {
+										colors.PushFront(items["Undefined"]->colorBox->con->colorBack.base);
+										colors.PushBack(items["Undefined"]->colorBox->con->colorBorder.base);
+										shader->data.GLS_MENU.stippleColor = items["Undefined"]->colorBox->con->stippleColor.base;
+										border = con->borderNormal;
+									}
+
+									shader->data.GLS_MENU.iBorder = border;
+//									if(items["Undefined"]->colorBox->con->bEnableStipple) {
 										shader->data.GLS_MENU.bEnableStipple = items["Undefined"]->colorBox->con->bEnableStipple;
 										shader->data.GLS_MENU.stipple = items["Undefined"]->colorBox->con->stipple;
-										shader->data.GLS_MENU.stippleColor = items["Undefined"]->colorBox->con->stippleColor.base;
-									}
-//								}
+//									}
+								}
 
 								shader->use(GLS_MENU);
 								matrix->SetTransform();
 								shader->getUniform(GLS_MENU);
 								vao.Draw();
-//								if(bDrawDivide) line->exec();
-								if(bDrawDivideMem) {
-									matrix->Rotate(Degrees(3.6).toRadians(), 0, 0, 1);
-									line->exec();
-									matrix->Rotate(Degrees(3.6).toRadians(), 0, 0, -1);
-									bDrawDivideMem = false;
-								}
 								colors.PopFront();
-
-//								if(bDrawDivide) line->exec();
-//								line->exec();
 							}
 
 							// Draw final seperator (only if more than 1 item exist)
-							if(items.size()>1) line->exec();
+//							if(items.size()>1) line->exec();
 
 							// Draw all slices same color
 							//  - keep for possible future reference, draws a nice circle
@@ -727,13 +695,58 @@ namespace Core {
 //								colors.GetFrontPtr().r += 0.01f;
 //								colors.GetFrontPtr().b -= 0.01f;
 //							}
-
+//						}
 						matrix->Pop();
 						matrix->SetProjection(matrix->MM_PERSPECTIVE);
 						colors.PopBack();
 						glEnable(GL_CULL_FACE);
 						glEnable(GL_DEPTH_TEST);
 
+						// ==========================================
+						//	Draw Pie Wedge Edges
+						// ------------------------------------------
+						pre = 0;
+						index = 0;
+						matrix->Push();
+
+							matrix->Translate( vPos.x, vPos.y, 0.0 );
+							matrix->Scale(vSize.x, vSize.y, 1);
+
+							for(int n=0; n<100; n++) {
+								matrix->Rotate(Degrees(3.6).toRadians(), 0, 0, -1);
+
+								if(index<items.size()) {
+									if(n >= (pre+items[index]->iPercent)) {
+										if(bBlinkState) {
+											if(items["Undefined"]->getValue()>0) {
+												if( index<items.size()-1) line->exec(items[index]->base->eObjectState|items[index+1]->base->eObjectState);
+											}
+											else {
+												if( index<items.size()-1) line->exec(items[index]->base->eObjectState|items[index+1]->base->eObjectState);
+											}
+										}
+										else line->exec();
+
+										pre += items[index]->iPercent;
+										index++;
+									}
+								}
+							}
+
+							// Draw final seperator (only if more than 1 item exist)
+							if(items.size()>1) {
+								if(bBlinkState) {
+									if(items["Undefined"]->getValue()>0)	line->exec(items[0]->base->eObjectState | items[items.size()-1]->base->eObjectState);
+									else 									line->exec(items[0]->base->eObjectState | items[items.size()-2]->base->eObjectState);
+								}
+								else line->exec();
+							}
+
+						matrix->Pop();
+
+						// ==========================================
+						//	Draw Legend
+						// ------------------------------------------
 						if(con->bShowLegend) {
 							label->exec();
 							legend->exec(STATE_NONE);
@@ -748,9 +761,7 @@ namespace Core {
 								items[n]->label->exec(STATE_NONE);
 
 								if( ((items[n]->base->eObjectState&STATE_HOVER) || (items[n]->base->eObjectState&STATE_ACTIVE)) ) {
-									//percent->con->setText(items[n]->label->name);
 									percent->con->setText(std::to_string(items[n]->iPercent)+"%");
-//									percent->con->setText(std::to_string(items[n]->iPercent));
 									percent->exec();
 								}
 							}
@@ -760,9 +771,7 @@ namespace Core {
 								blink.split();
 								bBlinkState = !bBlinkState;
 							}
-
 						}
-
 					}
 				}
 			}

@@ -217,19 +217,45 @@ namespace Core {
 			}
 
 			void Line::updateObjectState(iState eExternState) {
+//				// Uncomment if object state can be set externally
+//				//checkStatePtr();
 
-//				if(!(eExternState&STATE_UPDATE)) {
-//					Vector2f vPos = con->getScrollPos();
-//					mState = Core::mouse->checkInput(gameVars->screen.half.x+vPos.x, gameVars->screen.half.y-vPos.y, con->size.x, con->size.y);
-//					//mState = Core::mouse->checkInput(gameVars->screen.half.x+con->pos.x, gameVars->screen.half.y-con->pos.y, con->size.x, con->size.y);
-//				}
-//				else mState = Core::_Mouse::MOUSE_NONE;
+				// Generic state handler
+				if((eExternState!=STATE_NONE) && !(eExternState&STATE_UPDATE)) {
+					eObjectState = eExternState;
+				}
+				else {
+//					if(!(eExternState&STATE_UPDATE)) {
+//						if(parent!=nullptr && parent->scroll.getEnabled()) {
+//							Vector2f vPos = con->getScrollPos();
+//							mState = Core::mouse->checkInput(gameVars->screen.half.x+vPos.x, gameVars->screen.half.y-vPos.y, con->size.x, con->size.y);
+//						}
+//						else {
+//							mState = Core::mouse->checkInput(gameVars->screen.half.x+con->pos.x, gameVars->screen.half.y-con->pos.y, con->size.x, con->size.y);
+//						}
+//					}
+//					else mState = Core::_Mouse::MOUSE_NONE;
 //
-//				if((eExternState!=STATE_NONE) && !(eExternState&STATE_UPDATE)) eObjectState = eExternState;
-//				else if (mState&Core::_Mouse::MOUSE_HOVER) eObjectState = STATE_HOVER;
-//				else eObjectState = STATE_NONE;
-//
-//				if(!enabled()) eObjectState |= STATE_DISABLED;
+////					// Object specific logic
+//					if(enabled()) {
+//						if(con->scroll.isScrollable() && (mState&Core::_Mouse::MOUSE_HOVER)) {
+//							updateScrollMouse();
+//						}
+//						eObjectState = STATE_NONE;
+//					}
+//					else {
+						eObjectState = STATE_NONE;
+//					}
+				}
+
+//				// Report if mouse is in button space
+//				if(!(mState&Core::_Mouse::MOUSE_NONE)) eObjectState = eObjectState|STATE_FOCUS;
+//				else eObjectState = eObjectState&~STATE_FOCUS;
+
+				if(!enabled()) eObjectState |= STATE_DISABLED;
+
+//				// Update the state value according to object state results
+//				//updateStatePtr();
 			}
 
 			/** ******************************************************************************************************************************
@@ -238,51 +264,31 @@ namespace Core {
 			void Line::exec(iState eExternState) {
 				if(bInit && con->visibility && ((parent!=nullptr && parent->visibility) || (parent==nullptr))) {
 
-//					debug.log("Drawing Line - "+name+" @ ("+std::to_string(pointA->x)+", "+std::to_string(pointA->y)+")-("+std::to_string(pointB->x)+", "+std::to_string(pointB->y)+")");
+					updateObjectState(eExternState);
 
-//					updateObjectState(eExternState);
-//
 //					if(con->toolTip.bShow) toolTip.updateObjectState(eObjectState);
 //					else toolTip.updateObjectState(STATE_NONE);
-//
+
 //					// Update constraints
 //					if(bHasParent) con->exec(*parent);
 //					else con->exec();
-//
-//					// Draw button window
-//					win.exec(eObjectState);
-//
-//					if(eObjectState&STATE_DISABLED) {
-//						if(eObjectState&STATE_HOVER)	colors.PushFront(gameVars->pallette.gui.disabled.base.hover);
-//						else							colors.PushFront(gameVars->pallette.gui.disabled.base.base);
-//					}
-//					else 								colors.PushFront(*con->colorSprite.base);
-//					spriteSys->draw(con, con->spriteImage);
-//					colors.PopFront();
-
-					//Core::helper->drawLine(*pointA, *pointB, 10.0f, 1.0f, colors[colors().Acid_green], colors[colors().Yellow]);
 
 					Core::matrix->Push();
-//						Vector2f vPos;
-//						if(con->scroll.isScrollable() && (parent!=nullptr && parent->scroll.getEnabled())) vPos = con->getScrollPos();
-//						else vPos = con->getPos();
+						Vector2f vPos;
+						if(con->scroll.isScrollable() && (parent!=nullptr && parent->scroll.getEnabled())) vPos = con->getScrollPos();
+						else vPos = con->getPos();
 
-//						Vector2f vPos = con->getPos();
-//						Core::matrix->Translate( vPos.x, vPos.y, 0.0 );
-
+						Core::matrix->Translate( vPos.x, vPos.y, 0.0f );
 						Core::matrix->SetProjection(Core::matrix->MM_ORTHO);
-	//					Core::Vector3f a = { 0, 0, 0 };
-	//					Core::Vector3f b = { Core::gameVars->screen.half.x, Core::gameVars->screen.half.y, 0 };
-//						Core::Vector2f a = { 0, 0 };
-//						Core::Vector2f b = { (int)Core::gameVars->screen.half.x, (int)Core::gameVars->screen.half.y };
-						//Core::Color colorA = { 1, 0, 0, 1};
-						//Core::Color colorB = { 0, 1, 0, 1};
-	//					Core::helper->drawLine(a, b, 2.0f, 1, colors[colors().Acid_green], colors[colors().Yellow]);
-	//					Core::helper->drawLine(a, b, 2.0f, 1, colors[colors().Acid_green], colors[colors().Yellow]);
 
+						if(eObjectState&STATE_DISABLED) {
+							if(eObjectState&STATE_HOVER)	Core::helper->drawLine(*pointA, *pointB, con->borderHover, 1.0f, gameVars->pallette.gui.disabled.text.hover, gameVars->pallette.gui.disabled.text.hover);
+							else							Core::helper->drawLine(*pointA, *pointB, con->borderNormal, 1.0f, gameVars->pallette.gui.disabled.text.base, gameVars->pallette.gui.disabled.text.base);
+						}
+						else if(eObjectState&STATE_HOVER) 	Core::helper->drawLine(*pointA, *pointB, con->borderHover, 1.0f, con->colorA.highlight, con->colorB.highlight);
+						else if(eObjectState&STATE_ACTIVE)	Core::helper->drawLine(*pointA, *pointB, con->borderNormal, 1.0f, con->colorA.active,	con->colorB.active);
+						else 								Core::helper->drawLine(*pointA, *pointB, con->borderNormal, 1.0f, con->colorA.base,		con->colorB.base);
 
-
-						Core::helper->drawLine(*pointA, *pointB, 1.0f, 1.0f, colors[colors().Black], colors[colors().Black]);
 					Core::matrix->Pop();
 
 				}

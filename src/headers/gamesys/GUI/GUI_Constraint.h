@@ -145,7 +145,8 @@ namespace Core {
 		};
 
 		typedef int iConstrain;
-		enum eConstrain {	CONSTRAIN_CENTER		= 1,
+		enum eConstrain {	CONSTRAIN_NONE			= 0,
+							CONSTRAIN_CENTER		= 1,
 							CONSTRAIN_LEFT			= 2,
 							CONSTRAIN_RIGHT			= 4,
 							CONSTRAIN_TOP			= 8,
@@ -508,8 +509,14 @@ namespace Core {
 				void exec(Props &c)													{	execPos(c.size/2.0f, c.pos, c.vPadding);	execSize(c.size, c.vPadding);	}
 				Vector2f getScrollPos()												{
 					Vector2f v;
-					v.x = pos.x+scroll.getX();
-					v.y = pos.y+scroll.getY();
+					if(origin != CONSTRAIN_NONE) {
+						v.x = pos.x+scroll.getX();
+						v.y = pos.y+scroll.getY();
+					}
+					else {
+						v.x = pos.x;
+						v.y = pos.y;
+					}
 					return v;
 				}
 				Vector2f getPos()													{	return Vector2f(pos.x, pos.y);	}
@@ -688,13 +695,36 @@ namespace Core {
 				// FIXME: assignment operator
 		};
 
+		/**
+		 * \brief Object has a border
+		 *
+		 */
+		class Props_Addon_Border {
+			public:
+				int	borderNormal, borderHover;
+
+				void setBorder(int iNormal, int iHover)	{
+					borderNormal = iNormal;
+					borderHover = iHover;
+				}
+
+				Props_Addon_Border() {
+					borderNormal			= 1;
+					borderHover				= 1;
+				}
+
+				// FIXME: copy constructor
+				// FIXME: assignment operator
+		};
+
 		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 		// 			Windows
 		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 		class Props_Window :	virtual public Props,
-								virtual public Props_Addon_Stipple {
+								virtual public Props_Addon_Stipple,
+								virtual public Props_Addon_Border {
 
 			friend class Object::Window;
 			friend class GUI;
@@ -707,12 +737,10 @@ namespace Core {
 				GUI_ColorBHA	colorBack, colorBorder;
 
 				bool			roundBorder;
-				int				borderNormal, borderHover;
 				int				radius;
 				bool			bResizeRadius;
 				bool			bScissor;
 
-				void setBorder(int iNormal, int iHover)						{	borderNormal = iNormal; borderHover = iHover;	}
 				void setRadius(int i)										{	radius = i;	}
 				void setRoundBorder(bool b=true)							{	roundBorder = b;	}
 				int  getRadius() 											{	return radius;	}
@@ -730,8 +758,6 @@ namespace Core {
 					bResizeRadius			= true;
 
 					roundBorder				= true;
-					borderNormal			= 1;
-					borderHover				= 1;
 					radius					= 0;
 					vPadding.top			= 0;
 					vPadding.bottom			= 0;
@@ -1812,6 +1838,56 @@ namespace Core {
 		 *
 		 *
 		 * ****************************************************************************************************************************** */
+		class Props_Line :	virtual public Props,
+							virtual public Props_Addon_Border {
+
+			//friend class Object::Label;
+			friend class Object::PieChart;
+
+			private:
+				using Props::setWidth;
+				using Props::setHeight;
+				using Props::setMaxHeight;
+				using Props::setMaxWidth;
+				using Props::setMinHeight;
+				using Props::setMinMaxHeight;
+				using Props::setMinWidth;
+				using Props::setPadding;
+				using Props::setScrollable;
+				using Props::setText;
+				using Props::setToolTip;
+
+			public:
+				GUI_ColorBHA colorA;		///< Color of line start point
+				GUI_ColorBHA colorB;		///< Color of line end point
+//				Vector2i vPointA;			///< Starting point relative to origin and anchor
+//				Vector2i vPointB;			///< Ending point relative to first point
+//				int iLineWidth;					///< Line width
+
+				void setLineWidth(int normal, int hover) {	borderNormal = normal; borderHover = hover;		}
+
+				Props_Line() {
+//					iLineWidth = 2;
+					borderNormal = 2;
+					borderHover = 2;
+
+					colorA.base			= &colors[colors().Black];
+					colorA.active		= &colors[colors().Black];
+					colorA.highlight	= &colors[colors().Black];
+
+					colorB.base			= &colors[colors().Black];
+					colorB.active		= &colors[colors().Black];
+					colorB.highlight	= &colors[colors().Black];
+				}
+		};
+
+		/** ******************************************************************************************************************************
+		 *  \class Props_PieChart
+		 *  \brief Creates a slider and control with optional label and field for value editing
+		 *
+		 *
+		 *
+		 * ****************************************************************************************************************************** */
 		class Props_PieChart :	virtual public Props_Window,
 									public Props_Addon_Label {
 
@@ -1823,25 +1899,30 @@ namespace Core {
 				using Props_Window::setHeight;
 
 			public:
-				Props_Window	propLegend;		///< The container for legend items, main window that is drawn
-				Props_Window	propLegendItem;	///< The container for color and title group drawn in legend as list
-				Props_Window	propColorBox;	///< The properties for the color box in the legend (intended for setting size only)
+//				GUI_ColorBHA	colorLineA, colorLineB;	///< Line colors for wedge dividers
+				Props_Line		propLine;
+				Props_Window	propLegend;				///< The container for legend items, main window that is drawn
+				Props_Window	propLegendItem;			///< The container for color and title group drawn in legend as list
+				Props_Window	propColorBox;			///< The properties for the color box in the legend (intended for setting size only)
 
 				bool	bShowLegend;
 				bool	bLegendAutoWidth;
 				int		iBlinkRate;
 				bool	bAutoValue;
+//				int		iLineWidth;						///< Line width for wedge dividers
 
 				void showLegend(bool b=true)	{	bShowLegend = b;	}
 				void setBlinkRate(int i)		{	iBlinkRate = i;		}
 				void setLegendAutoWidth(bool b)	{	bLegendAutoWidth = b;	}
 				void setAutoValue(bool b=true)	{	bAutoValue = b;		}
+//				void setLineWidth(int i)		{	iLineWidth = i;	}
 
 				Props_PieChart() {
 					bShowLegend = true;
 					bLegendAutoWidth = true;
 					iBlinkRate = 250;
 					bAutoValue = false;
+//					iLineWidth = 1;
 
 					setOrigin(Core::GUI::CONSTRAIN_TOP);
 					setAnchor(Core::GUI::CONSTRAIN_TOP);
@@ -1854,13 +1935,21 @@ namespace Core {
 					colorBorder.highlight	= &Core::colors[Core::colors().Black];
 					colorBorder.active		= &Core::colors[Core::colors().Black];
 
-					setBorder(1, 1);
+					setBorder(2, 4);
 					setResizeRadius(5);
 					setPadding(0, 0, -10, -10);
 					enablePadding(PADDING_ALL);
 					//setWidth(250, GUI::SIZE_CONSTRAINT_ABSOLUTE);
 					//setHeight(250, GUI::SIZE_CONSTRAINT_ABSOLUTE);
 					setRadius(200);
+
+					propLine.setBorder(1, 2);
+					propLine.colorA.base		= &colors[colors().Black];
+					propLine.colorA.active		= &colors[colors().Black];
+					propLine.colorA.highlight	= &colors[colors().Black];
+					propLine.colorB.base		= &colors[colors().Black];
+					propLine.colorB.active		= &colors[colors().Black];
+					propLine.colorB.highlight	= &colors[colors().Black];
 
 					label.setOrigin(Core::GUI::CONSTRAIN_TOP_RIGHT);
 					label.setAnchor(Core::GUI::CONSTRAIN_BOTTOM_LEFT);
@@ -1880,17 +1969,12 @@ namespace Core {
 					label.setStippleColorA(&colors[colors().Gray50]);
 					label.setStippleColorB(&colors[colors().Gray50]);
 					label.setStippleColorH(&colors[colors().Gray50]);
-//					label.setStippleColorA(&colors[colors().Red]);
-//					label.setStippleColorB(&colors[colors().Red]);
-//					label.setStippleColorH(&colors[colors().Red]);
 
 					// selectedItem will be parent
 					propLegend.enablePadding(PADDING_ALL);
 					propLegend.setOrigin(Core::GUI::CONSTRAIN_TOP_RIGHT);
 					propLegend.setAnchor(Core::GUI::CONSTRAIN_TOP_LEFT);
 					propLegend.setNoInput(false);
-//					propLegend.disablePadding();
-//					propLegend.setX(10);
 					propLegend.colorBack.base			= &Core::colors[Core::colors().White];
 					propLegend.colorBack.highlight		= &Core::colors[Core::colors().White];
 					propLegend.colorBack.active			= &Core::colors[Core::colors().White];
@@ -1912,52 +1996,25 @@ namespace Core {
 					propLegendItem.disableScissor();
 					propLegendItem.setBorder(0, 0);
 					propLegendItem.setPadding(2);
-					propLegendItem.colorBack.base = &colors[colors().White];
-					propLegendItem.colorBack.active = &colors[colors().Yellow];
-					propLegendItem.colorBack.highlight = &colors[colors().Yellow];
+					propLegendItem.colorBack.base		= &colors[colors().White];
+					propLegendItem.colorBack.active		= &colors[colors().Yellow];
+					propLegendItem.colorBack.highlight	= &colors[colors().Yellow];
+
 
 					propColorBox.setOrigin(CONSTRAIN_LEFT);
 					propColorBox.setAnchor(CONSTRAIN_LEFT);
 					propColorBox.setWidth(25);
 					propColorBox.setHeight(15);
 					propColorBox.setPadding(-5);
-				}
-		};
-
-		/** ******************************************************************************************************************************
-		 *  \class Props_PieChart
-		 *  \brief Creates a slider and control with optional label and field for value editing
-		 *
-		 *
-		 *
-		 * ****************************************************************************************************************************** */
-		class Props_Line :	virtual public Props {
-
-			//friend class Object::Label;
-			friend class Object::PieChart;
-
-			private:
-				using Props::setWidth;
-				using Props::setHeight;
-				using Props::setMaxHeight;
-				using Props::setMaxWidth;
-				using Props::setMinHeight;
-				using Props::setMinMaxHeight;
-				using Props::setMinWidth;
-				using Props::setPadding;
-				using Props::setScrollable;
-				using Props::setText;
-				using Props::setToolTip;
-
-			public:
-				Vector2i vPointA;			///< Starting point relative to origin and anchor
-				Vector2i vPointB;			///< Ending point relative to first point
-				int iWidth;					///< Line width
-
-				void setWidth(int i) {	iWidth = i;	}
-
-				Props_Line() {
-					iWidth = 2;
+					propColorBox.stippleColor.base		= &colors[colors().Black];
+					propColorBox.stippleColor.active	= &colors[colors().Black];
+					propColorBox.stippleColor.highlight	= &colors[colors().Black];
+//					propColorBox.colorBack.base			= &colors[colors().Black];
+//					propColorBox.colorBack.active		= &colors[colors().Black];
+//					propColorBox.colorBack.highlight	= &colors[colors().Black];
+//					propColorBox.colorBorder.base		= &colors[colors().Black];
+//					propColorBox.colorBorder.active		= &colors[colors().Black];
+//					propColorBox.colorBorder.highlight	= &colors[colors().Black];
 				}
 		};
 
@@ -1967,9 +2024,16 @@ namespace Core {
 		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 		void Props::execPos(Vector2f cHalf, Vector2f oPos, Vector4i vPad) {
-			// Default position, based on center. (0, 0) is center of screen.
-			pos.x = pos.constraint.x+oPos.x;
-			pos.y = pos.constraint.y+oPos.y;
+
+			if(origin != CONSTRAIN_NONE) {
+				// Default position, based on center. (0, 0) is center of screen.
+				pos.x = pos.constraint.x+oPos.x;
+				pos.y = pos.constraint.y+oPos.y;
+			}
+			else {
+				pos.x = 0;
+				pos.y = 0;
+			}
 
 			if(eEnablePadding&PADDING_POSITION) {
 

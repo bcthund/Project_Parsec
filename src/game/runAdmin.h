@@ -1998,6 +1998,8 @@ void _Admin::init() {
 		//prop.setX(-100);
 		prop.setLegendAutoWidth(false);
 		prop.propLegend.setWidth(50);
+		prop.propLine.setLineWidth(1, 4);
+		//prop.setLineWidth(1);
 		Core::gui["GameMenu"]["Window 21"].PieChart.add("My Pie Chart", prop);
 		Core::gui["GameMenu"]["Window 21"].PieChart["My Pie Chart"].addItem("Test 0", 8);
 		Core::gui["GameMenu"]["Window 21"].PieChart["My Pie Chart"].addItem("Test 1", 2);
@@ -2025,6 +2027,12 @@ void _Admin::init() {
 
 		prop.modY(-250);
 		prop.setAutoValue(true);
+//		prop.setLineWidth(3);
+		prop.propLine.setLineWidth(2, 3);
+		prop.propLine.colorA.base		= &colors[colors().Yellow];
+		prop.propLine.colorA.highlight	= &colors[colors().Green];
+		prop.propLine.colorB.base		= &colors[colors().Black];
+		prop.propLine.colorB.highlight	= &colors[colors().Black];
 		Core::gui["GameMenu"]["Window 21"].PieChart.add("Auto Chart", prop).addItems(t_PieItems{	make_pair("Test Object 1", 100),
 																									make_pair("Test Object 2", 250),
 																									make_pair("Test Object 3", 150),
@@ -2043,6 +2051,13 @@ void _Admin::init() {
 		prop.setOrigin(Core::GUI::CONSTRAIN_TOP_LEFT);
 		prop.setAnchor(Core::GUI::CONSTRAIN_LEFT);
 		prop.setY(-50);
+		prop.colorA.base		= &Core::colors[Core::colors().Yellow];
+		prop.colorA.active		= &Core::colors[Core::colors().Yellow];
+		prop.colorA.highlight	= &Core::colors[Core::colors().Yellow];
+
+		prop.colorB.base		= &Core::colors[Core::colors().Red];
+		prop.colorB.active		= &Core::colors[Core::colors().Red];
+		prop.colorB.highlight	= &Core::colors[Core::colors().Red];
 //		Core::gui["GameMenu"]["Window 22"].Line.add("Line Test", Core::Vector2i(0, 0), Core::Vector2i((int)Core::gameVars->screen.half.x, (int)Core::gameVars->screen.half.y), prop);
 		Core::gui["GameMenu"]["Window 22"].Line.add("Line Test", Core::Vector2f(0, 0), Core::Vector2f(100, 0), prop);
 

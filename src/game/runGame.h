@@ -655,8 +655,8 @@ void _Game::Update() {
 	Core::textSys->drawVar2<float>(1,  -19, "mousePos: ", Core::mouse->x, 3, Core::GUI::CONSTRAIN_LEFT);
 	Core::textSys->drawVar2<float>(21, -19, "", Core::mouse->y, 3, Core::GUI::CONSTRAIN_LEFT);
 
-	//Core::textSys->drawVar2<float>(1,  -20, "mousePos: ", Core::mouse->x-Core::gameVars->screen.half.x, 3, Core::GUI::CONSTRAIN_LEFT);
-	//Core::textSys->drawVar2<float>(21, -20, "", -Core::mouse->y+Core::gameVars->screen.half.y, 3, Core::GUI::CONSTRAIN_LEFT);
+	Core::textSys->drawVar2<float>(1,  -20, "mousePos: ", Core::mouse->x-Core::gameVars->screen.half.x, 3, Core::GUI::CONSTRAIN_LEFT);
+	Core::textSys->drawVar2<float>(21, -20, "", -Core::mouse->y+Core::gameVars->screen.half.y, 3, Core::GUI::CONSTRAIN_LEFT);
 
 
 
