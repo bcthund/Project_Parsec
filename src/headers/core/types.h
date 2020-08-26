@@ -212,10 +212,10 @@ namespace Core {
 			y = iY;
 		}
 
-//		Vector2i(const Vector2i &v) {
-//			data[0] = v[0];
-//			data[1] = v[1];
-//		}
+		Vector2i(Vector2i &v) {
+			data[0] = v[0];
+			data[1] = v[1];
+		}
 
 	} Vector2i;
 
@@ -364,6 +364,11 @@ namespace Core {
 		Vector2f(float v) {
 			data[0] = v;
 			data[1] = v;
+		}
+
+		Vector2f(Vector2f &d) {
+			data[0] = d[0];
+			data[1] = d[1];
 		}
 
 		Vector2f(Data2f d) {
@@ -1804,7 +1809,7 @@ namespace Core {
 		public:
 //			t_VectorMap(std::string source) {
 			t_VectorMap() {
-				sErrorSource = "Undefined";
+				sErrorSource = "Undefined Source";
 			}
 			t_VectorMap(std::string source) {
 				sErrorSource = source;
@@ -1851,6 +1856,21 @@ namespace Core {
 //				return groups[id].index;
 //			}
 
+			// DO NOT USE, Breaks Mapping and just not worth it
+//			virtual T & insert(std::string name, T t, bool bThrow=true) {
+//				if(!checkName(name, false)) {
+//					typeList.insert(typeList.begin(), t);
+//					int id = 1;
+//					map.insert(make_pair(name, id));
+//					return typeList[map[name]];
+//				}
+//				else {
+//					if(bThrow) throw std::runtime_error("Duplicate name in t_Vector: '"+name+"'");
+//					else return typeList[map[name]];
+//				}
+//
+//			}
+
 			virtual T & add(std::string name, T t, bool bThrow=true) {
 				if(!checkName(name, false)) {
 					//typeList.emplace_back(t);
@@ -1866,9 +1886,26 @@ namespace Core {
 
 			}
 
+			// DO NOT USE, Breaks Mapping. Would have to update map, but could break external references as well.
+//			virtual T & insert(std::string name, T t, int pos, bool bThrow=true) {
+//				if(!checkName(name, false)) {
+//					//typeList.emplace_back(t);
+//					typeList.insert(pos, t);
+//					int id = typeList.size() - 1;
+//					map.insert(make_pair(name, id));
+//					return typeList[map[name]];
+//				}
+//				else {
+//					if(bThrow) throw std::runtime_error("Duplicate name in t_Vector: '"+name+"'");
+//					else return typeList[map[name]];
+//				}
+//
+//			}
+
 			virtual void remove(std::string name, bool bThrow=true) {
 				if(checkName(name, false)) {
 					typeList.erase(typeList.begin() + map[name]);
+					//typeList.delete(typeList.begin() + map[name]);
 					map.erase(name);
 				}
 				else {
@@ -1916,9 +1953,6 @@ namespace Core {
 			const_iterator begin() 	const	{ return &typeList[0]; }
 			const_iterator end() 	const	{ return &typeList[typeList.size()]; }
 	};
-
-	typedef std::pair<std::string, Core::t_BIFS> t_ComboBoxItem;
-	typedef std::vector<t_ComboBoxItem> t_ComboBoxItems;
 
 	/**
 	 * \brief Allows an object to return multiple different states

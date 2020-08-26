@@ -525,9 +525,21 @@ namespace Core {
 
 
 
+			// System and custom colors
+			Extended.Transparent						= "Transparent";						AddColor255(Extended.Transparent, 0, 0, 0, 0);
 
+			Extended.Gray10								= "Gray10";								AddColor255(Extended.Gray10, 0.10*255,  0.10*255,  0.10*255, 255);
+			Extended.Gray20								= "Gray20";								AddColor255(Extended.Gray20, 0.20*255,  0.20*255,  0.20*255, 255);
+			Extended.Gray30								= "Gray30";								AddColor255(Extended.Gray30, 0.30*255,  0.30*255,  0.30*255, 255);
+			Extended.Gray40								= "Gray40";								AddColor255(Extended.Gray40, 0.40*255,  0.40*255,  0.40*255, 255);
+			Extended.Gray50								= "Gray50";								AddColor255(Extended.Gray50, 0.50*255,  0.50*255,  0.50*255, 255);
+			Extended.Gray60								= "Gray60";								AddColor255(Extended.Gray60, 0.60*255,  0.60*255,  0.60*255, 255);
+			Extended.Gray70								= "Gray70";								AddColor255(Extended.Gray70, 0.70*255,  0.70*255,  0.70*255, 255);
+			Extended.Gray80								= "Gray80";								AddColor255(Extended.Gray80, 0.80*255,  0.80*255,  0.80*255, 255);
+			Extended.Gray90								= "Gray90";								AddColor255(Extended.Gray90, 0.90*255,  0.90*255,  0.90*255, 255);
 
-
+			// Can be used to find first actual color
+			Extended.FIRST = colors.size()-1;
 
 			AddColor(Extended.Black, 0.00, 0.00, 0.00, 1.0);
 			AddColor(Extended.Eerie_black, 0.11, 0.11, 0.11, 1.0);
@@ -1487,19 +1499,6 @@ namespace Core {
 			AddColor(Extended.OU_Crimson_red, 0.52, 0.09, 0.09, 1.0);
 
 
-			Extended.Gray10								= "Gray10";								AddColor255(Extended.Gray10, 0.10*255,  0.10*255,  0.10*255, 255);
-			Extended.Gray20								= "Gray20";								AddColor255(Extended.Gray20, 0.20*255,  0.20*255,  0.20*255, 255);
-			Extended.Gray30								= "Gray30";								AddColor255(Extended.Gray30, 0.30*255,  0.30*255,  0.30*255, 255);
-			Extended.Gray40								= "Gray40";								AddColor255(Extended.Gray40, 0.40*255,  0.40*255,  0.40*255, 255);
-			Extended.Gray50								= "Gray50";								AddColor255(Extended.Gray50, 0.50*255,  0.50*255,  0.50*255, 255);
-			Extended.Gray60								= "Gray60";								AddColor255(Extended.Gray60, 0.60*255,  0.60*255,  0.60*255, 255);
-			Extended.Gray70								= "Gray70";								AddColor255(Extended.Gray70, 0.70*255,  0.70*255,  0.70*255, 255);
-			Extended.Gray80								= "Gray80";								AddColor255(Extended.Gray80, 0.80*255,  0.80*255,  0.80*255, 255);
-			Extended.Gray90								= "Gray90";								AddColor255(Extended.Gray90, 0.90*255,  0.90*255,  0.90*255, 255);
-
-			Extended.Transparent						= "Transparent";						AddColor255(Extended.Transparent, 0, 0, 0, 0);
-
-
 
 
 
@@ -1646,6 +1645,7 @@ namespace Core {
 	void _Colors::PushFront()										{	uiFrontStack = std::min(++uiFrontStack, STACK_SIZE-1);	}
 	void _Colors::PopFront()										{	uiFrontStack = std::max(--uiFrontStack, 0);	}
 	Color _Colors::GetFront()										{	return vFrontColor[uiFrontStack];	}
+	Color& _Colors::GetFrontPtr()									{	return vFrontColor[uiFrontStack];	}
 
 	/*
 	 *

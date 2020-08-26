@@ -154,6 +154,7 @@ namespace Core {
 						else if(eObjectState&STATE_ACTIVE)		colors.PushFront(*con->colorText.highlight);
 						else 									colors.PushFront(*con->colorText.base);
 						textSys->draw(con, con->text, CONSTRAIN_CENTER);
+//						textSys->draw(con, con->text);
 						colors.PopFront();
 //					}
 //					else textSys->draw(con, con->text, CONSTRAIN_CENTER);

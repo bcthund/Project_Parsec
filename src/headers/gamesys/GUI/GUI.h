@@ -446,6 +446,7 @@ namespace Core {
 
 		GUI::GUI() {
 			std::cout << "Construct GUI System.............................................";
+			std::srand((unsigned) time(0));
 			activeGUI = "";
 			guis.setSource("GUI");
 			std::cout << "Done" << std::endl;
@@ -472,9 +473,12 @@ namespace Core {
 			c.setHeight(Core::gameVars->screen.res.y, SIZE_CONSTRAINT_ABSOLUTE);
 			c.setPadding(0);
 			c.colorBack.base = &colors[colors().Transparent];
+			c.colorBack.active = &colors[colors().Transparent];
+			c.colorBack.highlight = &colors[colors().Transparent];
 			c.colorBorder.base = &colors[colors().Transparent];
+			c.colorBorder.active = &colors[colors().Transparent];
+			c.colorBorder.highlight = &colors[colors().Transparent];
 			c.bNoInput = true;
-
 			GUI_Container * gui = new GUI_Container(guiName, c);
 			gui->init();
 			guis.add(guiName, gui);

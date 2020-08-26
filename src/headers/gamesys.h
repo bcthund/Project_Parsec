@@ -241,8 +241,8 @@ namespace Core {
 		//void draw3DSprite(		std::string sTex,
 		//						int iShader);
 
-		void drawSprite(	uint x,
-							uint y,
+		void drawSprite(	int x,
+							int y,
 							float w,
 							float h,
 							std::string sTex,
@@ -250,24 +250,24 @@ namespace Core {
 							bool textOffset,
 							Core::Color backColor,
 							Core::Color backHColor);
-		void drawSprite(	uint x,
-							uint y,
+		void drawSprite(	int x,
+							int y,
 							float w,
 							float h,
 							std::string sTex,
 							bool bHighlight,
 							bool textOffset,
 							Core::Color frontColor);
-		void drawSprite(	uint x,
-							uint y,
+		void drawSprite(	int x,
+							int y,
 							float w,
 							float h,
 							std::string sTex,
 							bool bHighlight,
 							bool textOffset);
 
-		uint checkSprite(	uint x,
-							uint y,
+		uint checkSprite(	int x,
+							int y,
 							float w,
 							float h,
 							std::string sTex,
@@ -275,8 +275,8 @@ namespace Core {
 							bool textOffset,
 							Core::Color backColor,
 							Core::Color backHColor);
-		uint checkSprite(	uint x,
-							uint y,
+		uint checkSprite(	int x,
+							int y,
 							float w,
 							float h,
 							std::string sTex,
@@ -845,15 +845,16 @@ namespace Core {
 		//	spriteSys.draw(x, y, w, h, sTex, bHighlight, textOffset, vWindowColor);
 		//}
 
-		void drawSprite(		uint x,
-									uint y,
-									float w,
-									float h,
-									std::string sTex,
-									bool bHighlight,
-									bool textOffset,
-									Core::Color frontColor,
-									Core::Color frontHColor) {
+		void drawSprite(		int x,
+								int y,
+								float w,
+								float h,
+								std::string sTex,
+								bool bHighlight,
+								bool textOffset,
+								Core::Color frontColor,
+								Core::Color frontHColor)
+		{
 			colors.PushFront(frontColor);
 			colors.PushFrontHighlight(frontHColor);
 			drawSprite(x, y, w, h, sTex, bHighlight, textOffset);
@@ -861,21 +862,22 @@ namespace Core {
 			colors.PopFrontHighlight();
 		}
 
-		void drawSprite(		uint x,
-								uint y,
+		void drawSprite(		int x,
+								int y,
 								float w,
 								float h,
 								std::string sTex,
 								bool bHighlight,
 								bool textOffset,
-								Core::Color frontColor) {
+								Core::Color frontColor)
+		{
 			colors.PushFront(frontColor);
 			drawSprite(x, y, w, h, sTex, bHighlight, textOffset);
 			colors.PopFront();
 		}
 
-		void drawSprite(		uint x,
-								uint y,
+		void drawSprite(		int x,
+								int y,
 								float w,
 								float h,
 								std::string sTex,
@@ -887,8 +889,8 @@ namespace Core {
 			 *  lose some precision here but it shouldn't
 			 *  be a big deal for icons.
 			 */
-			w=w/64;
-			h=h/64;
+//			w=w/64;
+//			h=h/64;
 
 			/*
 			 * If highlighting is enabled
@@ -928,15 +930,16 @@ namespace Core {
 			Core::spriteSys->draw(x, y, w, h, sTex, textOffset);
 		}
 
-		uint checkSprite(	uint x,
-									uint y,
-									float w,
-									float h,
-									std::string sTex,
-									bool bHighlight,
-									bool textOffset,
-									Core::Color backColor,
-									Core::Color backHColor) {
+		uint checkSprite(	int x,
+							int y,
+							float w,
+							float h,
+							std::string sTex,
+							bool bHighlight,
+							bool textOffset,
+							Core::Color backColor,
+							Core::Color backHColor)
+		{
 			colors.PushBack(backColor);
 			colors.PushBackHighlight(backHColor);
 			uint r = checkSprite(x, y, w, h, sTex, bHighlight, textOffset);
@@ -945,13 +948,14 @@ namespace Core {
 			return r;
 		}
 
-		uint checkSprite(	uint x,
-									uint y,
-									float w,
-									float h,
-									std::string sTex,
-									bool bHighlight,
-									bool textOffset) {
+		uint checkSprite(	int x,
+							int y,
+							float w,
+							float h,
+							std::string sTex,
+							bool bHighlight,
+							bool textOffset)
+		{
 
 			/*
 			 * Convert pixel size into a scale size, we may

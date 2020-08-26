@@ -77,6 +77,7 @@ namespace Core {
 //			Color &operator[](int id)					{	return *colors[id];	}
 
 			struct Colors_Extended {
+				int FIRST;
 				std::string Black = "Black";								//0.00, 0.00, 0.00
 				std::string Eerie_black = "Eerie_black";								//0.11, 0.11, 0.11
 				std::string Seal_brown = "Seal_brown";								//0.20, 0.08, 0.08
@@ -1034,7 +1035,6 @@ namespace Core {
 				std::string Old_rose = "Old_rose";								//0.75, 0.50, 0.51
 				std::string OU_Crimson_red = "OU_Crimson_red";								//0.52, 0.09, 0.09
 
-
 				std::string Gray10;								// 10, 10, 10
 				std::string Gray20;								// 20, 20, 20
 				std::string Gray30;								// 30, 30, 30
@@ -1046,9 +1046,12 @@ namespace Core {
 				std::string Gray90;								// 90, 90, 90
 
 				std::string Transparent;
+
+				std::string LAST = "LAST";
 			} Extended;
 
 			Colors_Extended &operator()()				{	return this->Extended;	}
+			Color &operator[](int id)					{	return *colors[id]; }
 			Color &operator[](std::string name)			{	return *colors[name]; }
 
 			// FIXME: Create a pallette class (or modify pallette implementation here) (currently implemented into gameVars)
@@ -1063,6 +1066,7 @@ namespace Core {
 			void PushFront();
 			void PopFront();
 			Color GetFront();
+			Color & GetFrontPtr();
 
 			// Font background color, etc?
 //			void SetBack(Vector3f color, float alpha);

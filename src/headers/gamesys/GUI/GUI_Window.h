@@ -113,6 +113,7 @@ namespace Core {
 //					friend class Window;
 				public:
 					Window();
+//					Window(const Window src);
 					Window(std::string n, Props_Window &c);
 					Window(Props &p,std::string n, Props_Window &c);
 					Window(std::string n, Props_Window *c);
@@ -124,7 +125,7 @@ namespace Core {
 					void update();
 //					void toggle()	{	con->visibility = !con->visibility;	}
 //					void exec(bool bActive);
-					void exec(iState eExternState=STATE_NONE);
+					iState exec(iState eExternState=STATE_NONE);
 
 				protected:
 					VAO vao;
@@ -135,6 +136,11 @@ namespace Core {
 			};
 
 			Window::Window() { iScrollIndex	= 0; }
+
+//			Window::Window(const Window src) {
+//				Base::Generic<Props_Window>.Generic<Props_Window>(src);
+//
+//			}
 
 			Window::Window(std::string n, Props_Window &c) {
 				name			= n;
@@ -291,6 +297,10 @@ namespace Core {
 							updateScrollMouse();
 						}
 						eObjectState = STATE_NONE;
+
+						if(this->mState&Core::_Mouse::MOUSE_HOVER) this->eObjectState = this->eObjectState|STATE_HOVER;
+						else this->eObjectState = this->eObjectState&~STATE_HOVER;
+
 					}
 					else {
 						eObjectState = STATE_NONE;
@@ -352,7 +362,7 @@ namespace Core {
 //				activeContainer->scroll.iMaxScroll = std::max(activeContainer->scroll.iMaxScroll, int(vPos.y-(con->size.y)));
 			}
 
-			void Window::exec(iState eExternState) {
+			iState Window::exec(iState eExternState) {
 				if(bInit) {
 					if(con->visibility && ((parent!=nullptr && parent->visibility) || (parent==nullptr))) {
 						// Check scroll visibility
@@ -441,8 +451,16 @@ namespace Core {
 						glEnable(GL_CULL_FACE);
 						glEnable(GL_DEPTH_TEST);
 					}
+
+					return eObjectState;
 				}
+
+				return STATE_NONE;
 			}
+
+
+
+
 		}
 	}
 } /* namespace Core */

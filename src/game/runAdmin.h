@@ -266,7 +266,13 @@ void _Admin::init() {
 		Core::gui["GameMenu"].add("Window 19", cMaster);
 //		cMaster.resetScrollable();
 		Core::gui["GameMenu"].add("Window 20", cMaster);
+//		cMaster.disableScissor();
 		Core::gui["GameMenu"].add("Window 21", cMaster);
+		Core::gui["GameMenu"].add("Window 22", cMaster);
+		Core::gui["GameMenu"].add("Window 23", cMaster);
+		Core::gui["GameMenu"].add("Window 24", cMaster);
+		Core::gui["GameMenu"].add("Window 25", cMaster);
+		Core::gui["GameMenu"].add("Window 26", cMaster);
 
 
 		cMaster.setOrigin(Core::GUI::CONSTRAIN_TOP_RIGHT);
@@ -304,7 +310,7 @@ void _Admin::init() {
 		con.setPos(-10, -560);
 		con.setWidth(500, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
 //		con.setWidth(40, Core::GUI::SIZE_CONSTRAINT_RELATIVE);
-		con.setHeight(100, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+		con.setHeight(110, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
 		con.setBorder(1, true);
 		con.setRadius(5);
 		con.setVisibility(true);
@@ -330,6 +336,7 @@ void _Admin::init() {
 		con.enablePadding(Core::GUI::PADDING_ALL);
 		con.setMinWidth(100);
 		con.showBackground();
+		con.autoWidth(false);
 		con.colorBack.base = &Core::colors[Core::colors().Gray_web];
 //		con.setLabelAutoSize(true, true);
 		//con.autoWidth(false);
@@ -358,6 +365,11 @@ void _Admin::init() {
 		Core::gui["GameMenu"]["Window 19"].Label.add("Window 19", con);
 		Core::gui["GameMenu"]["Window 20"].Label.add("Window 20", con);
 		Core::gui["GameMenu"]["Window 21"].Label.add("Window 21", con);
+		Core::gui["GameMenu"]["Window 22"].Label.add("Window 22", con);
+		Core::gui["GameMenu"]["Window 23"].Label.add("Window 23", con);
+		Core::gui["GameMenu"]["Window 24"].Label.add("Window 24", con);
+		Core::gui["GameMenu"]["Window 25"].Label.add("Window 25", con);
+		Core::gui["GameMenu"]["Window 26"].Label.add("Window 26", con);
 
 		bOneShot[3] = true;
 		std::cout << "Done" << std::endl;
@@ -465,7 +477,18 @@ void _Admin::init() {
 		con_button.setToolTip("None.");
 		con_button.setPos(   98, -60);	Core::gui["GameMenu"]["Window 2"].Button.add("2D Slider",		false, con_button);
 		con_button.setToolTip("None.");
-		con_button.setPos(  196, -60);	Core::gui["GameMenu"]["Window 2"].Button.add("Spare 5",			false, con_button);
+		con_button.setPos(  196, -60);	Core::gui["GameMenu"]["Window 2"].Button.add("PieChart",		false, con_button);
+
+		con_button.setToolTip("None.");
+		con_button.setPos( -196, -80);	Core::gui["GameMenu"]["Window 2"].Button.add("Spare 1",			false, con_button);
+		con_button.setToolTip("None.");
+		con_button.setPos(  -98, -80);	Core::gui["GameMenu"]["Window 2"].Button.add("Spare 2",			false, con_button);
+		con_button.setToolTip("None.");
+		con_button.setPos(    0, -80);	Core::gui["GameMenu"]["Window 2"].Button.add("Spare 3",			false, con_button);
+		con_button.setToolTip("None.");
+		con_button.setPos(   98, -80);	Core::gui["GameMenu"]["Window 2"].Button.add("Spare 4",			false, con_button);
+		con_button.setToolTip("None.");
+		con_button.setPos(  196, -80);	Core::gui["GameMenu"]["Window 2"].Button.add("Spare 5",			false, con_button);
 
 
 
@@ -1502,7 +1525,7 @@ void _Admin::init() {
 	if (!bOneShot[39]) {
 		std::cout << "GUI: Loading #39: Colors ....................................... ";
 
-		//initColors();
+//		initColors();
 
 		bOneShot[39] = true;
 		std::cout << "Done" << std::endl;
@@ -1709,76 +1732,78 @@ void _Admin::init() {
 		//std::cout << "...............................................................";
 
 		{
-		Core::GUI::Props_ComboBox prop;
-		prop.setOrigin(Core::GUI::CONSTRAIN_TOP_LEFT);
-		prop.setAnchor(Core::GUI::CONSTRAIN_TOP_LEFT);
-		//prop.setWidth(100, Core::GUI::SIZE_CONSTRAINT_RELATIVE);
-		//prop.setHeight(100, Core::GUI::SIZE_CONSTRAINT_RELATIVE);
-		prop.setPos(0, -40);
-		prop.setToolTip("This is a ComboBox test that should show the\n"\
-						"currently selected item and also when a button\n"\
-						"is pressed a list is shown with alternate options\n"\
-						"to choose from. This combo box uses default\n"\
-						"settings which include an auto-hide of the item\n"\
-						"list when the mouse leaves the combo box area.");
+			Core::GUI::Props_ComboBox prop;
+			prop.setOrigin(Core::GUI::CONSTRAIN_TOP_LEFT);
+			prop.setAnchor(Core::GUI::CONSTRAIN_TOP_LEFT);
+			//prop.setWidth(100, Core::GUI::SIZE_CONSTRAINT_RELATIVE);
+			//prop.setHeight(100, Core::GUI::SIZE_CONSTRAINT_RELATIVE);
+			prop.setPos(0, -40);
+			prop.setToolTip("This is a ComboBox test that should show the\n"\
+							"currently selected item and also when a button\n"\
+							"is pressed a list is shown with alternate options\n"\
+							"to choose from. This combo box uses default\n"\
+							"settings which include an auto-hide of the item\n"\
+							"list when the mouse leaves the combo box area.");
 
-		using namespace Core::GUI::Object;
-		using namespace std;
-		using namespace Core;
+			using namespace Core::GUI;
+			using namespace Core::GUI::Object;
+			using namespace std;
+			using namespace Core;
 
-		Core::gui["GameMenu"]["Window 19"].ComboBox.add("ComboBox1", prop).addItems(t_ComboBoxItems{make_pair("Item 0",1),
-																								    make_pair("Item 1",2),
-																									make_pair("Item 2",4),
-																									make_pair("Item 3",8),
-																									make_pair("Item 4",16),
-																									make_pair("Item 5",32) });
+			Core::gui["GameMenu"]["Window 19"].ComboBox.add("ComboBox1", prop).addItems(t_ComboBoxItems{make_pair("Item 0",1),
+																										make_pair("Item 1",2),
+																										make_pair("Item 2",4),
+																										make_pair("Item 3",8),
+																										make_pair("Item 4",16),
+																										make_pair("Item 5",32) });
 
-		//Core::gui["GameMenu"]["Window 19"].ComboBox.add("ComboBox1", prop);
+			//Core::gui["GameMenu"]["Window 19"].ComboBox.add("ComboBox1", prop);
 
-		//Core::gui["GameMenu"]["Window 19"].ComboBox.add("ComboBox1", prop).addItems(std::vector{std::pair<std::string, Core::t_BIFS>("test", 1)});
+			//Core::gui["GameMenu"]["Window 19"].ComboBox.add("ComboBox1", prop).addItems(std::vector{std::pair<std::string, Core::t_BIFS>("test", 1)});
 
-//		Core::gui["GameMenu"]["Window 19"].ComboBox.add("ComboBox1", prop);
-		//Core::gui["GameMenu"]["Window 19"].ComboBox["ComboBox1"].addItem("Item 1", 2);
-		//Core::gui["GameMenu"]["Window 19"].ComboBox["ComboBox1"].addItem("Item 2", 4);
-		//Core::gui["GameMenu"]["Window 19"].ComboBox["ComboBox1"].addItem("Item 3", 8);
-		//Core::gui["GameMenu"]["Window 19"].ComboBox["ComboBox1"].addItem("Item 4", 16);
-		//Core::gui["GameMenu"]["Window 19"].ComboBox["ComboBox1"].addItem("Item 5", 32);
-
+	//		Core::gui["GameMenu"]["Window 19"].ComboBox.add("ComboBox1", prop);
+			//Core::gui["GameMenu"]["Window 19"].ComboBox["ComboBox1"].addItem("Item 1", 2);
+			//Core::gui["GameMenu"]["Window 19"].ComboBox["ComboBox1"].addItem("Item 2", 4);
+			//Core::gui["GameMenu"]["Window 19"].ComboBox["ComboBox1"].addItem("Item 3", 8);
+			//Core::gui["GameMenu"]["Window 19"].ComboBox["ComboBox1"].addItem("Item 4", 16);
+			//Core::gui["GameMenu"]["Window 19"].ComboBox["ComboBox1"].addItem("Item 5", 32);
 		}
 
 		{
+			using namespace std;
+			using namespace Core;
+			using namespace Core::GUI;
 			using namespace Core::GUI::Object;
-		using namespace std;
-		using namespace Core;
-		Core::GUI::Props_ComboBox prop;
-		prop.setOrigin(Core::GUI::CONSTRAIN_TOP_RIGHT);
-		prop.setAnchor(Core::GUI::CONSTRAIN_TOP_RIGHT);
-		prop.setWidth(200, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
-		prop.itemList.setPadding(1);
-		//prop.setHeight(100, Core::GUI::SIZE_CONSTRAINT_RELATIVE);
-		prop.setPos(0, -40);
-		//prop.setPadding(0);
-		prop.setToolTip("This is another combo box to showcase a larger\n"\
-						"list of items with scrolling capability. This\n"\
-						"combo box also has:\n\n"\
-						" - Two different methods of adding items to the list\n"\
-						" - Uses auto width/height\n"\
-						" - Doesn't auto hide item list\n"\
-						" - itemList padding set to 1 (border size)\n"\
-						" - No border on up/down buttons");
 
-		prop.autoWidth();
-		prop.autoHeight();
-		prop.setAutoHide(false);
-		prop.scrollButton.setBorder(0, 0);
-		//prop.item.autoHeight();	// FIXME: Doesn't work, likely because itemList sets height first and never updates after autoheight calculated
+			Core::GUI::Props_ComboBox prop;
+			prop.setOrigin(Core::GUI::CONSTRAIN_TOP_RIGHT);
+			prop.setAnchor(Core::GUI::CONSTRAIN_TOP_RIGHT);
+			prop.setWidth(200, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+			prop.itemList.setPadding(1);
+			//prop.setHeight(100, Core::GUI::SIZE_CONSTRAINT_RELATIVE);
+			prop.setPos(0, -40);
+			//prop.setPadding(0);
+			prop.setToolTip("This is another combo box to showcase a larger\n"\
+							"list of items with scrolling capability. This\n"\
+							"combo box also has:\n\n"\
+							" - Two different methods of adding items to the list\n"\
+							" - Uses auto width/height\n"\
+							" - Doesn't auto hide item list\n"\
+							" - itemList padding set to 1 (border size)\n"\
+							" - No border on up/down buttons");
 
-		// Adding some initial items at ComboBox creation
-		Core::gui["GameMenu"]["Window 19"].ComboBox.add("ComboBox2", prop).addItems(t_ComboBoxItems{make_pair("Test Object 1", 1),
-																									make_pair("Test Object 2", 2),
-																									make_pair("Test Object 3", 3),
-																									make_pair("Test Object 4", 4),
-																									make_pair("Test Object 5", 5) });
+			prop.autoWidth();
+			prop.autoHeight();
+			prop.setAutoHide(false);
+			prop.scrollButton.setBorder(0, 0);
+			//prop.item.autoHeight();	// FIXME: Doesn't work, likely because itemList sets height first and never updates after autoheight calculated
+
+			// Adding some initial items at ComboBox creation
+			Core::gui["GameMenu"]["Window 19"].ComboBox.add("ComboBox2", prop).addItems(t_ComboBoxItems{make_pair("Test Object 1", 1),
+																										make_pair("Test Object 2", 2),
+																										make_pair("Test Object 3", 3),
+																										make_pair("Test Object 4", 4),
+																										make_pair("Test Object 5", 5) });
 		}
 
 		// Adding additional list items after ComboBox creation
@@ -1957,6 +1982,86 @@ void _Admin::init() {
 
 
 		bOneShot[45] = true;
+		std::cout << "Done" << std::endl;
+	}
+
+	if (!bOneShot[46]) {
+		std::cout << "GUI: Loading #46: PieChart ..................................... ";
+		//std::cout << "...............................................................";
+
+		Core::GUI::Props_PieChart prop;
+		prop.setOrigin(Core::GUI::CONSTRAIN_TOP_LEFT);
+		prop.setAnchor(Core::GUI::CONSTRAIN_TOP_LEFT);
+		prop.setRadius(100);
+		prop.setBorder(2, 4);
+		prop.setY(-50);
+		//prop.setX(-100);
+		prop.setLegendAutoWidth(false);
+		prop.propLegend.setWidth(50);
+		prop.propLine.setLineWidth(1, 4);
+		//prop.setLineWidth(1);
+		Core::gui["GameMenu"]["Window 21"].PieChart.add("My Pie Chart", prop);
+		Core::gui["GameMenu"]["Window 21"].PieChart["My Pie Chart"].addItem("Test 0", 8);
+		Core::gui["GameMenu"]["Window 21"].PieChart["My Pie Chart"].addItem("Test 1", 2);
+		Core::gui["GameMenu"]["Window 21"].PieChart["My Pie Chart"].addItem("Test 2", 5);
+		Core::gui["GameMenu"]["Window 21"].PieChart["My Pie Chart"].addItem("Test 3 - min width check", 1);
+		Core::gui["GameMenu"]["Window 21"].PieChart["My Pie Chart"].addItem("Test 4", 30);
+		Core::gui["GameMenu"]["Window 21"].PieChart["My Pie Chart"].addItem("Test 5", 10);
+		Core::gui["GameMenu"]["Window 21"].PieChart["My Pie Chart"].addItem("Test 6", 38, Core::colors[Core::colors().Dark_red], Core::colors[Core::colors().Red]);		// 94 %
+
+		Core::gui["GameMenu"]["Window 21"].PieChart["My Pie Chart"].getItem("Test 4").colorBox->con->setStipplePattern(&Core::stipple[Core::stipple.STIPPLE_EARTH]);
+		Core::gui["GameMenu"]["Window 21"].PieChart["My Pie Chart"]["Test 6"].setStipplePattern(&Core::stipple[Core::stipple.STIPPLE_INSULATION]);
+
+		using namespace std;
+		using namespace Core;
+		using namespace Core::GUI;
+		using namespace Core::GUI::Object;
+		prop.modY(-250);
+		prop.setLegendAutoWidth(true);
+		prop.propLegend.setWidth(300);
+		Core::gui["GameMenu"]["Window 21"].PieChart.add("Another Chart", prop).addItems(t_PieItems{	make_pair("Test Object 1", 10),
+																									make_pair("Test Object 2", 25),
+																									make_pair("Test Object 3", 15),
+																									make_pair("Test Object 4", 25),
+																									make_pair("Test Object 5", 25) });
+
+		prop.modY(-250);
+		prop.setAutoValue(true);
+//		prop.setLineWidth(3);
+		prop.propLine.setLineWidth(2, 3);
+		prop.propLine.colorA.base		= &colors[colors().Yellow];
+		prop.propLine.colorA.highlight	= &colors[colors().Green];
+		prop.propLine.colorB.base		= &colors[colors().Black];
+		prop.propLine.colorB.highlight	= &colors[colors().Black];
+		Core::gui["GameMenu"]["Window 21"].PieChart.add("Auto Chart", prop).addItems(t_PieItems{	make_pair("Test Object 1", 100),
+																									make_pair("Test Object 2", 250),
+																									make_pair("Test Object 3", 150),
+																									make_pair("Test Object 4", 350),
+																									make_pair("Test Object 5", 500) });
+
+		bOneShot[46] = true;
+		std::cout << "Done" << std::endl;
+	}
+
+	if (!bOneShot[47]) {
+		std::cout << "GUI: Loading #47: Lines ........................................ ";
+		//std::cout << "...............................................................";
+
+		Core::GUI::Props_Line prop;
+		prop.setOrigin(Core::GUI::CONSTRAIN_TOP_LEFT);
+		prop.setAnchor(Core::GUI::CONSTRAIN_LEFT);
+		prop.setY(-50);
+		prop.colorA.base		= &Core::colors[Core::colors().Yellow];
+		prop.colorA.active		= &Core::colors[Core::colors().Yellow];
+		prop.colorA.highlight	= &Core::colors[Core::colors().Yellow];
+
+		prop.colorB.base		= &Core::colors[Core::colors().Red];
+		prop.colorB.active		= &Core::colors[Core::colors().Red];
+		prop.colorB.highlight	= &Core::colors[Core::colors().Red];
+//		Core::gui["GameMenu"]["Window 22"].Line.add("Line Test", Core::Vector2i(0, 0), Core::Vector2i((int)Core::gameVars->screen.half.x, (int)Core::gameVars->screen.half.y), prop);
+		Core::gui["GameMenu"]["Window 22"].Line.add("Line Test", Core::Vector2f(0, 0), Core::Vector2f(100, 0), prop);
+
+		bOneShot[47] = true;
 		std::cout << "Done" << std::endl;
 	}
 
@@ -2161,8 +2266,14 @@ void _Admin::run() {
 		Core::gui["GameMenu"]["Window 19"].hide();
 		Core::gui["GameMenu"]["Window 20"].hide();
 		Core::gui["GameMenu"]["Window 21"].hide();
+		Core::gui["GameMenu"]["Window 22"].hide();
+		Core::gui["GameMenu"]["Window 23"].hide();
+		Core::gui["GameMenu"]["Window 24"].hide();
+		Core::gui["GameMenu"]["Window 25"].hide();
+		Core::gui["GameMenu"]["Window 26"].hide();
 
-		if(Core::gui["GameMenu"]["Window 2"].Button["Simplex"].getState())				Core::gui["GameMenu"]["Window 3"].show();
+		if(Core::gui["GameMenu"]["Window 2"].Button["Lighting"].getState())				Core::gui["GameMenu"]["Window 1"].show();
+		else if(Core::gui["GameMenu"]["Window 2"].Button["Simplex"].getState())			Core::gui["GameMenu"]["Window 3"].show();
 		else if(Core::gui["GameMenu"]["Window 2"].Button["Fractal"].getState())			Core::gui["GameMenu"]["Window 4"].show();
 		else if(Core::gui["GameMenu"]["Window 2"].Button["Sliders"].getState())			Core::gui["GameMenu"]["Window 5"].show();
 		else if(Core::gui["GameMenu"]["Window 2"].Button["Text Boxes"].getState())		Core::gui["GameMenu"]["Window 6"].show();
@@ -2179,7 +2290,13 @@ void _Admin::run() {
 		else if(Core::gui["GameMenu"]["Window 2"].Button["Progress Bar"].getState())	Core::gui["GameMenu"]["Window 18"].show();
 		else if(Core::gui["GameMenu"]["Window 2"].Button["ComboBox"].getState())		Core::gui["GameMenu"]["Window 19"].show();
 		else if(Core::gui["GameMenu"]["Window 2"].Button["2D Slider"].getState())		Core::gui["GameMenu"]["Window 20"].show();
-		else if(Core::gui["GameMenu"]["Window 2"].Button["Lighting"].getState())		Core::gui["GameMenu"]["Window 1"].show();
+		else if(Core::gui["GameMenu"]["Window 2"].Button["PieChart"].getState())		Core::gui["GameMenu"]["Window 21"].show();
+		else if(Core::gui["GameMenu"]["Window 2"].Button["Spare 1"].getState())			Core::gui["GameMenu"]["Window 22"].show();
+		else if(Core::gui["GameMenu"]["Window 2"].Button["Spare 2"].getState())			Core::gui["GameMenu"]["Window 23"].show();
+		else if(Core::gui["GameMenu"]["Window 2"].Button["Spare 3"].getState())			Core::gui["GameMenu"]["Window 24"].show();
+		else if(Core::gui["GameMenu"]["Window 2"].Button["Spare 4"].getState())			Core::gui["GameMenu"]["Window 25"].show();
+		else if(Core::gui["GameMenu"]["Window 2"].Button["Spare 5"].getState())			Core::gui["GameMenu"]["Window 26"].show();
+
 		else if(Core::gui["GameMenu"]["Window 2"].Button["Skill Tree"].getState()) {
 			Core::gui["GameMenu"]["Window 14"].show();
 			// These are oneshot controlled windows

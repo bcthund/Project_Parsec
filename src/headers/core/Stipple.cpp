@@ -851,11 +851,13 @@ namespace Core {
 	}
 
 	Stipple::~Stipple() {
-
+		for(auto stipple : stipples) {
+			delete stipple;
+		}
 	}
 
 	void Stipple::add(std::string name, Vector2i size, int pattern[]) {
-		Stipple_Pattern con = Stipple_Pattern(name, size, pattern);
+		Stipple_Pattern *con = new Stipple_Pattern(name, size, pattern);
 		//stipples.push_back(con);
 		//uint id = stipples.size()-1;
 		//map.insert(make_pair(name, id));
@@ -899,12 +901,12 @@ namespace Core {
 	}
 
 	Stipple_Pattern * Stipple::get(std::string name) {
-		return &stipples[name];
+		return stipples[name];
 	}
 
 	Stipple_Pattern * Stipple::get(int id) {
-		if(id<stipples.size())	return &stipples[id];
-		else return &stipples[0];
+		if(id<stipples.size())	return stipples[id];
+		else return stipples[0];
 	}
 
 } /* namespace Core */

@@ -526,7 +526,7 @@ namespace Core {
 				font.PERCENT[1][1] = 0.1875;
 				font.PERCENT[2][0] = 0.3750;
 				font.PERCENT[2][1] = 0.1875;
-				font.PERCENT[3][1] = 0.3750;
+				font.PERCENT[3][0] = 0.3750;
 				font.PERCENT[3][1] = 0.1250;
 
 				font.AMPERSAND[0][0] = 0.3750;

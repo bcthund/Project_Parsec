@@ -31,6 +31,8 @@
 #include "GUI_ProgressBar.h"
 #include "GUI_ComboBox.h"
 #include "GUI_Slider2D.h"
+#include "GUI_PieChart.h"
+#include "GUI_Line.h"
 //#include "GUI_Custom.h"
 //#include "GUI_Dialog.h"
 
@@ -337,6 +339,42 @@ namespace Core {
 						~ComboBoxInterface() { for (auto & comboBox : comboBoxes) delete comboBox; }
 				};
 				ComboBoxInterface ComboBox = ComboBoxInterface(this);
+
+				class PieChartInterface {
+						friend class GUI_Container;
+					private:
+						Core::t_VectorMap<Object::PieChart*> data;
+						GUI_Container * gui;
+						Object::PieChart & pushData(std::string name, Object::PieChart *newData);
+
+					public:
+						Object::PieChart & add(std::string name, Props_PieChart  &c, Props *p=nullptr);
+						Object::PieChart & add(std::string name, Props_PieChart *c, Props *p=nullptr);
+						Object::PieChart & operator[](std::string name)	{	return *data[name];		}
+						Props_PieChart	 & operator()(std::string name)	{	return *data[name]->con;	}
+						PieChartInterface(GUI_Container * parent) { gui = parent; }
+						~PieChartInterface() { for (auto & pieChart : data) delete pieChart; }
+				};
+				PieChartInterface PieChart = PieChartInterface(this);
+
+				class LineInterface {
+						friend class GUI_Container;
+					private:
+						Core::t_VectorMap<Object::Line*> data;
+						GUI_Container * gui;
+						Object::Line & pushData(std::string name, Object::Line *newData);
+
+					public:
+						Object::Line & add(std::string name, Vector2f A, Vector2f B, Props_Line  &c, Props *p=nullptr);
+						Object::Line & add(std::string name, Vector2f *A, Vector2f *B, Props_Line  &c, Props *p=nullptr);
+						Object::Line & add(std::string name, Vector2f A, Vector2f B, Props_Line *c, Props *p=nullptr);
+						Object::Line & add(std::string name, Vector2f *A, Vector2f *B, Props_Line *c, Props *p=nullptr);
+						Object::Line & operator[](std::string name)	{	return *data[name];		}
+						Props_Line	 & operator()(std::string name)	{	return *data[name]->con;	}
+						LineInterface(GUI_Container * parent) { gui = parent; }
+						~LineInterface() { for (auto & line : data) delete line; }
+				};
+				LineInterface Line = LineInterface(this);
 		};
 
 //		GUI_Container*	GUI_Container::activeContainer = nullptr;
@@ -851,6 +889,68 @@ namespace Core {
 
 		/*
 		 * ==========================================================
+		 *						PieChart
+		 * ==========================================================
+		 */
+		Object::PieChart & GUI_Container::PieChartInterface::pushData(std::string name, Object::PieChart *newData) {
+			newData->init();
+			return *data.add(name, newData);
+		}
+
+		Object::PieChart & GUI_Container::PieChartInterface::add(std::string name, Props_PieChart &c, Props *p) {
+			Object::PieChart * newData;
+			if(p!=nullptr) newData = new Object::PieChart(*p, name, c);
+			else newData = new Object::PieChart(*gui->con, name, c);
+			return pushData(name, newData);
+		}
+
+		Object::PieChart & GUI_Container::PieChartInterface::add(std::string name, Props_PieChart *c, Props *p) {
+			Object::PieChart * newData;
+			if(p!=nullptr) newData = new Object::PieChart(*p, name, c);
+			else newData = new Object::PieChart(*gui->con, name, c);
+			return pushData(name, newData);
+		}
+
+		/*
+		 * ==========================================================
+		 *						Line
+		 * ==========================================================
+		 */
+		Object::Line & GUI_Container::LineInterface::pushData(std::string name, Object::Line *newData) {
+			newData->init();
+			return *data.add(name, newData);
+		}
+
+		Object::Line & GUI_Container::LineInterface::add(std::string name, Vector2f A, Vector2f B, Props_Line &c, Props *p) {
+			Object::Line * newData;
+			if(p!=nullptr) newData = new Object::Line(*p, name, A, B, c);
+			else newData = new Object::Line(*gui->con, name, A, B, c);
+			return pushData(name, newData);
+		}
+
+		Object::Line & GUI_Container::LineInterface::add(std::string name, Vector2f *A, Vector2f *B, Props_Line &c, Props *p) {
+			Object::Line * newData;
+			if(p!=nullptr) newData = new Object::Line(*p, name, A, B, c);
+			else newData = new Object::Line(*gui->con, name, A, B, c);
+			return pushData(name, newData);
+		}
+
+		Object::Line & GUI_Container::LineInterface::add(std::string name, Vector2f A, Vector2f B, Props_Line *c, Props *p) {
+			Object::Line * newData;
+			if(p!=nullptr) newData = new Object::Line(*p, name, A, B, c);
+			else newData = new Object::Line(*gui->con, name, A, B, c);
+			return pushData(name, newData);
+		}
+
+		Object::Line & GUI_Container::LineInterface::add(std::string name, Vector2f *A, Vector2f *B, Props_Line *c, Props *p) {
+			Object::Line * newData;
+			if(p!=nullptr) newData = new Object::Line(*p, name, A, B, c);
+			else newData = new Object::Line(*gui->con, name, A, B, c);
+			return pushData(name, newData);
+		}
+
+		/*
+		 * ==========================================================
 		 *						Execute
 		 * ==========================================================
 		 */
@@ -899,11 +999,14 @@ namespace Core {
 					for (auto & comboBox	: ComboBox.comboBoxes)			comboBox->exec();
 					for (auto & slider2D	: Slider2Di.slider2Ds)			slider2D->exec();
 					for (auto & slider2D	: Slider2Df.slider2Ds)			slider2D->exec();
+					for (auto & pieChart	: PieChart.data)				pieChart->exec();
+
+					// Simple Geometry last
+					for (auto & line		: Line.data)					line->exec();
+
 					for (auto & container	: containers)					container->execObjects();
 
-					if(con->bScissor) {
-						Core::scissor.pop();
-					}
+					if(con->bScissor) Core::scissor.pop();
 					Core::scissor.disable();
 				}
 				else {
@@ -916,6 +1019,7 @@ namespace Core {
 					for (auto & slider		: Slider.sliders)				slider->updateNoFocus();
 					for (auto & slider2D	: Slider2Di.slider2Ds)			slider2D->updateNoFocus();
 					for (auto & slider2D	: Slider2Df.slider2Ds)			slider2D->updateNoFocus();
+//					for (auto & pieChart	: PieChart.data)				pieChart->updateNoFocus();
 					for (auto & comboBox	: ComboBox.comboBoxes)			comboBox->updateNoFocus();
 				}
 			}
@@ -944,6 +1048,8 @@ namespace Core {
 			for (auto & comboBox	: ComboBox.comboBoxes)			comboBox->execToolTip();
 			for (auto & slider2D	: Slider2Di.slider2Ds)			slider2D->execToolTip();
 			for (auto & slider2D	: Slider2Df.slider2Ds)			slider2D->execToolTip();
+//			for (auto & pieChart	: PieChart.data)				pieChart->execToolTip();
+//			for (auto & line		: Line.data)					line->execToolTip();
 			for (auto & container	: containers)					container->execToolTips();
 		}
 
