@@ -374,9 +374,12 @@ namespace Core {
 
 						update();
 
-						glActiveTexture(0);
-//						sysTex->set(sysTex->TEX_GRASS);
-						sysTex->set(sysTex->TEX_GRASSYROCK);
+						if(con->bTextured && con->tex != nullptr) {
+							glActiveTexture(0);
+	//						sysTex->set(sysTex->TEX_GRASS);
+//							sysTex->set(sysTex->TEX_GRASSYROCK);
+							con->tex->Set(con->texRef);
+						}
 
 						glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 						glDisable(GL_DEPTH_TEST);
@@ -435,7 +438,7 @@ namespace Core {
 							shader->data.GLS_MENU.bRoundBorder		= con->getRoundBorder();
 							shader->data.GLS_MENU.bEnableStipple	= con->bEnableStipple;
 
-							shader->data.GLS_MENU.bTextured		= con->bTextured;
+							shader->data.GLS_MENU.bTextured		= (con->bTextured && con->tex != nullptr);
 							if(con->bTextured) {
 								shader->data.GLS_MENU.fScroll	= (con->getScrollPos().y/vSize.y)*con->fTextureScrollRate;
 							}

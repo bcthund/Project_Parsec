@@ -266,24 +266,38 @@ void _Admin::init() {
 //		cMaster.resetScrollable();
 		Core::gui["GameMenu"].add("Window 20", cMaster);
 //		cMaster.disableScissor();
-		Core::gui["GameMenu"].add("Window 22", cMaster);
+		//Core::gui["GameMenu"].add("Window 22", cMaster);
 		Core::gui["GameMenu"].add("Window 23", cMaster);
 		Core::gui["GameMenu"].add("Window 24", cMaster);
 		Core::gui["GameMenu"].add("Window 25", cMaster);
 		Core::gui["GameMenu"].add("Window 26", cMaster);
 
-		cMaster.setTextured();
+		//cMaster.setTextured();
+		cMaster.setTexture(Core::sysTex->TEX_GRASSYROCK, Core::sysTex->get());
+		cMaster.setTextureScrollRate(2.0f);
 		cMaster.colorBack.base		= &Core::colors[Core::colors().White];
 		cMaster.colorBack.active	= &Core::colors[Core::colors().White];
 		cMaster.colorBack.highlight	= &Core::colors[Core::colors().White];
 		Core::gui["GameMenu"].add("Window 4", cMaster);
-		cMaster.colorBack.base		= &Core::colors[Core::colors().Gray50];
+		cMaster.setTexture(Core::sysTex->TEX_GRASS, Core::sysTex->get());
+		cMaster.setTextureScrollRate(0.5f);
+		cMaster.colorBack.base		= &Core::colors[Core::colors().White];
 		cMaster.colorBack.active	= &Core::colors[Core::colors().White];
 		cMaster.colorBack.highlight	= &Core::colors[Core::colors().White];
 		Core::gui["GameMenu"].add("Window 21", cMaster);
-		cMaster.setTextured(false);
+		cMaster.setTexture(Core::sysTex->TEX_GRASSYDIRT, Core::sysTex->get());
+		cMaster.setTextureScrollRate(-0.2f);
+		cMaster.colorBack.base		= &Core::colors[Core::colors().Gray50];
+		cMaster.colorBack.active	= &Core::colors[Core::colors().White];
+		cMaster.colorBack.highlight	= &Core::colors[Core::colors().White];
+		Core::gui["GameMenu"].add("Window 22", cMaster);
+		//cMaster.setTextured(false);
+		cMaster.resetTexture();
 
 
+		cMaster.colorBack.base		= &Core::colors[Core::colors().Sky_blue];
+		cMaster.colorBack.active	= &Core::colors[Core::colors().Sky_blue];
+		cMaster.colorBack.highlight	= &Core::colors[Core::colors().Sky_blue];
 		cMaster.setOrigin(Core::GUI::CONSTRAIN_TOP_RIGHT);
 		cMaster.setAnchor(Core::GUI::CONSTRAIN_TOP_RIGHT);
 		cMaster.setPos(-510, -10);

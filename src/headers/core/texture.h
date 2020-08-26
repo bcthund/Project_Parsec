@@ -85,10 +85,23 @@ namespace Core {
 				}
 			}
 
-			inline int			Get(std::string cName)	{	return mapImage[cName];	}
-			inline void			Set(int uiLayer)		{	glBindTexture(GL_TEXTURE_2D, glImage[uiLayer]);	}
-			inline void 		Set(std::string cName)	{	glBindTexture(GL_TEXTURE_2D, glImage[mapImage[cName]]);	}
-			inline std::string	Get(int uiLayer)		{	return mapImage.getName(uiLayer);	}
+			inline GLuint&		Get(std::string cName)	{	return glImage[mapImage[cName]];	}
+			inline GLuint&		Get(int uiLayer)		{	return glImage[uiLayer];	}
+
+//			inline int			Get(std::string cName)	{	return mapImage[cName];	}
+			inline void			Set(std::variant<int, std::string> ref)		{
+				if(ref.index()==0) {
+
+					glBindTexture(GL_TEXTURE_2D, glImage[std::get<int>(ref)]);
+				}
+				else {
+					glBindTexture(GL_TEXTURE_2D, glImage[mapImage[std::get<std::string>(ref)]]);
+				}
+			}
+
+//			inline void			Set(int uiLayer)		{	glBindTexture(GL_TEXTURE_2D, glImage[uiLayer]);	}
+//			inline void 		Set(std::string cName)	{	glBindTexture(GL_TEXTURE_2D, glImage[mapImage[cName]]);	}
+//			inline std::string	Get(int uiLayer)		{	return mapImage.getName(uiLayer);	}
 	};
 }
 
