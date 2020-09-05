@@ -123,17 +123,16 @@ namespace Core {
 			bEnable		= true;
 		};
 
-		// TODO: [Particles] is there a better way to delete these? Smart pointers?
+		// FIXME: Particles, this crashes often. Rework to use VectorMap, add bInit like functionality.
 		~_ParticleDataOld() {
 			for (int n=0; n<iLoadedTextues; n++) {
-				if (vVerts != nullptr) delete vVerts[n];
-				if (vSize != nullptr) delete vSize[n];
+				if (vVerts[n] != nullptr) delete[] vVerts[n];
+				if (vSize[n] != nullptr) delete[] vSize[n];
 			}
-			delete[] vVerts;
-			delete[] vSize;
-			//delete vPosition;
-			//delete vTarget;
-			if (vao != nullptr)	delete[] vao,
+//			if (vVerts != nullptr) delete[] vVerts;
+//			if (vSize != nullptr) delete[] vSize;
+
+//			if (vao != nullptr)	delete vao,
 			bEnable = false;
 		};
 	};

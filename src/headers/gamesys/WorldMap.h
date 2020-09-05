@@ -76,10 +76,10 @@ namespace Core {
 								/*Shader_System	&inShader,*/
 								_Collision		&inCollision,
 								_Helper			&inHelper) {
-			std::cout << "Construct World {" << std::endl;
-			Core::sOffset = "    ";
-			/*matrix = &inMatrix;*/
-			/*shader = &inShader;*/
+
+			Core::debug.log("Construct World {\n");
+			Core::debug.logIncreaseIndent();
+
 			collision = &inCollision;
 			helper = &inHelper;
 			std::cout << sOffset; lights = new _Lights();
@@ -99,40 +99,40 @@ namespace Core {
 			//o2d->init();
 			//o3d->init();
 
-			Core::sOffset = "";
-			std::cout << "}" << std::endl;
+			Core::debug.logDecreaseIndent();
+			Core::debug.log("}\n");
 		}
 
 		_WorldMap::~_WorldMap() {
-			std::cout << "Destruct World {" << std::endl;
-			Core::sOffset = "    ";
-			std::cout << sOffset; delete map;
-			std::cout << sOffset; delete o2d;
-			std::cout << sOffset; delete o3d;
-			std::cout << sOffset; delete lights;
-			std::cout << sOffset; delete atmosphere;
+			Core::debug.log("Destruct World {\n");
+			Core::debug.logIncreaseIndent();
+			delete map;
+			delete o2d;
+			delete o3d;
+			delete lights;
+			delete atmosphere;
 			//std::cout << sOffset; delete occlusion;
 			//std::cout << sOffset; delete occlusion2;
-			Core::sOffset = "";
-			std::cout << "}" << std::endl;
+			Core::debug.logDecreaseIndent();
+			Core::debug.log("}\n");
 		}
 
 		bool _WorldMap::load() {
-			std::cout << "Load World {" << std::endl;
-			Core::sOffset = "    ";
+			Core::debug.log("Load World {\n");
+			Core::debug.logIncreaseIndent();
 			lights->load();
 			map->load();
 			o2d->load();
 			o3d->load();
 			atmosphere->load();
-			Core::sOffset = "";
-			std::cout << "}" << std::endl;
+			Core::debug.logDecreaseIndent();
+			Core::debug.log("}\n");
 			return true;
 		}
 
 		bool _WorldMap::calc() {
-			std::cout << "Calc World {" << std::endl;
-			Core::sOffset = "    ";
+			Core::debug.log("Calc World {\n");
+			Core::debug.logIncreaseIndent();
 			lights->calc(Core::gameVars->screen.fScale);
 			map->calc();
 			o2d->calc();
@@ -141,8 +141,8 @@ namespace Core {
 			//atmosphere->skybox.calc();
 			atmosphere->calc();
 
-			Core::sOffset = "";
-			std::cout << "}" << std::endl;
+			Core::debug.logDecreaseIndent();
+			Core::debug.log("}\n");
 			return true;
 		}
 

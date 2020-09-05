@@ -78,88 +78,68 @@ namespace Core {
 		}
 
 		bool _SpriteSys::load() {
-			try {
-				//            .................................................................Done
-				//std::cout << "Load SpriteSys...................................................";
-				std::cout << "Load SpriteSys {" << std::endl;
-				Core::sOffset = "    ";
-				MemBlock memBlock;
-				std::string theImage;
-				texture.Begin(uiNumTextures);
+			Core::debug.log("Load SpriteSys {\n");
+			Core::debug.logIncreaseIndent();
 
-				readFile((sDir+sFilename), memBlock);
+			MemBlock memBlock;
+			std::string theImage;
+			texture.Begin(uiNumTextures);
 
-				for (int d=0; d<memBlock.size; d+=uiRecordSize) {
-					int theId=0;
-					for (int i=0; i<4; i++) theId+=(unsigned char)memBlock.buffer[i+d];
+			readFile((sDir+sFilename), memBlock);
 
-					theImage = "";
-					for (int i=4; i<32; i++)
-						if (memBlock.buffer[i+d]!=0) theImage+=(unsigned char)memBlock.buffer[i+d];
-						else break;
+			for (int d=0; d<memBlock.size; d+=uiRecordSize) {
+				int theId=0;
+				for (int i=0; i<4; i++) theId+=(unsigned char)memBlock.buffer[i+d];
 
-					std::cout << sOffset << "[" << theId << "] " << theImage << "\n";
-					texture.Load(sTexDir, theImage, theId);
-				}
-				//if (Core::gameVars->debug.load) cout << "..";
-				//std::cout << "Done" << std::endl;
-				Core::sOffset = "";
-				std::cout << "}" << std::endl;
-				return true;
+				theImage = "";
+				for (int i=4; i<32; i++)
+					if (memBlock.buffer[i+d]!=0) theImage+=(unsigned char)memBlock.buffer[i+d];
+					else break;
+
+				Core::debug.log("["+std::to_string(theId)+"] "+theImage+"\n", Core::debug().YELLOW);
+
+				texture.Load(sTexDir, theImage, theId);
 			}
-			catch(...) {
-				//std::cout << "Failed" << std::endl;
-				Core::sOffset = "";
-				std::cout << "} FAILED!" << std::endl;
-				return false;
-			}
+
+			Core::debug.logDecreaseIndent();
+			Core::debug.log("}\n");
+			return true;
 		}
 
 		bool _SpriteSys::calc() {
-			try {
-				//            .................................................................Done
-				std::cout << "Calc SpriteSys...................................................";
-				//for (int i=0; i<64; i++) {
+			Core::debug.log("Calc SpriteSys {");
 
-					//Standard font quad, CCW:CAB-BDC
-//					float iHalf_W = (64/2);
-//					float iHalf_H = (64/2);
+			float iHalf_W = 0.5f;
+			float iHalf_H = 0.5f;
 
-					float iHalf_W = 0.5f;
-					float iHalf_H = 0.5f;
+			Data3f vVerts[] = { {-iHalf_W, -iHalf_H, 0},
+								  { iHalf_W,  iHalf_H, 0},
+								  {-iHalf_W,  iHalf_H, 0},
 
-					Data3f vVerts[] = { {-iHalf_W, -iHalf_H, 0},
-										  { iHalf_W,  iHalf_H, 0},
-										  {-iHalf_W,  iHalf_H, 0},
+								  {-iHalf_W, -iHalf_H, 0},
+								  { iHalf_W, -iHalf_H, 0},
+								  { iHalf_W,  iHalf_H, 0 }};
 
-										  {-iHalf_W, -iHalf_H, 0},
-										  { iHalf_W, -iHalf_H, 0},
-										  { iHalf_W,  iHalf_H, 0 }};
+			gridCoord[0] = 0.000f;
+			gridCoord[1] = 0.000f;
+			gridCoord[2] = 1.000f;
+			gridCoord[3] = 1.000f;
 
-					gridCoord[0] = 0.000f;
-					gridCoord[1] = 0.000f;
-					gridCoord[2] = 1.000f;
-					gridCoord[3] = 1.000f;
+			Data2f vTexture[6] = { { gridCoord[0], gridCoord[3] },
+								   { gridCoord[2], gridCoord[1] },
+								   { gridCoord[0], gridCoord[1] },
+								   { gridCoord[0], gridCoord[3] },
+								   { gridCoord[2], gridCoord[3] },
+								   { gridCoord[2], gridCoord[1] } };
 
-					Data2f vTexture[6] = { { gridCoord[0], gridCoord[3] },
-										   { gridCoord[2], gridCoord[1] },
-										   { gridCoord[0], gridCoord[1] },
-										   { gridCoord[0], gridCoord[3] },
-										   { gridCoord[2], gridCoord[3] },
-										   { gridCoord[2], gridCoord[1] } };
+			vao.Begin(GL_TRIANGLES, 6, 6, 1);
+			vao.CopyData(GLA_VERTEX, vVerts);
+			vao.CopyData(GLA_TEXTURE, vTexture, 0);
+			vao.End();
 
-					vao.Begin(GL_TRIANGLES, 6, 6, 1);
-					vao.CopyData(GLA_VERTEX, vVerts);
-					vao.CopyData(GLA_TEXTURE, vTexture, 0);
-					vao.End();
-				//}
-				std::cout << "Done" << std::endl;
-				return true;
-			}
-			catch(...) {
-				std::cout << "Failed" << std::endl;
-				return false;
-			}
+			Core::debug.print(" Done ", Core::debug().GREEN);
+			Core::debug.print("}\n");
+			return true;
 		}
 
 //		void _SpriteSys::start(int x, int y, float w, float h, std::string sTex, bool textOffset, bool bNoTex=false, Core::_Colors::_ACTIVE_COLOR eColor, SHADER_PROGRAMS uiShader) {

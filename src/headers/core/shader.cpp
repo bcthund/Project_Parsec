@@ -59,13 +59,13 @@ namespace Core {
 	}
 
 	void Shader_System::load() {
-		std::cout << sOffset << "Init Shaders {" << std::endl;
-		Core::sOffset = "    ";
+		Core::debug.log("Init Shaders {\n");
+		Core::debug.logIncreaseIndent();
 		for (int n=0; n<GLS_LAST; n++) {
 			Core::shader->load(SHADER_PROGRAMS(n));
 		}
-		Core::sOffset = "";
-		std::cout << "}" << std::endl;
+		Core::debug.logDecreaseIndent();
+		Core::debug.log("}\n");
 	}
 
 	void Shader_System::load(SHADER_PROGRAMS newShader) {
@@ -98,7 +98,7 @@ namespace Core {
 		switch(newShader) {
 			case(Core::GLS_FONT):
 				sFileName	= "font";
-				std::cout << sOffset << "[" << sFileName << "]";
+//				std::cout << sOffset << "[" << sFileName << "]";
 				uiGLA		= GLASet.VERTEX_TEXTURE0;
 				//if (debug2) cout << "Loading Shader '" << sFileName << "'" << endl;
 				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
@@ -107,14 +107,14 @@ namespace Core {
 				break;
 			case(Core::GLS_MENU):
 				sFileName	= "menu";
-				std::cout << sOffset << "[" << sFileName << "]";
+//				std::cout << sOffset << "[" << sFileName << "]";
 				uiGLA		= GLASet.VERTEX_TEXTURE0;
 				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
 				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
 				break;
 			case(Core::GLS_BOUNDINGVOLUME_OBB):
 				sFileName	= "bounding_volume_obb";
-				std::cout << sOffset << "[" << sFileName << "]";
+//				std::cout << sOffset << "[" << sFileName << "]";
 				uiGLA		= GLASet.VERTEX;
 				//cout << "Loading Shader '" << sFileName << "'" << endl;
 				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
@@ -123,7 +123,7 @@ namespace Core {
 				break;
 			case(Core::GLS_BOUNDINGVOLUME_AABB):
 				sFileName	= "bounding_volume_aabb";
-				std::cout << sOffset << "[" << sFileName << "]";
+//				std::cout << sOffset << "[" << sFileName << "]";
 				uiGLA		= GLASet.VERTEX;
 				//cout << "Loading Shader '" << sFileName << "'" << endl;
 				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
@@ -132,7 +132,7 @@ namespace Core {
 				break;
 			case(Core::GLS_BOUNDINGVOLUME_SPHERE):
 				sFileName	= "bounding_volume_sphere";
-				std::cout << sOffset << "[" << sFileName << "]";
+//				std::cout << sOffset << "[" << sFileName << "]";
 				uiGLA		= GLASet.VERTEX;
 				//cout << "Loading Shader '" << sFileName << "'" << endl;
 				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
@@ -141,7 +141,7 @@ namespace Core {
 				break;
 			case(Core::GLS_BOUNDINGVOLUME_CYLINDER):
 				sFileName	= "bounding_volume_cylinder";
-				std::cout << sOffset << "[" << sFileName << "]";
+//				std::cout << sOffset << "[" << sFileName << "]";
 				uiGLA		= GLASet.VERTEX;
 				//cout << "Loading Shader '" << sFileName << "'" << endl;
 				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
@@ -157,35 +157,35 @@ namespace Core {
 //				break;
 			case(Core::GLS_ICON):
 				sFileName	= "icon";
-				std::cout << sOffset << "[" << sFileName << "]";
+//				std::cout << sOffset << "[" << sFileName << "]";
 				uiGLA		= GLASet.VERTEX_TEXTURE0;
 				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
 				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
 				break;
 			case(Core::GLS_MOUSERAY):
 				sFileName	= "mouseray";
-				std::cout << sOffset << "[" << sFileName << "]";
+//				std::cout << sOffset << "[" << sFileName << "]";
 				uiGLA		= GLASet.VERTEX_COLOR;
 				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
 				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
 				break;
 			case(Core::GLS_LINES):
 				sFileName	= "lines";
-				std::cout << sOffset << "[" << sFileName << "]";
+//				std::cout << sOffset << "[" << sFileName << "]";
 				uiGLA		= GLASet.VERTEX_COLOR;
 				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
 				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
 				break;
 			case(Core::GLS_POINTS):
 				sFileName	= "points";
-				std::cout << sOffset << "[" << sFileName << "]";
+//				std::cout << sOffset << "[" << sFileName << "]";
 				uiGLA		= GLASet.VERTEX;
 				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
 				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
 				break;
 			case(Core::GLS_SUN):
 				sFileName	= "sun";
-				std::cout << sOffset << "[" << sFileName << "]";
+//				std::cout << sOffset << "[" << sFileName << "]";
 				uiGLA		= GLASet.VERTEX_TEXTURE0;
 				//cout << "Loading Shader '" << sFileName << "'" << endl;
 				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
@@ -193,7 +193,7 @@ namespace Core {
 				break;
 			case(Core::GLS_FLAT):
 				sFileName	= "flat";
-				std::cout << sOffset << "[" << sFileName << "]";
+//				std::cout << sOffset << "[" << sFileName << "]";
 				uiGLA		= GLASet.VERTEX_NORMAL_TEXTURE0;
 				//if (debug2) cout << "Loading Shader '" << sFileName << "'" << endl;
 				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
@@ -201,7 +201,7 @@ namespace Core {
 				break;
 			case(Core::GLS_PHONG):
 				sFileName	= "phong";
-				std::cout << sOffset << "[" << sFileName << "]";
+//				std::cout << sOffset << "[" << sFileName << "]";
 				uiGLA		= GLASet.VERTEX_NORMAL_TEXTURE0;
 				//if (debug2) cout << "Loading Shader '" << sFileName << "'" << endl;
 				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
@@ -209,7 +209,7 @@ namespace Core {
 				break;
 			case(Core::GLS_PHONG_O2D):
 				sFileName	= "phongO2D";
-				std::cout << sOffset << "[" << sFileName << "]";
+//				std::cout << sOffset << "[" << sFileName << "]";
 				uiGLA		= GLASet.VERTEX_NORMAL_TEXTURE0;
 				//if (debug2) cout << "Loading Shader '" << sFileName << "'" << endl;
 				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
@@ -273,27 +273,27 @@ namespace Core {
 //				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
 //				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
 //				break;
-//			case(Core::GLS_TROPOSPHERE):
-//				sFileName	= "troposphere";
-//				uiGLA		= GLASet.VERTEX_NORMAL_TEXTURE0;
-//				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
-//				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
-//				break;
-//			case(Core::GLS_STRATOSPHERE):
-//				sFileName	= "stratosphere";
-//				uiGLA		= GLASet.VERTEX_NORMAL_TEXTURE0;
-//				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
-//				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
-//				break;
-//			case(Core::GLS_THERMOSPHERE):
-//				sFileName	= "thermosphere";
-//				uiGLA		= GLASet.VERTEX_NORMAL_TEXTURE0;
-//				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
-//				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
-//				break;
+			case(Core::GLS_TROPOSPHERE):
+				sFileName	= "troposphere";
+				uiGLA		= GLASet.VERTEX_NORMAL_TEXTURE0;
+				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
+				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
+				break;
+			case(Core::GLS_STRATOSPHERE):
+				sFileName	= "stratosphere";
+				uiGLA		= GLASet.VERTEX_NORMAL_TEXTURE0;
+				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
+				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
+				break;
+			case(Core::GLS_THERMOSPHERE):
+				sFileName	= "thermosphere";
+				uiGLA		= GLASet.VERTEX_NORMAL_TEXTURE0;
+				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
+				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
+				break;
 			case(Core::GLS_EXOSPHERE):
 				sFileName	= "exosphere";
-				std::cout << sOffset << "[" << sFileName << "]";
+//				std::cout << sOffset << "[" << sFileName << "]";
 				uiGLA		= GLASet.VERTEX_TEXTURE0;
 
 				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
@@ -301,28 +301,28 @@ namespace Core {
 				break;
 			case(Core::GLS_SNOW):
 				sFileName	= "snow";
-				std::cout << sOffset << "[" << sFileName << "]";
+//				std::cout << sOffset << "[" << sFileName << "]";
 				uiGLA		= GLASet.VERTEX;
 				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
 				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
 				break;
 			case(Core::GLS_SNOW_3D):
 				sFileName	= "snow_3d";
-				std::cout << sOffset << "[" << sFileName << "]";
+//				std::cout << sOffset << "[" << sFileName << "]";
 				uiGLA		= GLASet.VERTEX;
 				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
 				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
 				break;
 			case(Core::GLS_POINT_SPRITE):
 				sFileName	= "point_sprite";
-				std::cout << sOffset << "[" << sFileName << "]";
+//				std::cout << sOffset << "[" << sFileName << "]";
 				uiGLA		= GLASet.VERTEX;
 				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
 				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
 				break;
 			case(Core::GLS_PARTICLE_SPRITE):
 				sFileName	= "particle_sprite";
-				std::cout << sOffset << "[" << sFileName << "]";
+//				std::cout << sOffset << "[" << sFileName << "]";
 				uiGLA		= GLASet.VERTEX;
 				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
 				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
@@ -342,7 +342,7 @@ namespace Core {
 //				break;
 			case(Core::GLS_FLORA):
 				sFileName	= "flora";
-				std::cout << sOffset << "[" << sFileName << "]";
+//				std::cout << sOffset << "[" << sFileName << "]";
 				uiGLA		= GLASet.VERTEX_NORMAL;
 				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
 				sGeoShader	= readShaderFile("./shaders/", sFileName, TYPE.GEOMETRY_SHADER);
@@ -371,49 +371,49 @@ namespace Core {
 //				break;
 			case(Core::GLS_PP_CONTRAST):
 				sFileName	= "pp_contrast";
-				std::cout << sOffset << "[" << sFileName << "]";
+//				std::cout << sOffset << "[" << sFileName << "]";
 				uiGLA		= GLASet.VERTEX_TEXTURE0;
 				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
 				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
 				break;
 			case(Core::GLS_PP_BRIGHTNESS):
 				sFileName	= "pp_brightness";
-				std::cout << sOffset << "[" << sFileName << "]";
+//				std::cout << sOffset << "[" << sFileName << "]";
 				uiGLA		= GLASet.VERTEX_TEXTURE0;
 				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
 				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
 				break;
 			case(Core::GLS_PP_BRIGHTNESS_FILTER):
 				sFileName	= "pp_brightness_filter";
-				std::cout << sOffset << "[" << sFileName << "]";
+//				std::cout << sOffset << "[" << sFileName << "]";
 				uiGLA		= GLASet.VERTEX_TEXTURE0;
 				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
 				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
 				break;
 			case(Core::GLS_PP_RADIALBLUR):
 				sFileName	= "pp_radial_blur";
-				std::cout << sOffset << "[" << sFileName << "]";
+//				std::cout << sOffset << "[" << sFileName << "]";
 				uiGLA		= GLASet.VERTEX_TEXTURE0;
 				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
 				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
 				break;
 			case(Core::GLS_PP_HBLUR):
 				sFileName	= "pp_hblur";
-				std::cout << sOffset << "[" << sFileName << "]";
+//				std::cout << sOffset << "[" << sFileName << "]";
 				uiGLA		= GLASet.VERTEX_TEXTURE0;
 				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
 				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
 				break;
 			case(Core::GLS_PP_VBLUR):
 				sFileName	= "pp_vblur";
-				std::cout << sOffset << "[" << sFileName << "]";
+//				std::cout << sOffset << "[" << sFileName << "]";
 				uiGLA		= GLASet.VERTEX_TEXTURE0;
 				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
 				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
 				break;
 			case(Core::GLS_PP_COMBINE):
 				sFileName	= "pp_combine";
-				std::cout << sOffset << "[" << sFileName << "]";
+//				std::cout << sOffset << "[" << sFileName << "]";
 				uiGLA		= GLASet.VERTEX_TEXTURE0;
 				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
 				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
@@ -438,8 +438,14 @@ namespace Core {
 //				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
 //				break;
 			default:
-				std::cout << sOffset << "[" << newShader << "] Not Defined";
+//				std::cout << sOffset << "[" << newShader << "] Not Defined";
+				//sFileName = '\''+newShader+"' Not Defined";
+//				sFileName = "'";
+//				sFileName.append(newShader+"' Not Defined");
+				sFileName = "Not Defined";
 		}
+
+		Core::debug.log("["+std::to_string(setShader)+"] "+sFileName+"\n", Core::debug().YELLOW);
 
 		/*
 		 * Gawdy but still simplifies the code a lot
@@ -504,7 +510,7 @@ namespace Core {
 		}
 
 		//std::cout << "Done" << std::endl;
-		std::cout << std::endl;
+//		std::cout << std::endl;
 	}
 
 	/*

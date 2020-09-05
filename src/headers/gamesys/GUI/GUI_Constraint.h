@@ -53,7 +53,8 @@ namespace Core {
 						class Sprite;\
 						class ProgressBar;\
 						class ComboBox;\
-						class PieChart
+						class PieChart;\
+						class Animation
 
 		#define FRIENDS friend class GUI_Container;\
 						friend class Window;\
@@ -71,7 +72,8 @@ namespace Core {
 						friend class Sprite;\
 						friend class ProgressBar;\
 						friend class ComboBox;\
-						friend class PieChart
+						friend class PieChart;\
+						friend class Animation
 
 
 
@@ -109,6 +111,7 @@ namespace Core {
 		class Props_ProgressBar;
 		class Props_ComboBox;
 		class Props_PieChart;
+		class Props_Animation;
 
 		enum eButtonType {	BUTTON_ONESHOT,		// Button is active for one cycle
 							BUTTON_MOMENTARY,	// Button is active as long as pressed
@@ -2036,6 +2039,56 @@ namespace Core {
 //					propColorBox.colorBorder.base		= &colors[colors().Black];
 //					propColorBox.colorBorder.active		= &colors[colors().Black];
 //					propColorBox.colorBorder.highlight	= &colors[colors().Black];
+				}
+		};
+
+		/** ******************************************************************************************************************************
+		 *  \class Props_Animation
+		 *  \brief Creates a slider and control with optional label and field for value editing
+		 *
+		 *
+		 *
+		 * ****************************************************************************************************************************** */
+		class Props_Animation :	virtual public Props_Window {
+
+			//friend class Object::Label;
+			friend class Object::Animation;
+
+			private:
+
+			public:
+				Props_Label	propLabel;
+				int iAnimation;
+//				GUI_ColorBHA colorA;		///< Color of line start point
+//				GUI_ColorBHA colorB;		///< Color of line end point
+//				Vector2i vPointA;			///< Starting point relative to origin and anchor
+//				Vector2i vPointB;			///< Ending point relative to first point
+//				int iLineWidth;					///< Line width
+
+//				void setLineWidth(int normal, int hover) {	borderNormal = normal; borderHover = hover;		}
+
+				Props_Animation() {
+					iAnimation = 0;
+					setOrigin(CONSTRAIN_CENTER);
+					setAnchor(CONSTRAIN_CENTER);
+					setWidth(200, SIZE_CONSTRAINT_ABSOLUTE);
+					setHeight(200, SIZE_CONSTRAINT_ABSOLUTE);
+					setBorder(1, 1);
+					setPadding(0);
+//					iLineWidth = 2;
+//					borderNormal = 2;
+//					borderHover = 2;
+					colorBack.base			= &colors[colors().Gray60];
+					colorBack.active		= &colors[colors().Gray60];
+					colorBack.highlight		= &colors[colors().Gray60];
+
+					colorBorder.base		= &colors[colors().Black];
+					colorBorder.active		= &colors[colors().Black];
+					colorBorder.highlight	= &colors[colors().Black];
+
+					propLabel.setOrigin(CONSTRAIN_TOP);
+					propLabel.setAnchor(CONSTRAIN_BOTTOM);
+					propLabel.setWidth(200, SIZE_CONSTRAINT_ABSOLUTE);
 				}
 		};
 

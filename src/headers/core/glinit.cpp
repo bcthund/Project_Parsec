@@ -29,8 +29,8 @@ namespace Core {
 //	};
 
 	GlInit_System::~GlInit_System() {
-		//       .................................................................Done
-		std::cout << "Destroy GlInit System............................................";
+		Core::debug.log("Destroy GlInit {");
+
 		//delete [] mvStack;
 		//delete [] mtvStack;
 		//delete [] mrvStack;
@@ -39,7 +39,9 @@ namespace Core {
 //		if(vClearColor != nullptr) delete vClearColor;
 		SDL_Quit();
 		//delete [] screen;
-		std::cout << "Done" << std::endl;
+
+		Core::debug.print(" Done ", Core::debug().GREEN);
+		Core::debug.print("}\n");
 	}
 
 	void GlInit_System::RestoreClearColor() {
@@ -64,73 +66,72 @@ namespace Core {
 	}
 
 	void GlInit_System::init(std::string cCaption, GLuint uiWidth, GLuint uiHeight, GLuint uiBpp, bool bMS, Vector4f vClearColor) {
-		//            .................................................................Done
-		std::cout << "Init GlInit......................................................";
-		try {
-			this->vClearColor = vClearColor;
+		Core::debug.log("Init GlInit {");
 
-			if (SDL_Init(SDL_INIT_VIDEO)!=0) printf("Failed:\n %s\n", SDL_GetError());
+		this->vClearColor = vClearColor;
 
-			SDL_GL_SetAttribute( SDL_GL_RED_SIZE, 8 );
-			SDL_GL_SetAttribute( SDL_GL_GREEN_SIZE, 8 );
-			SDL_GL_SetAttribute( SDL_GL_BLUE_SIZE, 8 );
-			SDL_GL_SetAttribute( SDL_GL_BUFFER_SIZE, 32 );
-			SDL_GL_SetAttribute( SDL_GL_DEPTH_SIZE, 24 );
-			SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
+		if (SDL_Init(SDL_INIT_VIDEO)!=0) printf("Failed:\n %s\n", SDL_GetError());
 
-			window = SDL_CreateWindow(cCaption.c_str(),
-									  SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-									  uiWidth, uiHeight,
-									  SDL_WINDOW_OPENGL);
+		SDL_GL_SetAttribute( SDL_GL_RED_SIZE, 8 );
+		SDL_GL_SetAttribute( SDL_GL_GREEN_SIZE, 8 );
+		SDL_GL_SetAttribute( SDL_GL_BLUE_SIZE, 8 );
+		SDL_GL_SetAttribute( SDL_GL_BUFFER_SIZE, 32 );
+		SDL_GL_SetAttribute( SDL_GL_DEPTH_SIZE, 24 );
+		SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
 
-			if (!window) {
-				fprintf(stderr, "Couldn't create window: %s\n", SDL_GetError());
-				return;
-			}
+		window = SDL_CreateWindow(cCaption.c_str(),
+								  SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+								  uiWidth, uiHeight,
+								  SDL_WINDOW_OPENGL);
+
+		if (!window) {
+			fprintf(stderr, "Couldn't create window: %s\n", SDL_GetError());
+			return;
+		}
 
 //			SDL_SetWindowResizable(window, SDL_TRUE);
 
-			context = SDL_GL_CreateContext(window);
-			if (!context) {
-				fprintf(stderr, "Couldn't create context: %s\n", SDL_GetError());
-				return;
-			}
+		context = SDL_GL_CreateContext(window);
+		if (!context) {
+			fprintf(stderr, "Couldn't create context: %s\n", SDL_GetError());
+			return;
+		}
 
-			// Change z range from -1,1 to 0,1 (this appears to be recommended)
+		// Change z range from -1,1 to 0,1 (this appears to be recommended)
 //			glClipControl(GL_LOWER_LEFT, GL_ZERO_TO_ONE);
 
-			//Set initial clear color
-			glClearColor( 0.0f, 0.0f, 0.0f, 0.0f );
+		//Set initial clear color
+		glClearColor( 0.0f, 0.0f, 0.0f, 0.0f );
 
-			// Blending
-			glEnable(GL_BLEND);
-			//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-			DisableAdditiveBlending();
-			glBlendEquation(GL_FUNC_ADD);		//GL_FUNC_ADD   GL_FUNC_SUBTRACT   GL_FUNC_REVERSE_SUBTRACT
+		// Blending
+		glEnable(GL_BLEND);
+		//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		DisableAdditiveBlending();
+		glBlendEquation(GL_FUNC_ADD);		//GL_FUNC_ADD   GL_FUNC_SUBTRACT   GL_FUNC_REVERSE_SUBTRACT
 
-			// Polygon Offset
-			//glEnable(GL_POLYGON_OFFSET_FILL);
-			glPolygonOffset(1.0f, 1.0f);
+		// Polygon Offset
+		//glEnable(GL_POLYGON_OFFSET_FILL);
+		glPolygonOffset(1.0f, 1.0f);
 
-			// Stencil Buffer
-			//glEnable(GL_STENCIL_TEST);
-			//glClearStencil(0);
+		// Stencil Buffer
+		//glEnable(GL_STENCIL_TEST);
+		//glClearStencil(0);
 
-			// Other Settings
-			glEnable(GL_DEPTH_TEST);
+		// Other Settings
+		glEnable(GL_DEPTH_TEST);
 //			glEnable(GL_DEPTH_CLAMP);
-			glDisable(GL_DEPTH_CLAMP);
-			glDepthMask(GL_TRUE);
+		glDisable(GL_DEPTH_CLAMP);
+		glDepthMask(GL_TRUE);
 
-			// Standard Z Depth
+		// Standard Z Depth
 //			glDepthFunc(GL_LEQUAL);
 //			glDepthRange(0.0, 1.0);
 //			glDepthRange(-1.0, 1.0);
 
-			// Reversed Z Depth
-			glDepthFunc(GL_GEQUAL);
-			glDepthRange(0.0, 1.0);
-			glClipControl(GL_LOWER_LEFT, GL_ZERO_TO_ONE);
+		// Reversed Z Depth
+		glDepthFunc(GL_GEQUAL);
+		glDepthRange(0.0, 1.0);
+		glClipControl(GL_LOWER_LEFT, GL_ZERO_TO_ONE);
 
 
 
@@ -150,63 +151,61 @@ namespace Core {
 //			SDL_GL_ExtensionSupported("GL_ARB_clip_control");
 
 
-			#define GL_POINT_SPRITE 0x8861		// Hack to enable Point Sprites thus enabling gl_PointCoord operation
-			glEnable(GL_POINT_SPRITE);
-			glEnable(GL_PROGRAM_POINT_SIZE);
-			glPointParameteri(GL_POINT_SPRITE_COORD_ORIGIN, GL_UPPER_LEFT);
-			glPointParameteri(GL_POINT_FADE_THRESHOLD_SIZE, 1.0f);
-			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-			glPointSize(10.0f);
-			glLineWidth(1.0f);
+		#define GL_POINT_SPRITE 0x8861		// Hack to enable Point Sprites thus enabling gl_PointCoord operation
+		glEnable(GL_POINT_SPRITE);
+		glEnable(GL_PROGRAM_POINT_SIZE);
+		glPointParameteri(GL_POINT_SPRITE_COORD_ORIGIN, GL_UPPER_LEFT);
+		glPointParameteri(GL_POINT_FADE_THRESHOLD_SIZE, 1.0f);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		glPointSize(10.0f);
+		glLineWidth(1.0f);
 
-			glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
-			glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
-			//glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
+		glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
+		glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+		//glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
 
-			if (bMS) {
-				glEnable(GL_MULTISAMPLE);
-				//SDL_GL_SetAttribute( SDL_GL_MULTISAMPLEBUFFERS, 1);
-				//SDL_GL_SetAttribute( SDL_GL_MULTISAMPLESAMPLES, 4);
-				//glEnable(GL_SAMPLE_ALPHA_TO_COVERAGE);
-				//glEnable(GL_SAMPLE_ALPHA_TO_ONE);
-				//glEnable(GL_SAMPLE_COVERAGE);
-				//glSampleCoverage(0.5, GL_FALSE);
+		if (bMS) {
+			glEnable(GL_MULTISAMPLE);
+			//SDL_GL_SetAttribute( SDL_GL_MULTISAMPLEBUFFERS, 1);
+			//SDL_GL_SetAttribute( SDL_GL_MULTISAMPLESAMPLES, 4);
+			//glEnable(GL_SAMPLE_ALPHA_TO_COVERAGE);
+			//glEnable(GL_SAMPLE_ALPHA_TO_ONE);
+			//glEnable(GL_SAMPLE_COVERAGE);
+			//glSampleCoverage(0.5, GL_FALSE);
 
-				//glEnable(GL_LINE_SMOOTH);
-				//glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
-				//glHint(GL_LINE_SMOOTH_HINT, GL_FASTEST);
+			//glEnable(GL_LINE_SMOOTH);
+			//glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+			//glHint(GL_LINE_SMOOTH_HINT, GL_FASTEST);
 
-				//glEnable(GL_POLYGON_SMOOTH);
-				//glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
+			//glEnable(GL_POLYGON_SMOOTH);
+			//glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
 
-				//glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-				//glBlendFunc (GL_SRC_COLOR, GL_ONE_MINUS_SRC_COLOR);
-			}
-
-			//glEnable(GL_PRIMITIVE_RESTART);
-			//glPrimitiveRestartIndex(0xFFFF);
-
-			glCullFace(GL_BACK);
-			glEnable(GL_CULL_FACE);
-			glFrontFace(GL_CCW);
-
-			//glEnable(GL_CLIP_DISTANCE0);		// Clipping plane for water Reflection/Refraction
-
-			//Were there any errors?
-			GLenum isError = glGetError();
-			if( isError != GL_NO_ERROR ) printf("OpenGL Failed to initialize properly. [Error: %i]\n", isError);
-
-			SDL_Init(SDL_INIT_EVERYTHING);
-
-			/*
-			 * Allow mouse to exit the window
-			 */
-			//SDL_WM_GrabInput(SDL_GRAB_OFF);
-			SDL_SetRelativeMouseMode(SDL_FALSE);
-			std::cout << "Done" << std::endl;
+			//glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			//glBlendFunc (GL_SRC_COLOR, GL_ONE_MINUS_SRC_COLOR);
 		}
-		catch(...) {
-			std::cout << "Failed" << std::endl;
-		}
+
+		//glEnable(GL_PRIMITIVE_RESTART);
+		//glPrimitiveRestartIndex(0xFFFF);
+
+		glCullFace(GL_BACK);
+		glEnable(GL_CULL_FACE);
+		glFrontFace(GL_CCW);
+
+		//glEnable(GL_CLIP_DISTANCE0);		// Clipping plane for water Reflection/Refraction
+
+		//Were there any errors?
+		GLenum isError = glGetError();
+		if( isError != GL_NO_ERROR ) printf("OpenGL Failed to initialize properly. [Error: %i]\n", isError);
+
+		SDL_Init(SDL_INIT_EVERYTHING);
+
+		/*
+		 * Allow mouse to exit the window
+		 */
+		//SDL_WM_GrabInput(SDL_GRAB_OFF);
+		SDL_SetRelativeMouseMode(SDL_FALSE);
+
+		Core::debug.print(" Done ", Core::debug().GREEN);
+		Core::debug.print("}\n");
 	}
 }

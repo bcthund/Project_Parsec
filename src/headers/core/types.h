@@ -15,6 +15,7 @@
 #include <cmath>
 #include <vector>
 #include <variant>
+#include <unordered_map>
 
 namespace Core {
 	//#define RADIAN (0.017453292519943296)
@@ -65,8 +66,10 @@ namespace Core {
 //        return r;
 //    }
 
-	typedef std::map< std::string, uint > Map_si;
-	typedef std::map< uint, std::string > Map_is;
+//	typedef std::map< std::string, uint > Map_si;
+//	typedef std::map< uint, std::string > Map_is;
+	typedef std::unordered_map< std::string, uint > Map_si;
+	typedef std::unordered_map< uint, std::string > Map_is;
 //	typedef std::pair<std::string, uint> mapPair;
 
 	//#ifndef M_PI
@@ -1871,17 +1874,19 @@ namespace Core {
 //
 //			}
 
-			virtual T & add(std::string name, T t, bool bThrow=true) {
+//			virtual T & add(std::string name, const T t, bool bThrow=true) {
+			void add(std::string name, const T t, bool bThrow=true) {
+//			virtual T add(std::string name, const T t, bool bThrow=true) {
 				if(!checkName(name, false)) {
 					//typeList.emplace_back(t);
 					typeList.push_back(t);
 					int id = typeList.size() - 1;
 					map.insert(make_pair(name, id));
-					return typeList[map[name]];
+//					return typeList[map[name]];
 				}
 				else {
 					if(bThrow) throw std::runtime_error("Duplicate name in t_Vector: '"+name+"'");
-					else return typeList[map[name]];
+//					else return typeList[map[name]];
 				}
 
 			}

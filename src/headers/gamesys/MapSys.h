@@ -146,18 +146,22 @@ namespace Core {
 
 			public:
 				MapSys() {
+					Core::debug.log("Construct MapSys {");
 					mapData = nullptr;
 					//gen1 = PerlinNoise(rng1());
 					//gen2 = PerlinNoise(rng2());
+					Core::debug.print(" Done ", Core::debug().GREEN);
+					Core::debug.print("}\n");
 				}
 				~MapSys() {
-					std::cout << "Destroy Map......................................................";
+					Core::debug.log("Destroy MapSys {");
 					for (int n=0; n<data.iSize; n++) {
 //						mapData[n] = new VAO[data.iSize];
 						delete[] mapData[n];
 					}
 					delete[] mapData;
-					std::cout << "Done" << std::endl;
+					Core::debug.print(" Done ", Core::debug().GREEN);
+					Core::debug.print("}\n");
 				}
 //				enum eMapShift { SHIFT_NONE, SHIFT_NORTH, SHIFT_SOUTH, SHIFT_EAST, SHIFT_WEST, SHIFT_LAST };
 		//		WorldMap(Atmosphere *a, std::string d): atmosphere(a), dir(d) {
@@ -234,28 +238,25 @@ namespace Core {
 		 * TODO: init(); Load map starting location and player location from file
 		 */
 		bool MapSys::init() {
-			try {
-				//            .................................................................Done
-//				std::cout << sOffset << "Init Map.........................................................";
-				std::cout << sOffset << "Init Map.........................................................Not Implemented" << std::endl;
+			Core::debug.log("Init MapSys {");
 
-				rng1 = std::minstd_rand0(seed1);
-				rng2 = std::minstd_rand0(seed2);
-				rng3 = std::minstd_rand0(seed3);
+			rng1 = std::minstd_rand0(seed1);
+			rng2 = std::minstd_rand0(seed2);
+			rng3 = std::minstd_rand0(seed3);
 
-				gen1.SetSeed(rng1());
-				gen2.SetSeed(rng2());
-				gen3.SetSeed(rng3());
+			gen1.SetSeed(rng1());
+			gen2.SetSeed(rng2());
+			gen3.SetSeed(rng3());
 
-				//std:: cout << gen1.GetValue(1,1,0) << ", " << gen1.GetValue(1,2,0) << ", " << gen1.GetValue(0.5,1,0) << ", " << gen1.GetValue(0.5,0.5,0) << ", " << gen1.GetValue(0.25,2,0) << std::endl;
-				//std:: cout << noise1(1.0f,1.0f) << ", " << noise1(1.0f,2.0f) << ", " << noise1(0.5f,1.0f) << ", " << noise1(0.5f,0.5f) << ", " << noise1(0.25f,2.0f) << std::endl;
+			//std:: cout << gen1.GetValue(1,1,0) << ", " << gen1.GetValue(1,2,0) << ", " << gen1.GetValue(0.5,1,0) << ", " << gen1.GetValue(0.5,0.5,0) << ", " << gen1.GetValue(0.25,2,0) << std::endl;
+			//std:: cout << noise1(1.0f,1.0f) << ", " << noise1(1.0f,2.0f) << ", " << noise1(0.5f,1.0f) << ", " << noise1(0.5f,0.5f) << ", " << noise1(0.25f,2.0f) << std::endl;
 
-				// TODO: Pointer cleanup
+			// TODO: Pointer cleanup
 //				if (data.iSize > 1) {
-				mapData = new VAO*[data.iSize];
-				for (int n=0; n<data.iSize; n++) {
-					mapData[n] = new VAO[data.iSize];
-				}
+			mapData = new VAO*[data.iSize];
+			for (int n=0; n<data.iSize; n++) {
+				mapData[n] = new VAO[data.iSize];
+			}
 //				}
 //				else {
 //					mapData = new VAO;
@@ -308,11 +309,8 @@ namespace Core {
 //		//		cout << "=================================> (" << gameVars->player.active->transform.pos[0] << ", " << gameVars->player.active->transform.pos[2] << ")" << endl;
 //		//		delete sStream;
 //				std::cout << "Done" << std::endl;
-			}
-			catch(...) {
-				cout(E) << "MapSys::init()" << std::endl;
-				return false;
-			}
+			Core::debug.print(" Done ", Core::debug().GREEN);
+			Core::debug.print("}\n");
 			return true;
 		}
 
@@ -320,9 +318,9 @@ namespace Core {
 		 * Create generic terrain chunks
 		 */
 		bool MapSys::load() {
-			try {
-				//            .................................................................Done
-				std::cout << sOffset << "Load Map.........................................................";
+			Core::debug.log("Load MapSys {");
+
+
 //				// Load Single Map
 //				MemBlock memBlock;
 //				std::stringstream *sStream = new std::stringstream;
@@ -352,47 +350,47 @@ namespace Core {
 //				generateTerrainChunk(terrainChunk[0], 16384, 1025);
 //				generateTerrainChunk(terrainChunk[0], 16384, 2049);
 
-				/*
-				 * Simulate loading entire world (first load essentially)
-				 */
-				Core::profiles->startProfile(Core::profiles->builtIn.MapSys_GeneratePerlin);
-				std::cout << std::endl;
-				std::cout << "====================================================" << std::endl;
-				std::cout << "==========       Generating Terrain       ==========" << std::endl;
-				std::cout << "====================================================" << std::endl;
+			/*
+			 * Simulate loading entire world (first load essentially)
+			 */
+			Core::profiles->startProfile(Core::profiles->builtIn.MapSys_GeneratePerlin);
+//			std::cout << std::endl;
+//			std::cout << "====================================================" << std::endl;
+//			std::cout << "==========       Generating Terrain       ==========" << std::endl;
+//			std::cout << "====================================================" << std::endl;
 //				int i3count = std::pow(3,2);
 //				std::cout << "3x3(" << i3count << ").";
 //				for (int n=0; n<i3count; n++) {
 //					generateTerrainChunk(terrainChunk[0], 2048, 2048, TERRAIN_PERLIN, 1);
 //					generateTerrainChunk(terrainChunk[0], 16384, 512, TERRAIN_SIMPLEX, 1);
 
-					switch(TERRAIN_TYPE) {
-						case TERRAIN_PERLIN:
-							generateTerrainChunk(terrainChunk[0], 2048, 2048, TERRAIN_PERLIN, 1);
+				switch(TERRAIN_TYPE) {
+					case TERRAIN_PERLIN:
+						generateTerrainChunk(terrainChunk[0], 2048, 2048, TERRAIN_PERLIN, 1);
 //							generateTerrainChunk(	terrainChunk[0],
 //											Core::gameVars->debug.noise.perlin[Core::gameVars->debug.noise.iCurrentSimplex].terrain_size,
 //											Core::gameVars->debug.noise.perlin[Core::gameVars->debug.noise.iCurrentSimplex].res+1,
 //											TERRAIN_TYPE,
 //											Core::gameVars->debug.noise.perlin[Core::gameVars->debug.noise.iCurrentSimplex].tex_scale,
 //											Core::gameVars->debug.noise.perlin[Core::gameVars->debug.noise.iCurrentSimplex].terrain_height_offset);
-							break;
-						case TERRAIN_SIMPLEX:
-							generateTerrainChunk(	terrainChunk[0],
-											Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].terrain_size,
-											Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].res+1,
-											TERRAIN_TYPE,
-											Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].tex_scale,
-											Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].terrain_height_offset);
-							break;
-						case TERRAIN_FRACTAL:
-							generateTerrainChunk(	terrainChunk[0],
-											Core::gameVars->debug.noise.fractal[Core::gameVars->debug.noise.iCurrentFractal].terrain_size,
-											Core::gameVars->debug.noise.fractal[Core::gameVars->debug.noise.iCurrentFractal].res+1,
-											TERRAIN_TYPE,
-											Core::gameVars->debug.noise.fractal[Core::gameVars->debug.noise.iCurrentFractal].tex_scale,
-											Core::gameVars->debug.noise.fractal[Core::gameVars->debug.noise.iCurrentFractal].terrain_height_offset);
-							break;
-					}
+						break;
+					case TERRAIN_SIMPLEX:
+						generateTerrainChunk(	terrainChunk[0],
+										Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].terrain_size,
+										Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].res+1,
+										TERRAIN_TYPE,
+										Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].tex_scale,
+										Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].terrain_height_offset);
+						break;
+					case TERRAIN_FRACTAL:
+						generateTerrainChunk(	terrainChunk[0],
+										Core::gameVars->debug.noise.fractal[Core::gameVars->debug.noise.iCurrentFractal].terrain_size,
+										Core::gameVars->debug.noise.fractal[Core::gameVars->debug.noise.iCurrentFractal].res+1,
+										TERRAIN_TYPE,
+										Core::gameVars->debug.noise.fractal[Core::gameVars->debug.noise.iCurrentFractal].tex_scale,
+										Core::gameVars->debug.noise.fractal[Core::gameVars->debug.noise.iCurrentFractal].terrain_height_offset);
+						break;
+				}
 //					std::cout << n << ".";
 //				}
 //				int i5count = std::pow(5,2)-std::pow(5-2,2);
@@ -413,14 +411,14 @@ namespace Core {
 //					generateTerrainChunk(terrainChunk[3], 16384, 65, TERRAIN_SIMPLEX, 1, -1500);
 //					std::cout << n << ".";
 //				}
-				std::cout << "Done" << std::endl;
-				Core::profiles->stopProfile(Core::profiles->builtIn.MapSys_GeneratePerlin);
-				std::cout << std::endl;
-				std::cout << "Elapsed Time = " << Core::profiles->getTime(Core::profiles->builtIn.MapSys_GeneratePerlin) << std::endl;
-				std::cout << "====================================================" << std::endl;
+//			std::cout << "Done" << std::endl;
+			Core::profiles->stopProfile(Core::profiles->builtIn.MapSys_GeneratePerlin);
+//			std::cout << std::endl;
+//			std::cout << "Elapsed Time = " << Core::profiles->getTime(Core::profiles->builtIn.MapSys_GeneratePerlin) << std::endl;
+//			std::cout << "====================================================" << std::endl;
 
 
-				//generateTerrainChunk(terrainChunk[1], 1024, 33, TERRAIN_FLAT, 1000, 250);
+			//generateTerrainChunk(terrainChunk[1], 1024, 33, TERRAIN_FLAT, 1000, 250);
 
 //				generateTerrainChunk(terrainChunk[0], 1024, 257);	// 256x256
 //				generateTerrainChunk(terrainChunk[0], 1024, 129);	// 128x128
@@ -428,13 +426,9 @@ namespace Core {
 //				generateTerrainChunk(terrainChunk[2], 1024, 33);	// 32x32
 //				generateTerrainChunk(terrainChunk[3], 1024, 17);	// 16x16
 
-				std::cout << "Done" << std::endl;
-				return true;
-			}
-			catch(...) {
-				cout(E) << "MapSys::load()" << std::endl;
-				return false;
-			}
+			Core::debug.print(" Done, Generation time = "+std::to_string(Core::profiles->getTime(Core::profiles->builtIn.MapSys_GeneratePerlin))+" ", Core::debug().GREEN);
+			Core::debug.print("}\n");
+			return true;
 		}
 
 		/*
@@ -603,8 +597,7 @@ namespace Core {
 		 * TODO: Calc(); Do general map calculations. (including LOD management?)
 		 */
 		bool MapSys::calc() {
-			//            .................................................................Done
-			std::cout << sOffset << "Calc Map.........................................................";
+			Core::debug.log("Calc Map {");
 
 
 //			std::cout << sOffset << "\t Perlin Noise Test...";
@@ -889,7 +882,8 @@ namespace Core {
 //				}
 //			}
 
-			std::cout << "Done" << std::endl;
+			Core::debug.print(" Done ", Core::debug().GREEN);
+			Core::debug.print("}\n");
 			return true;
 		}
 

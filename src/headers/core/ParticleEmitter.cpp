@@ -30,9 +30,8 @@ namespace Core {
 	 */
 	bool _ParticleEmitter::init() {
 		if (!bTexLoaded) {
-			std::cout << sOffset << "Init Particle Emitter {" << std::endl;
-			sOffset += "    ";
-
+			Core::debug.log("Init Particle Emitter {\n");
+			Core::debug.logIncreaseIndent();
 
 			MemBlock memBlock;
 			std::string theImage;
@@ -57,13 +56,16 @@ namespace Core {
 
 			tex.Begin(iCount);
 			for(int n=0; n<iCount; n++) {
-				std::cout << sOffset << "[" << imageData[n].id << "] " << imageData[n].image << std::endl;
+				//std::cout << sOffset << "[" << imageData[n].id << "] " << imageData[n].image << std::endl;
+				Core::debug.log("["+std::to_string(imageData[n].id)+"] "+imageData[n].image+"\n", Core::debug().YELLOW);
 				tex.Load(TEXDIR, imageData[n].image, imageData[n].id, true, (GLenum)GL_NEAREST, (GLenum)GL_REPEAT);
 			}
 
 			bTexLoaded = true;
-			PopStr(sOffset, 4);
-			std::cout << sOffset << "}" << std::endl;
+
+			Core::debug.logDecreaseIndent();
+			Core::debug.log("}\n");
+
 			return true;
 		}
 		return false;
@@ -74,7 +76,7 @@ namespace Core {
 	 */
 	//bool _ParticleEmitter::create(const _ParticleEmitterData &newData)   {
 	bool _ParticleEmitter::create(_ParticleEmitterData *newData)   {
-		std::cout << sOffset << "[" << newData->sName << "]" << std::endl;
+//		std::cout << sOffset << "[" << newData->sName << "]" << std::endl;
 
 //		try {
 //			// Don't allow repeat names

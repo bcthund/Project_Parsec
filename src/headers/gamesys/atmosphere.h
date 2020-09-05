@@ -313,15 +313,19 @@ namespace Core {
 				} skybox;
 
 				Atmosphere() :	skybox(*this) {
+					Core::debug.log("Construct Atmosphere {\n");
+					Core::debug.logIncreaseIndent();
 					satellite = new _Satellite(*this);
 					particlesOld = new _Particles(*this, gameVars->screen.fScale);
+					Core::debug.logDecreaseIndent();
+					Core::debug.log("}\n");
 				}
 				~Atmosphere() {
-					//       .................................................................Done
-					std::cout << "Destroy Atmosphere...............................................";
-					delete satellite;
-					delete particlesOld;
-					std::cout << "Done" << std::endl;
+					Core::debug.log("Destroy Atmosphere {");
+					if(satellite != nullptr) delete satellite;
+					if(particlesOld != nullptr) delete particlesOld;
+					Core::debug.print(" Done ", Core::debug().GREEN);
+					Core::debug.print("}\n");
 				}
 		};
 
@@ -329,9 +333,7 @@ namespace Core {
 		 * Default data
 		 */
 		bool Atmosphere::init() {
-			try {
-				//            .................................................................Done
-				std::cout << sOffset << "Init Atmosphere..................................................";
+			Core::debug.log("Init Atmosphere {");
 //				if (gameVars->debug.load) printf("## LOAD O2D\n");
 //				bool bReadResult;
 //				MemBlock memBlock;
@@ -344,57 +346,57 @@ namespace Core {
 //				//if (gameVars->debug.load) cout << gameVars->dir.o2d << iX << "-" << iZ << ".o2d" << std::endl;
 //				bReadResult = readFile(loadFile, memBlock);		//Read the data file into memory
 //				if (!bReadResult) {
-						// Load Defaults!
-						/*
-						 * General Variables
-						 */
-						//iRecordSize = 32;
-						//sDirectory = "./texture/atmosphere/";
-						//cFilename = (char*)"atmosphere.bin";
+					// Load Defaults!
+					/*
+					 * General Variables
+					 */
+					//iRecordSize = 32;
+					//sDirectory = "./texture/atmosphere/";
+					//cFilename = (char*)"atmosphere.bin";
 
-						/*
-						 * Atmospheric layers
-						 */
-						/*skybox.troposphere.fScale	= 5000;
-						skybox.stratosphere.fScale	= skybox.troposphere.fScale+100;
-						//skybox.mesosphere.fScale	= skybox.stratosphere.fScale+1000;
-						skybox.mesosphere.fScale	= sqrt((skybox.stratosphere.fScale*skybox.stratosphere.fScale)+(skybox.stratosphere.fScale*skybox.stratosphere.fScale))+1000.0f;
-						skybox.thermosphere.fScale	= skybox.mesosphere.fScale+2000;
-						skybox.exosphere.fScale		= sqrt((skybox.thermosphere.fScale*skybox.thermosphere.fScale)+(skybox.thermosphere.fScale*skybox.thermosphere.fScale))+500.0f;
-						*/
-						//skybox.troposphere.fScale	= 9000;
-						//skybox.stratosphere.fScale	= skybox.troposphere.fScale+100;		//Divide by 2 because the stratosphere has a model twice as big
-						//skybox.mesosphere.fScale	= skybox.stratosphere.fScale+1000;
-						//skybox.thermosphere.fScale	= skybox.mesosphere.fScale+1000;
-						//skybox.exosphere.fScale		= skybox.thermosphere.fScale+1000;
+					/*
+					 * Atmospheric layers
+					 */
+					/*skybox.troposphere.fScale	= 5000;
+					skybox.stratosphere.fScale	= skybox.troposphere.fScale+100;
+					//skybox.mesosphere.fScale	= skybox.stratosphere.fScale+1000;
+					skybox.mesosphere.fScale	= sqrt((skybox.stratosphere.fScale*skybox.stratosphere.fScale)+(skybox.stratosphere.fScale*skybox.stratosphere.fScale))+1000.0f;
+					skybox.thermosphere.fScale	= skybox.mesosphere.fScale+2000;
+					skybox.exosphere.fScale		= sqrt((skybox.thermosphere.fScale*skybox.thermosphere.fScale)+(skybox.thermosphere.fScale*skybox.thermosphere.fScale))+500.0f;
+					*/
+					//skybox.troposphere.fScale	= 9000;
+					//skybox.stratosphere.fScale	= skybox.troposphere.fScale+100;		//Divide by 2 because the stratosphere has a model twice as big
+					//skybox.mesosphere.fScale	= skybox.stratosphere.fScale+1000;
+					//skybox.thermosphere.fScale	= skybox.mesosphere.fScale+1000;
+					//skybox.exosphere.fScale		= skybox.thermosphere.fScale+1000;
 
-						skybox.troposphere.fScale		= 50000;
-						skybox.stratosphere.fScale		= skybox.troposphere.fScale;		//Divide by 2 because the stratosphere has a model twice as big
-						skybox.mesosphere.fScale		= skybox.stratosphere.fScale;
-						skybox.thermosphere.fScale		= skybox.mesosphere.fScale;
-						skybox.exosphere.fScale			= skybox.thermosphere.fScale;
+					skybox.troposphere.fScale		= 50000;
+					skybox.stratosphere.fScale		= skybox.troposphere.fScale;		//Divide by 2 because the stratosphere has a model twice as big
+					skybox.mesosphere.fScale		= skybox.stratosphere.fScale;
+					skybox.thermosphere.fScale		= skybox.mesosphere.fScale;
+					skybox.exosphere.fScale			= skybox.thermosphere.fScale;
 
-						skybox.exosphere.bCubeMap		= true;
+					skybox.exosphere.bCubeMap		= true;
 
-						skybox.troposphere.sImage		= "mountain2.png";
-						skybox.mesosphere.sImage		= "";
-						skybox.thermosphere.sImage		= "thermo_00.png";
-						skybox.exosphere.sImage			= "space_01.png";
+					skybox.troposphere.sImage		= "mountain2.png";
+					skybox.mesosphere.sImage		= "";
+					skybox.thermosphere.sImage		= "thermo_00.png";
+					skybox.exosphere.sImage			= "space_01.png";
 
-						skybox.stratosphere.sCloud 		= "sky_00.png";
-						skybox.stratosphere.sBump		= "sky_00_bump.png";
+					skybox.stratosphere.sCloud 		= "sky_00.png";
+					skybox.stratosphere.sBump		= "sky_00_bump.png";
 
-						//cout << "=> Setup Atmospheric Layer Distances" << std::endl;
-						//cout << "Troposphere:  " << skybox.troposphere.fScale << std::endl;
-						//cout << "Stratosphere: " << skybox.stratosphere.fScale << std::endl;
-						//cout << "Mesosphere:   " << skybox.mesosphere.fScale << std::endl;
-						//cout << "Thermosphere: " << skybox.thermosphere.fScale << std::endl;
-						//cout << "Exosphere:    " << skybox.exosphere.fScale << endl << std::endl;
+					//cout << "=> Setup Atmospheric Layer Distances" << std::endl;
+					//cout << "Troposphere:  " << skybox.troposphere.fScale << std::endl;
+					//cout << "Stratosphere: " << skybox.stratosphere.fScale << std::endl;
+					//cout << "Mesosphere:   " << skybox.mesosphere.fScale << std::endl;
+					//cout << "Thermosphere: " << skybox.thermosphere.fScale << std::endl;
+					//cout << "Exosphere:    " << skybox.exosphere.fScale << endl << std::endl;
 
-						//_Satellite * newSat = new _Satellite(*this);
-						//satellite.push_back(_Satellite(*this));
-						//satellite1->init();
-						//satellite2->init();
+					//_Satellite * newSat = new _Satellite(*this);
+					//satellite.push_back(_Satellite(*this));
+					//satellite1->init();
+					//satellite2->init();
 //
 //						/*
 //						 * Setup the inital moon values
@@ -1214,220 +1216,227 @@ namespace Core {
 //					sText = ""; for(int j=2324;j<2352; j++) if (memBlock.buffer[j] != 0) sText = sText + memBlock.buffer[j];
 //				}
 //			if (gameVars->debug.load) std::cout << "Done." <<  std::endl;
-				std::cout << "Done" << std::endl;
-				return true;
-			}
-			catch(...) {
-				std::cout << "Failed" << std::endl;
-				return false;
-			}
+
+			Core::debug.print(" Done ", Core::debug().GREEN);
+			Core::debug.print("}\n");
+			return true;
 		}
 
 		bool Atmosphere::load() {
-			try {
-				//            .................................................................Done
-//				std::cout << sOffset << "Load Atmosphere..................................................";
-				std::cout << sOffset << "Load Atmosphere {" << std::endl;
-				sOffset += "    ";
+			Core::debug.log("Load Atmosphere {\n");
+			Core::debug.logIncreaseIndent();
 
-				MemBlock memBlock;
-				std::string theImage;
-				skybox.tex.Begin(NUM_TEXTURES);
+			Core::debug.log("Textures {\n");
+			Core::debug.logIncreaseIndent();
 
-				std::string	sDirectory		= "./texture/atmosphere/";
-				char * cFilename			= (char*)"./system/skybox.bin";
-				int	iRecordSize				= 32;
+			MemBlock memBlock;
+			std::string theImage;
+			skybox.tex.Begin(NUM_TEXTURES);
 
-				readFile(cFilename, memBlock); //Read the data file into memory
+			std::string	sDirectory		= "./texture/atmosphere/";
+			char * cFilename			= (char*)"./system/skybox.bin";
+			int	iRecordSize				= 32;
 
-				// Iterate through each record in the file
-				for (int d=0; d<memBlock.size; d+=iRecordSize) {
-					int theId = 0;
-					for (int i=0; i<4; i++) theId+=(unsigned char)memBlock.buffer[i+d];
-					theImage = "";
-					for (int i=4; i<32; i++) if (memBlock.buffer[i+d]!=0) theImage+=(unsigned char)memBlock.buffer[i+d]; else break;
-					//if (gameVars->debug.load)
-					//std::cout << " [" << theId << "] " <<  theImage << std::endl;
-					//skybox.tex.Load(sDirectory, theImage, theId, true, (GLenum)GL_NEAREST, (GLenum)GL_REPEAT);
-					skybox.tex.Load(sDirectory, theImage, theId, true, (GLenum)GL_NONE, (GLenum)GL_REPEAT);
-				}
+			readFile(cFilename, memBlock); //Read the data file into memory
 
-				{
-					/*
-					 * Load the Troposphere
-					 */
-					std::string loadFile;
-					std::stringstream sStream;
-					Core::PLY_Loader loadPly;
+			// Iterate through each record in the file
+			for (int d=0; d<memBlock.size; d+=iRecordSize) {
+				int theId = 0;
+				for (int i=0; i<4; i++) theId+=(unsigned char)memBlock.buffer[i+d];
+				theImage = "";
+				for (int i=4; i<32; i++) if (memBlock.buffer[i+d]!=0) theImage+=(unsigned char)memBlock.buffer[i+d]; else break;
+				//if (gameVars->debug.load)
+				//std::cout << " [" << theId << "] " <<  theImage << std::endl;
+				//skybox.tex.Load(sDirectory, theImage, theId, true, (GLenum)GL_NEAREST, (GLenum)GL_REPEAT);
+				skybox.tex.Load(sDirectory, theImage, theId, true, (GLenum)GL_NONE, (GLenum)GL_REPEAT);
 
-					sStream.str("./ply/troposphere.ply");
-					loadFile=sStream.str();
-					//std::cout << "LOADING ATMOSPHERE PLY FILE: " << loadFile << std::endl;
-					//if (gameVars->debug.load) std::cout << " -Loading " <<  loadFile << "...";
-					loadPly.load(loadFile);
-					//if (gameVars->debug.load)
-					//std::cout << "[" <<  loadPly.numDrawVerts << "]...";
-					skybox.troposphere.vao.Begin(GL_TRIANGLES,	loadPly.numVerts,	loadPly.numDrawVerts, 1);
-					skybox.troposphere.vao.CopyData(GLA_VERTEX,		loadPly.vVerts);
-					skybox.troposphere.vao.CopyData(GLA_NORMAL,		loadPly.vNorms);
-					skybox.troposphere.vao.CopyData(GLA_TEXTURE,	loadPly.vCoords, 0);
-					skybox.troposphere.vao.CopyData(GLA_INDEX,		loadPly.vIndex, loadPly.numDrawVerts);
-					skybox.troposphere.vao.End();
-					//std::cout << "Done" << std::endl;
-				}
+				Core::debug.log("["+std::to_string(theId)+"] "+theImage+"\n", Core::debug().YELLOW);
+			}
 
-				{
-					/*
-					 * Load the Stratosphere
-					 */
-					std::string loadFile;
-					std::stringstream sStream;
-					Core::PLY_Loader loadPly;
+			Core::debug.logDecreaseIndent();
+			Core::debug.log("}\n");
 
-					sStream.str("./ply/stratosphere.ply");
-					loadFile=sStream.str();
-					//if (gameVars->debug.load)
-					//std::cout << " -Loading " <<  loadFile << "...";
-					loadPly.load(loadFile);
-					//if (gameVars->debug.load)
-					//std::cout << "[" <<  loadPly.numDrawVerts << "]...";
-					skybox.stratosphere.vao.Begin(GL_TRIANGLES,	loadPly.numVerts,	loadPly.numDrawVerts, 1);
-					skybox.stratosphere.vao.CopyData(GLA_VERTEX,	loadPly.vVerts);
-					skybox.stratosphere.vao.CopyData(GLA_NORMAL,	loadPly.vNorms);
-					skybox.stratosphere.vao.CopyData(GLA_TEXTURE,	loadPly.vCoords, 0);
-					skybox.stratosphere.vao.CopyData(GLA_INDEX,		loadPly.vIndex, loadPly.numDrawVerts);
-					skybox.stratosphere.vao.End();
-					//std::cout << "Done" << std::endl;
-				}
+			Core::debug.log("Troposphere\n", Core::debug().YELLOW);
+			{
+				/*
+				 * Load the Troposphere
+				 */
+				std::string loadFile;
+				std::stringstream sStream;
+				Core::PLY_Loader loadPly;
 
-				{
-					/*
-					 * Load the Thermosphere
-					 */
-					std::string loadFile;
-					std::stringstream sStream;
-					Core::PLY_Loader loadPly;
+				sStream.str("./ply/troposphere.ply");
+				loadFile=sStream.str();
+				//std::cout << "LOADING ATMOSPHERE PLY FILE: " << loadFile << std::endl;
+				//if (gameVars->debug.load) std::cout << " -Loading " <<  loadFile << "...";
+				loadPly.load(loadFile);
+				//if (gameVars->debug.load)
+				//std::cout << "[" <<  loadPly.numDrawVerts << "]...";
+				skybox.troposphere.vao.Begin(GL_TRIANGLES,	loadPly.numVerts,	loadPly.numDrawVerts, 1);
+				skybox.troposphere.vao.CopyData(GLA_VERTEX,		loadPly.vVerts);
+				skybox.troposphere.vao.CopyData(GLA_NORMAL,		loadPly.vNorms);
+				skybox.troposphere.vao.CopyData(GLA_TEXTURE,	loadPly.vCoords, 0);
+				skybox.troposphere.vao.CopyData(GLA_INDEX,		loadPly.vIndex, loadPly.numDrawVerts);
+				skybox.troposphere.vao.End();
+				//std::cout << "Done" << std::endl;
+			}
 
-					sStream.str("./ply/thermosphere.ply");
-					loadFile=sStream.str();
-					//if (gameVars->debug.load)
-					//std::cout << " -Loading " <<  loadFile << "...";
-					loadPly.load(loadFile);
-					//if (gameVars->debug.load)
-					//std::cout << "[" <<  loadPly.numDrawVerts << "]...";
-					skybox.thermosphere.vao.Begin(GL_TRIANGLES,	loadPly.numVerts,	loadPly.numDrawVerts, 1);
-					skybox.thermosphere.vao.CopyData(GLA_VERTEX,	loadPly.vVerts);
-					skybox.thermosphere.vao.CopyData(GLA_NORMAL,	loadPly.vNorms);
-					skybox.thermosphere.vao.CopyData(GLA_TEXTURE,	loadPly.vCoords, 0);
-					skybox.thermosphere.vao.CopyData(GLA_INDEX,		loadPly.vIndex, loadPly.numDrawVerts);
-					skybox.thermosphere.vao.End();
-					//std::cout << "Done" << std::endl;
-				}
+			Core::debug.log("Stratosphere\n", Core::debug().YELLOW);
+			{
+				/*
+				 * Load the Stratosphere
+				 */
+				std::string loadFile;
+				std::stringstream sStream;
+				Core::PLY_Loader loadPly;
 
-				{
-					/*
-					 * Load the Exosphere
-					 */
-					std::string loadFile;
-					std::stringstream sStream;
-					Core::PLY_Loader loadPly;
+				sStream.str("./ply/stratosphere.ply");
+				loadFile=sStream.str();
+				//if (gameVars->debug.load)
+				//std::cout << " -Loading " <<  loadFile << "...";
+				loadPly.load(loadFile);
+				//if (gameVars->debug.load)
+				//std::cout << "[" <<  loadPly.numDrawVerts << "]...";
+				skybox.stratosphere.vao.Begin(GL_TRIANGLES,	loadPly.numVerts,	loadPly.numDrawVerts, 1);
+				skybox.stratosphere.vao.CopyData(GLA_VERTEX,	loadPly.vVerts);
+				skybox.stratosphere.vao.CopyData(GLA_NORMAL,	loadPly.vNorms);
+				skybox.stratosphere.vao.CopyData(GLA_TEXTURE,	loadPly.vCoords, 0);
+				skybox.stratosphere.vao.CopyData(GLA_INDEX,		loadPly.vIndex, loadPly.numDrawVerts);
+				skybox.stratosphere.vao.End();
+				//std::cout << "Done" << std::endl;
+			}
 
-					if (skybox.exosphere.bCubeMap) sStream.str("./ply/exosphere_cube.ply");
-					else sStream.str("./ply/exosphere.ply");
-					loadFile=sStream.str();
-					//if (gameVars->debug.load)
-					//std::cout << " -Loading " <<  loadFile << "...";
-					loadPly.load(loadFile);
-					//if (gameVars->debug.load)
-					//std::cout << "[" <<  loadPly.numDrawVerts << "]...";
-					skybox.exosphere.vao.Begin(GL_TRIANGLES,	loadPly.numVerts,	loadPly.numDrawVerts, 1);
-					skybox.exosphere.vao.CopyData(GLA_VERTEX,		loadPly.vVerts);
-					skybox.exosphere.vao.CopyData(GLA_NORMAL,		loadPly.vNorms);
-					skybox.exosphere.vao.CopyData(GLA_TEXTURE,		loadPly.vCoords, 0);
-					skybox.exosphere.vao.CopyData(GLA_INDEX,		loadPly.vIndex, loadPly.numDrawVerts);
-					skybox.exosphere.vao.End();
-					//std::cout << "Done" << std::endl;
-				}
+			Core::debug.log("Thermosphere\n", Core::debug().YELLOW);
+			{
+				/*
+				 * Load the Thermosphere
+				 */
+				std::string loadFile;
+				std::stringstream sStream;
+				Core::PLY_Loader loadPly;
 
-				// Satellite
-				{
-					// TODO: Instead of Load, create an AddSatellite function
-					/*
-					 * Read satellite.bin which should contain all of the setup data
-					 * for ALL satellites a well as satellite specific textures. Each
-					 * satellite will load its own texture and lens flares.
-					 *
-					 * Put all data into satellite defined struct, then pass
-					 * that struct to satellite.load()
-					 *
-					 * Keep satellites in a vector
-					 */
-					//_Satellite newSatellite;
-					//satellite.push_back(newSatellite);
-					_SatelliteData *data = new _SatelliteData();
+				sStream.str("./ply/thermosphere.ply");
+				loadFile=sStream.str();
+				//if (gameVars->debug.load)
+				//std::cout << " -Loading " <<  loadFile << "...";
+				loadPly.load(loadFile);
+				//if (gameVars->debug.load)
+				//std::cout << "[" <<  loadPly.numDrawVerts << "]...";
+				skybox.thermosphere.vao.Begin(GL_TRIANGLES,	loadPly.numVerts,	loadPly.numDrawVerts, 1);
+				skybox.thermosphere.vao.CopyData(GLA_VERTEX,	loadPly.vVerts);
+				skybox.thermosphere.vao.CopyData(GLA_NORMAL,	loadPly.vNorms);
+				skybox.thermosphere.vao.CopyData(GLA_TEXTURE,	loadPly.vCoords, 0);
+				skybox.thermosphere.vao.CopyData(GLA_INDEX,		loadPly.vIndex, loadPly.numDrawVerts);
+				skybox.thermosphere.vao.End();
+				//std::cout << "Done" << std::endl;
+			}
 
-					// =======================
-					//	SUN
-					// -----------------------
-					data->sName						= "Sun";
+			Core::debug.log("Exosphere\n", Core::debug().YELLOW);
+			{
+				/*
+				 * Load the Exosphere
+				 */
+				std::string loadFile;
+				std::stringstream sStream;
+				Core::PLY_Loader loadPly;
 
-					data->bQuery					= true;
+				if (skybox.exosphere.bCubeMap) sStream.str("./ply/exosphere_cube.ply");
+				else sStream.str("./ply/exosphere.ply");
+				loadFile=sStream.str();
+				//if (gameVars->debug.load)
+				//std::cout << " -Loading " <<  loadFile << "...";
+				loadPly.load(loadFile);
+				//if (gameVars->debug.load)
+				//std::cout << "[" <<  loadPly.numDrawVerts << "]...";
+				skybox.exosphere.vao.Begin(GL_TRIANGLES,	loadPly.numVerts,	loadPly.numDrawVerts, 1);
+				skybox.exosphere.vao.CopyData(GLA_VERTEX,		loadPly.vVerts);
+				skybox.exosphere.vao.CopyData(GLA_NORMAL,		loadPly.vNorms);
+				skybox.exosphere.vao.CopyData(GLA_TEXTURE,		loadPly.vCoords, 0);
+				skybox.exosphere.vao.CopyData(GLA_INDEX,		loadPly.vIndex, loadPly.numDrawVerts);
+				skybox.exosphere.vao.End();
+				//std::cout << "Done" << std::endl;
+			}
 
-					data->vPosition[0] 				= 0.0;
-					data->vPosition[1] 				= 200.0;
-					data->vPosition[2] 				= 0.0;
+			Core::debug.log("Sun (Incomplete Loader)\n", Core::debug().RED);
+			// Satellite
+			{
+				// TODO: Instead of Load, create an AddSatellite function
+				/*
+				 * Read satellite.bin which should contain all of the setup data
+				 * for ALL satellites a well as satellite specific textures. Each
+				 * satellite will load its own texture and lens flares.
+				 *
+				 * Put all data into satellite defined struct, then pass
+				 * that struct to satellite.load()
+				 *
+				 * Keep satellites in a vector
+				 */
+				//_Satellite newSatellite;
+				//satellite.push_back(newSatellite);
+				_SatelliteData *data = new _SatelliteData();
 
-					data->vAmbientBase[0] 			= 0.1f;
-					data->vAmbientBase[1] 			= 0.1f;
-					data->vAmbientBase[2] 			= 0.1f;
-					data->vAmbientBase[3] 			= 1.0f;
+				// =======================
+				//	SUN
+				// -----------------------
+				data->sName						= "Sun";
 
-					data->vAmbientColor[0] 			= data->vAmbientBase[0];
-					data->vAmbientColor[1] 			= data->vAmbientBase[1];
-					data->vAmbientColor[2] 			= data->vAmbientBase[2];
-					data->vAmbientColor[3] 			= data->vAmbientBase[3];
+				data->bQuery					= true;
 
-					data->vDiffuseBase[0] 			= 1.0f;
-					data->vDiffuseBase[1] 			= 0.0f;
-					data->vDiffuseBase[2] 			= 0.0f;
-					data->vDiffuseBase[3]			= 1.0f;
+				data->vPosition[0] 				= 0.0;
+				data->vPosition[1] 				= 200.0;
+				data->vPosition[2] 				= 0.0;
 
-					data->vDiffuseColor[0] 			= data->vDiffuseBase[0];
-					data->vDiffuseColor[1]		 	= data->vDiffuseBase[1];
-					data->vDiffuseColor[2]	 		= data->vDiffuseBase[2];
-					data->vDiffuseColor[3]	 		= data->vDiffuseBase[3];
+				data->vAmbientBase[0] 			= 0.1f;
+				data->vAmbientBase[1] 			= 0.1f;
+				data->vAmbientBase[2] 			= 0.1f;
+				data->vAmbientBase[3] 			= 1.0f;
 
-					data->vSpecularBase[0]			= 1.0f;
-					data->vSpecularBase[1]			= 1.0f;
-					data->vSpecularBase[2]			= 1.0f;
-					data->vSpecularBase[3]			= 1.0f;
+				data->vAmbientColor[0] 			= data->vAmbientBase[0];
+				data->vAmbientColor[1] 			= data->vAmbientBase[1];
+				data->vAmbientColor[2] 			= data->vAmbientBase[2];
+				data->vAmbientColor[3] 			= data->vAmbientBase[3];
 
-					data->vSpecularColor[0] 		= data->vSpecularBase[0];
-					data->vSpecularColor[1] 		= data->vSpecularBase[1];
-					data->vSpecularColor[2] 		= data->vSpecularBase[2];
-					data->vSpecularColor[3] 		= data->vSpecularBase[3];
+				data->vDiffuseBase[0] 			= 1.0f;
+				data->vDiffuseBase[1] 			= 0.0f;
+				data->vDiffuseBase[2] 			= 0.0f;
+				data->vDiffuseBase[3]			= 1.0f;
 
-					data->fShinyBase				= 1.0f;
-					data->fShiny					= data->fShinyBase;
-					data->degAzimuth.degrees		= 0.0f;
-					data->fAltitude					= 80.0f;
-					data->fQuadSize					= 16;
-					data->fDistance					= 1000.0f;
-					data->degInclination.degrees	= -23.5f;
+				data->vDiffuseColor[0] 			= data->vDiffuseBase[0];
+				data->vDiffuseColor[1]		 	= data->vDiffuseBase[1];
+				data->vDiffuseColor[2]	 		= data->vDiffuseBase[2];
+				data->vDiffuseColor[3]	 		= data->vDiffuseBase[3];
+
+				data->vSpecularBase[0]			= 1.0f;
+				data->vSpecularBase[1]			= 1.0f;
+				data->vSpecularBase[2]			= 1.0f;
+				data->vSpecularBase[3]			= 1.0f;
+
+				data->vSpecularColor[0] 		= data->vSpecularBase[0];
+				data->vSpecularColor[1] 		= data->vSpecularBase[1];
+				data->vSpecularColor[2] 		= data->vSpecularBase[2];
+				data->vSpecularColor[3] 		= data->vSpecularBase[3];
+
+				data->fShinyBase				= 1.0f;
+				data->fShiny					= data->fShinyBase;
+				data->degAzimuth.degrees		= 0.0f;
+				data->fAltitude					= 80.0f;
+				data->fQuadSize					= 16;
+				data->fDistance					= 1000.0f;
+				data->degInclination.degrees	= -23.5f;
 //					data->degInclination.degrees	= 0.0f;
 
-					data->sImage					= "sun_00.png";
-					data->sFlare[0]					= "tex6.png";
-					data->sFlare[1]					= "tex4.png";
-					data->sFlare[2]					= "tex2.png";
-					data->sFlare[3]					= "tex7.png";
-					data->sFlare[4]					= "tex3.png";
-					data->sFlare[5]					= "tex5.png";
-					data->sFlare[6]					= "tex4.png";
-					data->sFlare[7]					= "tex8.png";
-					data->sFlare[8]					= "tex9.png";
-					data->fSpeed					= 2.0f;
-					data->fScale					= 10.0f;
+				data->sImage					= "sun_00.png";
+				data->sFlare[0]					= "tex6.png";
+				data->sFlare[1]					= "tex4.png";
+				data->sFlare[2]					= "tex2.png";
+				data->sFlare[3]					= "tex7.png";
+				data->sFlare[4]					= "tex3.png";
+				data->sFlare[5]					= "tex5.png";
+				data->sFlare[6]					= "tex4.png";
+				data->sFlare[7]					= "tex8.png";
+				data->sFlare[8]					= "tex9.png";
+				data->fSpeed					= 2.0f;
+				data->fScale					= 10.0f;
 
 //					data->vFlarePos[0].z			= 100*0.5f;
 //					data->vFlarePos[1].z			= 100*0.23f;
@@ -1439,79 +1448,81 @@ namespace Core {
 //					data.vFlarePos[7].z				= 100*0.6f;
 //					data.vFlarePos[8].z				= 100*0.05f;
 
-					satellite->add(data);
-				}
+				satellite->add(data);
+			}
 
-				{
-					// =======================
-					//	MOON
-					// -----------------------
-					_SatelliteData *data = new _SatelliteData();
+			Core::debug.log("Moon (Incomplete Loader)\n", Core::debug().RED);
+			{
+				// =======================
+				//	MOON
+				// -----------------------
+				_SatelliteData *data = new _SatelliteData();
 
-					data->sName						= "Moon";
+				data->sName						= "Moon";
 
-					data->bQuery					= false;
+				data->bQuery					= false;
 
-					data->vPosition[0] 				= 0.0;
-					data->vPosition[1] 				= 200.0;
-					data->vPosition[2] 				= 0.0;
+				data->vPosition[0] 				= 0.0;
+				data->vPosition[1] 				= 200.0;
+				data->vPosition[2] 				= 0.0;
 
-					data->vAmbientBase[0] 			= 0.1f;
-					data->vAmbientBase[1] 			= 0.1f;
-					data->vAmbientBase[2] 			= 0.1f;
-					data->vAmbientBase[3] 			= 1.0f;
+				data->vAmbientBase[0] 			= 0.1f;
+				data->vAmbientBase[1] 			= 0.1f;
+				data->vAmbientBase[2] 			= 0.1f;
+				data->vAmbientBase[3] 			= 1.0f;
 
-					data->vAmbientColor[0] 			= data->vAmbientBase[0];
-					data->vAmbientColor[1] 			= data->vAmbientBase[1];
-					data->vAmbientColor[2] 			= data->vAmbientBase[2];
-					data->vAmbientColor[3] 			= data->vAmbientBase[3];
+				data->vAmbientColor[0] 			= data->vAmbientBase[0];
+				data->vAmbientColor[1] 			= data->vAmbientBase[1];
+				data->vAmbientColor[2] 			= data->vAmbientBase[2];
+				data->vAmbientColor[3] 			= data->vAmbientBase[3];
 
-					data->vDiffuseBase[0] 			= 1.0f;
-					data->vDiffuseBase[1] 			= 0.0f;
-					data->vDiffuseBase[2] 			= 0.0f;
-					data->vDiffuseBase[3]			= 1.0f;
+				data->vDiffuseBase[0] 			= 1.0f;
+				data->vDiffuseBase[1] 			= 0.0f;
+				data->vDiffuseBase[2] 			= 0.0f;
+				data->vDiffuseBase[3]			= 1.0f;
 
-					data->vDiffuseColor[0] 			= data->vDiffuseBase[0];
-					data->vDiffuseColor[1] 			= data->vDiffuseBase[1];
-					data->vDiffuseColor[2] 			= data->vDiffuseBase[2];
-					data->vDiffuseColor[3] 			= data->vDiffuseBase[3];
+				data->vDiffuseColor[0] 			= data->vDiffuseBase[0];
+				data->vDiffuseColor[1] 			= data->vDiffuseBase[1];
+				data->vDiffuseColor[2] 			= data->vDiffuseBase[2];
+				data->vDiffuseColor[3] 			= data->vDiffuseBase[3];
 
-					data->vSpecularBase[0]			= 1.0f;
-					data->vSpecularBase[1]			= 1.0f;
-					data->vSpecularBase[2]			= 1.0f;
-					data->vSpecularBase[3]			= 1.0f;
+				data->vSpecularBase[0]			= 1.0f;
+				data->vSpecularBase[1]			= 1.0f;
+				data->vSpecularBase[2]			= 1.0f;
+				data->vSpecularBase[3]			= 1.0f;
 
-					data->vSpecularColor[0] 		= data->vSpecularBase[0];
-					data->vSpecularColor[1] 		= data->vSpecularBase[1];
-					data->vSpecularColor[2] 		= data->vSpecularBase[2];
-					data->vSpecularColor[3] 		= data->vSpecularBase[3];
+				data->vSpecularColor[0] 		= data->vSpecularBase[0];
+				data->vSpecularColor[1] 		= data->vSpecularBase[1];
+				data->vSpecularColor[2] 		= data->vSpecularBase[2];
+				data->vSpecularColor[3] 		= data->vSpecularBase[3];
 
-					data->fShinyBase				= 1.0f;
-					data->fShiny					= data->fShinyBase;
-					data->degAzimuth.degrees		= 90.0f;
-					data->fAltitude					= 80.0f;
-					data->fQuadSize					= 16;
-					data->fDistance					= 500.0f;
-					data->degInclination.degrees		= 0.0f;
+				data->fShinyBase				= 1.0f;
+				data->fShiny					= data->fShinyBase;
+				data->degAzimuth.degrees		= 90.0f;
+				data->fAltitude					= 80.0f;
+				data->fQuadSize					= 16;
+				data->fDistance					= 500.0f;
+				data->degInclination.degrees		= 0.0f;
 
-					data->sImage					= "moon_00.png";
-					data->sFlare[0]					= "tex1.png";
-					data->sFlare[1]					= "tex2.png";
-					data->sFlare[2]					= "tex3.png";
-					data->sFlare[3]					= "tex4.png";
-					data->sFlare[4]					= "tex5.png";
-					data->sFlare[5]					= "tex6.png";
-					data->sFlare[6]					= "tex7.png";
-					data->sFlare[7]					= "tex8.png";
-					data->sFlare[8]					= "tex9.png";
-					data->fSpeed					= 10.0f;
-					data->fScale					= 5.0f;
+				data->sImage					= "moon_00.png";
+				data->sFlare[0]					= "tex1.png";
+				data->sFlare[1]					= "tex2.png";
+				data->sFlare[2]					= "tex3.png";
+				data->sFlare[3]					= "tex4.png";
+				data->sFlare[4]					= "tex5.png";
+				data->sFlare[5]					= "tex6.png";
+				data->sFlare[6]					= "tex7.png";
+				data->sFlare[7]					= "tex8.png";
+				data->sFlare[8]					= "tex9.png";
+				data->fSpeed					= 10.0f;
+				data->fScale					= 5.0f;
 
-					satellite->add(data);
-				}
+				satellite->add(data);
+			}
 
-				// Flora
-				{
+			Core::debug.log("Flora (Incomplete/Outdated)\n", Core::debug().RED);
+			// Flora
+			{
 //					_FloraData data;
 //					data.sName				= "Flora";
 //					data.vColor				= Vector4f(1.0f);
@@ -1531,27 +1542,27 @@ namespace Core {
 //					data.fCeiling			= 1024.0f;
 //					flora->add(data);
 
-					_ParticleDataOld data;
-					data.eSystem			= PARTICLE_QUAD;
-					data.eEmitter			= EMITTER_STATIC;
-					data.sName				= "Flora";
-					data.vTarget			= &gameVars->player.active->transform.pos;
-					data.vColor				= Vector4f(1.0f);
-					data.fScale				= 1.0f;
-					data.iMaxWidth			= 10;
-					data.iMinWidth			= 4;
-					data.iMaxHeight			= 16;
-					data.iMinHeight			= 4;
-					data.iNum				= 100;
-					data.iRate				= 500;
-					data.iRange				= 1024;
-					data.iThreshold			= 1;
-					data.iInstance			= 0;
-					data.iSpread			= 16;
-					data.fFloorPlay			= 5.0f;
-					data.fFloor				= -4.0f;
-					data.fCeiling			= 1024.0f;
-					particlesOld->add(data);
+				_ParticleDataOld data;
+				data.eSystem			= PARTICLE_QUAD;
+				data.eEmitter			= EMITTER_STATIC;
+				data.sName				= "Flora";
+				data.vTarget			= &gameVars->player.active->transform.pos;
+				data.vColor				= Vector4f(1.0f);
+				data.fScale				= 1.0f;
+				data.iMaxWidth			= 10;
+				data.iMinWidth			= 4;
+				data.iMaxHeight			= 16;
+				data.iMinHeight			= 4;
+				data.iNum				= 100;
+				data.iRate				= 500;
+				data.iRange				= 1024;
+				data.iThreshold			= 1;
+				data.iInstance			= 0;
+				data.iSpread			= 16;
+				data.fFloorPlay			= 5.0f;
+				data.fFloor				= -4.0f;
+				data.fCeiling			= 1024.0f;
+				particlesOld->add(data);
 
 
 //					Core::sOffset = "12345678";
@@ -1559,11 +1570,11 @@ namespace Core {
 //					std::cout << "       String = " << Core::sOffset << std::endl;
 //					std::cout << "String Length = " << Core::sOffset.length() << std::endl;
 //					std::cout << "        Erase = " << Core::sOffset.length()-5 << std::endl;
-					//Core::sOffset.erase(Core::sOffset.length()-4, 4);
+				//Core::sOffset.erase(Core::sOffset.length()-4, 4);
 //					std::cout << "String Length = " << Core::sOffset.length() << std::endl;
 //					std::cout << "       String = " << Core::sOffset << std::endl;
-					//Core::sOffset = "    ";
-				}
+				//Core::sOffset = "    ";
+			}
 
 //					else if(mode == FOG) {
 //						if (gameVars->debug.load) cout << "## LOAD FOG ##" << endl;
@@ -1838,20 +1849,14 @@ namespace Core {
 //						cout << "Done" << endl;
 //					}
 
-				PopStr(sOffset, 4);
-				std::cout << sOffset << "}" << std::endl;
-				return true;
-			}
-			catch(...) {
-				std::cout << "Failed" << std::endl;
-				return false;
-			}
+			Core::debug.logDecreaseIndent();
+			Core::debug.log("}\n");
+			return true;
 		}
 
 		bool Atmosphere::calc() {
-//			std::cout << sOffset << "Calc Atmosphere..................................................";
-			std::cout << sOffset << "Calc Atmosphere {" << std::endl;
-			sOffset += "    ";
+			Core::debug.log("Calc Atmosphere {\n");
+			Core::debug.logIncreaseIndent();
 			for (int n=0; n<MODE_LAST; n++) {
 				try {
 					calc(n);
@@ -1861,29 +1866,26 @@ namespace Core {
 					return false;
 				}
 			}
-			PopStr(sOffset, 4);
-			std::cout << sOffset << "}" << std::endl;
+			Core::debug.logDecreaseIndent();
+			Core::debug.log("}\n");
 			return true;
 		}
 
 		bool Atmosphere::calc(uint mode) {
-			try {
-				//            .................................................................Done
-				if(mode == MODE_SKYBOX) {
-					//if (gameVars->debug.load) std::cout << "## CALC SKYBOX ##" << std::endl;
-				}
-				else if(mode == MODE_SATELLITE) {
-					satellite->calc();
-				}
-				else if(mode == MODE_FLORA) {
-					//flora->calc();
-					particlesOld->calc("Flora");
-				}
-				return true;
+			Core::debug.log("Calc Atmosphere (mode = "+std::to_string(mode)+") {");
+			if(mode == MODE_SKYBOX) {
+				//if (gameVars->debug.load) std::cout << "## CALC SKYBOX ##" << std::endl;
 			}
-			catch(...) {
-				return false;
+			else if(mode == MODE_SATELLITE) {
+				satellite->calc();
 			}
+			else if(mode == MODE_FLORA) {
+				//flora->calc();
+				particlesOld->calc("Flora");
+			}
+			Core::debug.print(" Done ", Core::debug().GREEN);
+			Core::debug.print("}\n");
+			return true;
 		}
 
 		void Atmosphere::update(uint mode) {
@@ -2015,8 +2017,6 @@ namespace Core {
 				va_start(attributeList, mode);
 					std::string sType = va_arg(attributeList, char const *);
 				va_end(attributeList);
-
-				std::cout << "Drawing " << sType << std::endl;
 
 				matrix->Push();
 					matrix->Rotate(Core::gameVars->player.active->transform.rot[0], 1.0, 0.0, 0.0);

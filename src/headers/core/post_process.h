@@ -101,16 +101,15 @@ namespace Core {
 	}
 
 	PostProcess::~PostProcess() {
-		//       .................................................................Done
-		std::cout << "Destroy Post Processing..........................................";
-		std::cout << "Not Implemented" << std::endl;
+		Core::debug.log("Destroy Post Processing {");
+		Core::debug.print(" Not Implemented ", Core::debug().RED);
+		Core::debug.print("}\n");
 	}
 
 	// Need the screen dimensions
 	//void PostProcess::init(Atmosphere &a) {
 	void PostProcess::init(int iW, int iH, uint uiMultisamples) {
-		//       .................................................................Done
-		std::cout << "Init Post Processing.............................................";
+		Core::debug.log("Init Post Processing {");
 		//this->a = &a;
 
 		vuiScreenSize = Vector2ui(iW, iH);
@@ -274,7 +273,8 @@ namespace Core {
 		Core::fbo.AddDepthBuffer("ApplyCartoon");
 		Core::fbo.FinishFbo("ApplyCartoon");
 
-		std::cout << "Done" << std::endl;
+		Core::debug.print(" Done ", Core::debug().GREEN);
+		Core::debug.print("}\n");
 	}
 
 	GLuint PostProcess::EndRenderLayer() {

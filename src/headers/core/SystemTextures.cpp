@@ -22,8 +22,8 @@ namespace Core {
 
 	bool _SystemTextures::load() {
 		try {
-			//            .................................................................Done
-			std::cout << "Load Global Textures.............................................";
+			Core::debug.log("Load Global Textures {\n");
+			Core::debug.logIncreaseIndent();
 			MemBlock memBlock;
 			std::string theImage;
 			texture.Begin(uiNumTextures);
@@ -44,10 +44,13 @@ namespace Core {
 					if (memBlock.buffer[i+d]!=0) theImage+=(unsigned char)memBlock.buffer[i+d];
 					else break;
 
+				Core::debug.log("["+std::to_string(theId)+"] "+theImage+"\n", Core::debug().YELLOW);
+
 				texture.Load(sTexDir, theImage, theId);
 				iIDVerify++;
 			}
-			std::cout << "Done" << std::endl;
+			Core::debug.logDecreaseIndent();
+			Core::debug.log("}\n");
 		}
 		catch(std::string &s) {
 			std::cout << "!!! ERROR !!! Internal exception: " << s << std::endl;

@@ -445,19 +445,21 @@ namespace Core {
 		std::string GUI::activeGUI = "";
 
 		GUI::GUI() {
-			std::cout << "Construct GUI System.............................................";
+			Core::debug.log("Construct GUI System {");
 			std::srand((unsigned) time(0));
 			activeGUI = "";
 			guis.setSource("GUI");
-			std::cout << "Done" << std::endl;
+			Core::debug.print(" Done ", Core::debug().GREEN);
+			Core::debug.print("}\n");
 		}
 
 		GUI::~GUI() {
-			std::cout << "Destroy GUI System...............................................";
+			Core::debug.log("Destroy GUI System {");
 			for (auto & gui : guis) {
 				delete gui;
 			}
-			std::cout << "Done" << std::endl;
+			Core::debug.print(" Done ", Core::debug().GREEN);
+			Core::debug.print("}\n");
 		}
 
 		/** ******************************************************************************************************************************

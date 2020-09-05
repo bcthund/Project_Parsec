@@ -5,40 +5,41 @@
 
 namespace Core {
 	_Lights::_Lights() {
-		//            .................................................................Done
-		std::cout << "Construct Lights System..........................................";
+		Core::debug.log("Construct Lights System {");
+
 		uiNumLights = 32;
 		data = new _LightData[uiNumLights];
 		uiCurrentLights = 0;
-		std::cout << "Done" << std::endl;
+
+		Core::debug.print(" Done ", Core::debug().GREEN);
+		Core::debug.print("}\n");
 	}
 
 	_Lights::~_Lights() {
-		//            .................................................................Done
-		std::cout << "Destroy Lights System............................................";
+		Core::debug.log("Destroy Lights System {");
 		delete[] data;
-		std::cout << "Done" << std::endl;
+		Core::debug.print(" Done ", Core::debug().GREEN);
+		Core::debug.print("}\n");
 	}
 
 	void _Lights::init() {
-		//            .................................................................Done
-		std::cout << sOffset << "Init Lights System...............................................";
+		Core::debug.log("Init Lights System {");
 		for(uint i=0;i<uiNumLights;i++) {
 			data[i].bLoaded = false;
 			data[i].type = LIGHT_NONE;
 		}
-		std::cout << "Done" << std::endl;
+		Core::debug.print(" Done ", Core::debug().GREEN);
+		Core::debug.print("}\n");
 	}
 
 	void _Lights::load() {
-		//            .................................................................Done
-		std::cout << sOffset << "Load Lights System...............................................";
-		std::cout << "Nothing to do" << std::endl;
+		Core::debug.log("Load Lights System {");
+		Core::debug.print(" Done ", Core::debug().GREEN);
+		Core::debug.print("}\n");
 	}
 
 	void _Lights::calc(float fScale) {
-		//            .................................................................Done
-		std::cout << sOffset << "Calc Lights System...............................................";
+		Core::debug.log("Calc Lights System {");
 
 		// Add player light
 		// Player light should ALWAYS be light 0 and 1
@@ -73,7 +74,8 @@ namespace Core {
 					Core::Vector3f(0.1, 0.00018, 0.0000625),	// attentuation scaling
 					LIGHT_SPOT_SOFT);
 
-		std::cout << "Nothing to do" << std::endl;
+		Core::debug.print(" Done ", Core::debug().GREEN);
+		Core::debug.print("}\n");
 	}
 
 	// Default Attenuation from T+E: 0.0500007, 0.000700051, 5.88997e-05

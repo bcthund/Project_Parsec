@@ -44,6 +44,7 @@ namespace Core {
 	extern class _ParticleEmitter		*	particles;
 //	extern class Stipple				*	stipple;
 	extern class Stipple				stipple;
+	extern class _AnimationSys			animation;
 
 	extern struct GameVars				*	gameVars;
 

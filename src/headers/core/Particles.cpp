@@ -41,8 +41,9 @@ namespace Core {
 	 */
 	bool _Particles::init() {
 		if (!bTexLoaded) {
-			//std::cout << "[Satellite]";
-			std::cout << sOffset << "Init Particle....................................................";
+			Core::debug.log("Init Particles {\n");
+			Core::debug.logIncreaseIndent();
+
 			MemBlock memBlock;
 			std::string theImage;
 			int iCount = 0;
@@ -67,7 +68,8 @@ namespace Core {
 
 			tex.Begin(iCount);
 			for(int n=0; n<iCount; n++) {
-				if (bDebug) std::cout << "[" << imageData[n].id << ", " << imageData[n].image << "]";
+				//if (bDebug) std::cout << "[" << imageData[n].id << ", " << imageData[n].image << "]";
+				Core::debug.log("["+std::to_string(imageData[n].id)+"] "+imageData[n].image+"\n", Core::debug().YELLOW);
 				tex.Load(TEXDIR, imageData[n].image, imageData[n].id, true, (GLenum)GL_NEAREST, (GLenum)GL_REPEAT);
 			}
 
@@ -76,7 +78,10 @@ namespace Core {
 			_ParticleDataOld::iLoadedTextues = tex.iLoaded;
 
 			bTexLoaded = true;
-			std::cout << "Done" << std::endl;
+
+			Core::debug.logDecreaseIndent();
+			Core::debug.log("}\n");
+
 			return true;
 		}
 		return false;
@@ -86,7 +91,7 @@ namespace Core {
 	 * load
 	 */
 	bool _Particles::add(_ParticleDataOld newData)   {
-		std::cout << sOffset << "[" << newData.sName << "]" << std::endl;
+//		std::cout << sOffset << "[" << newData.sName << "]" << std::endl;
 
 //			data[iNumObjects] = _ParticleDataOld(newData);
 //			map.insert(make_pair(newData.sName, iNumObjects));
@@ -116,7 +121,7 @@ namespace Core {
 	}
 
 	bool _Particles::calc(uint id, bool bUpdate/*, bool bMultiSample, uint uiSamples*/)   {
-		std::cout << sOffset << "[" << data.getName(id) << "]" << std::endl;
+//		std::cout << sOffset << "[" << data.getName(id) << "]" << std::endl;
 
 
 		// ==================
@@ -393,16 +398,10 @@ namespace Core {
 //	}
 
 	void _Particles::draw(std::string name) {
-
-		std::cout << " - Drawing " << name << std::endl;
-
 		draw(data.getID(name));
 	}
 
 	void _Particles::draw(int id) {
-
-		std::cout << "   - Drawing [" << id << "]";
-
 		glActiveTexture(GL_TEXTURE0);
 		//glDisable(GL_CULL_FACE);
 
