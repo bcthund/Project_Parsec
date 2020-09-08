@@ -264,7 +264,8 @@ namespace Core {
 	template <typename T>
 	class t_AnimationInstance {
 		public:
-			t_VectorMap<T*> list;
+			//t_VectorMap<T*> list;
+			t_UMap<T*> list;
 
 			/*
 			 * size/x,y...........Specifies the size of the animation
@@ -300,7 +301,7 @@ namespace Core {
 
 	template <typename T> t_AnimationInstance<T>::~t_AnimationInstance() {
 		for(auto &item : list) {
-			delete item;
+			delete item.second;
 		}
 	}
 
