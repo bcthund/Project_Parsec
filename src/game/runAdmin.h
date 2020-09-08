@@ -273,6 +273,7 @@ void _Admin::init() {
 		Core::gui["GameMenu"].add("Window 25", cMaster);
 		Core::gui["GameMenu"].add("Window 26", cMaster);
 
+		cMaster.enableScissor();
 		//cMaster.setTextured();
 		cMaster.setTexture(Core::sysTex->TEX_GRASSYROCK, Core::sysTex->get());
 		cMaster.setTextureScrollRate(2.0f);

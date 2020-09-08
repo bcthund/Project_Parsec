@@ -49,7 +49,7 @@ namespace Core {
 //					static Core::GameSys::AnimationSys *animation;								///< Outdated animation system (but works)
 
 					// TODO: Make static (one map for all animations)
-					Core::t_AnimationInstance<Core::t_AnimationItem2D>	animation2;				///< New animation system
+					static Core::t_AnimationInstance<Core::t_AnimationItem2D>	animationInstance;	///< New animation system
 
 					Window	*win;
 					Label	*label;																///< Object title, displayed as legend title bar
@@ -58,7 +58,7 @@ namespace Core {
 					void updateInput();															///< Update internal state and/or local values from keyboard/mouse input
 			};
 
-//			Core::GameSys::AnimationSys *Animation::animation = new Core::GameSys::AnimationSys(*Core::audioSys);
+			Core::t_AnimationInstance<Core::t_AnimationItem2D> Animation::animationInstance;
 
 			Animation::Animation() {
 				label			= nullptr;
@@ -157,8 +157,8 @@ namespace Core {
 				// ==========================================
 				//	Setup animation
 				// ------------------------------------------
-				animation2.add(this->id, con->sAnimationImage, 1, 1, con->iLoop, con->iUpdateRate, con->iSample);
-				if(con->bStartAnimation) animation2.start(this->id);
+				animationInstance.add(this->id, con->sAnimationImage, 1, 1, con->iLoop, con->iUpdateRate, con->iSample);
+				if(con->bStartAnimation) animationInstance.start(this->id);
 
 				// ==========================================
 				//	Finalize
@@ -169,12 +169,12 @@ namespace Core {
 
 			void Animation::update() {
 				// Update any possible changes
-				animation2[this->id].rate = con->iUpdateRate;
-				animation2[this->id].iSample = con->iSample;
-				animation2[this->id].loop = con->iLoop;
-				animation2[this->id].id = animation[con->sAnimationImage].id;
+				animationInstance[this->id].rate = con->iUpdateRate;
+				animationInstance[this->id].iSample = con->iSample;
+				animationInstance[this->id].loop = con->iLoop;
+				animationInstance[this->id].id = animation[con->sAnimationImage].id;
 
-				animation2.update(this->id);
+				animationInstance.update(this->id);
 			}
 
 			void Animation::updateObjectState(iState eExternState) {
@@ -254,15 +254,15 @@ namespace Core {
 
 			void Animation::start() {
 				//if(!animation2[this->id].bActive ||
-				animation2.start(this->id);
+				animationInstance.start(this->id);
 			}
 
 			void Animation::pause() {
-				animation2.pause(this->id);
+				animationInstance.pause(this->id);
 			}
 
 			void Animation::stop() {
-				animation2.stop(this->id);
+				animationInstance.stop(this->id);
 			}
 
 			void Animation::exec(iState eExternState) {
@@ -317,7 +317,7 @@ namespace Core {
 							matrix->Scale(vSize.x, vSize.y, 1);
 
 							matrix->SetTransform();
-							animation2.draw(this->id);
+							animationInstance.draw(this->id);
 						matrix->Pop();
 
 //						colors.PopFront();

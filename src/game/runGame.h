@@ -21,7 +21,7 @@ class _Game {
 		//Core::GameSys::_O2D * o2d;
 		//Core::GameSys::_O3D * o3d;
 		Core::GameSys::_WorldMap	* world;
-		Core::GameSys::AnimationSys * animation;
+//		Core::GameSys::AnimationSys * animation;
 		Core::t_AnimationInstance<Core::t_AnimationItem3D>	animation2;
 		//Core::GameSys::Atmosphere atmosphere;
 		//Core::OCCLUSION	occlusion;
@@ -63,7 +63,7 @@ class _Game {
 				bOneShot[n] = false;
 			}
 
-			animation = new Core::GameSys::AnimationSys(/*Core::matrix, */*Core::audioSys);
+//			animation = new Core::GameSys::AnimationSys(/*Core::matrix, */*Core::audioSys);
 
 			keyboard.calc(Core::_Keyboard::KEYTYPE_REPEAT);
 			keyboard.calc(SDLK_c, Core::_Keyboard::KEYTYPE_ONESHOT);
@@ -104,7 +104,7 @@ class _Game {
 			//delete o2d;
 			delete world;
 			//delete o3d;
-			delete animation;
+//			delete animation;
 		}
 };
 
@@ -124,9 +124,9 @@ bool _Game::load() {
 	Core::mouse->init(1, Core::gameVars->player.active->transform.pos);
 
 	//animation(Core::audioSys);
-	animation->init();
-	animation->load();
-	animation->calc();
+//	animation->init();
+//	animation->load();
+//	animation->calc();
 
 	//animation->startAnimation(128, 128, Core::gameVars->player.active->transform.pos, Core::Vector3f(100, 0, 100), 0, 10, 100, 0, false);
 //	animation2.add("World Animation Test", "slash_00.png", 128, 128, -1, 100, -1).setCameraTarget(&Core::gameVars->player.active->transform.pos, Core::Vector3f(100, 0, 100));
@@ -462,7 +462,7 @@ void _Game::Update() {
 	 */
 //	Core::mouse->draw();
 	Core::profiles->runProfile(Core::profiles->builtIn.RunGame_Animation, true);
-	animation->drawWorld(Core::gameVars->screen.fScale);		// Draw all animations to WORLD
+//	animation->drawWorld(Core::gameVars->screen.fScale);		// Draw all animations to WORLD
 //	animation2["World Animation Test"].setCameraTarget(&Core::gameVars->player.active->transform.pos, Core::Vector3f(100, 0, 100));
 //	animation2["World Animation Test"].setCameraTarget(&Core::gameVars->player.active->transform.pos, Core::Vector3f(350, 50, -100));
 
