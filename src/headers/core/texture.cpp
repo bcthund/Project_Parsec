@@ -26,6 +26,26 @@ namespace Core {
 	   return true;
 	}
 
+//	bool Texture::Add(std::string cDir, std::string cFile, int uiLayer, bool bAnisotropy, GLenum eFilter, GLenum eWrap) {
+//
+//		uiRequestedLayers
+//
+//	   if (uiRequestedLayers <= 0) return false;
+//	   uiNumLayers = uiRequestedLayers;
+//
+//	   bFinished = new bool[uiNumLayers];
+//	   for (uint i=0; i < uiNumLayers; i++) bFinished[i]=false;
+//
+//	   glImage = new GLuint[uiNumLayers];
+//	   glGenTextures(uiNumLayers, glImage);
+//
+//	   glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &fLargest);
+//
+//	   iLoaded = 0;
+//	   bBeginCalled = true;
+//	   return true;
+//	}
+
 	/*
 	 * eWRap = GL_CLAMP_TO_EDGE, GL_CLAMP_TO_BORDER, GL_MIRRORED_REPEAT, GL_REPEAT, or GL_MIRROR_CLAMP_TO_EDGE
 	 */

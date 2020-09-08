@@ -2050,34 +2050,44 @@ namespace Core {
 		 *
 		 * ****************************************************************************************************************************** */
 		class Props_Animation :	virtual public Props_Window {
-
-			//friend class Object::Label;
 			friend class Object::Animation;
 
 			private:
 
 			public:
 				Props_Label	propLabel;
-				int iAnimation;
-//				GUI_ColorBHA colorA;		///< Color of line start point
-//				GUI_ColorBHA colorB;		///< Color of line end point
-//				Vector2i vPointA;			///< Starting point relative to origin and anchor
-//				Vector2i vPointB;			///< Ending point relative to first point
-//				int iLineWidth;					///< Line width
+				std::string sAnimationImage;
+				int iUpdateRate;
+				int iLoop;
+				int iSample;
+				bool bShowBackground;
+				bool bShowLabel;
+				bool bStartAnimation;
 
-//				void setLineWidth(int normal, int hover) {	borderNormal = normal; borderHover = hover;		}
+				void setAnimation(std::string s)		{	sAnimationImage = s;	}
+				void setUpdateRate(int i)				{	iUpdateRate = i;		}
+				void setLoops(int i)					{	iLoop = i;				}
+				void setSample(int i)					{	iSample = i;			}
+				void showBackground(bool b=true)		{	bShowBackground = b;	}
+				void showLabel(bool b=true)				{	bShowLabel = b;			}
+				void startAnimation(bool b=true)		{	bStartAnimation = b;	}
 
 				Props_Animation() {
-					iAnimation = 0;
+					sAnimationImage = "";
+					iUpdateRate		= 100;
+					iLoop			= -1;
+					iSample			= -1;
+					bShowBackground	= false;
+					bShowLabel		= false;
+					bStartAnimation	= false;
+
 					setOrigin(CONSTRAIN_CENTER);
 					setAnchor(CONSTRAIN_CENTER);
 					setWidth(200, SIZE_CONSTRAINT_ABSOLUTE);
 					setHeight(200, SIZE_CONSTRAINT_ABSOLUTE);
 					setBorder(1, 1);
 					setPadding(0);
-//					iLineWidth = 2;
-//					borderNormal = 2;
-//					borderHover = 2;
+
 					colorBack.base			= &colors[colors().Gray60];
 					colorBack.active		= &colors[colors().Gray60];
 					colorBack.highlight		= &colors[colors().Gray60];

@@ -17,6 +17,16 @@
 namespace Core {
 
 	/*
+	 	 TODO: Fix texture system to allow add/remove with vectormap
+
+	 	 [ ] glImage should be a VectorMap
+	 	 [ ] deprecate uiNumLayers
+	 	 [ ]
+
+
+	 */
+
+	/*
 	* Usage:
 	*	Texture <name>;
 	*		Declare a new texture container of <name>
@@ -60,6 +70,7 @@ namespace Core {
 		public:
 			int		iLoaded;			// Number of textures loaded, no relation to texture id number (id comes from file)
 			bool Begin(int uiRequestedLayers);
+//			bool Add(std::string cDir, std::string cFile, int uiLayer, bool bAnisotropy=false, GLenum eFilter=GL_LINEAR, GLenum eWrap=GL_REPEAT);
 //			bool Load(std::string cDir, std::string cFile, GLuint uiLayer, bool bAnisotropy=false, GLenum eFilter=GL_LINEAR, GLenum eWrap=GL_CLAMP_TO_EDGE);
 			bool Load(std::string cDir, std::string cFile, int uiLayer, bool bAnisotropy=false, GLenum eFilter=GL_LINEAR, GLenum eWrap=GL_REPEAT);
 //			void CreateAtlas(int iWidth, int iHeight);

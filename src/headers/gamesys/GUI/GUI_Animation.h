@@ -35,56 +35,34 @@ namespace Core {
 					Animation(Props &p,std::string n, Props_Animation &c);
 					Animation(Props &p,std::string n, Props_Animation *c);
 					~Animation();
-//					Props_Window& operator[](std::string label);
 
 //					ToolTip toolTip;															///< Tooltip info for this object
 					void init();																///< Initialize thie object and its children
 					void update();																///< Update local constraints, values, etc.
 					void exec(iState eExternState=STATE_NONE);									///< Execute this object, draw if initialized
+					void start();
+					void pause();
+					void stop();
 //					void execToolTip();															///< Execute the tooltip, called externally
-//					void addItem(std::string label, int iValue);								///< Add a pie/legend item using a specific value
-//					void addItem(std::string label, int iValue, Color &base, Color &hover);		///< Add a pie/legend item using a specific value and use custom color
-//					void addItem(std::string label, int *iValuePtr);							///< Add a pie/legend item using a pointer to a value
-//					void addItem(std::string label, int *iValuePtr, Color &base, Color &hover);	///< Add a pie/legend item using a pointer to a value and use custom color
-//					void addItems(t_PieItems vItems);											///< Add a list of items in a single call
-//					void removeItem(std::string label);											///< Remove an item from the pie/legend
-//					t_PieItem& getItem(std::string label);										///< Get a pie/legend item reference, so it can be modified/updated externally
 
 				protected:
-					static Core::GameSys::AnimationSys *animation;
-					static bool bAnimationLoaded;
-//					VAO vao;																	///< Definition for a single 1% triangle wedge
-//					Core::t_VectorMap<t_PieItem*> items;										///< List of pie/legend items
-//					Window	*legend;															///< Legend window container
+//					static Core::GameSys::AnimationSys *animation;								///< Outdated animation system (but works)
+
+					// TODO: Make static (one map for all animations)
+					Core::t_AnimationInstance<Core::t_AnimationItem2D>	animation2;				///< New animation system
+
 					Window	*win;
 					Label	*label;																///< Object title, displayed as legend title bar
-//					Label	*percent;															///< Object to show percent value for highlighted wedge
-//					Line	*line;
-//					static Timer blink;															///< Timer for blinking wedge highlight
-//					static bool	bBlinkState;													///< Current toggle state of blinking wedge highlight
-//					int iTotal;																	///< Total of all items, used for auto values
-//					float fX, fY;
 
 					void updateObjectState(iState eExternState);								///< Update the internal state of the object (eObjectState)
 					void updateInput();															///< Update internal state and/or local values from keyboard/mouse input
 			};
 
-			Core::GameSys::AnimationSys *Animation::animation = new Core::GameSys::AnimationSys(*Core::audioSys);
-			bool Animation::bAnimationLoaded = false;
-
-//			Timer Animation::blink;
-//			bool  Animation::bBlinkState;
+//			Core::GameSys::AnimationSys *Animation::animation = new Core::GameSys::AnimationSys(*Core::audioSys);
 
 			Animation::Animation() {
-//				legend			= nullptr;
 				label			= nullptr;
 				win				= nullptr;
-//				percent			= nullptr;
-//				line			= nullptr;
-//				bBlinkState		= false;
-//				iTotal			= 0;
-//				fX				= 0.0f;
-//				fY				= 0.0f;
 			}
 
 			Animation::Animation(std::string n, Props_Animation &c) {
@@ -98,15 +76,8 @@ namespace Core {
 				*con			= c;
 				if(con->text == "") con->text = n;
 
-//				legend			= nullptr;
 				label			= nullptr;
 				win				= nullptr;
-//				percent			= nullptr;
-//				line			= nullptr;
-//				bBlinkState		= false;
-//				iTotal			= 0;
-//				fX				= 0.0f;
-//				fY				= 0.0f;
 			}
 
 			Animation::Animation(std::string n, Props_Animation *c) {
@@ -119,15 +90,8 @@ namespace Core {
 				con				= c;
 				if(con->text == "") con->text = n;
 
-//				legend			= nullptr;
 				label			= nullptr;
 				win				= nullptr;
-//				percent			= nullptr;
-//				line			= nullptr;
-//				bBlinkState		= false;
-//				iTotal			= 0;
-//				fX				= 0.0f;
-//				fY				= 0.0f;
 			}
 
 			Animation::Animation(Props &p, std::string n, Props_Animation &c) {
@@ -141,15 +105,8 @@ namespace Core {
 				*con			= c;
 				if(con->text == "") con->text = n;
 
-//				legend			= nullptr;
 				label			= nullptr;
 				win				= nullptr;
-//				percent			= nullptr;
-//				line			= nullptr;
-//				bBlinkState		= false;
-//				iTotal			= 0;
-//				fX				= 0.0f;
-//				fY				= 0.0f;
 			}
 
 			Animation::Animation(Props &p, std::string n, Props_Animation *c) {
@@ -162,44 +119,16 @@ namespace Core {
 				con				= c;
 				if(con->text == "") con->text = n;
 
-//				legend			= nullptr;
 				label			= nullptr;
 				win				= nullptr;
-//				percent			= nullptr;
-//				line			= nullptr;
-//				bBlinkState		= false;
-//				iTotal			= 0;
-//				fX				= 0.0f;
-//				fY				= 0.0f;
 			}
 
 			Animation::~Animation() {
 				if(bLocalCon && con != nullptr) delete con;
-//				if(legend != nullptr) delete legend;
 				if(label != nullptr) delete label;
 			}
 
-//			Props_Window& Animation::operator[](std::string label) {
-//				return *items[label]->colorBox->con;
-//			}
-
 			void Animation::init() {
-				// Initialize
-				if(!bAnimationLoaded) {
-					animation->init();
-					animation->load();
-					animation->calc();
-					bAnimationLoaded = true;
-
-					// Start temporary looping animation
-//					animation->startAnimation(128, 128, Vector3f(), Core::Vector3f(), 0, 10000, 100, 999, false);
-					animation->startAnimation(200, 200, Vector3f(), Core::Vector3f(), 1, 10000, 10, 999, false);
-//					animation->startAnimation(1000, 1000, Vector3f(), Core::Vector3f(), 0, 10000, 100, 999, false);
-				}
-
-				// TEMPORARY
-				con->iAnimation = 1;
-
 				// ==========================================
 				//	Preliminary setup
 				// ------------------------------------------
@@ -223,8 +152,13 @@ namespace Core {
 				//	Setup legend title
 				// ------------------------------------------
 				label = new Label(*win->con, name, &con->propLabel);
-//				label = new Label(*con, name, &con->propLabel);
 				label->init();
+
+				// ==========================================
+				//	Setup animation
+				// ------------------------------------------
+				animation2.add(this->id, con->sAnimationImage, 1, 1, con->iLoop, con->iUpdateRate, con->iSample);
+				if(con->bStartAnimation) animation2.start(this->id);
 
 				// ==========================================
 				//	Finalize
@@ -234,7 +168,13 @@ namespace Core {
 			}
 
 			void Animation::update() {
+				// Update any possible changes
+				animation2[this->id].rate = con->iUpdateRate;
+				animation2[this->id].iSample = con->iSample;
+				animation2[this->id].loop = con->iLoop;
+				animation2[this->id].id = animation[con->sAnimationImage].id;
 
+				animation2.update(this->id);
 			}
 
 			void Animation::updateObjectState(iState eExternState) {
@@ -257,7 +197,7 @@ namespace Core {
 //					}
 //					else mState = Core::_Mouse::MOUSE_NONE;
 
-////					// Object specific logic
+//					// Object specific logic
 //					if(enabled()) {
 //						if(con->scroll.isScrollable() && (mState&Core::_Mouse::MOUSE_HOVER)) {
 //							updateScrollMouse();
@@ -312,6 +252,19 @@ namespace Core {
 //				}
 			}
 
+			void Animation::start() {
+				//if(!animation2[this->id].bActive ||
+				animation2.start(this->id);
+			}
+
+			void Animation::pause() {
+				animation2.pause(this->id);
+			}
+
+			void Animation::stop() {
+				animation2.stop(this->id);
+			}
+
 			void Animation::exec(iState eExternState) {
 				if(bInit) {
 					if(con->visibility && ((parent!=nullptr && parent->visibility) || (parent==nullptr))) {
@@ -338,9 +291,10 @@ namespace Core {
 						else con->exec();
 
 						// ==========================================
-						//	Draw Background
+						//	Draw Supplemental
 						// ------------------------------------------
-//						if(con->bShowBackground) win.exec(eObjectState);
+						if(con->bShowLabel) label->exec();
+						if(con->bShowBackground) win->exec(STATE_NONE);
 
 						// ==========================================
 						//	Set Color
@@ -353,25 +307,19 @@ namespace Core {
 //						else if(eObjectState&STATE_ACTIVE)		colors.PushFront(*con->colorText.highlight);
 //						else 									colors.PushFront(*con->colorText.base);
 
-						// ==========================================
-						//	Draw Objects
-						// ------------------------------------------
-						label->exec();
-						win->exec(STATE_NONE);
+						matrix->Push();
+							Vector2f vPos;
+							if(con->scroll.isScrollable() && (parent!=nullptr && parent->scroll.getEnabled())) vPos = con->getScrollPos();
+							else vPos = con->getPos();
+							matrix->Translate( vPos.x, vPos.y, 0.0 );
 
-						//animation->draw(0);
+							Vector2f vSize = con->getSize();
+							matrix->Scale(vSize.x, vSize.y, 1);
 
-//						con->iAnimation = 0;
-//						animation->draw(*con);
+							matrix->SetTransform();
+							animation2.draw(this->id);
+						matrix->Pop();
 
-//						con->iAnimation = 1;
-						animation->draw(*con);
-						//if(con->bShowBackground) win.exec(eObjectState);
-
-
-
-//						textSys->draw(con, con->text, CONSTRAIN_CENTER);
-//						textSys->draw(con, con->text);
 //						colors.PopFront();
 					}
 				}

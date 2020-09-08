@@ -267,8 +267,8 @@ void _Admin::init() {
 		Core::gui["GameMenu"].add("Window 20", cMaster);
 //		cMaster.disableScissor();
 		//Core::gui["GameMenu"].add("Window 22", cMaster);
-		cMaster.disableScissor();
 		Core::gui["GameMenu"].add("Window 23", cMaster);
+		cMaster.disableScissor();
 		Core::gui["GameMenu"].add("Window 24", cMaster);
 		Core::gui["GameMenu"].add("Window 25", cMaster);
 		Core::gui["GameMenu"].add("Window 26", cMaster);
@@ -2063,11 +2063,84 @@ void _Admin::init() {
 		using namespace Core::GUI::Object;
 
 		Props_Animation prop;
-//		prop.setOrigin(CONSTRAIN_CENTER);
-//		prop.setAnchor(CONSTRAIN_CENTER);
-//		prop.setWidth(200, SIZE_CONSTRAINT_ABSOLUTE);
-//		prop.setHeight(200, SIZE_CONSTRAINT_ABSOLUTE);
+		prop.setOrigin(CONSTRAIN_TOP);
+		prop.setAnchor(CONSTRAIN_TOP);
+		prop.setY(-50);
+		prop.setWidth(200, SIZE_CONSTRAINT_ABSOLUTE);
+		prop.setHeight(200, SIZE_CONSTRAINT_ABSOLUTE);
+		prop.setAnimation(Core::animation["rotate.png"].image);
+		prop.setUpdateRate(10);
+		prop.setLoops(-1);
+		prop.setSample(-1);
+		prop.startAnimation(true);
+		prop.showBackground();
+		prop.showLabel();
 		Core::gui["GameMenu"]["Window 23"].Animation.add("Animation 0", prop);
+
+		prop.modY(-250);
+		prop.setAnimation(Core::animation["slash_00.png"].image);
+		prop.setUpdateRate(100);
+		prop.setLoops(1);
+		prop.setSample(0);
+		prop.startAnimation(false);
+		prop.showBackground();
+		prop.showLabel();
+		Core::gui["GameMenu"]["Window 23"].Animation.add("Animation 1", prop);
+
+		// ===============================
+		// Start animation oneshot
+		Core::GUI::Props_Button cButton;
+		cButton.setOrigin(Core::GUI::CONSTRAIN_BOTTOM_LEFT);
+		cButton.setAnchor(Core::GUI::CONSTRAIN_BOTTOM_LEFT);
+		cButton.setWidth(200, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+		cButton.setHeight(20, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+		cButton.setBorder(1, true);
+		cButton.setRadius(10);
+		cButton.setButtonType(Core::GUI::BUTTON_ONESHOT);
+		cButton.setPos(0, 5);
+		cButton.setText("Start Animation");
+		cButton.setToolTip("This button will start a temporary animation.");
+		Core::gui["GameMenu"]["Window 23"].Button.add("Start Animation", false, cButton);
+
+		// ===============================
+		// Toggle animation
+		cButton.setOrigin(Core::GUI::CONSTRAIN_BOTTOM_RIGHT);
+		cButton.setAnchor(Core::GUI::CONSTRAIN_BOTTOM_RIGHT);
+		cButton.setWidth(200, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+		cButton.setHeight(20, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+		cButton.setBorder(1, true);
+		cButton.setRadius(10);
+		cButton.setButtonType(Core::GUI::BUTTON_TOGGLE);
+		cButton.setPos(0, 5);
+		cButton.setText("Toggle Animation");
+		cButton.setToolTip("This button will enable an animation"\
+						   "or pause it.");
+		Core::gui["GameMenu"]["Window 23"].Button.add("Toggle Animation", true, cButton);
+
+		// ===============================
+		// Animation 0 update rate slider
+		Core::GUI::Props_Slider prop2;
+		prop2.setOrigin(Core::GUI::CONSTRAIN_RIGHT);
+		prop2.setAnchor(Core::GUI::CONSTRAIN_RIGHT);					// Center of button
+		prop2.setWidth(6, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+		prop2.setHeight(300, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+		prop2.setOrientation(Core::GUI::SLIDER_VERTICAL);
+		prop2.control.setWidth(20, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+		prop2.control.setHeight(10, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+		prop2.showField();
+		prop2.field.setOrigin(Core::GUI::CONSTRAIN_BOTTOM);
+		prop2.field.setAnchor(Core::GUI::CONSTRAIN_TOP);
+		prop2.showLabel();
+		prop2.label.setOrigin(Core::GUI::CONSTRAIN_TOP);
+		prop2.label.setAnchor(Core::GUI::CONSTRAIN_BOTTOM);
+		prop2.setPrecision(5);
+		prop2.setX(-40);
+		prop2.setY(0);
+		prop2.setMinMax(0, 100);
+		prop2.setStep(1.0f, 10.0f, 100.0f);
+		prop2.setText("Update Rate");
+		Core::gui["GameMenu"]["Window 23"].Slider.add("Update Rate", &Core::gui["GameMenu"]["Window 23"].Animation["Animation 0"].con->iUpdateRate, prop2);
+
 
 		bOneShot[48] = true;
 	}
@@ -2101,8 +2174,19 @@ void _Admin::run() {
 //		int iVal = std::get<int>(Core::gui["GameMenu"]["Window 20"].Slider2D["2D Slider"].getVariant());
 //		Core::debug.log(std::to_string(iVal));
 
+		if(Core::gui["GameMenu"]["Window 23"].Button["Toggle Animation"].getState()) {
+			Core::gui["GameMenu"]["Window 23"].Animation["Animation 0"].start();
+		}
+		else {
+			Core::gui["GameMenu"]["Window 23"].Animation["Animation 0"].pause();
+		}
+
+		if(Core::gui["GameMenu"]["Window 23"].Button["Start Animation"].getState()) {
+			Core::gui["GameMenu"]["Window 23"].Animation["Animation 1"].start();
+		}
+
 		if(Core::gui["GameMenu"]["Window 19"].Button["Erase Test"].getState()) {
-			Core::debug.log("ERASING 'Test Object 5' from 'ComboBox2'");
+			Core::debug.log("ERASING 'Test Object 5' from 'ComboBox2'\n");
 			Core::gui["GameMenu"]["Window 19"].ComboBox["ComboBox2"].removeItem("Test Object 5");
 		}
 
