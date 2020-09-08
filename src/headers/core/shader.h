@@ -216,18 +216,17 @@ namespace Core {
 //			};
 
 			Shader_System(Matrix_System &m) {
+				Core::debug.log("Construct Shaders {");
 				matrix = &m;
-				//pos = nullptr;
-//				color = nullptr;
 				debug = false;		// Show all shader loading data
 				debug2 = true;		// Show only shader errors
+				Core::debug.print(" Done ", Core::debug().YELLOW);
+				Core::debug.print("}\n");
 			}
 			~Shader_System() {
-				//            .................................................................Done
-				std::cout << "Destroy Shaders..................................................";
-//				delete pos;
-//				delete color;
-				std::cout << "Done" << std::endl;
+				Core::debug.log("Destroy Shaders {");
+				Core::debug.print(" Done ", Core::debug().YELLOW);
+				Core::debug.print("}\n");
 			}
 			void SetMatrixSystem(Matrix_System &m) { matrix = &m; }
 			bool debug;

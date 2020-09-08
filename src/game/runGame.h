@@ -21,8 +21,8 @@ class _Game {
 		//Core::GameSys::_O2D * o2d;
 		//Core::GameSys::_O3D * o3d;
 		Core::GameSys::_WorldMap	* world;
-
-		Core::GameSys::AnimationSys * animation;
+//		Core::GameSys::AnimationSys * animation;
+		Core::t_AnimationInstance<Core::t_AnimationItem3D>	animation2;
 		//Core::GameSys::Atmosphere atmosphere;
 		//Core::OCCLUSION	occlusion;
 		//Core::_Lights lights;
@@ -63,7 +63,7 @@ class _Game {
 				bOneShot[n] = false;
 			}
 
-			animation = new Core::GameSys::AnimationSys(/*Core::matrix, */*Core::audioSys);
+//			animation = new Core::GameSys::AnimationSys(/*Core::matrix, */*Core::audioSys);
 
 			keyboard.calc(Core::_Keyboard::KEYTYPE_REPEAT);
 			keyboard.calc(SDLK_c, Core::_Keyboard::KEYTYPE_ONESHOT);
@@ -104,7 +104,7 @@ class _Game {
 			//delete o2d;
 			delete world;
 			//delete o3d;
-			delete animation;
+//			delete animation;
 		}
 };
 
@@ -124,9 +124,15 @@ bool _Game::load() {
 	Core::mouse->init(1, Core::gameVars->player.active->transform.pos);
 
 	//animation(Core::audioSys);
-	animation->init();
-	animation->load();
-	animation->calc();
+//	animation->init();
+//	animation->load();
+//	animation->calc();
+
+	//animation->startAnimation(128, 128, Core::gameVars->player.active->transform.pos, Core::Vector3f(100, 0, 100), 0, 10, 100, 0, false);
+//	animation2.add("World Animation Test", "slash_00.png", 128, 128, -1, 100, -1).setCameraTarget(&Core::gameVars->player.active->transform.pos, Core::Vector3f(100, 0, 100));
+	animation2.add("World Animation Test", "rotate.png", 128, 128, -1, 10, -1);
+	animation2.start("World Animation Test");
+
 
 	vDebugAttDelta.x = 0.0001;
 	vDebugAttDelta.y = 0.000001 * (1/Core::gameVars->screen.fScale);
@@ -415,21 +421,6 @@ void _Game::Update() {
 
 
 
-	// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-	// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-	// 			Animations
-	// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-	// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-	/*
-	 * Only draws after o3d draws bounding boxes?
-	 * Only draws in color of last bounding box drawn?
-	 * Possibly not using correct shader? Using last used shader?
-	 */
-//	Core::mouse->draw();
-	Core::profiles->runProfile(Core::profiles->builtIn.RunGame_Animation, true);
-	animation->drawWorld(Core::gameVars->screen.fScale);		// Draw all animations to WORLD
-	Core::profiles->runProfile(Core::profiles->builtIn.RunGame_Animation, false);
-
 		// Draw test Skeleton - This will draw the joint and all of its children
 //		Core::profiles->runProfile(Core::profiles->builtIn.RunGame_Skeleton);
 //		Core::skeleton->children[0]->SetRotation(vDebugRotation);
@@ -440,8 +431,6 @@ void _Game::Update() {
 	// Flares After Scenery, before PP and GUI
 	// Can draw here if bold flares wanted
 	//	world->atmosphere->draw(world->atmosphere->MODE_FLARES, "Sun");
-
-
 
 	// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 	// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -460,6 +449,29 @@ void _Game::Update() {
 		Core::particles->draw();	// Draw with distance sorting
 	Core::matrix->Pop();
 	Core::profiles->runProfile(Core::profiles->builtIn.RunGame_Particles, false);
+
+	// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+	// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+	// 			Animations
+	// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+	// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+	/*
+	 * Only draws after o3d draws bounding boxes?
+	 * Only draws in color of last bounding box drawn?
+	 * Possibly not using correct shader? Using last used shader?
+	 */
+//	Core::mouse->draw();
+	Core::profiles->runProfile(Core::profiles->builtIn.RunGame_Animation, true);
+//	animation->drawWorld(Core::gameVars->screen.fScale);		// Draw all animations to WORLD
+//	animation2["World Animation Test"].setCameraTarget(&Core::gameVars->player.active->transform.pos, Core::Vector3f(100, 0, 100));
+//	animation2["World Animation Test"].setCameraTarget(&Core::gameVars->player.active->transform.pos, Core::Vector3f(350, 50, -100));
+
+	//Core::Vector3f vTemp = world->lights->GetPos(iDebugLight);
+
+	animation2["World Animation Test"].setCameraTarget(&Core::gameVars->player.active->transform.pos, world->lights->GetPosPtr(iDebugLight));
+	animation2.update("World Animation Test");
+	animation2.draw("World Animation Test");
+	Core::profiles->runProfile(Core::profiles->builtIn.RunGame_Animation, false);
 
 
 	// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-

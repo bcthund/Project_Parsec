@@ -560,16 +560,16 @@ namespace Core {
 	const Uint8 *_Keyboard::event;
 
 	_Keyboard::_Keyboard() {
-		//            .................................................................Done
-		std::cout << "Construct Keyboard System........................................";
+		Core::debug.log("Construct Keyboard System {");
 		event = nullptr;
-		std::cout << "Done" << std::endl;
+		Core::debug.print(" Done ", Core::debug().GREEN);
+		Core::debug.print("}\n");
 	}
 
 	_Keyboard::~_Keyboard() {
-		//            .................................................................Done
-		std::cout << "Destroy Keyboard System..........................................";
-		std::cout << "Done" << std::endl;
+		Core::debug.log("Destroy Keyboard System {");
+		Core::debug.print(" Done ", Core::debug().GREEN);
+		Core::debug.print("}\n");
 	}
 
 	/** ******************************************************************************************************************************

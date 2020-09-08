@@ -9,8 +9,8 @@
 
 namespace Core {
 	Matrix_System::Matrix_System() {
-		//            .................................................................Done
-		std::cout << "Construct Matrix System..........................................";
+		Core::debug.log("Construct Matrix System {");
+
 		//Setup the Push/Pop matrix stack
 		iStackDepth=32;
 		mvStack = new Matrix44f[iStackDepth];
@@ -23,17 +23,21 @@ namespace Core {
 		LoadIdentity(mtvStack[iCurrentStack]);
 		LoadIdentity(mrvStack[iCurrentStack]);
 		LoadIdentity(mvpStack[iCurrentStack]);
-		std::cout << "Done" << std::endl;
+
+		Core::debug.print(" Done ", Core::debug().GREEN);
+		Core::debug.print("}\n");
 	}
 
 	Matrix_System::~Matrix_System() {
-		//            .................................................................Done
-		std::cout << "Destroy Matrix System............................................";
+		Core::debug.log("Destroy Matrix System {");
+
 		delete [] mvStack;
 		delete [] mtvStack;
 		delete [] mrvStack;
 		delete [] mvpStack;
-		std::cout << "Done" << std::endl;
+
+		Core::debug.print(" Done ", Core::debug().GREEN);
+		Core::debug.print("}\n");
 	}
 
 	void Matrix_System::LoadIdentity(Matrix44f m)

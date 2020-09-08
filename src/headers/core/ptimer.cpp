@@ -11,8 +11,8 @@
 
 namespace Core {
 	PTimer::PTimer() {
-		//            .................................................................Done
-		std::cout << "Construct PTimer.................................................";
+		Core::debug.log("Construct PTimer {");
+
 		SDL_Init(SDL_INIT_TIMER);
 //		iTimers			= 0;
 //		iMaxTimers		= 100;
@@ -31,12 +31,13 @@ namespace Core {
 //		rsStdDev		= new RunningStat[iMaxTimers];
 //		uiTicksMem		= new uint[iMaxTimers];
 
-		std::cout << "Done" << std::endl;
+		Core::debug.print(" Done ", Core::debug().GREEN);
+		Core::debug.print("}\n");
 	}
 
 	PTimer::~PTimer() {
-		//       .................................................................Done
-		std::cout << "Destroy PTimer...................................................";
+		Core::debug.log("Destroy PTimer {");
+
 //		delete [] buffer;
 //		delete [] started;
 //		delete [] splitTicks;
@@ -54,7 +55,9 @@ namespace Core {
 		for (auto &item : timers) {
 			delete item;
 		}
-		std::cout << "Done" << std::endl;
+
+		Core::debug.print(" Done ", Core::debug().GREEN);
+		Core::debug.print("}\n");
 	}
 
 	int PTimer::addTimer(std::string s) {

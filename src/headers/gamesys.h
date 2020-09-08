@@ -30,22 +30,22 @@ namespace Core {
 		 *   behave unexpectedly when checking for mouse clicks.
 		 *   However hovering always works.
 		 */
-		uint drawWindow(		int x,
-								int y,
-								int w,
-								int h,
-								bool bHighlight,
-								bool textOffset,
-								Core::Color backColor,
-								Core::Color backHColor,
-								short int iBorder=Core::GameSys::_WinSys::DRAWMODE.NORMAL);
-		uint drawWindow(		int x,
-								int y,
-								int w,
-								int h,
-								bool bHighlight,
-								bool textOffset,
-								short int iBorder);
+//		uint drawWindow(		int x,
+//								int y,
+//								int w,
+//								int h,
+//								bool bHighlight,
+//								bool textOffset,
+//								Core::Color backColor,
+//								Core::Color backHColor,
+//								short int iBorder=Core::GameSys::_WinSys::DRAWMODE.NORMAL);
+//		uint drawWindow(		int x,
+//								int y,
+//								int w,
+//								int h,
+//								bool bHighlight,
+//								bool textOffset,
+//								short int iBorder);
 
 		void drawIcon(			uint x,
 								uint y,
@@ -197,26 +197,26 @@ namespace Core {
 								float fP,
 								bool bDec);
 
-		uint drawTextWindow(	int x,
-								int y,
-								int w,
-								int h,
-								std::string sText,
-								bool bHighlight,
-								bool textOffset,
-								Core::Color backColor,
-								Core::Color frontColor,
-								Core::Color backHColor,
-								Core::Color frontHColor,
-								short int iBorder);
-		uint drawTextWindow(	int x,
-								int y,
-								int w,
-								int h,
-								std::string sText,
-								bool bHighlight,
-								bool textOffset,
-								short int iBorder);
+//		uint drawTextWindow(	int x,
+//								int y,
+//								int w,
+//								int h,
+//								std::string sText,
+//								bool bHighlight,
+//								bool textOffset,
+//								Core::Color backColor,
+//								Core::Color frontColor,
+//								Core::Color backHColor,
+//								Core::Color frontHColor,
+//								short int iBorder);
+//		uint drawTextWindow(	int x,
+//								int y,
+//								int w,
+//								int h,
+//								std::string sText,
+//								bool bHighlight,
+//								bool textOffset,
+//								short int iBorder);
 
 		uint checkText(			int x,
 								int y,
@@ -326,155 +326,155 @@ namespace Core {
 		//		return menuSys.draw(x, y, s);
 		//	}
 
-		uint drawWindow(	int x,															// Starting position of window
-								int y,															// Starting position of window
-								int w,															// Width of window
-								int h,															// Height of window
-								bool bHighlight,											// Highlight on mouseover?
-								bool textOffset,											// Absolute or texture grid positioning?
-								Core::Color backColor,	// Window standard color
-								Core::Color backHColor,		// Window mouseover color
-								short int iBorder) {										// Boder only?
-			colors.PushBack(backColor);
-			colors.PushBackHighlight(backHColor);
-			uint r = drawWindow(x, y, w, h, bHighlight, textOffset, iBorder);
-			colors.PopBack();
-			colors.PopBackHighlight();
-			return r;
-		}
+//		uint drawWindow(	int x,															// Starting position of window
+//								int y,															// Starting position of window
+//								int w,															// Width of window
+//								int h,															// Height of window
+//								bool bHighlight,											// Highlight on mouseover?
+//								bool textOffset,											// Absolute or texture grid positioning?
+//								Core::Color backColor,	// Window standard color
+//								Core::Color backHColor,		// Window mouseover color
+//								short int iBorder) {										// Boder only?
+//			colors.PushBack(backColor);
+//			colors.PushBackHighlight(backHColor);
+//			uint r = drawWindow(x, y, w, h, bHighlight, textOffset, iBorder);
+//			colors.PopBack();
+//			colors.PopBackHighlight();
+//			return r;
+//		}
 
-		uint drawWindow(	int x,															// Starting position of window
-							int y,															// Starting position of window
-							int w,															// Width of window
-							int h,															// Height of window
-							bool bHighlight,												// Highlight on mouseover?
-							bool textOffset,												// Absolute or texture grid positioning?
-							short int iBorder=Core::GameSys::_WinSys::DRAWMODE.NORMAL) {										// Boder only?
-
-			//uint checkClick = MOUSE_NONE;
-			uint checkClick = Core::_Mouse::MOUSE_NONE;
-
-//			vWindowColor[0] = backColor[0];
-//			vWindowColor[1] = backColor[1];
-//			vWindowColor[2] = backColor[2];
-//			vWindowColor[3] = backColor[3];
-
-			// TODO: [GameSys] Fix highlight
-			if (bHighlight) {
-				if (textOffset) {
-					if (Core::mouse->checkOver(x*Core::gameVars->font.vSize[0]+Core::gameVars->font.vHalfSize[0],y*Core::gameVars->font.vSize[1]+Core::gameVars->font.vHalfSize[1], (w-1)*Core::gameVars->font.vSize[0],(h-1)*Core::gameVars->font.vSize[1])) {
-//						vWindowColor[0] = backHColor[0];
-//						vWindowColor[1] = backHColor[1];
-//						vWindowColor[2] = backHColor[2];
-//						vWindowColor[3] = backHColor[3];
-						colors.SetActive(colors.COLOR_BACK_HIGHLIGHT);
-					}
-				}
-				else {
-					if (Core::mouse->checkOver(x,y,w,h)) {
-//						vWindowColor[0] = backHColor[0];
-//						vWindowColor[1] = backHColor[1];
-//						vWindowColor[2] = backHColor[2];
-//						vWindowColor[3] = backHColor[3];
-						colors.SetActive(colors.COLOR_BACK_HIGHLIGHT);
-					}
-				}
-			}
-			else colors.SetActive(colors.COLOR_BACK);
-
-			winSys->draw(x, y, w, h, textOffset, iBorder);
-
-			if (textOffset) checkClick=Core::mouse->checkInput(x*Core::gameVars->font.vSize[0]+Core::gameVars->font.vHalfSize[0], y*Core::gameVars->font.vSize[1]+Core::gameVars->font.vHalfSize[1], (w-1)*Core::gameVars->font.vSize[0],(h-1)*Core::gameVars->font.vSize[1]);
-			else checkClick=Core::mouse->checkInput(x, y, w, h);
-
-			return checkClick;
-		}
-
-		uint drawTextWindow(	int x,																								// Starting position of window
-									int y,																								// Starting position of window
-									int w,																								// Width of window
-									int h,																								// Height of window
-									std::string sText,																		// Text to print in window
-									bool bHighlight,																// Highlight on mouseover?
-									bool textOffset,																	// Absolute or texture grid positioning?
-									Core::Color backColor,			// Window standard color
-									Core::Color frontColor,			// Text normal color
-									Core::Color backHColor,				// Window mouseover color
-									Core::Color frontHColor,				// Text mouseover color
-									short int iBorder=Core::GameSys::_WinSys::DRAWMODE.NORMAL) {										// Border only?
-
-			colors.PushFront(frontColor);
-			colors.PushFrontHighlight(frontHColor);
-			colors.PushBack(backColor);
-			colors.PushBackHighlight(backHColor);
-			uint r = drawTextWindow(x, y, w, h, sText, bHighlight, textOffset, iBorder);
-			colors.PopFront();
-			colors.PopFrontHighlight();
-			colors.PopBack();
-			colors.PopBackHighlight();
-			return r;
-		}
-
-		uint drawTextWindow(	int x,																								// Starting position of window
-									int y,																								// Starting position of window
-									int w,																								// Width of window
-									int h,																								// Height of window
-									std::string sText,																		// Text to print in window
-									bool bHighlight,																// Highlight on mouseover?
-									bool textOffset,																	// Absolute or texture grid positioning?
-									short int iBorder=Core::GameSys::_WinSys::DRAWMODE.NORMAL) {										// Border only?
-
-			uint checkClick = Core::_Mouse::MOUSE_NONE;;
-
-			// TODO: [GameSys] Fix highlight
-//			vWindowColor[0] = backColor[0];
-//			vWindowColor[1] = backColor[1];
-//			vWindowColor[2] = backColor[2];
-//			vWindowColor[3] = backColor[3];
+//		uint drawWindow(	int x,															// Starting position of window
+//							int y,															// Starting position of window
+//							int w,															// Width of window
+//							int h,															// Height of window
+//							bool bHighlight,												// Highlight on mouseover?
+//							bool textOffset,												// Absolute or texture grid positioning?
+//							short int iBorder=Core::GameSys::_WinSys::DRAWMODE.NORMAL) {										// Boder only?
 //
-//			vTextColor[0] = frontColor[0];
-//			vTextColor[1] = frontColor[1];
-//			vTextColor[2] = frontColor[2];
-//			vTextColor[3] = frontColor[3];
+//			//uint checkClick = MOUSE_NONE;
+//			uint checkClick = Core::_Mouse::MOUSE_NONE;
 //
+////			vWindowColor[0] = backColor[0];
+////			vWindowColor[1] = backColor[1];
+////			vWindowColor[2] = backColor[2];
+////			vWindowColor[3] = backColor[3];
+//
+//			// TODO: [GameSys] Fix highlight
 //			if (bHighlight) {
 //				if (textOffset) {
 //					if (Core::mouse->checkOver(x*Core::gameVars->font.vSize[0]+Core::gameVars->font.vHalfSize[0],y*Core::gameVars->font.vSize[1]+Core::gameVars->font.vHalfSize[1], (w-1)*Core::gameVars->font.vSize[0],(h-1)*Core::gameVars->font.vSize[1])) {
-//						vWindowColor[0] = backHColor[0];
-//						vWindowColor[1] = backHColor[1];
-//						vWindowColor[2] = backHColor[2];
-//						vWindowColor[3] = backHColor[3];
-//
-//						vTextColor[0] = frontHColor[0];
-//						vTextColor[1] = frontHColor[1];
-//						vTextColor[2] = frontHColor[2];
-//						vTextColor[3] = frontHColor[3];
+////						vWindowColor[0] = backHColor[0];
+////						vWindowColor[1] = backHColor[1];
+////						vWindowColor[2] = backHColor[2];
+////						vWindowColor[3] = backHColor[3];
+//						colors.SetActive(colors.COLOR_BACK_HIGHLIGHT);
 //					}
 //				}
 //				else {
 //					if (Core::mouse->checkOver(x,y,w,h)) {
-//						vWindowColor[0] = backHColor[0];
-//						vWindowColor[1] = backHColor[1];
-//						vWindowColor[2] = backHColor[2];
-//						vWindowColor[3] = backHColor[3];
-//
-//						vTextColor[0] = frontHColor[0];
-//						vTextColor[1] = frontHColor[1];
-//						vTextColor[2] = frontHColor[2];
-//						vTextColor[3] = frontHColor[3];
+////						vWindowColor[0] = backHColor[0];
+////						vWindowColor[1] = backHColor[1];
+////						vWindowColor[2] = backHColor[2];
+////						vWindowColor[3] = backHColor[3];
+//						colors.SetActive(colors.COLOR_BACK_HIGHLIGHT);
 //					}
 //				}
 //			}
+//			else colors.SetActive(colors.COLOR_BACK);
+//
+//			winSys->draw(x, y, w, h, textOffset, iBorder);
+//
+//			if (textOffset) checkClick=Core::mouse->checkInput(x*Core::gameVars->font.vSize[0]+Core::gameVars->font.vHalfSize[0], y*Core::gameVars->font.vSize[1]+Core::gameVars->font.vHalfSize[1], (w-1)*Core::gameVars->font.vSize[0],(h-1)*Core::gameVars->font.vSize[1]);
+//			else checkClick=Core::mouse->checkInput(x, y, w, h);
+//
+//			return checkClick;
+//		}
 
-			winSys->draw(x, y, w, h, textOffset, iBorder);
-			//textSys.draw(x+1, y+1, sText, vTextColor);
-			drawText(x+1, y+1, sText, 1024, 1024);				// must specify xLimit and yLimit here for some reason
+//		uint drawTextWindow(	int x,																								// Starting position of window
+//									int y,																								// Starting position of window
+//									int w,																								// Width of window
+//									int h,																								// Height of window
+//									std::string sText,																		// Text to print in window
+//									bool bHighlight,																// Highlight on mouseover?
+//									bool textOffset,																	// Absolute or texture grid positioning?
+//									Core::Color backColor,			// Window standard color
+//									Core::Color frontColor,			// Text normal color
+//									Core::Color backHColor,				// Window mouseover color
+//									Core::Color frontHColor,				// Text mouseover color
+//									short int iBorder=Core::GameSys::_WinSys::DRAWMODE.NORMAL) {										// Border only?
+//
+//			colors.PushFront(frontColor);
+//			colors.PushFrontHighlight(frontHColor);
+//			colors.PushBack(backColor);
+//			colors.PushBackHighlight(backHColor);
+//			uint r = drawTextWindow(x, y, w, h, sText, bHighlight, textOffset, iBorder);
+//			colors.PopFront();
+//			colors.PopFrontHighlight();
+//			colors.PopBack();
+//			colors.PopBackHighlight();
+//			return r;
+//		}
 
-			if (textOffset) checkClick=Core::mouse->checkInput(x*Core::gameVars->font.vSize[0]+Core::gameVars->font.vHalfSize[0], y*Core::gameVars->font.vSize[1]+Core::gameVars->font.vHalfSize[1], (w-1)*Core::gameVars->font.vSize[0],(h-1)*Core::gameVars->font.vSize[1]);
-			else checkClick=Core::mouse->checkInput(x, y, w, h);
-
-			return checkClick;
-		}
+//		uint drawTextWindow(	int x,																								// Starting position of window
+//									int y,																								// Starting position of window
+//									int w,																								// Width of window
+//									int h,																								// Height of window
+//									std::string sText,																		// Text to print in window
+//									bool bHighlight,																// Highlight on mouseover?
+//									bool textOffset,																	// Absolute or texture grid positioning?
+//									short int iBorder=Core::GameSys::_WinSys::DRAWMODE.NORMAL) {										// Border only?
+//
+//			uint checkClick = Core::_Mouse::MOUSE_NONE;;
+//
+//			// TODO: [GameSys] Fix highlight
+////			vWindowColor[0] = backColor[0];
+////			vWindowColor[1] = backColor[1];
+////			vWindowColor[2] = backColor[2];
+////			vWindowColor[3] = backColor[3];
+////
+////			vTextColor[0] = frontColor[0];
+////			vTextColor[1] = frontColor[1];
+////			vTextColor[2] = frontColor[2];
+////			vTextColor[3] = frontColor[3];
+////
+////			if (bHighlight) {
+////				if (textOffset) {
+////					if (Core::mouse->checkOver(x*Core::gameVars->font.vSize[0]+Core::gameVars->font.vHalfSize[0],y*Core::gameVars->font.vSize[1]+Core::gameVars->font.vHalfSize[1], (w-1)*Core::gameVars->font.vSize[0],(h-1)*Core::gameVars->font.vSize[1])) {
+////						vWindowColor[0] = backHColor[0];
+////						vWindowColor[1] = backHColor[1];
+////						vWindowColor[2] = backHColor[2];
+////						vWindowColor[3] = backHColor[3];
+////
+////						vTextColor[0] = frontHColor[0];
+////						vTextColor[1] = frontHColor[1];
+////						vTextColor[2] = frontHColor[2];
+////						vTextColor[3] = frontHColor[3];
+////					}
+////				}
+////				else {
+////					if (Core::mouse->checkOver(x,y,w,h)) {
+////						vWindowColor[0] = backHColor[0];
+////						vWindowColor[1] = backHColor[1];
+////						vWindowColor[2] = backHColor[2];
+////						vWindowColor[3] = backHColor[3];
+////
+////						vTextColor[0] = frontHColor[0];
+////						vTextColor[1] = frontHColor[1];
+////						vTextColor[2] = frontHColor[2];
+////						vTextColor[3] = frontHColor[3];
+////					}
+////				}
+////			}
+//
+//			winSys->draw(x, y, w, h, textOffset, iBorder);
+//			//textSys.draw(x+1, y+1, sText, vTextColor);
+//			drawText(x+1, y+1, sText, 1024, 1024);				// must specify xLimit and yLimit here for some reason
+//
+//			if (textOffset) checkClick=Core::mouse->checkInput(x*Core::gameVars->font.vSize[0]+Core::gameVars->font.vHalfSize[0], y*Core::gameVars->font.vSize[1]+Core::gameVars->font.vHalfSize[1], (w-1)*Core::gameVars->font.vSize[0],(h-1)*Core::gameVars->font.vSize[1]);
+//			else checkClick=Core::mouse->checkInput(x, y, w, h);
+//
+//			return checkClick;
+//		}
 
 		uint checkText(	int x,																								// Starting position of window
 								int y,																								// Starting position of window

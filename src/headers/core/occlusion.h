@@ -67,25 +67,23 @@ namespace Core {
 	};
 
 	_Occlusion::_Occlusion() {
-		//       .................................................................Done
-		std::cout << "Create Occlusion.................................................";
-			//data = new _OcclusionData[MAX_QUERIES];
+		Core::debug.log("Construct Occlusion {");
 		data.setSource("Occlusion");
-			uiQueryIds = new GLuint[MAX_QUERIES];
-			uiNum = 0;
-		std::cout << "Done" << std::endl;
+		uiQueryIds = new GLuint[MAX_QUERIES];
+		uiNum = 0;
+		Core::debug.print(" Done ", Core::debug().GREEN);
+		Core::debug.print("}\n");
 	}
 
 	_Occlusion::~_Occlusion() {
-		//       .................................................................Done
-		std::cout << "Destroy Occlusion................................................";
+		Core::debug.log("Destroy Occlusion {");
 		glDeleteQueries(MAX_QUERIES,uiQueryIds);
 		delete[] uiQueryIds;
-		//delete[] data;
 		for (auto & item : data) {
 			delete item;
 		}
-		std::cout << "Done" << std::endl;
+		Core::debug.print(" Done ", Core::debug().GREEN);
+		Core::debug.print("}\n");
 	}
 
 	/*
@@ -99,11 +97,12 @@ namespace Core {
 	 */
 //	void _Occlusion::CreateQuery(std::string name, GLuint type, uint num) {
 	void _Occlusion::Init() {
-		std::cout << "Init Occlusion...................................................";
+		Core::debug.log("Init Occlusion {");
 		glGenQueries(MAX_QUERIES, uiQueryIds);
 		for (int n=0; n<MAX_QUERIES; n++) {
 		}
-		std::cout << "Done" << std::endl;
+		Core::debug.print(" Done ", Core::debug().GREEN);
+		Core::debug.print("}\n");
 	}
 
 	GLuint _Occlusion::add(std::string name, GLuint type) {

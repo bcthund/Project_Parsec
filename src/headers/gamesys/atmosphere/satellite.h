@@ -244,8 +244,9 @@ namespace Core {
 		 */
 		bool _Satellite::init() {
 			if (!bTexLoaded) {
-				//std::cout << "[Satellite]";
-				std::cout << sOffset << "Init Satellite...................................................";
+				Core::debug.log("Init Satellite {\n");
+				Core::debug.logIncreaseIndent();
+
 				MemBlock memBlock;
 				std::string theImage;
 				int iCount = 0;
@@ -272,17 +273,20 @@ namespace Core {
 					//std::cout << "[" << imageData[n].id << ", " << imageData[n].image << "]";
 					if (bDebug) std::cout << "[" << imageData[n].id << ":" << imageData[n].image << "]";
 					tex.Load(TEXDIR, imageData[n].image, imageData[n].id, true, (GLenum)GL_NEAREST, (GLenum)GL_REPEAT);
+
+					Core::debug.log("["+std::to_string(imageData[n].id)+"] "+imageData[n].image+"\n", Core::debug().YELLOW);
 				}
 
 				bTexLoaded = true;
 
-				// Prepare point VAO for point sprite occlusion
+				// TODO: Prepare point VAO for point sprite occlusion
 //				Data3f vVerts[]		= { {  0.0,  0.0,  0.0 } };
 //				vao.Begin(GL_POINTS, 1, 1, 0);
 //				vao.CopyData(GLA_VERTEX, vVerts);
 //				vao.End();
 
-				std::cout << "Done" << std::endl;
+				Core::debug.logDecreaseIndent();
+				Core::debug.log("}\n");
 				return true;
 			}
 			return false;
@@ -292,7 +296,7 @@ namespace Core {
 		 * load
 		 */
 		bool _Satellite::add(_SatelliteData *newData)   {
-			std::cout << sOffset << "[" << newData->sName << "]" << std::endl;
+//			std::cout << sOffset << "[" << newData->sName << "]" << std::endl;
 
 //			if (iNumObjects < MAX_OBJECTS) {
 //				//data.push_back(newData);
@@ -330,7 +334,10 @@ namespace Core {
 		}
 
 		bool _Satellite::calc(uint id)   {
-			std::cout << sOffset << "[" << data.getName(id) << "]" << std::endl;
+			//std::cout << sOffset << "[" << data.getName(id) << "]" << std::endl;
+
+//			Core::debug.log("["+std::to_string(id)+"] "+data.getName(id)+"\n", Core::debug().YELLOW);
+
 			float iHalf = data[id]->fQuadSize*data[id]->fScale;
 
 			if(gameVars->screen.MultiSample) {

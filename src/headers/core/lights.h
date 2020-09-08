@@ -74,11 +74,11 @@ namespace Core {
 			uint         GetNumLights()				{ return uiCurrentLights; }
 
 			Vector3f     GetPos(uint num)			{ if (data[num].bLoaded) { return Vector3f(data[num].pos); 			} return Vector3f(); }
-			Vector3f     GetPosPtr(uint num)		{ if (data[num].bLoaded) { return data[num].pos; 					} return nullptr; }
+			Vector3f*    GetPosPtr(uint num)		{ if (data[num].bLoaded) { return &data[num].pos; 					} return nullptr; }
 
 			Vector3f     GetDir(uint num)			{ if (data[num].bLoaded) { return Vector3f(data[num].dir); 			} return Vector3f(); }
 			Vector3f     GetDirRad(uint num);
-			Vector3f     GetDirPtr(uint num)		{ if (data[num].bLoaded) { return data[num].dir; 					} return nullptr; }
+			Vector3f*    GetDirPtr(uint num)		{ if (data[num].bLoaded) { return &data[num].dir; 					} return nullptr; }
 
 			Vector3f     GetDiffuse(uint num)		{ if (data[num].bLoaded) { return Vector3f(data[num].diffuse); 		} return Vector3f(); }
 			Vector3f     GetAmbient(uint num)		{ if (data[num].bLoaded) { return Vector3f(data[num].ambient); 		} return Vector3f(); }

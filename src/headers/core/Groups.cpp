@@ -39,7 +39,9 @@ namespace Core {
 		group.name = name;
 		group.bExclusive = bExclusive;
 		group.object = "";
-		return t_VectorMap::add(name, group);
+//		return t_VectorMap::add(name, group);
+		t_VectorMap::add(name, group);
+		return t_VectorMap::get(name);
 	}
 
 	void _Groups::setActive(std::string name, std::string object) {

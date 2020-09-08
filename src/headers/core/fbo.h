@@ -67,6 +67,7 @@ namespace Core {
 	} fbo;
 
 	_FBO::_FBO() {
+		Core::debug.log("Construct FBOs {");
 		fbo.setSource("FBO");
 		bDebug = false;
 		uiMaxFbos = 32;
@@ -97,11 +98,13 @@ namespace Core {
 //			fbo[i]->h = 0;
 //			fbo[i]->bFinished = false;
 //		}
+		Core::debug.print(" Done ", Core::debug().GREEN);
+		Core::debug.print("}\n");
 	}
 
 	_FBO::~_FBO() {
-		//       .................................................................Done
-		std::cout << "Destroy FBOs.....................................................";
+		Core::debug.log("Destroy FBOs {");
+
 		for (auto & item : fbo) {
 			if(item->bFrameBuffer) glDeleteFramebuffers(1, &item->uiFramebuffer);
 			if(item->bDepthBuffer) glDeleteRenderbuffers(1, &item->uiDepthBuffer);
@@ -125,7 +128,8 @@ namespace Core {
 //			if(fbo[i]->bTexColor[3]) glDeleteTextures(1, &fbo[i]->uiTexColor[3]);
 //		}
 //		delete [] fbo;
-		std::cout << "Done" << std::endl;
+		Core::debug.print(" Done ", Core::debug().GREEN);
+		Core::debug.print("}\n");
 	}
 
 	void _FBO::CreateFbo(std::string name, uint w, uint h, uint uiMultisample) {

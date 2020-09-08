@@ -63,164 +63,157 @@ namespace Core {
 		}
 
 		bool _IconSys::load() {
-			try {
-				//            .................................................................Done
-				std::cout << "Load IconSys.....................................................";
-				MemBlock memBlock;
-				std::string theImage;
-				texture.Begin(uiNumTextures);
+			Core::debug.log("Load IconSys {\n");
+			Core::debug.logIncreaseIndent();
 
-				readFile((sDir+sFilename), memBlock);
+			MemBlock memBlock;
+			std::string theImage;
+			texture.Begin(uiNumTextures);
 
-				for (int d=0; d<memBlock.size; d+=uiRecordSize) {
-					int theId=0;
-					for (int i=0; i<4; i++) theId+=(unsigned char)memBlock.buffer[i+d];
+			readFile((sDir+sFilename), memBlock);
 
-					theImage = "";
-					for (int i=4; i<32; i++)
-						if (memBlock.buffer[i+d]!=0) theImage+=(unsigned char)memBlock.buffer[i+d];
-						else break;
+			for (int d=0; d<memBlock.size; d+=uiRecordSize) {
+				int theId=0;
+				for (int i=0; i<4; i++) theId+=(unsigned char)memBlock.buffer[i+d];
 
-					texture.Load(sTexDir, theImage, theId, false, GL_NEAREST);
-				}
+				theImage = "";
+				for (int i=4; i<32; i++)
+					if (memBlock.buffer[i+d]!=0) theImage+=(unsigned char)memBlock.buffer[i+d];
+					else break;
 
-				std::cout << "Done" << std::endl;
-				return true;
+				Core::debug.log("["+std::to_string(theId)+"] "+theImage+"\n", Core::debug().YELLOW);
+
+				texture.Load(sTexDir, theImage, theId, false, GL_NEAREST);
 			}
-			catch(...) {
-				std::cout << "Failed" << std::endl;
-				return false;
-			}
+
+			Core::debug.logDecreaseIndent();
+			Core::debug.log("}\n");
+			return true;
 		}
 
 		bool _IconSys::calc() {
-			try {
-				/* Icon grid ID and coordinate calculation chart
-				 *
-				 *         0.000  0.125  0.250  0.375  0.500  0.625  0.750  0.875  1.000
-				 *  0.000    |------|------|------|------|------|------|------|------|
-				 *           |  00  |  01  |  02  |  03  |  04  |  05  |  06  |  07  |
-				 *  0.125    |------|------|------|------|------|------|------|------|
-				 *           |  08  |  09  |  10  |  11  |  12  |  13  |  14  |  15  |
-				 *  0.250    |------|------|------|------|------|------|------|------|
-				 *           |  16  |  17  |  18  |  19  |  20  |  21  |  22  |  23  |
-				 *  0.375    |------|------|------|------|------|------|------|------|
-				 *           |  24  |  25  |  26  |  27  |  28  |  29  |  30  |  31  |
-				 *  0.500    |------|------|------|------|------|------|------|------|
-				 *           |  32  |  33  |  34  |  35  |  36  |  37  |  38  |  39  |
-				 *  0.625    |------|------|------|------|------|------|------|------|
-				 *           |  40  |  41  |  42  |  43  |  44  |  45  |  46  |  47  |
-				 *  0.750    |------|------|------|------|------|------|------|------|
-				 *           |  48  |  49  |  50  |  51  |  52  |  53  |  54  |  55  |
-				 *  0.875    |------|------|------|------|------|------|------|------|
-				 *           |  56  |  57  |  58  |  59  |  60  |  61  |  62  |  63  |
-				 *  1.000    |------|------|------|------|------|------|------|------|
-				 */
+			/* Icon grid ID and coordinate calculation chart
+			 *
+			 *         0.000  0.125  0.250  0.375  0.500  0.625  0.750  0.875  1.000
+			 *  0.000    |------|------|------|------|------|------|------|------|
+			 *           |  00  |  01  |  02  |  03  |  04  |  05  |  06  |  07  |
+			 *  0.125    |------|------|------|------|------|------|------|------|
+			 *           |  08  |  09  |  10  |  11  |  12  |  13  |  14  |  15  |
+			 *  0.250    |------|------|------|------|------|------|------|------|
+			 *           |  16  |  17  |  18  |  19  |  20  |  21  |  22  |  23  |
+			 *  0.375    |------|------|------|------|------|------|------|------|
+			 *           |  24  |  25  |  26  |  27  |  28  |  29  |  30  |  31  |
+			 *  0.500    |------|------|------|------|------|------|------|------|
+			 *           |  32  |  33  |  34  |  35  |  36  |  37  |  38  |  39  |
+			 *  0.625    |------|------|------|------|------|------|------|------|
+			 *           |  40  |  41  |  42  |  43  |  44  |  45  |  46  |  47  |
+			 *  0.750    |------|------|------|------|------|------|------|------|
+			 *           |  48  |  49  |  50  |  51  |  52  |  53  |  54  |  55  |
+			 *  0.875    |------|------|------|------|------|------|------|------|
+			 *           |  56  |  57  |  58  |  59  |  60  |  61  |  62  |  63  |
+			 *  1.000    |------|------|------|------|------|------|------|------|
+			 */
 
-				//            .................................................................Done
-				std::cout << "Calc IconSys.....................................................";
+			Core::debug.log("Calc IconSys {");
 
-				float iy1=0.000f,
-					  iy2=0.125f;
-				for(int i=0;i<64;i++) {
-					gridCoord[i][0] = 0.000f;
-					gridCoord[i][1] = iy1;
-					gridCoord[i][2] = 0.125f;
-					gridCoord[i][3] = iy2;
+			float iy1=0.000f,
+				  iy2=0.125f;
+			for(int i=0;i<64;i++) {
+				gridCoord[i][0] = 0.000f;
+				gridCoord[i][1] = iy1;
+				gridCoord[i][2] = 0.125f;
+				gridCoord[i][3] = iy2;
 
-					i++;
-					gridCoord[i][0] = 0.125f;
-					gridCoord[i][1] = iy1;
-					gridCoord[i][2] = 0.250f;
-					gridCoord[i][3] = iy2;
+				i++;
+				gridCoord[i][0] = 0.125f;
+				gridCoord[i][1] = iy1;
+				gridCoord[i][2] = 0.250f;
+				gridCoord[i][3] = iy2;
 
-					i++;
-					gridCoord[i][0] = 0.250f;
-					gridCoord[i][1] = iy1;
-					gridCoord[i][2] = 0.375f;
-					gridCoord[i][3] = iy2;
+				i++;
+				gridCoord[i][0] = 0.250f;
+				gridCoord[i][1] = iy1;
+				gridCoord[i][2] = 0.375f;
+				gridCoord[i][3] = iy2;
 
-					i++;
-					gridCoord[i][0] = 0.375f;
-					gridCoord[i][1] = iy1;
-					gridCoord[i][2] = 0.500f;
-					gridCoord[i][3] = iy2;
+				i++;
+				gridCoord[i][0] = 0.375f;
+				gridCoord[i][1] = iy1;
+				gridCoord[i][2] = 0.500f;
+				gridCoord[i][3] = iy2;
 
-					i++;
-					gridCoord[i][0] = 0.500f;
-					gridCoord[i][1] = iy1;
-					gridCoord[i][2] = 0.625f;
-					gridCoord[i][3] = iy2;
+				i++;
+				gridCoord[i][0] = 0.500f;
+				gridCoord[i][1] = iy1;
+				gridCoord[i][2] = 0.625f;
+				gridCoord[i][3] = iy2;
 
-					i++;
-					gridCoord[i][0] = 0.625f;
-					gridCoord[i][1] = iy1;
-					gridCoord[i][2] = 0.750f;
-					gridCoord[i][3] = iy2;
+				i++;
+				gridCoord[i][0] = 0.625f;
+				gridCoord[i][1] = iy1;
+				gridCoord[i][2] = 0.750f;
+				gridCoord[i][3] = iy2;
 
-					i++;
-					gridCoord[i][0] = 0.750f;
-					gridCoord[i][1] = iy1;
-					gridCoord[i][2] = 0.875f;
-					gridCoord[i][3] = iy2;
+				i++;
+				gridCoord[i][0] = 0.750f;
+				gridCoord[i][1] = iy1;
+				gridCoord[i][2] = 0.875f;
+				gridCoord[i][3] = iy2;
 
-					i++;
-					gridCoord[i][0] = 0.875f;
-					gridCoord[i][1] = iy1;
-					gridCoord[i][2] = 1.000f;
-					gridCoord[i][3] = iy2;
+				i++;
+				gridCoord[i][0] = 0.875f;
+				gridCoord[i][1] = iy1;
+				gridCoord[i][2] = 1.000f;
+				gridCoord[i][3] = iy2;
 
-					iy1+=0.125f;
-					iy2+=0.125f;
-				}
-
-				/*
-				 * Prints out the set of calculated icon coordinates
-				 * For debugging
-				 */
-				//for(int i=0;i<64;i++) {
-				//	cout << "[" << i << "] = (" << gridCoord[i][0] << "," << gridCoord[i][1] << ") - (" << gridCoord[i][2] << "," << gridCoord[i][3] << ")" << endl;
-				//}
-				//cout << "Calculating Texture Coords" << endl;
-				for (int i=0; i<64; i++) {
-
-					//Standard font quad, CCW:CAB-BDC
-					// FIXME: Use a normalized quad instead of 64x64
-					float iHalf_W = (64/2);
-					float iHalf_H = (64/2);
-					Data3f vVerts[] = { {-iHalf_W, -iHalf_H, 0},
-										  { iHalf_W,  iHalf_H, 0},
-										  {-iHalf_W,  iHalf_H, 0},
-										  {-iHalf_W, -iHalf_H, 0},
-										  { iHalf_W, -iHalf_H, 0},
-										  { iHalf_W,  iHalf_H, 0 }};
-
-					Data2f vTexture[11];
-					vTexture[0][0] = gridCoord[i][0];
-					vTexture[0][1] = gridCoord[i][3];
-					vTexture[1][0] = gridCoord[i][2];
-					vTexture[1][1] = gridCoord[i][1];
-					vTexture[2][0] = gridCoord[i][0];
-					vTexture[2][1] = gridCoord[i][1];
-					vTexture[3][0] = gridCoord[i][0];
-					vTexture[3][1] = gridCoord[i][3];
-					vTexture[4][0] = gridCoord[i][2];
-					vTexture[4][1] = gridCoord[i][3];
-					vTexture[5][0] = gridCoord[i][2];
-					vTexture[5][1] = gridCoord[i][1];
-
-					vao[i].Begin(GL_TRIANGLES, 6, 6, 1);
-					vao[i].CopyData(GLA_VERTEX, vVerts);
-					vao[i].CopyData(GLA_TEXTURE, vTexture, 0);
-					vao[i].End();
-				}
-				std::cout << "Done" << std::endl;
-				return true;
+				iy1+=0.125f;
+				iy2+=0.125f;
 			}
-			catch(...) {
-				std::cout << "Failed" << std::endl;
-				return false;
+
+			/*
+			 * Prints out the set of calculated icon coordinates
+			 * For debugging
+			 */
+			//for(int i=0;i<64;i++) {
+			//	cout << "[" << i << "] = (" << gridCoord[i][0] << "," << gridCoord[i][1] << ") - (" << gridCoord[i][2] << "," << gridCoord[i][3] << ")" << endl;
+			//}
+			//cout << "Calculating Texture Coords" << endl;
+			for (int i=0; i<64; i++) {
+
+				//Standard font quad, CCW:CAB-BDC
+				// FIXME: Use a normalized quad instead of 64x64
+				float iHalf_W = (64/2);
+				float iHalf_H = (64/2);
+				Data3f vVerts[] = { {-iHalf_W, -iHalf_H, 0},
+									  { iHalf_W,  iHalf_H, 0},
+									  {-iHalf_W,  iHalf_H, 0},
+									  {-iHalf_W, -iHalf_H, 0},
+									  { iHalf_W, -iHalf_H, 0},
+									  { iHalf_W,  iHalf_H, 0 }};
+
+				Data2f vTexture[11];
+				vTexture[0][0] = gridCoord[i][0];
+				vTexture[0][1] = gridCoord[i][3];
+				vTexture[1][0] = gridCoord[i][2];
+				vTexture[1][1] = gridCoord[i][1];
+				vTexture[2][0] = gridCoord[i][0];
+				vTexture[2][1] = gridCoord[i][1];
+				vTexture[3][0] = gridCoord[i][0];
+				vTexture[3][1] = gridCoord[i][3];
+				vTexture[4][0] = gridCoord[i][2];
+				vTexture[4][1] = gridCoord[i][3];
+				vTexture[5][0] = gridCoord[i][2];
+				vTexture[5][1] = gridCoord[i][1];
+
+				vao[i].Begin(GL_TRIANGLES, 6, 6, 1);
+				vao[i].CopyData(GLA_VERTEX, vVerts);
+				vao[i].CopyData(GLA_TEXTURE, vTexture, 0);
+				vao[i].End();
 			}
+
+			Core::debug.print(" Done ", Core::debug().GREEN);
+			Core::debug.print("}\n");
+			return true;
 		}
 
 		void _IconSys::start(int x, int y, float w, float h, std::string sTex, bool textOffset, Core::_Colors::_ACTIVE_COLOR eColor) {

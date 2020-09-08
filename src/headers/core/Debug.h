@@ -15,6 +15,21 @@
 #include <unistd.h> // for STDOUT_FILENO
 //#include "core_functions.h"
 
+// Typical loading setups
+//		Core::debug.log("Load NNN {\n");
+//		Core::debug.logIncreaseIndent();
+//		Core::debug.log("["+std::to_string(theId)+"] "+theImage+"\n", Core::debug().YELLOW);
+//		Core::debug.logDecreaseIndent();
+//		Core::debug.log("}\n");
+
+//		Core::debug.log("Init ??? {");
+//		Core::debug.print(" Done ", Core::debug().GREEN);
+//		Core::debug.print("}\n");
+
+//		Core::debug.log("Load ??? {");
+//		Core::debug.print(" Not Implemented ", Core::debug().RED);
+//		Core::debug.print("}\n");
+
 namespace Core {
 	class _Debug {
 		private:
@@ -85,8 +100,8 @@ namespace Core {
 			ConsoleColors& operator()();
 
 			void update(int rate=500, bool bClear=true/*, bool bEnable=true*/);
-			void log(std::string buffer, ConsoleColors::eCOLOR color=ConsoleColors::eCOLOR(consoleColors.GREEN));
-			void print(std::string buffer, ConsoleColors::eCOLOR color=ConsoleColors::eCOLOR(consoleColors.NC));
+			void log(std::string buffer, ConsoleColors::eCOLOR color=ConsoleColors::eCOLOR(consoleColors.WHITE));
+			void print(std::string buffer, ConsoleColors::eCOLOR color=ConsoleColors::eCOLOR(consoleColors.WHITE));
 			virtual ~_Debug();
 	};
 	//_Debug::consoleColors = 0;

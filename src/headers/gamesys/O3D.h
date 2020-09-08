@@ -123,8 +123,7 @@ namespace Core {
 				bool calc();
 				void draw(SHADER_PROGRAMS iShader, Core::_Lights &lights);
 				_O3D(Matrix_System &m, Shader_System &s, _Collision &c, _Helper &h) {
-					//            .................................................................Done
-					//std::cout << "Construct O3D....................................................Not Implemented" << endl;
+					Core::debug.log("Construct O3D {");
 					matrix = &m;
 					shader = &s;
 					collision = &c;
@@ -133,10 +132,13 @@ namespace Core {
 					sTexDir = "./texture/o3d/";
 					sFileDir = "./ply/";
 					//idcount = -1;
+					Core::debug.print(" Done ", Core::debug().GREEN);
+					Core::debug.print("}\n");
 				}
 				~_O3D() {
-					//            .................................................................Done
-					std::cout << "Destroy O3D......................................................Not Implemented" << std::endl;
+					Core::debug.log("Destroy O3D {");
+					Core::debug.print(" Done ", Core::debug().GREEN);
+					Core::debug.print("}\n");
 				}
 		};
 
@@ -144,186 +146,181 @@ namespace Core {
 
 
 		bool _O3D::init() {
-			//            .................................................................Done
-			std::cout << sOffset << "Init O3D.........................................................Not Implemented" << std::endl;
+			Core::debug.log("Init O3D {");
+			Core::debug.print(" Done ", Core::debug().GREEN);
+			Core::debug.print("}\n");
 			return true;
 		}
 
 		bool _O3D::load() {
+			Core::debug.log("Load O3D {\n");
+			Core::debug.logIncreaseIndent();
 
-			try {
-				//            .................................................................Done
-				std::cout << sOffset << "Load O3D.........................................................";
+			bool bReadResult;
+			MemBlock memBlock;
+			std::string loadFile;
+			std::stringstream sStream;
+			int item=0;
 
-				bool bReadResult;
-				MemBlock memBlock;
-				std::string loadFile;
-				std::stringstream sStream;
-				int item=0;
+			//################################
+			//		Load Binary Object Data
+			sStream.str("");
+			sStream << "./region/prime/o3d/100.o3d";
+			loadFile=sStream.str();
+			bReadResult = readFile(loadFile, memBlock);		//Read the data file into memory
 
-				//################################
-				//		Load Binary Object Data
-				sStream.str("");
-				sStream << "./region/prime/o3d/100.o3d";
-				loadFile=sStream.str();
-				bReadResult = readFile(loadFile, memBlock);		//Read the data file into memory
+			if (memBlock.size <= 0) data.idcount = -1;
+			else {
+				for (int d=0; d<memBlock.size; d+=uiRecordSize) {
+					data.idcount = item;	// idcount is static
 
-				if (memBlock.size <= 0) data.idcount = -1;
-				else {
-					for (int d=0; d<memBlock.size; d+=uiRecordSize) {
-						data.idcount = item;	// idcount is static
+					//if (Core::gameVars->debug.load) std::cout << idcount << ".";
 
-						//if (Core::gameVars->debug.load) std::cout << idcount << ".";
+					data[item].id				=	(	(unsigned int)(memBlock.buffer[0+d]&0xF0)*256 	+ (unsigned int)(memBlock.buffer[0+d]&0x0F)*256 +
+														(unsigned int)(memBlock.buffer[1+d]&0xF0)		+ (unsigned int)(memBlock.buffer[1+d]&0x0F) );
 
-						data[item].id				=	(	(unsigned int)(memBlock.buffer[0+d]&0xF0)*256 	+ (unsigned int)(memBlock.buffer[0+d]&0x0F)*256 +
-															(unsigned int)(memBlock.buffer[1+d]&0xF0)		+ (unsigned int)(memBlock.buffer[1+d]&0x0F) );
+					data[item].pos.x			=	(	(unsigned int)(memBlock.buffer[2+d]&0xF0)*256 	+ (unsigned int)(memBlock.buffer[2+d]&0x0F)*256 +
+														(unsigned int)(memBlock.buffer[3+d]&0xF0)		+ (unsigned int)(memBlock.buffer[3+d]&0x0F) );
 
-						data[item].pos.x			=	(	(unsigned int)(memBlock.buffer[2+d]&0xF0)*256 	+ (unsigned int)(memBlock.buffer[2+d]&0x0F)*256 +
-															(unsigned int)(memBlock.buffer[3+d]&0xF0)		+ (unsigned int)(memBlock.buffer[3+d]&0x0F) );
+					data[item].pos.z			=	(	(unsigned int)(memBlock.buffer[4+d]&0xF0)*256 	+ (unsigned int)(memBlock.buffer[4+d]&0x0F)*256 +
+														(unsigned int)(memBlock.buffer[5+d]&0xF0)		+ (unsigned int)(memBlock.buffer[5+d]&0x0F) );
 
-						data[item].pos.z			=	(	(unsigned int)(memBlock.buffer[4+d]&0xF0)*256 	+ (unsigned int)(memBlock.buffer[4+d]&0x0F)*256 +
-															(unsigned int)(memBlock.buffer[5+d]&0xF0)		+ (unsigned int)(memBlock.buffer[5+d]&0x0F) );
+					data[item].bvType			=	_BOUNDING_VOLUME::_BOUNDING_VOLUME_TYPE(	(unsigned int)(memBlock.buffer[6+d]&0xF0) 		+ (unsigned int)(memBlock.buffer[6+d]&0x0F) );
+					data[item].bV->iType = data[item].bvType;
+					//data[item].bV->init()
 
-						data[item].bvType			=	_BOUNDING_VOLUME::_BOUNDING_VOLUME_TYPE(	(unsigned int)(memBlock.buffer[6+d]&0xF0) 		+ (unsigned int)(memBlock.buffer[6+d]&0x0F) );
-						data[item].bV->iType = data[item].bvType;
-						//data[item].bV->init()
+					// memBlock.buffer[7] unused
 
-						// memBlock.buffer[7] unused
+					data[item].pos.y			=	(__int16_t)(	(unsigned int)(memBlock.buffer[8+d]&0xF0)*256 	+ (unsigned int)(memBlock.buffer[8+d]&0x0F)*256 +
+																	(unsigned int)(memBlock.buffer[9+d]&0xF0)		+ (unsigned int)(memBlock.buffer[9+d]&0x0F) );
 
-						data[item].pos.y			=	(__int16_t)(	(unsigned int)(memBlock.buffer[8+d]&0xF0)*256 	+ (unsigned int)(memBlock.buffer[8+d]&0x0F)*256 +
-																		(unsigned int)(memBlock.buffer[9+d]&0xF0)		+ (unsigned int)(memBlock.buffer[9+d]&0x0F) );
+					//float fT = map.getHeight(abs(data[idcount].x[idcount]), abs(data[idcount].z[idcount]), x, z);
+					//data[idcount].blend[idcount] += fT;
 
-						//float fT = map.getHeight(abs(data[idcount].x[idcount]), abs(data[idcount].z[idcount]), x, z);
-						//data[idcount].blend[idcount] += fT;
+					data[item].scale.x		=	(	(unsigned int)(memBlock.buffer[10+d]&0x0F)*256	+ (unsigned int)(memBlock.buffer[10+d]&0xF0)*256 +
+														(unsigned int)(memBlock.buffer[11+d]&0x0F)		+ (unsigned int)(memBlock.buffer[11+d]&0xF0) )*16;
 
-						data[item].scale.x		=	(	(unsigned int)(memBlock.buffer[10+d]&0x0F)*256	+ (unsigned int)(memBlock.buffer[10+d]&0xF0)*256 +
-															(unsigned int)(memBlock.buffer[11+d]&0x0F)		+ (unsigned int)(memBlock.buffer[11+d]&0xF0) )*16;
+					data[item].scale.y		=	(	(unsigned int)(memBlock.buffer[12+d]&0x0F)*256	+ (unsigned int)(memBlock.buffer[12+d]&0xF0)*256 +
+														(unsigned int)(memBlock.buffer[13+d]&0x0F)		+ (unsigned int)(memBlock.buffer[13+d]&0xF0) )*16;
 
-						data[item].scale.y		=	(	(unsigned int)(memBlock.buffer[12+d]&0x0F)*256	+ (unsigned int)(memBlock.buffer[12+d]&0xF0)*256 +
-															(unsigned int)(memBlock.buffer[13+d]&0x0F)		+ (unsigned int)(memBlock.buffer[13+d]&0xF0) )*16;
+					data[item].scale.z		=	(	(unsigned int)(memBlock.buffer[14+d]&0x0F)*256	+ (unsigned int)(memBlock.buffer[14+d]&0xF0)*256 +
+														(unsigned int)(memBlock.buffer[15+d]&0x0F)		+ (unsigned int)(memBlock.buffer[15+d]&0xF0) )*16;
 
-						data[item].scale.z		=	(	(unsigned int)(memBlock.buffer[14+d]&0x0F)*256	+ (unsigned int)(memBlock.buffer[14+d]&0xF0)*256 +
-															(unsigned int)(memBlock.buffer[15+d]&0x0F)		+ (unsigned int)(memBlock.buffer[15+d]&0xF0) )*16;
+					data[item].rot.x			=	(	(unsigned int)(memBlock.buffer[16+d]&0xF0)*256	+ (unsigned int)(memBlock.buffer[16+d]&0x0F)*256 +
+														(unsigned int)(memBlock.buffer[17+d]&0xF0)		+ (unsigned int)(memBlock.buffer[17+d]&0x0F) );
 
-						data[item].rot.x			=	(	(unsigned int)(memBlock.buffer[16+d]&0xF0)*256	+ (unsigned int)(memBlock.buffer[16+d]&0x0F)*256 +
-															(unsigned int)(memBlock.buffer[17+d]&0xF0)		+ (unsigned int)(memBlock.buffer[17+d]&0x0F) );
+					data[item].rot.y			=	(	(unsigned int)(memBlock.buffer[18+d]&0xF0)*256	+ (unsigned int)(memBlock.buffer[18+d]&0x0F)*256 +
+														(unsigned int)(memBlock.buffer[19+d]&0xF0)		+ (unsigned int)(memBlock.buffer[19+d]&0x0F) );
 
-						data[item].rot.y			=	(	(unsigned int)(memBlock.buffer[18+d]&0xF0)*256	+ (unsigned int)(memBlock.buffer[18+d]&0x0F)*256 +
-															(unsigned int)(memBlock.buffer[19+d]&0xF0)		+ (unsigned int)(memBlock.buffer[19+d]&0x0F) );
+					data[item].rot.z			=	(	(unsigned int)(memBlock.buffer[20+d]&0xF0)*256	+ (unsigned int)(memBlock.buffer[20+d]&0x0F)*256 +
+														(unsigned int)(memBlock.buffer[21+d]&0xF0)		+ (unsigned int)(memBlock.buffer[21+d]&0x0F) );
 
-						data[item].rot.z			=	(	(unsigned int)(memBlock.buffer[20+d]&0xF0)*256	+ (unsigned int)(memBlock.buffer[20+d]&0x0F)*256 +
-															(unsigned int)(memBlock.buffer[21+d]&0xF0)		+ (unsigned int)(memBlock.buffer[21+d]&0x0F) );
-
-						std::string theImage = "";
-						for (int count=22; count<60; count++) {
-							if (memBlock.buffer[count+d]!=0) theImage+=memBlock.buffer[count+d];
-							else break;
-						}
-						data[item].file = theImage;
-
-						theImage = "";
-						for (int count=60; count<uiRecordSize; count++) {
-							if (memBlock.buffer[count+d]!=0) theImage+=memBlock.buffer[count+d];
-							else break;
-						}
-						data[item].image = theImage;
-
-						// TODO: Check for duplicate images
-						data[item].texture.Begin(4);		// Room for all 4 mappings (image, bump, spec, ambo)
-						data[item].texture.Load(sTexDir, theImage, 0);
-
-						item++;
+					std::string theImage = "";
+					for (int count=22; count<60; count++) {
+						if (memBlock.buffer[count+d]!=0) theImage+=memBlock.buffer[count+d];
+						else break;
 					}
+					data[item].file = theImage;
+
+					theImage = "";
+					for (int count=60; count<uiRecordSize; count++) {
+						if (memBlock.buffer[count+d]!=0) theImage+=memBlock.buffer[count+d];
+						else break;
+					}
+					data[item].image = theImage;
+
+					// TODO: Check for duplicate images
+					data[item].texture.Begin(4);		// Room for all 4 mappings (image, bump, spec, ambo)
+					data[item].texture.Load(sTexDir, theImage, 0);
+
+					Core::debug.log("["+std::to_string(item)+"] "+data[item].file+"\n", Core::debug().YELLOW);
+
+					item++;
 				}
-				//if (Core::gameVars->debug.load) std::cout << "..";
-				std::cout << "Done" << std::endl;
-				return true;
 			}
-			catch(...) {
-				std::cout << "Failed" << std::endl;
-				return false;
-			}
+
+			Core::debug.logDecreaseIndent();
+			Core::debug.log("}\n");
+			return true;
 		}
 
 		bool _O3D::calc() {
-			try {
-				//            .................................................................Done
-				std::cout << sOffset << "Calc O3D.........................................................";
+			Core::debug.log("Calc O3D {");
 
-				std::string loadFile;
-				std::stringstream sStream;
-				//string buffer = "";
+			std::string loadFile;
+			std::stringstream sStream;
+			//string buffer = "";
 
-				if (data.idcount != -1) {
-					for (int item=0; item <= data.idcount; item++) {
-						sStream.str("");
-						sStream << sFileDir << data[item].file;
-						loadFile=sStream.str();
+			if (data.idcount != -1) {
+				for (int item=0; item <= data.idcount; item++) {
+					sStream.str("");
+					sStream << sFileDir << data[item].file;
+					loadFile=sStream.str();
 
-						//PLY_Loader * pLoad = new PLY_Loader;
-						PLY_Loader pLoad;
-						pLoad.load(loadFile);
+					//PLY_Loader * pLoad = new PLY_Loader;
+					PLY_Loader pLoad;
+					pLoad.load(loadFile);
 
-						//if (Core::gameVars->debug.load) std::cout << count << ".";
+					//if (Core::gameVars->debug.load) std::cout << count << ".";
 
-						// ##############################
-						// Get bounding volume ready
-						data[item].bV->fPadding *= Core::gameVars->screen.fScale;
-						data[item].bV->Start(data[item].scale);
-						//data[item].bV->Start(Vector3f(1.0f));
+					// ##############################
+					// Get bounding volume ready
+					data[item].bV->fPadding *= Core::gameVars->screen.fScale;
+					data[item].bV->Start(data[item].scale);
+					//data[item].bV->Start(Vector3f(1.0f));
 
-						// Find min and max vertex positions, this is good for OBB only
-						for (int i=0; i<pLoad.numVerts; i++) {
-							data[item].bV->CheckMinMaxOBB(Vector3f(pLoad.vVerts[i][0]*Core::gameVars->screen.fScale, pLoad.vVerts[i][1]*Core::gameVars->screen.fScale, pLoad.vVerts[i][2]*Core::gameVars->screen.fScale));
-							//data[item].bV->CheckXYZ(Vector3f(pLoad.vVerts[i][0]*Core::gameVars->screen.fScale, pLoad.vVerts[i][1]*Core::gameVars->screen.fScale, pLoad.vVerts[i][2]*Core::gameVars->screen.fScale));
+					// Find min and max vertex positions, this is good for OBB only
+					for (int i=0; i<pLoad.numVerts; i++) {
+						data[item].bV->CheckMinMaxOBB(Vector3f(pLoad.vVerts[i][0]*Core::gameVars->screen.fScale, pLoad.vVerts[i][1]*Core::gameVars->screen.fScale, pLoad.vVerts[i][2]*Core::gameVars->screen.fScale));
+						//data[item].bV->CheckXYZ(Vector3f(pLoad.vVerts[i][0]*Core::gameVars->screen.fScale, pLoad.vVerts[i][1]*Core::gameVars->screen.fScale, pLoad.vVerts[i][2]*Core::gameVars->screen.fScale));
+					}
+
+					// Figure out the zero point (center of model)
+					data[item].bV->CalcOBB();
+
+					// Find furthest point from center, needed for Sphere and Cylinder to completely contain model
+					//for (int i=0; i<pLoad.numVerts; i++) {
+					//	data[item].bV->CheckXYZ(Vector3f(pLoad.vVerts[i][0]*Core::gameVars->screen.fScale, pLoad.vVerts[i][1]*Core::gameVars->screen.fScale, pLoad.vVerts[i][2]*Core::gameVars->screen.fScale));
+					//}
+					data[item].bV->SetRotation(data[item].rot);
+					data[item].bV->SetPosition(data[item].pos*Core::gameVars->screen.fScale);
+					//data[item].bV->Finish();
+
+					// ##############################
+					// Apply transformations to objects now
+					matrix->Push();
+						matrix->SetIdentity();
+						matrix->Rotate(Degrees(data[item].rot.x).toRadians(), -1.0, 0.0, 0.0);
+						matrix->Rotate(Degrees(data[item].rot.y).toRadians(), 0.0, -1.0, 0.0);
+						matrix->Rotate(Degrees(data[item].rot.z).toRadians(), 0.0, 0.0, -1.0);
+						 Matrix44f mTransform = matrix->GetModelView();
+						for(int vert=0; vert<pLoad.numVerts; vert++) {
+							pLoad.vVerts[vert][0] *= data[item].scale.x*Core::gameVars->screen.fScale;
+							pLoad.vVerts[vert][1] *= data[item].scale.y*Core::gameVars->screen.fScale;
+							pLoad.vVerts[vert][2] *= data[item].scale.z*Core::gameVars->screen.fScale;
+
+							Vector4f vVertex = Vector4f(pLoad.vVerts[vert][0], pLoad.vVerts[vert][1], pLoad.vVerts[vert][2], 1.0f);
+							Vector4f vTVertex = mTransform * vVertex;
+							pLoad.vVerts[vert][0] = vTVertex.x;
+							pLoad.vVerts[vert][1] = vTVertex.y;
+							pLoad.vVerts[vert][2] = vTVertex.z;
+
+							// Build AABB after rotations have been performed, but before translations
+							data[item].bV->CheckMinMaxAABB(Vector3f(pLoad.vVerts[vert][0], pLoad.vVerts[vert][1], pLoad.vVerts[vert][2]));
+
+							Vector4f vNormal = Vector4f(pLoad.vNorms[vert][0], pLoad.vNorms[vert][1], pLoad.vNorms[vert][2], 1.0f);
+							Vector4f vTNormal = mTransform * vNormal;
+							pLoad.vNorms[vert][0] = vTNormal.x;
+							pLoad.vNorms[vert][1] = vTNormal.y;
+							pLoad.vNorms[vert][2] = vTNormal.z;
+
+							pLoad.vVerts[vert][0] += data[item].pos.x*Core::gameVars->screen.fScale;
+							pLoad.vVerts[vert][1] += data[item].pos.y*Core::gameVars->screen.fScale;
+							pLoad.vVerts[vert][2] += data[item].pos.z*Core::gameVars->screen.fScale;
 						}
-
-						// Figure out the zero point (center of model)
-						data[item].bV->CalcOBB();
-
-						// Find furthest point from center, needed for Sphere and Cylinder to completely contain model
-						//for (int i=0; i<pLoad.numVerts; i++) {
-						//	data[item].bV->CheckXYZ(Vector3f(pLoad.vVerts[i][0]*Core::gameVars->screen.fScale, pLoad.vVerts[i][1]*Core::gameVars->screen.fScale, pLoad.vVerts[i][2]*Core::gameVars->screen.fScale));
-						//}
-						data[item].bV->SetRotation(data[item].rot);
-						data[item].bV->SetPosition(data[item].pos*Core::gameVars->screen.fScale);
-						//data[item].bV->Finish();
-
-						// ##############################
-						// Apply transformations to objects now
-						matrix->Push();
-							matrix->SetIdentity();
-							matrix->Rotate(Degrees(data[item].rot.x).toRadians(), -1.0, 0.0, 0.0);
-							matrix->Rotate(Degrees(data[item].rot.y).toRadians(), 0.0, -1.0, 0.0);
-							matrix->Rotate(Degrees(data[item].rot.z).toRadians(), 0.0, 0.0, -1.0);
-							 Matrix44f mTransform = matrix->GetModelView();
-							for(int vert=0; vert<pLoad.numVerts; vert++) {
-								pLoad.vVerts[vert][0] *= data[item].scale.x*Core::gameVars->screen.fScale;
-								pLoad.vVerts[vert][1] *= data[item].scale.y*Core::gameVars->screen.fScale;
-								pLoad.vVerts[vert][2] *= data[item].scale.z*Core::gameVars->screen.fScale;
-
-								Vector4f vVertex = Vector4f(pLoad.vVerts[vert][0], pLoad.vVerts[vert][1], pLoad.vVerts[vert][2], 1.0f);
-								Vector4f vTVertex = mTransform * vVertex;
-								pLoad.vVerts[vert][0] = vTVertex.x;
-								pLoad.vVerts[vert][1] = vTVertex.y;
-								pLoad.vVerts[vert][2] = vTVertex.z;
-
-								// Build AABB after rotations have been performed, but before translations
-								data[item].bV->CheckMinMaxAABB(Vector3f(pLoad.vVerts[vert][0], pLoad.vVerts[vert][1], pLoad.vVerts[vert][2]));
-
-								Vector4f vNormal = Vector4f(pLoad.vNorms[vert][0], pLoad.vNorms[vert][1], pLoad.vNorms[vert][2], 1.0f);
-								Vector4f vTNormal = mTransform * vNormal;
-								pLoad.vNorms[vert][0] = vTNormal.x;
-								pLoad.vNorms[vert][1] = vTNormal.y;
-								pLoad.vNorms[vert][2] = vTNormal.z;
-
-								pLoad.vVerts[vert][0] += data[item].pos.x*Core::gameVars->screen.fScale;
-								pLoad.vVerts[vert][1] += data[item].pos.y*Core::gameVars->screen.fScale;
-								pLoad.vVerts[vert][2] += data[item].pos.z*Core::gameVars->screen.fScale;
-							}
-						matrix->Pop();
-						data[item].bV->CalcAABB();
-						data[item].bV->Finish(*matrix);
+					matrix->Pop();
+					data[item].bV->CalcAABB();
+					data[item].bV->Finish(*matrix);
 
 //						if (bUpdate) {
 //							//glFlush();
@@ -347,28 +344,23 @@ namespace Core {
 //							data[item].vao.End();
 //						}
 //						else {
-							data[item].vao.Begin(GL_TRIANGLES, pLoad.numVerts, pLoad.numDrawVerts, 1);
-							data[item].vao.CopyData(GLA_VERTEX, pLoad.vVerts);
-							data[item].vao.CopyData(GLA_NORMAL, pLoad.vNorms);
-							data[item].vao.CopyData(GLA_TEXTURE, pLoad.vCoords, 0);
-							data[item].vao.CopyData(GLA_INDEX, pLoad.vIndex, pLoad.numDrawVerts);
-							data[item].vao.End();
+						data[item].vao.Begin(GL_TRIANGLES, pLoad.numVerts, pLoad.numDrawVerts, 1);
+						data[item].vao.CopyData(GLA_VERTEX, pLoad.vVerts);
+						data[item].vao.CopyData(GLA_NORMAL, pLoad.vNorms);
+						data[item].vao.CopyData(GLA_TEXTURE, pLoad.vCoords, 0);
+						data[item].vao.CopyData(GLA_INDEX, pLoad.vIndex, pLoad.numDrawVerts);
+						data[item].vao.End();
 //						}
 
-						//delete pLoad;
+					//delete pLoad;
 
-						//cout << buffer << endl;
-					}
+					//cout << buffer << endl;
 				}
+			}
 
-				//if (Core::gameVars->debug.load) std::cout << "..";
-				std::cout << "Done" << std::endl;
-				return true;
-			}
-			catch (...) {
-				std::cout << "Failed" << std::endl;
-				return false;
-			}
+			Core::debug.print(" Done ", Core::debug().GREEN);
+			Core::debug.print("}\n");
+			return true;
 		}
 
 		void _O3D::draw(SHADER_PROGRAMS iShader, Core::_Lights &lights) {

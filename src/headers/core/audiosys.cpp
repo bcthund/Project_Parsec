@@ -1,5 +1,6 @@
 #include <iostream>
 
+#include "core_functions.h"
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_mixer.h"
 //#include <stdlib.h>
@@ -32,7 +33,7 @@ namespace Core {
 
 	bool AudioSys::init() {
 		//            .................................................................Done
-		std::cout << "Init Audio.......................................................";
+		Core::debug.log("Init Audio {");
 
 		bool bFail = false;
 
@@ -75,20 +76,20 @@ namespace Core {
 		Mix_AllocateChannels(iChannels);
 		//cout << "   Allocated " << iChannels << " mixing channels." << endl;
 
-		if (bFail) std::cout << "Failed" << std::endl;
-		else std::cout << "Done" << std::endl;
-
+		if (bFail) Core::debug.print(" Failed", Core::debug().RED);
+		else Core::debug.print(" Done ", Core::debug().GREEN);
+		Core::debug.print("}\n");
 		return iInit;
 	}
 
 	bool AudioSys::load() {
 
+		Core::debug.log("Load Sound Effects {\n");
+		Core::debug.logIncreaseIndent();
+
 		__uint8_t iCount	= 0;
 		std::string sDir				= "./audio/effects/";
 		std::string sFile			= "";
-
-		//            .................................................................Done
-		std::cout << "Load Sounds......................................................";
 
 		// Load Sound Effects
 		iCount = 0;			sFile = "battle_hit.ogg";			loadSound(iCount, sDir+sFile);
@@ -116,16 +117,19 @@ namespace Core {
 
 		//******************************************************************************************************************************
 
-		std::cout << "Done" << std::endl;
-
-		//            .................................................................Done
-		std::cout << "Load Music.......................................................";
+		Core::debug.logDecreaseIndent();
+		Core::debug.log("}\n");
+		Core::debug.log("Load Music {\n");
+		Core::debug.logIncreaseIndent();
 
 		// Load Music
 		iCount = 0;
 		sDir	= "./audio/music/";
 		sFile = "Sneaky Adventure.mp3";
 		musicItem[iCount].music = Mix_LoadMUS((sDir + sFile).c_str());
+
+		Core::debug.log("["+std::to_string(iCount)+"] "+sFile+" (Incomplete Loader)\n", Core::debug().RED);
+
 //		if(!musicItem[iCount].sample) {
 //			cout << "[" << (int)iCount << "] Error loading '"<< (sDir + sFile) << "': " << Mix_GetError() << endl;
 //		}
@@ -134,8 +138,6 @@ namespace Core {
 //			musicItem[iCount].bLoad = true;
 //		}
 		if(musicItem[iCount].music) musicItem[iCount].bLoad = true;
-
-		std::cout << "Done" << std::endl;
 
 //		++iCount;
 //		sFile = "Vanishing.ogg";
@@ -200,10 +202,16 @@ namespace Core {
 	//	catch(...) {
 	//		return false;
 	//	}
+
+		Core::debug.log("}\n");
+		Core::debug.logDecreaseIndent();
+
 		return true;
 	}
 
 	void AudioSys::loadSound(int iCount, std::string sLoad) {
+		Core::debug.log("["+std::to_string(iCount)+"] "+sLoad+" (Incomplete Loader)\n", Core::debug().RED);
+
 		soundItem[iCount].chunk = Mix_LoadWAV(sLoad.c_str());
 		//if(!soundItem[iCount].sample) cout << "[" << iCount << "] Error loading '"<< sLoad << "': " << Mix_GetError() << endl;
 		//else { cout << "   [" << iCount << "] '" << sLoad << "'" << endl; soundItem[iCount].bLoad = true; }

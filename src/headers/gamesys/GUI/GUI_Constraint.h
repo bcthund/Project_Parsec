@@ -53,7 +53,8 @@ namespace Core {
 						class Sprite;\
 						class ProgressBar;\
 						class ComboBox;\
-						class PieChart
+						class PieChart;\
+						class Animation
 
 		#define FRIENDS friend class GUI_Container;\
 						friend class Window;\
@@ -71,7 +72,8 @@ namespace Core {
 						friend class Sprite;\
 						friend class ProgressBar;\
 						friend class ComboBox;\
-						friend class PieChart
+						friend class PieChart;\
+						friend class Animation
 
 
 
@@ -109,6 +111,7 @@ namespace Core {
 		class Props_ProgressBar;
 		class Props_ComboBox;
 		class Props_PieChart;
+		class Props_Animation;
 
 		enum eButtonType {	BUTTON_ONESHOT,		// Button is active for one cycle
 							BUTTON_MOMENTARY,	// Button is active as long as pressed
@@ -2036,6 +2039,66 @@ namespace Core {
 //					propColorBox.colorBorder.base		= &colors[colors().Black];
 //					propColorBox.colorBorder.active		= &colors[colors().Black];
 //					propColorBox.colorBorder.highlight	= &colors[colors().Black];
+				}
+		};
+
+		/** ******************************************************************************************************************************
+		 *  \class Props_Animation
+		 *  \brief Creates a slider and control with optional label and field for value editing
+		 *
+		 *
+		 *
+		 * ****************************************************************************************************************************** */
+		class Props_Animation :	virtual public Props_Window {
+			friend class Object::Animation;
+
+			private:
+
+			public:
+				Props_Label	propLabel;
+				std::string sAnimationImage;
+				int iUpdateRate;
+				int iLoop;
+				int iSample;
+				bool bShowBackground;
+				bool bShowLabel;
+				bool bStartAnimation;
+
+				void setAnimation(std::string s)		{	sAnimationImage = s;	}
+				void setUpdateRate(int i)				{	iUpdateRate = i;		}
+				void setLoops(int i)					{	iLoop = i;				}
+				void setSample(int i)					{	iSample = i;			}
+				void showBackground(bool b=true)		{	bShowBackground = b;	}
+				void showLabel(bool b=true)				{	bShowLabel = b;			}
+				void startAnimation(bool b=true)		{	bStartAnimation = b;	}
+
+				Props_Animation() {
+					sAnimationImage = "";
+					iUpdateRate		= 100;
+					iLoop			= -1;
+					iSample			= -1;
+					bShowBackground	= false;
+					bShowLabel		= false;
+					bStartAnimation	= false;
+
+					setOrigin(CONSTRAIN_CENTER);
+					setAnchor(CONSTRAIN_CENTER);
+					setWidth(200, SIZE_CONSTRAINT_ABSOLUTE);
+					setHeight(200, SIZE_CONSTRAINT_ABSOLUTE);
+					setBorder(1, 1);
+					setPadding(0);
+
+					colorBack.base			= &colors[colors().Gray60];
+					colorBack.active		= &colors[colors().Gray60];
+					colorBack.highlight		= &colors[colors().Gray60];
+
+					colorBorder.base		= &colors[colors().Black];
+					colorBorder.active		= &colors[colors().Black];
+					colorBorder.highlight	= &colors[colors().Black];
+
+					propLabel.setOrigin(CONSTRAIN_TOP);
+					propLabel.setAnchor(CONSTRAIN_BOTTOM);
+					propLabel.setWidth(200, SIZE_CONSTRAINT_ABSOLUTE);
 				}
 		};
 

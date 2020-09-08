@@ -609,7 +609,7 @@
 //	namespace Core {	static Core::GameSys::_GameTime	*	timeSys = new Core::GameSys::_GameTime();	}
 	#include "./gamesys/animations.h"
 	#include "./gamesys/TextSys.h"			// Prints text to the screen
-	#include "./gamesys/WinSys.h"			// Base for drawing windows to the screen
+//	#include "./gamesys/WinSys.h"			// Base for drawing windows to the screen
 	#include "./gamesys/SpriteSys.h"		// Draws orthographic sprites to the screen
 	#include "./gamesys/IconSys.h"			// Draws orthographic icons to the screen
 	#include "./gamesys/O2D.h"				// Draws perspective sprites to the world
@@ -687,14 +687,15 @@
 		_ParticleEmitter	*	particles	= new _ParticleEmitter();
 //		SimplexNoise		*	snoise		= new SimplexNoise();
 //		Stipple				*	stipple		= new Stipple();
-		Stipple				stipple		= Stipple();
+		Stipple				stipple			= Stipple();
+		_AnimationSys		animation		= _AnimationSys(*audioSys);
 
 		GameVars			*	gameVars	= new GameVars();
 
 		_IconSys			*	iconSys		= new _IconSys();
 		_SpriteSys			*	spriteSys	= new _SpriteSys();
 		_TextSys			*	textSys		= new _TextSys();
-		GameSys::_WinSys	*	winSys		= new GameSys::_WinSys();
+//		GameSys::_WinSys	*	winSys		= new GameSys::_WinSys();
 		GameSys::_MenuSys	*	menuSys		= new GameSys::_MenuSys(*textSys);
 //		GUI::GUI			*	gui			= new GUI::GUI();
 		GUI::GUI			gui;
@@ -814,8 +815,8 @@
 			//Core::textSys.calc();
 
 			//Core::GameSys::winSys.init();
-			winSys->load();
-			winSys->calc();
+//			winSys->load();
+//			winSys->calc();
 
 			//Core::iconSys.init();
 			iconSys->load();
@@ -824,6 +825,10 @@
 			//Core::spriteSys.init();
 			spriteSys->load();
 			spriteSys->calc();
+
+			animation.init();
+			animation.load();
+			animation.calc();
 
 			glClearColor(	Core::gameVars->screen.vClearColorCurrent[0],
 							Core::gameVars->screen.vClearColorCurrent[1],
@@ -848,7 +853,7 @@
 		void Cleanup() {
 //			delete gui;//			= new GUI::GUI();
 			delete menuSys;//		= new GameSys::_MenuSys(*textSys);
-			delete winSys;//		= new GameSys::_WinSys();
+//			delete winSys;//		= new GameSys::_WinSys();
 			delete textSys;//		= new _TextSys();
 			delete spriteSys;//		= new GameSys::_SpriteSys();
 			delete iconSys;//		= new GameSys::_IconSys();

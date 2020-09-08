@@ -6,6 +6,7 @@
  */
 
 #include <core/Debug.h>
+#include <iomanip>
 
 namespace Core {
 
@@ -18,8 +19,8 @@ namespace Core {
 		timerLog.start();
 		bDrawLog = true;
 		bDrawPrint = true;
-		bLogEnable = false;
-		bPrintEnable = false;
+		bLogEnable = true;
+		bPrintEnable = true;
 
 		//ioctl(STDOUT_FILENO, TIOCGWINSZ, &size);
 		//auto const w(WEXITSTATUS(std::system("exit `tput cols`")));
@@ -34,10 +35,10 @@ namespace Core {
 		return consoleColors;
 	}
 
-	void _Debug::logIncreaseIndent()   { sLogIndent.append(" "); }
-	void _Debug::logDecreaseIndent()   { if(sLogIndent.length()>0) sLogIndent.pop_back(); }
-	void _Debug::printIncreaseIndent() { sPrintIndent.append(" "); }
-	void _Debug::printDecreaseIndent() { if(sPrintIndent.length()>0) sPrintIndent.pop_back(); }
+	void _Debug::logIncreaseIndent()   { sLogIndent.append("  "); }
+	void _Debug::logDecreaseIndent()   { if(sLogIndent.length()>1) sLogIndent.pop_back(); sLogIndent.pop_back(); }
+	void _Debug::printIncreaseIndent() { sPrintIndent.append("  "); }
+	void _Debug::printDecreaseIndent() { if(sPrintIndent.length()>1) sPrintIndent.pop_back(); sPrintIndent.pop_back(); }
 
 	/**
 	 * \brief Check and reset timers per cycle, to be called at beginning of program loop
@@ -70,14 +71,21 @@ namespace Core {
 	 * @param color Color from \p ConsoleColors to apply to text
 	 */
 	void _Debug::log(std::string buffer, ConsoleColors::eCOLOR color) {
-		if (bDrawLog && bLogEnable) {
-			std::string timeStamp = "["+std::to_string(timerLog.get_ticks())+"]: ";
-			while(timeStamp.length() < 16) {
-				timeStamp.append(" ");
-			}
+//		if (bDrawLog && bLogEnable) {
+		if (bLogEnable) {
+
+			std::stringstream timeStamp;
+			timeStamp << "[" << std::setw(6) << std::setfill(' ') << timerLog.get_ticks() << "]  ";
+			//timeStamp << std::setw(10) << std::setfill(' ') << "";
+
+
+//			while(timeStamp.str().length() < 16) {
+//				timeStamp.append(" ");
+//			}
 
 			std::ostringstream out;
-			out << consoleColors.colors[color] << timeStamp << sLogIndent << buffer << consoleColors.colors[consoleColors.NC] << std::endl;
+//			out << consoleColors.colors[color] << timeStamp << sLogIndent << buffer << consoleColors.colors[consoleColors.NC] << std::endl;
+			out << consoleColors.colors[consoleColors.GREY] << timeStamp.str() << sLogIndent << consoleColors.colors[color] << buffer << consoleColors.colors[consoleColors.NC];
 			//std::cout << consoleColors.colors[color] << timeStamp << sLogIndent << buffer << consoleColors.colors[consoleColors.NC] << std::endl;
 			exec(out.str());
 		}

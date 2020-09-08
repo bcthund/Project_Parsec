@@ -214,6 +214,7 @@ int main(int argc, char* argv[]) {
 //		Core::debug.update(500);
 		Core::debug.update(0, true);
 		Core::debug.bLogEnable = true;
+		Core::debug.bPrintEnable = true;
 //		std::cout << "\033[2J\033[1;1H";	// 2J=clear from top(J) to bottom(2); Position cursor at row 1, column 1
 
 		if (Core::gameVars->runState.main_menu) {

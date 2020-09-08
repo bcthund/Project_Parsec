@@ -216,18 +216,18 @@ _Admin::_Admin(_Game *gamePtr) :
 void _Admin::init() {
 	// GUI - Master container
 
+	Core::debug.log("Init GUI {\n");
+	Core::debug.logIncreaseIndent();
+
 	if (!bOneShot[0]) {
-		std::cout << "GUI: Loading #00: Master Container ............................. ";
-		//std::cout << "...............................................................";
+		Core::debug.log("[0] Master Container\n", Core::debug().YELLOW);
 		Core::gui.createGUI("GameMenu");
 		bOneShot[0] = true;
-		std::cout << "Done" << std::endl;
 	}
 
 	// Blank Window, parameter testing
 	if (!bOneShot[1]) {
-		std::cout << "GUI: Loading #01: Windows ...................................... ";
-		//std::cout << "...............................................................";
+		Core::debug.log("[1] Windows\n", Core::debug().YELLOW);
 		Core::GUI::Props_Container cMaster;
 		cMaster.setOrigin(Core::GUI::CONSTRAIN_TOP_RIGHT);
 		cMaster.setAnchor(Core::GUI::CONSTRAIN_TOP_RIGHT);
@@ -268,10 +268,12 @@ void _Admin::init() {
 //		cMaster.disableScissor();
 		//Core::gui["GameMenu"].add("Window 22", cMaster);
 		Core::gui["GameMenu"].add("Window 23", cMaster);
+		cMaster.disableScissor();
 		Core::gui["GameMenu"].add("Window 24", cMaster);
 		Core::gui["GameMenu"].add("Window 25", cMaster);
 		Core::gui["GameMenu"].add("Window 26", cMaster);
 
+		cMaster.enableScissor();
 		//cMaster.setTextured();
 		cMaster.setTexture(Core::sysTex->TEX_GRASSYROCK, Core::sysTex->get());
 		cMaster.setTextureScrollRate(2.0f);
@@ -319,15 +321,13 @@ void _Admin::init() {
 		Core::gui["GameMenu"].add("Window 14-8", cMaster);
 
 		bOneShot[1] = true;
-		std::cout << "Done" << std::endl;
 	}
 
 //	throw std::runtime_error("Abort");
 
 
 	if (!bOneShot[2]) {
-		std::cout << "GUI: Loading #02: Button window ................................ ";
-		//std::cout << "...............................................................";
+		Core::debug.log("[2] Button Window\n", Core::debug().YELLOW);
 		Core::GUI::Props_Container con;
 		con.setOrigin(Core::GUI::CONSTRAIN_TOP_RIGHT);
 		con.setAnchor(Core::GUI::CONSTRAIN_TOP_RIGHT);
@@ -344,13 +344,11 @@ void _Admin::init() {
 		Core::gui["GameMenu"].add("Window 2", con);
 //		Core::gui->Window.add("Window 2", con);		// General Buttons Menu
 		bOneShot[2] = true;
-		std::cout << "Done" << std::endl;
 	}
 
 	// Label Testing
 	if (!bOneShot[3]) {
-		std::cout << "GUI: Loading #03: Label ........................................ ";
-		//std::cout << "...............................................................";
+		Core::debug.log("[3] Labels\n", Core::debug().YELLOW);
 		Core::GUI::Props_Label con;
 		con.setOrigin(Core::GUI::CONSTRAIN_TOP|Core::GUI::CONSTRAIN_CENTER);
 		con.setAnchor(Core::GUI::CONSTRAIN_TOP);
@@ -396,14 +394,13 @@ void _Admin::init() {
 		Core::gui["GameMenu"]["Window 26"].Label.add("Window 26", con);
 
 		bOneShot[3] = true;
-		std::cout << "Done" << std::endl;
-		std::cout << "Skipping #04-19" << std::endl;
 	}
+
+	Core::debug.log("Skipping 4-19\n", Core::debug().YELLOW);
 
 	// Button Testing
 	if (!bOneShot[20]) {
-		std::cout << "GUI: Loading #20: Menu Buttons ................................. ";
-		//std::cout << "...............................................................";
+		Core::debug.log("[20] Menu Buttons\n", Core::debug().YELLOW);
 		// Accept Button
 		Core::GUI::Props_Button con_button;
 		con_button.setHeight(20, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);				// Exact button height
@@ -504,9 +501,9 @@ void _Admin::init() {
 		con_button.setPos(  196, -60);	Core::gui["GameMenu"]["Window 2"].Button.add("PieChart",		false, con_button);
 
 		con_button.setToolTip("None.");
-		con_button.setPos( -196, -80);	Core::gui["GameMenu"]["Window 2"].Button.add("Spare 1",			false, con_button);
+		con_button.setPos( -196, -80);	Core::gui["GameMenu"]["Window 2"].Button.add("Lines",			false, con_button);
 		con_button.setToolTip("None.");
-		con_button.setPos(  -98, -80);	Core::gui["GameMenu"]["Window 2"].Button.add("Spare 2",			false, con_button);
+		con_button.setPos(  -98, -80);	Core::gui["GameMenu"]["Window 2"].Button.add("Animation",		false, con_button);
 		con_button.setToolTip("None.");
 		con_button.setPos(    0, -80);	Core::gui["GameMenu"]["Window 2"].Button.add("Spare 3",			false, con_button);
 		con_button.setToolTip("None.");
@@ -514,12 +511,9 @@ void _Admin::init() {
 		con_button.setToolTip("None.");
 		con_button.setPos(  196, -80);	Core::gui["GameMenu"]["Window 2"].Button.add("Spare 5",			false, con_button);
 
-
-
 		Core::gui["GameMenu"]["Window 2"].Button["Labels"].setEnableA(false, 0);
 
 		bOneShot[20] = true;
-		std::cout << "Done" << std::endl;
 	}
 
 	// No parent button (Toggle Menu)
@@ -542,8 +536,7 @@ void _Admin::init() {
 
 	// Slider Simplex
 	if (!bOneShot[22]) {
-		std::cout << "GUI: Loading #22: Simplex Sliders .............................. ";
-		//std::cout << "...............................................................";
+		Core::debug.log("[22] Simplex Sliders\n", Core::debug().YELLOW);
 		Core::GUI::Props_Slider con;
 		con.setOrigin(Core::GUI::CONSTRAIN_CENTER|Core::GUI::CONSTRAIN_BOTTOM);
 		con.setAnchor(Core::GUI::CONSTRAIN_CENTER);					// Center of button
@@ -643,13 +636,11 @@ void _Admin::init() {
 		Core::gui["GameMenu"]["Window 3"].Slider["World Scale 1"].getF()->setEnableA(false, 0);
 
 		bOneShot[22] = true;
-		std::cout << "Done" << std::endl;
 	}
 
 	// Slider Fractal
 	if (!bOneShot[23]) {
-		std::cout << "GUI: Loading #23: Fractal Sliders .............................. ";
-		//std::cout << "...............................................................";
+		Core::debug.log("[23] Fractal Sliders\n", Core::debug().YELLOW);
 		Core::GUI::Props_Slider con;
 		con.setOrigin(Core::GUI::CONSTRAIN_CENTER|Core::GUI::CONSTRAIN_BOTTOM);
 		con.setAnchor(Core::GUI::CONSTRAIN_CENTER);					// Center of button
@@ -739,14 +730,13 @@ void _Admin::init() {
 		Core::gui["GameMenu"]["Window 4"].Slider.add("World Scale 1", &Core::gameVars->screen.fScale, con);
 
 		bOneShot[23] = true;
-		std::cout << "Done" << std::endl;
-		std::cout << "Skipping #24-29" << std::endl;
 	}
+
+	Core::debug.log("Skipping 24-29\n", Core::debug().YELLOW);
 
 	// Slider - Lighting
 	if (!bOneShot[30]) {
-		std::cout << "GUI: Loading #30: Lighting Sliders ............................. ";
-		//std::cout << "...............................................................";
+		Core::debug.log("[30] Lighting Sliders\n", Core::debug().YELLOW);
 		Core::GUI::Props_Slider con;
 		con.setOrigin(Core::GUI::CONSTRAIN_CENTER|Core::GUI::CONSTRAIN_BOTTOM);
 		con.setAnchor(Core::GUI::CONSTRAIN_CENTER);						// Center of button
@@ -811,13 +801,11 @@ void _Admin::init() {
 		Core::gui["GameMenu"]["Window 1"].Slider.add("Light Dir Z", &game->world->lights->GetDir(game->iDebugLight).z, con);
 
 		bOneShot[30] = true;
-		std::cout << "Done" << std::endl;
 	}
 
 	// Slider - Vertical Testing
 	if (!bOneShot[31]) {
-		std::cout << "GUI: Loading #31: Slider Testing ............................... ";
-		//std::cout << "...............................................................";
+		Core::debug.log("[31] Slider Orientation Testing\n", Core::debug().YELLOW);
 		Core::GUI::Props_Slider con;
 		con.setOrigin(Core::GUI::CONSTRAIN_TOP|Core::GUI::CONSTRAIN_CENTER);
 		con.setAnchor(Core::GUI::CONSTRAIN_CENTER);
@@ -877,13 +865,11 @@ void _Admin::init() {
 		Core::gui["GameMenu"]["Window 5"].Slider.add("X - Vertical B", &game->world->lights->GetPos(game->iDebugLight).x, con);
 
 		bOneShot[31] = true;
-		std::cout << "Done" << std::endl;
 	}
 
 	// TextArea Testing
 	if (!bOneShot[32]) {
-		std::cout << "GUI: Loading #32: Text Area .................................... ";
-		//std::cout << "...............................................................";
+		Core::debug.log("[32] Text Area\n", Core::debug().YELLOW);
 
 		Core::GUI::Props_TextArea c;
 		c.setOrigin(Core::GUI::CONSTRAIN_LEFT);
@@ -976,13 +962,11 @@ void _Admin::init() {
 		Core::gui["GameMenu"]["Window 6"].Button.add("AutoHeight", &Core::gui["GameMenu"]["Window 6"].TextEdit("TextArea 1").size.constraint.yAuto, cButton);
 
 		bOneShot[32] = true;
-		std::cout << "Done" << std::endl;
 	}
 
 	// ColorSwatch Testing
 	if (!bOneShot[33]) {
-		std::cout << "GUI: Loading #33: Color Swatch ................................. ";
-		//std::cout << "...............................................................";
+		Core::debug.log("[33] Color Swatch\n", Core::debug().YELLOW);
 		Core::GUI::Props_ColorSwatch cColor;
 		cColor.setOrigin(Core::GUI::CONSTRAIN_TOP|Core::GUI::CONSTRAIN_LEFT);
 		cColor.setAnchor(Core::GUI::CONSTRAIN_TOP|Core::GUI::CONSTRAIN_LEFT);
@@ -1002,13 +986,11 @@ void _Admin::init() {
 		Core::gui["GameMenu"]["Window 7"].ColorSwatch["Swatch 5"].setEnableA(false, 0);
 
 		bOneShot[33] = true;
-		std::cout << "Done" << std::endl;
 	}
 
 	// Checkbox Testing
 	if (!bOneShot[34]) {
-		std::cout << "GUI: Loading #34: Checkbox ..................................... ";
-		//std::cout << "...............................................................";
+		Core::debug.log("[34] Checkbox\n", Core::debug().YELLOW);
 		// Objects to be controlled by checkbox
 		Core::GUI::Props_TextArea c1;
 		c1.setOrigin(Core::GUI::CONSTRAIN_TOP);
@@ -1209,7 +1191,6 @@ void _Admin::init() {
 		Core::gui["GameMenu"]["Window 8"].Slider.add("Radius", &Core::gui["GameMenu"]["Window 8"].CheckBox("Check Sample").radius, con);
 
 		bOneShot[34] = true;
-		std::cout << "Done" << std::endl;
 	}
 
 	/*
@@ -1220,8 +1201,7 @@ void _Admin::init() {
 	 * constraint set to make this work for all windows.
 	 */
 	if (!bOneShot[35]) {
-		std::cout << "GUI: Loading #35: Window Settings .............................. ";
-		//std::cout << "...............................................................";
+		Core::debug.log("[35] Window Settings\n", Core::debug().YELLOW);
 		Core::GUI::Props_Slider con;
 		con.setOrigin(Core::GUI::CONSTRAIN_TOP|Core::GUI::CONSTRAIN_CENTER);
 		con.setAnchor(Core::GUI::CONSTRAIN_TOP);
@@ -1330,15 +1310,13 @@ void _Admin::init() {
 //		Core::gui["GameMenu"]["Window 9"].Button.add("Tooltips", &Core::GUI::Props::ToolTip::bShowGlobal, cButton2);
 
 		bOneShot[35] = true;
-		std::cout << "Done" << std::endl;
 	}
 
 	/*
 	 * Icons
 	 */
 	if (!bOneShot[36]) {
-		std::cout << "GUI: Loading #36: Icons ........................................ ";
-		//std::cout << "...............................................................";
+		Core::debug.log("[36] Icons\n", Core::debug().YELLOW);
 
 		Core::GUI::Props_Icon cIcon;
 		cIcon.setOrigin(Core::GUI::CONSTRAIN_TOP);
@@ -1370,15 +1348,13 @@ void _Admin::init() {
 		// TODO: Try implementing a window with: Icon, Text...scrolling??? Like old inventory list.
 
 		bOneShot[36] = true;
-		std::cout << "Done" << std::endl;
 	}
 
 	/*
 	 * Sprite
 	 */
 	if (!bOneShot[37]) {
-		std::cout << "GUI: Loading #37: Sprites ...................................... ";
-		//std::cout << "...............................................................";
+		Core::debug.log("[37] Sprites\n", Core::debug().YELLOW);
 
 		Core::GUI::Props_Sprite cSprite;
 //		cSprite.setOrigin(Core::GUI::CONSTRAIN_TOP|Core::GUI::CONSTRAIN_CENTER);
@@ -1437,15 +1413,13 @@ void _Admin::init() {
 
 
 		bOneShot[37] = true;
-		std::cout << "Done" << std::endl;
 	}
 
 	/*
 	 * Stipple
 	 */
 	if (!bOneShot[38]) {
-		std::cout << "GUI: Loading #38: Stipple ...................................... ";
-		//std::cout << "...............................................................";
+		Core::debug.log("[38] Stipple\n", Core::debug().YELLOW);
 		Core::GUI::Props_CheckBox c;
 		c.setOrigin(Core::GUI::CONSTRAIN_TOP_LEFT);
 		c.setAnchor(Core::GUI::CONSTRAIN_TOP_LEFT);
@@ -1460,9 +1434,6 @@ void _Admin::init() {
 		c.setRadius(10);
 		//c.setGroup(2);
 		c.setGroup(Core::groups.add("Stipple Group"));
-
-
-
 
 		c.setPos(0, -22);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_ANSI31, false, c).dataSet.addGroupState("ON",			1);
 		c.setPos(0, -44);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_ANGLE_THICK, false, c).dataSet.addGroupState("ON",	2);
@@ -1509,10 +1480,6 @@ void _Admin::init() {
 		c.setPos(0, -396);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_SALT, false, c).dataSet.addGroupState("ON", 			37);
 		c.setPos(0, -418);	Core::gui["GameMenu"]["Window 12"].CheckBox.add(Core::stipple.STIPPLE_PUMICE, false, c).dataSet.addGroupState("ON", 		38);
 
-
-
-
-
 		Core::GUI::Props_Slider con;
 		con.setOrigin(Core::GUI::CONSTRAIN_BOTTOM);
 		con.setAnchor(Core::GUI::CONSTRAIN_BOTTOM);
@@ -1541,45 +1508,33 @@ void _Admin::init() {
 		Core::gui["GameMenu"]["Window 12"].ColorSwatch.add("Stipple Color", &Core::gameVars->pallette.gui.window.stipple.base, cColor);
 
 		bOneShot[38] = true;
-		std::cout << "Done" << std::endl;
 	}
 
 	/*
 	 * Color Boxes
 	 */
 	if (!bOneShot[39]) {
-		std::cout << "GUI: Loading #39: Colors ....................................... ";
-
+		Core::debug.log("[39] Colors\n", Core::debug().YELLOW);
 //		initColors();
-
 		bOneShot[39] = true;
-		std::cout << "Done" << std::endl;
 	}
 
 	/*
 	 * Color Boxes
 	 */
 	if (!bOneShot[40]) {
-		std::cout << "GUI: Loading #40: Colors 2...................................... ";
-//		//std::cout << "...............................................................";
-//
+		Core::debug.log("[40] Color Selector (Not Implemented)\n", Core::debug().YELLOW);
 		bOneShot[40] = true;
-		std::cout << "Done" << std::endl;
 	}
 
 	if (!bOneShot[41]) {
-		std::cout << "GUI: Loading #41: Skill Tree ................................... ";
-		//std::cout << "...............................................................";
-
+		Core::debug.log("[41] Skill Tree\n", Core::debug().YELLOW);
 		initSkillTree();
-
 		bOneShot[41] = true;
-		std::cout << "Done" << std::endl;
 	}
 
 	if (!bOneShot[42]) {
-		std::cout << "GUI: Loading #42: Scissor Test ................................. ";
-		//std::cout << "...............................................................";
+		Core::debug.log("[42] Scissor Test\n", Core::debug().YELLOW);
 
 		Core::GUI::Props_TextArea c;
 		c.setOrigin(Core::GUI::CONSTRAIN_CENTER);
@@ -1665,12 +1620,10 @@ void _Admin::init() {
 		}
 
 		bOneShot[42] = true;
-		std::cout << "Done" << std::endl;
 	}
 
 	if (!bOneShot[43]) {
-		std::cout << "GUI: Loading #43: Progress Bar ................................. ";
-		//std::cout << "...............................................................";
+		Core::debug.log("[43] Progress Bar\n", Core::debug().YELLOW);
 
 		// Standalone slider (internal value)
 		Core::GUI::Props_Slider con;
@@ -1748,13 +1701,11 @@ void _Admin::init() {
 //		Core::gui["GameMenu"]["Window 18"].Slider.add("Progress", Core::gui["GameMenu"]["Window 18"].ProgressBar["Progress Bar 1"].getPointer(), con);
 
 		bOneShot[43] = true;
-		std::cout << "Done" << std::endl;
 	}
 
 
 	if (!bOneShot[44]) {
-		std::cout << "GUI: Loading #44: ComboBox ..................................... ";
-		//std::cout << "...............................................................";
+		Core::debug.log("[44] Combo Box\n", Core::debug().YELLOW);
 
 		{
 			Core::GUI::Props_ComboBox prop;
@@ -1885,12 +1836,10 @@ void _Admin::init() {
 		Core::gui["GameMenu"]["Window 19"].Slider.add("Switch Test", 0, con);
 
 		bOneShot[44] = true;
-		std::cout << "Done" << std::endl;
 	}
 
 	if (!bOneShot[45]) {
-		std::cout << "GUI: Loading #45: 2D Slider .................................... ";
-		//std::cout << "...............................................................";
+		Core::debug.log("[45] 2D Slider\n", Core::debug().YELLOW);
 
 		{
 			Core::GUI::Props_Slider2D prop;
@@ -2004,15 +1953,11 @@ void _Admin::init() {
 			Core::gui["GameMenu"]["Window 20"].Slider.add("X (Float)", &Core::gui["GameMenu"]["Window 20"].Slider2Df["2D Slider (Float)"].getX_ValuePtr(), prop2);
 		}
 
-
-
 		bOneShot[45] = true;
-		std::cout << "Done" << std::endl;
 	}
 
 	if (!bOneShot[46]) {
-		std::cout << "GUI: Loading #46: PieChart ..................................... ";
-		//std::cout << "...............................................................";
+		Core::debug.log("[46] Pie Chart\n", Core::debug().YELLOW);
 
 		Core::GUI::Props_PieChart prop;
 		prop.setOrigin(Core::GUI::CONSTRAIN_TOP_LEFT);
@@ -2065,12 +2010,10 @@ void _Admin::init() {
 																									make_pair("Test Object 5", 500) });
 
 		bOneShot[46] = true;
-		std::cout << "Done" << std::endl;
 	}
 
 	if (!bOneShot[47]) {
-		std::cout << "GUI: Loading #47: Lines ........................................ ";
-		//std::cout << "...............................................................";
+		Core::debug.log("[47] Lines\n", Core::debug().YELLOW);
 
 		Core::GUI::Props_Line prop;
 		prop.setOrigin(Core::GUI::CONSTRAIN_TOP_LEFT);
@@ -2084,18 +2027,132 @@ void _Admin::init() {
 		prop.colorB.active		= &Core::colors[Core::colors().Red];
 		prop.colorB.highlight	= &Core::colors[Core::colors().Red];
 //		Core::gui["GameMenu"]["Window 22"].Line.add("Line Test", Core::Vector2i(0, 0), Core::Vector2i((int)Core::gameVars->screen.half.x, (int)Core::gameVars->screen.half.y), prop);
-		Core::gui["GameMenu"]["Window 22"].Line.add("Line Test", Core::Vector2f(0, 0), Core::Vector2f(100, 0), prop);
+		Core::gui["GameMenu"]["Window 22"].Line.add("Line Test 1", Core::Vector2f(0, 0), Core::Vector2f(400, 0), prop);
+
+		prop.colorA.base		= &Core::colors[Core::colors().White];
+		prop.colorA.active		= &Core::colors[Core::colors().Black];
+		prop.colorA.highlight	= &Core::colors[Core::colors().Black];
+
+		prop.colorB.base		= &Core::colors[Core::colors().White];
+		prop.colorB.active		= &Core::colors[Core::colors().Black];
+		prop.colorB.highlight	= &Core::colors[Core::colors().Black];
+		Core::gui["GameMenu"]["Window 22"].Line.add("Line Test 2", Core::Vector2f(0, 0), Core::Vector2f(0, -400), prop);
+
+		prop.colorA.base		= &Core::colors[Core::colors().Red];
+		prop.colorB.base		= &Core::colors[Core::colors().Red];
+		Core::gui["GameMenu"]["Window 22"].Line.add("Line Test 3", Core::Vector2f(0, 0), Core::Vector2f(400, -400), prop);
+
+		prop.colorA.base		= &Core::colors[Core::colors().Green];
+		prop.colorB.base		= &Core::colors[Core::colors().Green];
+		Core::gui["GameMenu"]["Window 22"].Line.add("Line Test 4", Core::Vector2f(100, 0), Core::Vector2f(0, -100), prop);
+
+		prop.colorA.base		= &Core::colors[Core::colors().Blue];
+		prop.colorB.base		= &Core::colors[Core::colors().Blue];
+		Core::gui["GameMenu"]["Window 22"].Line.add("Line Test 5", Core::Vector2f(50, -50), Core::Vector2f(100, -50), prop);
+
+
 
 		bOneShot[47] = true;
-		std::cout << "Done" << std::endl;
+	}
+
+	if (!bOneShot[48]) {
+		Core::debug.log("[48] Animation\n", Core::debug().YELLOW);
+
+		using namespace std;
+		using namespace Core;
+		using namespace Core::GUI;
+		using namespace Core::GUI::Object;
+
+		Props_Animation prop;
+		prop.setOrigin(CONSTRAIN_TOP);
+		prop.setAnchor(CONSTRAIN_TOP);
+		prop.setY(-50);
+		prop.setWidth(200, SIZE_CONSTRAINT_ABSOLUTE);
+		prop.setHeight(200, SIZE_CONSTRAINT_ABSOLUTE);
+		prop.setAnimation(Core::animation["rotate.png"].image);
+		prop.setUpdateRate(10);
+		prop.setLoops(-1);
+		prop.setSample(-1);
+		prop.startAnimation(true);
+		prop.showBackground();
+		prop.showLabel();
+		Core::gui["GameMenu"]["Window 23"].Animation.add("Animation 0", prop);
+
+		prop.modY(-250);
+		prop.setAnimation(Core::animation["slash_00.png"].image);
+		prop.setUpdateRate(100);
+		prop.setLoops(1);
+		prop.setSample(0);
+		prop.startAnimation(false);
+		prop.showBackground();
+		prop.showLabel();
+		Core::gui["GameMenu"]["Window 23"].Animation.add("Animation 1", prop);
+
+		// ===============================
+		// Start animation oneshot
+		Core::GUI::Props_Button cButton;
+		cButton.setOrigin(Core::GUI::CONSTRAIN_BOTTOM_LEFT);
+		cButton.setAnchor(Core::GUI::CONSTRAIN_BOTTOM_LEFT);
+		cButton.setWidth(200, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+		cButton.setHeight(20, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+		cButton.setBorder(1, true);
+		cButton.setRadius(10);
+		cButton.setButtonType(Core::GUI::BUTTON_ONESHOT);
+		cButton.setPos(0, 5);
+		cButton.setText("Start Animation");
+		cButton.setToolTip("This button will start a temporary animation.");
+		Core::gui["GameMenu"]["Window 23"].Button.add("Start Animation", false, cButton);
+
+		// ===============================
+		// Toggle animation
+		cButton.setOrigin(Core::GUI::CONSTRAIN_BOTTOM_RIGHT);
+		cButton.setAnchor(Core::GUI::CONSTRAIN_BOTTOM_RIGHT);
+		cButton.setWidth(200, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+		cButton.setHeight(20, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+		cButton.setBorder(1, true);
+		cButton.setRadius(10);
+		cButton.setButtonType(Core::GUI::BUTTON_TOGGLE);
+		cButton.setPos(0, 5);
+		cButton.setText("Toggle Animation");
+		cButton.setToolTip("This button will enable an animation"\
+						   "or pause it.");
+		Core::gui["GameMenu"]["Window 23"].Button.add("Toggle Animation", true, cButton);
+
+		// ===============================
+		// Animation 0 update rate slider
+		Core::GUI::Props_Slider prop2;
+		prop2.setOrigin(Core::GUI::CONSTRAIN_RIGHT);
+		prop2.setAnchor(Core::GUI::CONSTRAIN_RIGHT);					// Center of button
+		prop2.setWidth(6, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+		prop2.setHeight(300, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+		prop2.setOrientation(Core::GUI::SLIDER_VERTICAL);
+		prop2.control.setWidth(20, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+		prop2.control.setHeight(10, Core::GUI::SIZE_CONSTRAINT_ABSOLUTE);
+		prop2.showField();
+		prop2.field.setOrigin(Core::GUI::CONSTRAIN_BOTTOM);
+		prop2.field.setAnchor(Core::GUI::CONSTRAIN_TOP);
+		prop2.showLabel();
+		prop2.label.setOrigin(Core::GUI::CONSTRAIN_TOP);
+		prop2.label.setAnchor(Core::GUI::CONSTRAIN_BOTTOM);
+		prop2.setPrecision(5);
+		prop2.setX(-40);
+		prop2.setY(0);
+		prop2.setMinMax(0, 100);
+		prop2.setStep(1.0f, 10.0f, 100.0f);
+		prop2.setText("Update Rate");
+		Core::gui["GameMenu"]["Window 23"].Slider.add("Update Rate", &Core::gui["GameMenu"]["Window 23"].Animation["Animation 0"].con->iUpdateRate, prop2);
+
+
+		bOneShot[48] = true;
 	}
 
 //	if (!bOneShot[44]) {
-//		std::cout << "GUI: Loading #44: ComboBox ..................................... ";
-//		//std::cout << "...............................................................";
+//		Core::debug.log("[] \n", Core::debug().YELLOW);
 //		bOneShot[44] = true;
-//		std::cout << "Done" << std::endl;
 //	}
+
+	Core::debug.logDecreaseIndent();
+	Core::debug.log("}\n");
 
 	bInit = true;
 }
@@ -2118,8 +2175,19 @@ void _Admin::run() {
 //		int iVal = std::get<int>(Core::gui["GameMenu"]["Window 20"].Slider2D["2D Slider"].getVariant());
 //		Core::debug.log(std::to_string(iVal));
 
+		if(Core::gui["GameMenu"]["Window 23"].Button["Toggle Animation"].getState()) {
+			Core::gui["GameMenu"]["Window 23"].Animation["Animation 0"].start();
+		}
+		else {
+			Core::gui["GameMenu"]["Window 23"].Animation["Animation 0"].pause();
+		}
+
+		if(Core::gui["GameMenu"]["Window 23"].Button["Start Animation"].getState()) {
+			Core::gui["GameMenu"]["Window 23"].Animation["Animation 1"].start();
+		}
+
 		if(Core::gui["GameMenu"]["Window 19"].Button["Erase Test"].getState()) {
-			Core::debug.log("ERASING 'Test Object 5' from 'ComboBox2'");
+			Core::debug.log("ERASING 'Test Object 5' from 'ComboBox2'\n");
 			Core::gui["GameMenu"]["Window 19"].ComboBox["ComboBox2"].removeItem("Test Object 5");
 		}
 
@@ -2316,8 +2384,8 @@ void _Admin::run() {
 		else if(Core::gui["GameMenu"]["Window 2"].Button["ComboBox"].getState())		Core::gui["GameMenu"]["Window 19"].show();
 		else if(Core::gui["GameMenu"]["Window 2"].Button["2D Slider"].getState())		Core::gui["GameMenu"]["Window 20"].show();
 		else if(Core::gui["GameMenu"]["Window 2"].Button["PieChart"].getState())		Core::gui["GameMenu"]["Window 21"].show();
-		else if(Core::gui["GameMenu"]["Window 2"].Button["Spare 1"].getState())			Core::gui["GameMenu"]["Window 22"].show();
-		else if(Core::gui["GameMenu"]["Window 2"].Button["Spare 2"].getState())			Core::gui["GameMenu"]["Window 23"].show();
+		else if(Core::gui["GameMenu"]["Window 2"].Button["Lines"].getState())			Core::gui["GameMenu"]["Window 22"].show();
+		else if(Core::gui["GameMenu"]["Window 2"].Button["Animation"].getState())		Core::gui["GameMenu"]["Window 23"].show();
 		else if(Core::gui["GameMenu"]["Window 2"].Button["Spare 3"].getState())			Core::gui["GameMenu"]["Window 24"].show();
 		else if(Core::gui["GameMenu"]["Window 2"].Button["Spare 4"].getState())			Core::gui["GameMenu"]["Window 25"].show();
 		else if(Core::gui["GameMenu"]["Window 2"].Button["Spare 5"].getState())			Core::gui["GameMenu"]["Window 26"].show();

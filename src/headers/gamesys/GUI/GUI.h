@@ -272,11 +272,11 @@
  * 			[X] Clicking mouse/holding mouse sets values
  * 			[X] Create float version
  *
- * TODO: [ ] Pie Chart
- * 			[ ] Draw triangles for each quantity, larger than circle area
- * 			[ ] Use shader to procedurally drop fragments outside circle area
- * 			[ ] Allow donut style as well, drop outer circle and smaller inner circle
- * 			[ ] Legend anchored externally to chart (L/TL/T/TR/R/BR/B/BL)
+ * TODO: [X] Pie Chart
+ * 			[X] Draw triangles for each quantity, larger than circle area
+ * 			[X] Use shader to procedurally drop fragments outside circle area
+ * 			[X] Allow donut style as well, drop outer circle and smaller inner circle
+ * 			[X] Legend anchored externally to chart (L/TL/T/TR/R/BR/B/BL)
  *
  * TODO: [ ] Poly Button - Polygon shaped button
  * 			[ ] Start with 4 sides
@@ -285,13 +285,13 @@
  * 				[ ]
  * 			[ ] Allow more than 4 sides?
  *
- * TODO: [ ] Animation - Use animation system except draw with Props system to screen.
+ * TODO: [X] Animation - Use animation system except draw with Props system to screen.
  * 			  - Animation can be repeating or one-shot controlled
  *
  * TODO: [ ] Check all object init() functions
  * 			[ ] Make sure all nested properties are being assigned by reference and not making local copies
  *
- * TODO: [ ] Change Map_si (t_Vector)
+ * TODO: [X] Change Map_si (t_Vector)
  * 			[X] Change from type to class containing both mapping and template vector for data type 'std::vector<T>'
  * 			[X] Create addItem(string/int)
  * 			[X] Create removeItem(string/int)
@@ -328,14 +328,14 @@
  * 			- How does this work for negative? Ignore border?
  * 			- Top border appears to already be used?
  *
- * TODO: [ ] Add STATE_FOCUS handler to all (relavent) objects
+ * TODO: [X] Add STATE_FOCUS handler to all (relavent) objects
  *
- * TODO: [ ] Object Sprites
+ * TODO: [X] Object Sprites
  * 				[X] Allow a window to use a texture sprite instead of drawing generic quad
  * 					- Can already kinda be done with invisible window and 100% relative sprite
- * 				[ ] Allow buttons to use sprites with base, active, and hover states. Maybe create a new button class? (ImageButton)
+ * 				[X] Allow buttons to use sprites with base, active, and hover states. Maybe create a new button class? (ImageButton)
  *
- * TODO: [ ] Implement Scissoring on all objects
+ * TODO: [X] Implement Scissoring on all objects
  * 			- Scissoring window is the objects window minus any padding.
  * 				- Objects drawn outside the window will no longer be visible
  * 				- Don't apply scissor to additional objects such as labels and fields.
@@ -445,19 +445,21 @@ namespace Core {
 		std::string GUI::activeGUI = "";
 
 		GUI::GUI() {
-			std::cout << "Construct GUI System.............................................";
+			Core::debug.log("Construct GUI System {");
 			std::srand((unsigned) time(0));
 			activeGUI = "";
 			guis.setSource("GUI");
-			std::cout << "Done" << std::endl;
+			Core::debug.print(" Done ", Core::debug().GREEN);
+			Core::debug.print("}\n");
 		}
 
 		GUI::~GUI() {
-			std::cout << "Destroy GUI System...............................................";
+			Core::debug.log("Destroy GUI System {");
 			for (auto & gui : guis) {
 				delete gui;
 			}
-			std::cout << "Done" << std::endl;
+			Core::debug.print(" Done ", Core::debug().GREEN);
+			Core::debug.print("}\n");
 		}
 
 		/** ******************************************************************************************************************************

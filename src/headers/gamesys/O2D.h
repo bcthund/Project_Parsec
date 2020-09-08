@@ -127,88 +127,85 @@ namespace Core {
 		}
 
 		_O2D::~_O2D() {
-			//            .................................................................Done
-			std::cout << "Destroy O2D......................................................Not Implemented" << std::endl;
+			Core::debug.log("Destroy O2D {");
+			Core::debug.print(" Not Implemented ", Core::debug().RED);
+			Core::debug.print("}\n");
 		}
 
 		bool _O2D::init() {
-			//            .................................................................Done
-			std::cout << sOffset << "Init O2D.........................................................";
-			std::cout << "Nothing to do" << std::endl;
+			Core::debug.log("Init O2D {");
+			Core::debug.print(" Done ", Core::debug().GREEN);
+			Core::debug.print("}\n");
 			return true;
 		}
 
 		bool _O2D::load() {
-			try
-			{
-				//            .................................................................Done
-				std::cout << sOffset << "Load O2D.........................................................";
-				bool bReadResult;
-				MemBlock memBlock;
-				std::string loadFile;
-				std::stringstream sStream;
+			Core::debug.log("Load O2D {\n");
+			Core::debug.logIncreaseIndent();
+			bool bReadResult;
+			MemBlock memBlock;
+			std::string loadFile;
+			std::stringstream sStream;
 
-				int idcount=0;
+			int idcount=0;
 
-				//################################
-				//		Load Binary Object Data
+			//################################
+			//		Load Binary Object Data
+			sStream.str("");
+			sStream << "./region/prime/o2d/100.o2d";
+			loadFile=sStream.str();
+
+			bReadResult = readFile(loadFile, memBlock);		//Read the data file into memory
+			if (!bReadResult) {
 				sStream.str("");
-				sStream << "./region/prime/o2d/100.o2d";
+				sStream << "./region/prime/o2d/0.o2d";
 				loadFile=sStream.str();
-
-				bReadResult = readFile(loadFile, memBlock);		//Read the data file into memory
-				if (!bReadResult) {
-					sStream.str("");
-					sStream << "./region/prime/o2d/0.o2d";
-					loadFile=sStream.str();
-					readFile(loadFile, memBlock);
-				}
-
-				if (memBlock.size <= 0) data.idcount = -1;
-				for (int d=0; d<memBlock.size; d+=uiRecordSize) {
-					data.idcount = idcount;
-
-					data.id[idcount]			=	(	(unsigned int)(memBlock.buffer[0+d]&0xF0)*256 	+ (unsigned int)(memBlock.buffer[0+d]&0x0F)*256 +
-														(unsigned int)(memBlock.buffer[1+d]&0xF0)		+ (unsigned int)(memBlock.buffer[1+d]&0x0F) );
-
-					data.x[idcount]				=	(	(unsigned int)(memBlock.buffer[2+d]&0xF0)*256 	+ (unsigned int)(memBlock.buffer[2+d]&0x0F)*256 +
-														(unsigned int)(memBlock.buffer[3+d]&0xF0)		+ (unsigned int)(memBlock.buffer[3+d]&0x0F) );
-
-					data.z[idcount]				=	(	(unsigned int)(memBlock.buffer[4+d]&0xF0)*256 	+ (unsigned int)(memBlock.buffer[4+d]&0x0F)*256 +
-														(unsigned int)(memBlock.buffer[5+d]&0xF0)		+ (unsigned int)(memBlock.buffer[5+d]&0x0F) );
-
-					// 6-7 not used
-
-					data.blend[idcount]			=	(__int16_t)(	(unsigned int)(memBlock.buffer[8+d]&0xF0)*256 	+ (unsigned int)(memBlock.buffer[8+d]&0x0F)*256 +
-																	(unsigned int)(memBlock.buffer[9+d]&0xF0)		+ (unsigned int)(memBlock.buffer[9+d]&0x0F) );
-
-					data.imgW[idcount]		=	(	(unsigned int)(memBlock.buffer[10+d]&0xF0)*256 	+ (unsigned int)(memBlock.buffer[10+d]&0x0F)*256 +
-													(unsigned int)(memBlock.buffer[11+d]&0xF0)		+ (unsigned int)(memBlock.buffer[11+d]&0x0F) );
-
-					data.imgH[idcount]		=	(	(unsigned int)(memBlock.buffer[12+d]&0xF0)*256 	+ (unsigned int)(memBlock.buffer[12+d]&0x0F)*256 +
-													(unsigned int)(memBlock.buffer[13+d]&0xF0)		+ (unsigned int)(memBlock.buffer[13+d]&0x0F) );
-
-					std::string tempImage = "";
-					for (int count=14; count<uiRecordSize; count++) {
-						if (memBlock.buffer[count+d]!=0) tempImage+=memBlock.buffer[count+d];
-						else break;
-					}
-					data.image[idcount] = tempImage;
-
-					// TODO: Check for duplicate images
-					data.texture[idcount].Begin(1);		// 1 texture per O2D
-					data.texture[idcount].Load(sTexDir, tempImage, 0);
-
-					idcount++;
-				}
-				//if (Core::gameVars->debug.load) std::cout << "..";
-				std::cout << "Done" << std::endl;
-				return true;
+				readFile(loadFile, memBlock);
 			}
-			catch(...) {
-				std::cout << "Failed" << std::endl;
-				return false;
+
+			if (memBlock.size <= 0) data.idcount = -1;
+			for (int d=0; d<memBlock.size; d+=uiRecordSize) {
+				data.idcount = idcount;
+
+				data.id[idcount]			=	(	(unsigned int)(memBlock.buffer[0+d]&0xF0)*256 	+ (unsigned int)(memBlock.buffer[0+d]&0x0F)*256 +
+													(unsigned int)(memBlock.buffer[1+d]&0xF0)		+ (unsigned int)(memBlock.buffer[1+d]&0x0F) );
+
+				data.x[idcount]				=	(	(unsigned int)(memBlock.buffer[2+d]&0xF0)*256 	+ (unsigned int)(memBlock.buffer[2+d]&0x0F)*256 +
+													(unsigned int)(memBlock.buffer[3+d]&0xF0)		+ (unsigned int)(memBlock.buffer[3+d]&0x0F) );
+
+				data.z[idcount]				=	(	(unsigned int)(memBlock.buffer[4+d]&0xF0)*256 	+ (unsigned int)(memBlock.buffer[4+d]&0x0F)*256 +
+													(unsigned int)(memBlock.buffer[5+d]&0xF0)		+ (unsigned int)(memBlock.buffer[5+d]&0x0F) );
+
+				// 6-7 not used
+
+				data.blend[idcount]			=	(__int16_t)(	(unsigned int)(memBlock.buffer[8+d]&0xF0)*256 	+ (unsigned int)(memBlock.buffer[8+d]&0x0F)*256 +
+																(unsigned int)(memBlock.buffer[9+d]&0xF0)		+ (unsigned int)(memBlock.buffer[9+d]&0x0F) );
+
+				data.imgW[idcount]		=	(	(unsigned int)(memBlock.buffer[10+d]&0xF0)*256 	+ (unsigned int)(memBlock.buffer[10+d]&0x0F)*256 +
+												(unsigned int)(memBlock.buffer[11+d]&0xF0)		+ (unsigned int)(memBlock.buffer[11+d]&0x0F) );
+
+				data.imgH[idcount]		=	(	(unsigned int)(memBlock.buffer[12+d]&0xF0)*256 	+ (unsigned int)(memBlock.buffer[12+d]&0x0F)*256 +
+												(unsigned int)(memBlock.buffer[13+d]&0xF0)		+ (unsigned int)(memBlock.buffer[13+d]&0x0F) );
+
+				std::string tempImage = "";
+				for (int count=14; count<uiRecordSize; count++) {
+					if (memBlock.buffer[count+d]!=0) tempImage+=memBlock.buffer[count+d];
+					else break;
+				}
+				data.image[idcount] = tempImage;
+
+				// TODO: Check for duplicate images
+				data.texture[idcount].Begin(1);		// 1 texture per O2D
+				data.texture[idcount].Load(sTexDir, tempImage, 0);
+
+				Core::debug.log("["+std::to_string(idcount)+"] "+tempImage+"\n", Core::debug().YELLOW);
+
+				idcount++;
 			}
+
+			Core::debug.logDecreaseIndent();
+			Core::debug.log("}\n");
+			return true;
 		}
 
 		/*
@@ -224,252 +221,247 @@ namespace Core {
 		 */
 
 		bool _O2D::calc() {
-			try {
-				//            .................................................................Done
-				std::cout << sOffset << "Calc O2D.........................................................";
-				//int iItemCount[255]	= {0};		//Current Item count for group
+			Core::debug.log("Calc O2D {");
+			//int iItemCount[255]	= {0};		//Current Item count for group
 
-				/*
-				 * Texture coordinates
-				 */
-				Data2f vCoords[] = { {0.0, 0.0},
-									 {0.0, 1.0},
-									 {1.0, 0.0},
-									 {1.0, 1.0} };
+			/*
+			 * Texture coordinates
+			 */
+			Data2f vCoords[] = { {0.0, 0.0},
+								 {0.0, 1.0},
+								 {1.0, 0.0},
+								 {1.0, 1.0} };
 
-				/*
-				 * TODO: Implement instancing again
-				 *
-				 * Need: a x,z grid of groups
-				 * Need: groups == number of textures
-				 *
-				 * Have: Random list of items
-				 */
-	//			if(Core::gameVars->screen.bInstance) {
-	//				for (int x=0; x<Core::gameVars->screen.iTerrainGrid; x++) {
-	//					for (int z=0; z<Core::gameVars->screen.iTerrainGrid; z++) {
-	//						cout << "Grid: [" << x << "][" << z << "]" << endl;
-	//						// data.image[count]
-	//						// Core::gameVars->texture.sprite.Get();
-	//						// data.idcount;
-	//
-	//
-	//						/*
-	//						 * iGroups = Total number of texture groups
-	//						 * iTex[GROUP] = actual texture id for the group
-	//						 * iItem[GROUP] = number of items in this group
-	//						 */
-	//						int iGroups = 0,
-	//							iTex[255] = {-1},
-	//							iItems[255] = {0};
-	//
-	//						// Determine number of object texture IDs and values
-	//						for( int iCount=0; iCount <= data.idcount; iCount++ ) {
-	//
-	//							//cout << "Checking Texture: " << data.image[iCount] << "...";
-	//							bool bTagged = false;
-	//							for(int t = 0; t<255; t++) {		// Iterate through our list of max texture groups
-	//								if(iTex[t] == -1) {
-	//									//cout << "Not Tagged...";
-	//									bTagged = false;
-	//									break;		// If we have reached an unset value then just exit, texture group not counted
-	//								}
-	//								else if(iTex[t] == Core::gameVars->texture.sprite.Get(data.image[iCount])) {	// If the texture group list contains the texture id then...
-	//									//cout << "Already Tagged...";
-	//									bTagged = true;				// Texture already counted, don't add it to the list
-	//									break;						// We have an answer, exit the loop
-	//								}
-	//							}
-	//
-	//							/*
-	//							 * If we found an uncounted texture group
-	//							 *   then add it to the list
-	//							 */
-	//							if(!bTagged) {
-	//								//cout << "Adding Texture " << data.image[iCount] << "...";
-	//								iTex[iGroups] = Core::gameVars->texture.sprite.Get(data.image[iCount]);		// Record texture unit
-	//								//cout << "Adding Texture: " << data.image[iCount] << " : " << Core::gameVars->texture.sprite.Get(data.image[iCount]) << endl;
-	//								iGroups++;
-	//							}
-	//							else {
-	//								//cout << "Texture Skipped" << endl;
-	//							}
-	//						}
-	//
-	//						/*
-	//						 * Determine the total number of items in each group
-	//						 */
-	//						for( int iCount=0; iCount <= data.idcount; iCount++ ) {		// Iterate through all obejcts
-	//							for(int iGroup=0; iGroup<iGroups; iGroup++) {					// Iterate through all groups
-	//								if(Core::gameVars->texture.sprite.Get(data.image[iCount]) == iTex[iGroup]) {	// Does the current objects texture id match the current group texture id?
-	//									iItems[iGroup]++;										// It does, so add to the total number of objects in this group
-	//									//iItemId[iGroup] = iCount;
-	//								}
-	//							}
-	//						}
-	//
-	//						/*
-	//						 * Get the actual item ID's for each item
-	//						 *   in each group.
-	//						 */
-	//						int * iItemIds[iGroups];	// Up to 255 items per group
-	//						for(int iGroup=0; iGroup<iGroups; iGroup++) {		// Iterate through all groups
-	//							iItemIds[iGroup] = new int[iItems[iGroup]];		// Create array with the size of items in the group
-	//
-	//							int iCurrent = 0;
-	//							for( int iCount=0; iCount <= data.idcount; iCount++ ) {		// Iterate through all items
-	//								if(Core::gameVars->texture.sprite.Get(data.image[iCount]) == iTex[iGroup]) {		// If the items textureId matches the group textureId
-	//									// Then add the items ID to the list
-	//									iItemIds[iGroup][iCurrent] = iCount;
-	//									iCurrent++;
-	//								}
-	//							}
-	//						}
-	//
-	//						// Debugging message
-	//						// This all looks correct
-	//	//					for(int i=0; i<iGroups; i++) {
-	//	//						for(int t=0; t<iItems[i]; t++) {
-	//	//							cout << "   Group[" << i << "][" << t << "]: Image=" << Core::gameVars->texture.sprite.Get(iTex[i]) << " : " << iTex[i] << "; (" << data.x[iItemIds[i][t]] << ", " << data.z[iItemIds[i][t]] << "); (" << data.imgW[iItemIds[i][t]] << ", " << data.imgH[iItemIds[i][t]] << ")" << endl;
-	//	//						}
-	//	//					}
-	//	//					cout << "--------------" << endl;
-	//						for(int i=0; i<iGroups; i++) {
-	//							//for(int t=0; t<iItems[i]; t++) {
-	//								cout << "   Group[" << i << "]: Image=" << Core::gameVars->texture.sprite.Get(iTex[i]) << endl;
-	//							//}
-	//						}
-	//
-	//						/*
-	//						 * Create VAO's
-	//						 */
-	//						group[x][z].vao = new VAO[iGroups];		//New VAO with size == number of groups
-	//
-	//						//Store the number of groups
-	//						group[x][z].iGroups = iGroups;
-	//
-	//						// Create array for holding number of items
-	//						group[x][z].iNum = new int[iGroups];
-	//
-	//						// Create array for holding texture id's
-	//						group[x][z].image = new int[iGroups];
-	//
-	//						// Default throwaway vertex
-	//						Data4f vVerts[]	=	{	{	0.0f,	0.0f,	0.0f,	0.0f	},
-	//													{	0.0f,	0.0f,	0.0f,	0.0f	}	};
-	//
-	//						// Loop through all groups
-	//						for(int iGroup=0; iGroup<iGroups; iGroup++) {		// Iterate through all groups
-	//	//						cout << "   Group: " << iGroup;
-	//							/*
-	//							 * Temporary vector
-	//							 * Holds width and height data
-	//							 */
-	//							Data4f * vExtra = new Data4f[iItems[iGroup]];	// Extra data == number of items in group
-	//
-	//	//						cout << ", Items: " << iItems[iGroup];
-	//							/*
-	//							 * Temporary vector
-	//							 *
-	//							 * Holds actual position data
-	//							 */
-	//							Data4f * vOffset = new Data4f[iItems[iGroup]];	// Offset data == number of items in group
-	//
-	//							// Store the number of items in the group
-	//							group[x][z].iNum[iGroup] = iItems[iGroup];
-	//							group[x][z].image[iGroup] = iTex[iGroup];
-	//
-	//	//						cout << ", Num: " << group[x][z].iNum[iGroup];
-	//	//						cout << ", Tex: " << group[x][z].image[iGroup] << endl;
-	//
-	//							//bool bValid = true;
-	//							int i = 0;
-	//							for (int count=0; count < iItems[iGroup]; count++) {
-	//								//bValid=true;
-	//	//							cout << "      Item #" << count << "...";
-	//								float fW = data.imgW[iItemIds[iGroup][count]]/2;
-	//								float fH = data.imgH[iItemIds[iGroup][count]];
-	//								float fT = map.getHeight(abs(data.x[iItemIds[iGroup][count]]), abs(data.z[iItemIds[iGroup][count]]), x, z);
-	//								// TODO: If the height is below water then discard this object
-	//								//if(fT<atmosphere.water.fFloor) bValid = false;
-	//
-	//								if(fT>=atmosphere.water.fFloor) {
-	//									// Vertex 1
-	//									vOffset[i][0] = data.x[iItemIds[iGroup][count]]*Core::gameVars->screen.iScale;
-	//									vOffset[i][1] = fT*Core::gameVars->screen.iScale;
-	//									vOffset[i][2] = data.z[iItemIds[iGroup][count]]*Core::gameVars->screen.iScale;
-	//									vOffset[i][3] = 0.0f;
-	//
-	//									vExtra[i][0] = fW;
-	//									vExtra[i][1] = fH;
-	//									vExtra[i][2] = 0.0f;			// TODO: Add blending into this instancing routine
-	//									vExtra[i][3] = 0.0f;			// TODO: Use flora as example to draw O2D with proper billboarding
-	//
-	//									++i;
-	//								}
-	//								//iC++;
-	//	//							cout << "(" << vOffset[count][0] << ", " << vOffset[count][2] << ")...";
-	//	//							cout << "Done" << endl;
-	//							}
-	//							iItems[iGroup] = i;
-	//
-	//							//group[x][z].vao[iGroup].Begin(GL_LINES, 2, 1, iItems[iGroup]);
-	//							group[x][z].vao[iGroup].Begin(GL_LINES, 2, 1, iItems[iGroup]);
-	//							group[x][z].vao[iGroup].CopyData(GLA_VERTEX, vVerts);
-	//							group[x][z].vao[iGroup].CopyData(GLA_POSITION, vOffset);
-	//							group[x][z].vao[iGroup].CopyData(GLA_EXTRA, vExtra);
-	//							//data.vao.CopyData(GLA_TEXTURE, vCoords, 0);		//Generate texture coordinates in shader
-	//							group[x][z].vao[iGroup].End();
-	//						}
-	//					}
-	//	//				cout << endl;
-	//				}
-	//			}
+			/*
+			 * TODO: Implement instancing again
+			 *
+			 * Need: a x,z grid of groups
+			 * Need: groups == number of textures
+			 *
+			 * Have: Random list of items
+			 */
+//			if(Core::gameVars->screen.bInstance) {
+//				for (int x=0; x<Core::gameVars->screen.iTerrainGrid; x++) {
+//					for (int z=0; z<Core::gameVars->screen.iTerrainGrid; z++) {
+//						cout << "Grid: [" << x << "][" << z << "]" << endl;
+//						// data.image[count]
+//						// Core::gameVars->texture.sprite.Get();
+//						// data.idcount;
+//
+//
+//						/*
+//						 * iGroups = Total number of texture groups
+//						 * iTex[GROUP] = actual texture id for the group
+//						 * iItem[GROUP] = number of items in this group
+//						 */
+//						int iGroups = 0,
+//							iTex[255] = {-1},
+//							iItems[255] = {0};
+//
+//						// Determine number of object texture IDs and values
+//						for( int iCount=0; iCount <= data.idcount; iCount++ ) {
+//
+//							//cout << "Checking Texture: " << data.image[iCount] << "...";
+//							bool bTagged = false;
+//							for(int t = 0; t<255; t++) {		// Iterate through our list of max texture groups
+//								if(iTex[t] == -1) {
+//									//cout << "Not Tagged...";
+//									bTagged = false;
+//									break;		// If we have reached an unset value then just exit, texture group not counted
+//								}
+//								else if(iTex[t] == Core::gameVars->texture.sprite.Get(data.image[iCount])) {	// If the texture group list contains the texture id then...
+//									//cout << "Already Tagged...";
+//									bTagged = true;				// Texture already counted, don't add it to the list
+//									break;						// We have an answer, exit the loop
+//								}
+//							}
+//
+//							/*
+//							 * If we found an uncounted texture group
+//							 *   then add it to the list
+//							 */
+//							if(!bTagged) {
+//								//cout << "Adding Texture " << data.image[iCount] << "...";
+//								iTex[iGroups] = Core::gameVars->texture.sprite.Get(data.image[iCount]);		// Record texture unit
+//								//cout << "Adding Texture: " << data.image[iCount] << " : " << Core::gameVars->texture.sprite.Get(data.image[iCount]) << endl;
+//								iGroups++;
+//							}
+//							else {
+//								//cout << "Texture Skipped" << endl;
+//							}
+//						}
+//
+//						/*
+//						 * Determine the total number of items in each group
+//						 */
+//						for( int iCount=0; iCount <= data.idcount; iCount++ ) {		// Iterate through all obejcts
+//							for(int iGroup=0; iGroup<iGroups; iGroup++) {					// Iterate through all groups
+//								if(Core::gameVars->texture.sprite.Get(data.image[iCount]) == iTex[iGroup]) {	// Does the current objects texture id match the current group texture id?
+//									iItems[iGroup]++;										// It does, so add to the total number of objects in this group
+//									//iItemId[iGroup] = iCount;
+//								}
+//							}
+//						}
+//
+//						/*
+//						 * Get the actual item ID's for each item
+//						 *   in each group.
+//						 */
+//						int * iItemIds[iGroups];	// Up to 255 items per group
+//						for(int iGroup=0; iGroup<iGroups; iGroup++) {		// Iterate through all groups
+//							iItemIds[iGroup] = new int[iItems[iGroup]];		// Create array with the size of items in the group
+//
+//							int iCurrent = 0;
+//							for( int iCount=0; iCount <= data.idcount; iCount++ ) {		// Iterate through all items
+//								if(Core::gameVars->texture.sprite.Get(data.image[iCount]) == iTex[iGroup]) {		// If the items textureId matches the group textureId
+//									// Then add the items ID to the list
+//									iItemIds[iGroup][iCurrent] = iCount;
+//									iCurrent++;
+//								}
+//							}
+//						}
+//
+//						// Debugging message
+//						// This all looks correct
+//	//					for(int i=0; i<iGroups; i++) {
+//	//						for(int t=0; t<iItems[i]; t++) {
+//	//							cout << "   Group[" << i << "][" << t << "]: Image=" << Core::gameVars->texture.sprite.Get(iTex[i]) << " : " << iTex[i] << "; (" << data.x[iItemIds[i][t]] << ", " << data.z[iItemIds[i][t]] << "); (" << data.imgW[iItemIds[i][t]] << ", " << data.imgH[iItemIds[i][t]] << ")" << endl;
+//	//						}
+//	//					}
+//	//					cout << "--------------" << endl;
+//						for(int i=0; i<iGroups; i++) {
+//							//for(int t=0; t<iItems[i]; t++) {
+//								cout << "   Group[" << i << "]: Image=" << Core::gameVars->texture.sprite.Get(iTex[i]) << endl;
+//							//}
+//						}
+//
+//						/*
+//						 * Create VAO's
+//						 */
+//						group[x][z].vao = new VAO[iGroups];		//New VAO with size == number of groups
+//
+//						//Store the number of groups
+//						group[x][z].iGroups = iGroups;
+//
+//						// Create array for holding number of items
+//						group[x][z].iNum = new int[iGroups];
+//
+//						// Create array for holding texture id's
+//						group[x][z].image = new int[iGroups];
+//
+//						// Default throwaway vertex
+//						Data4f vVerts[]	=	{	{	0.0f,	0.0f,	0.0f,	0.0f	},
+//													{	0.0f,	0.0f,	0.0f,	0.0f	}	};
+//
+//						// Loop through all groups
+//						for(int iGroup=0; iGroup<iGroups; iGroup++) {		// Iterate through all groups
+//	//						cout << "   Group: " << iGroup;
+//							/*
+//							 * Temporary vector
+//							 * Holds width and height data
+//							 */
+//							Data4f * vExtra = new Data4f[iItems[iGroup]];	// Extra data == number of items in group
+//
+//	//						cout << ", Items: " << iItems[iGroup];
+//							/*
+//							 * Temporary vector
+//							 *
+//							 * Holds actual position data
+//							 */
+//							Data4f * vOffset = new Data4f[iItems[iGroup]];	// Offset data == number of items in group
+//
+//							// Store the number of items in the group
+//							group[x][z].iNum[iGroup] = iItems[iGroup];
+//							group[x][z].image[iGroup] = iTex[iGroup];
+//
+//	//						cout << ", Num: " << group[x][z].iNum[iGroup];
+//	//						cout << ", Tex: " << group[x][z].image[iGroup] << endl;
+//
+//							//bool bValid = true;
+//							int i = 0;
+//							for (int count=0; count < iItems[iGroup]; count++) {
+//								//bValid=true;
+//	//							cout << "      Item #" << count << "...";
+//								float fW = data.imgW[iItemIds[iGroup][count]]/2;
+//								float fH = data.imgH[iItemIds[iGroup][count]];
+//								float fT = map.getHeight(abs(data.x[iItemIds[iGroup][count]]), abs(data.z[iItemIds[iGroup][count]]), x, z);
+//								// TODO: If the height is below water then discard this object
+//								//if(fT<atmosphere.water.fFloor) bValid = false;
+//
+//								if(fT>=atmosphere.water.fFloor) {
+//									// Vertex 1
+//									vOffset[i][0] = data.x[iItemIds[iGroup][count]]*Core::gameVars->screen.iScale;
+//									vOffset[i][1] = fT*Core::gameVars->screen.iScale;
+//									vOffset[i][2] = data.z[iItemIds[iGroup][count]]*Core::gameVars->screen.iScale;
+//									vOffset[i][3] = 0.0f;
+//
+//									vExtra[i][0] = fW;
+//									vExtra[i][1] = fH;
+//									vExtra[i][2] = 0.0f;			// TODO: Add blending into this instancing routine
+//									vExtra[i][3] = 0.0f;			// TODO: Use flora as example to draw O2D with proper billboarding
+//
+//									++i;
+//								}
+//								//iC++;
+//	//							cout << "(" << vOffset[count][0] << ", " << vOffset[count][2] << ")...";
+//	//							cout << "Done" << endl;
+//							}
+//							iItems[iGroup] = i;
+//
+//							//group[x][z].vao[iGroup].Begin(GL_LINES, 2, 1, iItems[iGroup]);
+//							group[x][z].vao[iGroup].Begin(GL_LINES, 2, 1, iItems[iGroup]);
+//							group[x][z].vao[iGroup].CopyData(GLA_VERTEX, vVerts);
+//							group[x][z].vao[iGroup].CopyData(GLA_POSITION, vOffset);
+//							group[x][z].vao[iGroup].CopyData(GLA_EXTRA, vExtra);
+//							//data.vao.CopyData(GLA_TEXTURE, vCoords, 0);		//Generate texture coordinates in shader
+//							group[x][z].vao[iGroup].End();
+//						}
+//					}
+//	//				cout << endl;
+//				}
+//			}
 
-				/*
-				 * Original, Non-Instancing Routine
-				 */
-				// Temporary vector hold the points of each object
-				//Vector4f * vVerts2 = new Vector4f[data.idcount];
+			/*
+			 * Original, Non-Instancing Routine
+			 */
+			// Temporary vector hold the points of each object
+			//Vector4f * vVerts2 = new Vector4f[data.idcount];
 
-				// Temporary vector holds size data
-				//Vector4f * vSize = new Vector4f[data.idcount];
+			// Temporary vector holds size data
+			//Vector4f * vSize = new Vector4f[data.idcount];
 
-				for (int count=0; count <= data.idcount; count++) {
-					float fW = (data.imgW[count]/2)*Core::gameVars->screen.fScale;
-					float fH = (data.imgH[count])*Core::gameVars->screen.fScale;
-					float fT = 0.0f;				// Get mapHeight here when a world is present
+			for (int count=0; count <= data.idcount; count++) {
+				float fW = (data.imgW[count]/2)*Core::gameVars->screen.fScale;
+				float fH = (data.imgH[count])*Core::gameVars->screen.fScale;
+				float fT = 0.0f;				// Get mapHeight here when a world is present
 
-					// Fourth field used for randomization offset
-					Data4f vVerts[]	=	{	{	-fW,	fH,		0.0, (float)(count+1)	},
-											{	-fW,	0.0f,	0.0, (float)(count+1)	},
-											{	 fW,	fH,		0.0, (float)(count+1)	},
-											{	 fW,	0.0f,	0.0, (float)(count+1)	}	};
+				// Fourth field used for randomization offset
+				Data4f vVerts[]	=	{	{	-fW,	fH,		0.0, (float)(count+1)	},
+										{	-fW,	0.0f,	0.0, (float)(count+1)	},
+										{	 fW,	fH,		0.0, (float)(count+1)	},
+										{	 fW,	0.0f,	0.0, (float)(count+1)	}	};
 
-					data.y[count] = fT*Core::gameVars->screen.fScale;
+				data.y[count] = fT*Core::gameVars->screen.fScale;
 
-					// TODO: May need to redo the bUpdate
-					//if (bUpdate) {
-					//	new(&data.vao[count]) VAO();	//We need to create new VAO objects for this to work
-					//	data.vao[count].Begin(GL_TRIANGLE_STRIP, 4, 1);
-					//	data.vao[count].CopyData(GLA_VERTEX, vVerts);
-					//	data.vao[count].CopyData(GLA_TEXTURE, vCoords, 0);
-					//	data.vao[count].End();
-					//}
-					//else {
-						data.vao[count].Begin(GL_TRIANGLE_STRIP, 4, 4, 1);
-						data.vao[count].CopyData(GLA_VERTEX, vVerts);
-						data.vao[count].CopyData(GLA_TEXTURE, vCoords, 0);
-						data.vao[count].End();
-					//}
-				}
-				std::cout << "Done" << std::endl;
-				return true;
+				// TODO: May need to redo the bUpdate
+				//if (bUpdate) {
+				//	new(&data.vao[count]) VAO();	//We need to create new VAO objects for this to work
+				//	data.vao[count].Begin(GL_TRIANGLE_STRIP, 4, 1);
+				//	data.vao[count].CopyData(GLA_VERTEX, vVerts);
+				//	data.vao[count].CopyData(GLA_TEXTURE, vCoords, 0);
+				//	data.vao[count].End();
+				//}
+				//else {
+					data.vao[count].Begin(GL_TRIANGLE_STRIP, 4, 4, 1);
+					data.vao[count].CopyData(GLA_VERTEX, vVerts);
+					data.vao[count].CopyData(GLA_TEXTURE, vCoords, 0);
+					data.vao[count].End();
+				//}
 			}
-			catch(...) {
-				std::cout << "Failed" << std::endl;
-				return false;
-			}
+
+			Core::debug.print(" Done ", Core::debug().GREEN);
+			Core::debug.print("}\n");
+			return true;
 		}
 
 
