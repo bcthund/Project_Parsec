@@ -1297,6 +1297,8 @@ void _Admin::init() {
 		Core::gui["GameMenu"]["Window 9"].Button.add("Tooltips", &Core::GUI::Props::ToolTip::bShowGlobal, cButton);
 		cButton.modPos(-260, 0);
 		Core::gui["GameMenu"]["Window 9"].Button.add("Enable Settings", &Core::GUI::Props::bGlobalSettings, cButton);
+		cButton.modPos(0, 20);
+		Core::gui["GameMenu"]["Window 9"].Button.add("Play Music", false, cButton);
 
 //		Core::GUI::Props_Button cButton2;
 //		cButton2.setOrigin(Core::GUI::CONSTRAIN_BOTTOM);
@@ -2174,6 +2176,13 @@ void _Admin::run() {
 
 //		int iVal = std::get<int>(Core::gui["GameMenu"]["Window 20"].Slider2D["2D Slider"].getVariant());
 //		Core::debug.log(std::to_string(iVal));
+
+		if(Core::gui["GameMenu"]["Window 9"].Button["Play Music"].getState()) {
+			Core::audioSys->playMusic(0);
+		}
+		else {
+			Core::audioSys->stopMusic();
+		}
 
 		if(Core::gui["GameMenu"]["Window 23"].Button["Toggle Animation"].getState()) {
 			Core::gui["GameMenu"]["Window 23"].Animation["Animation 0"].start();

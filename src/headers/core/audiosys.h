@@ -9,7 +9,7 @@
 #define AUDIOSYS_H_
 
 #include <iostream>
-
+#include "core_functions.h"
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_mixer.h"
 //#include <stdlib.h>
@@ -21,6 +21,12 @@ namespace Core {
 	class AudioSys {
 		private:
 			int iInit;							// Has the sound system been successfully initialized? (see enum below)
+			uint 		uiRecordSize;
+			std::string sFilename,
+						sDir,
+						sAudioDir,
+						sMusicDir,
+						sTexDir;
 			static int iBeat;					// Stores the current mixed audio stream (used to shake title)
 			enum	{ INIT_NONE=0, INIT_MIX_INIT=1, INIT_SDL_INIT_AUDIO=2, INIT_MIX_OPENAUDIO=4 };
 			int iDecoders,
@@ -67,6 +73,11 @@ namespace Core {
 			//friend class GameSys;
 
 		public:
+
+
+//			struct s_ {
+//			}
+
 			// TODO: REWORK TO BE UNIVERSAL
 			//enum { MUSIC_NONE, MUSIC_MAINMENU, MUSIC_WORLDEXPLORE, MUSIC_WORLDBATTLE };
 
@@ -74,7 +85,7 @@ namespace Core {
 			~AudioSys();
 			void playSound(int iSample, int iLoop=0, bool bOverlap=true, int iChannel=-1);
 			void playMusic(int iSample, int iLoop=-1, int iFade=0);
-			void playMusic(__uint8_t ui);
+//			void playMusic(__uint8_t ui);
 			void fadeOutMusic(__uint8_t ui, int ms);
 			void stopMusic();
 			bool load();

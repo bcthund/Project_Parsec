@@ -1876,18 +1876,18 @@ namespace Core {
 //			}
 
 //			virtual T & add(std::string name, const T t, bool bThrow=true) {
-			void add(std::string name, const T t, bool bThrow=true) {
-//			virtual T add(std::string name, const T t, bool bThrow=true) {
+//			void add(std::string name, const T t, bool bThrow=true) {
+			virtual T & add(std::string name, const T t, bool bThrow=true) {
 				if(!checkName(name, false)) {
 					//typeList.emplace_back(t);
 					typeList.push_back(t);
 					int id = typeList.size() - 1;
 					map.insert(make_pair(name, id));
-//					return typeList[map[name]];
+					return typeList[map[name]];
 				}
 				else {
 					if(bThrow) throw std::runtime_error("Duplicate name in t_VectorMap: '"+name+"'");
-//					else return typeList[map[name]];
+					else return typeList[map[name]];
 				}
 
 			}
@@ -1952,24 +1952,110 @@ namespace Core {
 			 * 	t_Vector<T> items;
 			 * 	for(auto item : items) {}
 			 */
-			typedef T* iterator;
-			typedef const T* const_iterator;
-			iterator begin() 		{ return &typeList[0]; }
-			iterator end() 			{ return &typeList[typeList.size()]; }
-			const_iterator begin() 	const	{ return &typeList[0]; }
-			const_iterator end() 	const	{ return &typeList[typeList.size()]; }
+//			typedef T* iterator;
+//			typedef const T* const_iterator;
+//			iterator begin() 					{ return &typeList[0]; }
+//			iterator end() 						{ return &typeList[typeList.size()]; }
+//			const_iterator cbegin() 	const	{ return &typeList[0]; }
+//			const_iterator cend() 		const	{ return &typeList[typeList.size()]; }
+
+			auto begin() 			{ return typeList.begin(); }
+			auto end() 				{ return typeList.end(); }
+			auto begin() 	const	{ return typeList.cbegin(); }
+			auto end() 		const	{ return typeList.cend(); }
+
+	};
+
+	template <typename T>
+	class t_UMap {
+		private:
+			std::string sErrorSource;
+			std::unordered_map< std::string, T > typeList;
+
+		public:
+			t_UMap() {
+				sErrorSource = "Undefined Source";
+			}
+			t_UMap(std::string source) {
+				sErrorSource = source;
+			}
+			virtual ~t_UMap() {}
+
+			bool checkName(std::string name, bool bThrow=true) {
+				if(typeList.count(name)>0) return true;
+				else {
+					if (bThrow) throw std::runtime_error("UMap: ["+std::string(sErrorSource)+"] Invalid Item Name: '"+name+"'");
+					else return false;
+				}
+			}
+
+			virtual T & operator[](std::string name)	{
+				checkName(name);
+				return typeList[name];
+			}
+
+			virtual void setSource(std::string source) {
+				sErrorSource = source;
+			}
+
+//			int	operator()(std::string name) {
+//				checkName(name);
+//				return groups[map[name]].index;
+//			}
+
+//			virtual T & add(std::string name, const T t, bool bThrow=true) {
+//			void add(std::string name, const T t, bool bThrow=true) {
+			virtual T & add(std::string name, const T t, bool bThrow=true) {
+				if(!checkName(name, false)) {
+					typeList.insert(std::make_pair(name, t));
+					return typeList[name];
+				}
+				else {
+					if(bThrow) throw std::runtime_error("Duplicate name in t_UMap: '"+name+"'");
+					else return typeList[name];
+				}
+//				return nullptr;
+			}
+
+			virtual void remove(std::string name, bool bThrow=true) {
+				if(checkName(name, false)) {
+					typeList.erase(name);
+				}
+				else {
+					if(bThrow) throw std::runtime_error("Name in t_UMap doesn't exist: '"+name+"'");
+				}
+
+			}
+
+			virtual T & get(std::string name)	{
+				checkName(name);
+				return typeList[name];
+			}
+
+			int size() {
+				return typeList.size();
+			}
+
+			/*
+			 * Allow Iteration
+			 *
+			 * Example:
+			 * 	t_Vector<T> items;
+			 * 	for(auto item : items) {}
+			 */
+			auto begin() 			{ return typeList.begin(); }
+			auto end() 				{ return typeList.end(); }
+			auto begin() 	const	{ return typeList.cbegin(); }
+			auto end() 		const	{ return typeList.cend(); }
 	};
 
 //	template <typename T>
-//	class t_UMap {
+//	class t_UMap : public std::unordered_map< std::string, T > {
 //		private:
 //			std::string sErrorSource;
-//			//std::vector<T> typeList;
-//			std::unordered_map< std::string, T > typeList;
-//			Map_si map;
+////			std::unordered_map< std::string, T > typeList;
 //
 //		public:
-////			t_VectorMap(std::string source) {
 //			t_UMap() {
 //				sErrorSource = "Undefined Source";
 //			}
@@ -1979,29 +2065,18 @@ namespace Core {
 //			virtual ~t_UMap() {}
 //
 //			bool checkName(std::string name, bool bThrow=true) {
-//				if(map.count(name)>0) return true;
+////				if(typeList.count(name)>0) return true;
+//				if(this->count(name)>0) return true;
 //				else {
 //					if (bThrow) throw std::runtime_error("UMap: ["+std::string(sErrorSource)+"] Invalid Item Name: '"+name+"'");
 //					else return false;
 //				}
 //			}
 //
-//			bool checkID(int id, bool bThrow=true) {
-//				if(id >= 0 && id < typeList.size()) return true;
-//				else {
-//					if (bThrow) throw std::runtime_error("UMap: ["+std::string(sErrorSource)+"] Invalid ID: '"+std::to_string(id)+"'");
-//					else return false;
-//				}
-//			}
-//
 //			virtual T & operator[](std::string name)	{
 //				checkName(name);
-//				return typeList[map[name]];
-//			}
-//
-//			virtual T & operator[](int id)	{
-//				checkID(id);
-//				return typeList[id];
+////				return typeList[name];
+//				return (*this)[name];
 //			}
 //
 //			virtual void setSource(std::string source) {
@@ -2016,7 +2091,9 @@ namespace Core {
 ////			virtual T & add(std::string name, const T t, bool bThrow=true) {
 //			void add(std::string name, const T t, bool bThrow=true) {
 //				if(!checkName(name, false)) {
-//					typeList.push_back(t);
+////					typeList.insert(std::make_pair<std::string,T>(name, t));
+//					this->insert(std::make_pair(name, t));
+////					this->insert(name, t);
 //				}
 //				else {
 //					if(bThrow) throw std::runtime_error("Duplicate name in t_UMap: '"+name+"'");
@@ -2026,7 +2103,8 @@ namespace Core {
 //
 //			virtual void remove(std::string name, bool bThrow=true) {
 //				if(checkName(name, false)) {
-//					typeList.erase(typeList.begin() + map[name]);
+////					typeList.erase(name);
+//					this->erase(name);
 //				}
 //				else {
 //					if(bThrow) throw std::runtime_error("Name in t_UMap doesn't exist: '"+name+"'");
@@ -2036,11 +2114,11 @@ namespace Core {
 //
 //			virtual T & get(std::string name)	{
 //				checkName(name);
-//				return typeList[map[name]];
+//				return (*this)[name];
 //			}
 //
 //			int size() {
-//				return typeList.size();
+//				return this->size();
 //			}
 //
 //			/*
@@ -2052,8 +2130,12 @@ namespace Core {
 //			 */
 ////			typedef T* iterator;
 ////			typedef const T* const_iterator;
-////			iterator begin() 		{ return &typeList[0]; }
-////			iterator end() 			{ return &typeList[typeList.size()]; }
+////			auto begin() 		{ return typeList.begin(); }
+////			auto end() 			{ return typeList.end(); }
+////			typedef T* iterator;
+////			typedef const T* const_iterator;
+////			iterator begin() 		{ return &typeList.begin(0); }
+////			iterator end() 			{ return &typeList.end(); }
 ////			const_iterator begin() 	const	{ return &typeList[0]; }
 ////			const_iterator end() 	const	{ return &typeList[typeList.size()]; }
 //	};
@@ -2134,11 +2216,11 @@ namespace Core {
 			// Allow iteration using
 			// for(auto item : items) {}
 			typedef std::vector<t_BIFS>* iterator;
-			iterator begin() 		{ return &states[0]; }
-			iterator end() 			{ return &states[states.size()]; }
-//			typedef const std::vector<t_BIFS>* const_iterator;
-//			const_iterator begin() 	const	{ return &states[0]; }
-//			const_iterator end() 	const	{ return &states[states.size()]; }
+			typedef const std::vector<t_BIFS>* const_iterator;
+			iterator begin() 				{ return &states[0]; }
+			iterator end() 					{ return &states[states.size()]; }
+//			const_iterator cbegin() const	{ return &states[0]; }
+//			const_iterator cend() 	const	{ return &states[states.size()]; }
 	};
 
 
