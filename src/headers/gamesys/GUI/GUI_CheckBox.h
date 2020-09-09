@@ -221,7 +221,7 @@ namespace Core {
 				update();
 
 				// FIXME: Create SOUNDS enumeration
-				initSound(1, 3, 4, 0, 0, true, true);
+				initSound(-1, 3, 4, 0, 0, true, true);
 
 				// Create button window with contraints to parent if present
 				if (bHasParent) box = Object::Window(*parent, name, con);

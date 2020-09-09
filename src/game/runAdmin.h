@@ -186,6 +186,7 @@ class _Admin {
 		void initColors();
 		void run();
 		bool bInit;
+		Core::t_AudioInstance audio;
 };
 
 _Admin::_Admin(_Game *gamePtr) :
@@ -218,6 +219,8 @@ void _Admin::init() {
 
 	Core::debug.log("Init GUI {\n");
 	Core::debug.logIncreaseIndent();
+
+
 
 	if (!bOneShot[0]) {
 		Core::debug.log("[0] Master Container\n", Core::debug().YELLOW);
@@ -1270,6 +1273,16 @@ void _Admin::init() {
 		con.setStep(10.0f, 100.0f, 1000.0f);
 		Core::gui["GameMenu"]["Window 9"].Slider.add("Hide Tip", &Core::GUI::Props::ToolTip::hideDelay, con);
 
+		con.modPos(0, -25);
+		con.setMinMax(0, 2);
+		con.setStep(1.0f, 1.0f, 1.0f);
+		Core::gui["GameMenu"]["Window 9"].Slider.add("Music Track", &Core::gameVars->debug.audio.iMusicTrack, con);
+
+		con.modPos(0, -25);
+		con.setMinMax(0, 128);
+		con.setStep(1.0f, 8.0f, 16.0f);
+		Core::gui["GameMenu"]["Window 9"].Slider.add("Volume", &Core::gameVars->debug.audio.volume, con);
+
 		con.setOrigin(Core::GUI::CONSTRAIN_RIGHT|Core::GUI::CONSTRAIN_CENTER);
 		con.setAnchor(Core::GUI::CONSTRAIN_RIGHT);
 		con.swapOrientation();
@@ -1282,6 +1295,8 @@ void _Admin::init() {
 		con.field.setAnchor(Core::GUI::CONSTRAIN_TOP);
 		con.setStep(1.0f, 5.0f, 10.0f);
 		Core::gui["GameMenu"]["Window 9"].Slider.add("Window Height", &Core::gui["GameMenu"]["Window 9"].con->size.constraint.y, con);
+
+
 
 		Core::GUI::Props_Button cButton;
 		cButton.setOrigin(Core::GUI::CONSTRAIN_BOTTOM);
@@ -2071,7 +2086,7 @@ void _Admin::init() {
 		prop.setY(-50);
 		prop.setWidth(200, SIZE_CONSTRAINT_ABSOLUTE);
 		prop.setHeight(200, SIZE_CONSTRAINT_ABSOLUTE);
-		prop.setAnimation(Core::animation["rotate.png"].image);
+		prop.setAnimation(Core::animationSys[1].image);		// Sample, setting by animation ID
 		prop.setUpdateRate(10);
 		prop.setLoops(-1);
 		prop.setSample(-1);
@@ -2081,7 +2096,7 @@ void _Admin::init() {
 		Core::gui["GameMenu"]["Window 23"].Animation.add("Animation 0", prop);
 
 		prop.modY(-250);
-		prop.setAnimation(Core::animation["slash_00.png"].image);
+		prop.setAnimation("slash_00.png");
 		prop.setUpdateRate(100);
 		prop.setLoops(1);
 		prop.setSample(0);
@@ -2177,11 +2192,14 @@ void _Admin::run() {
 //		int iVal = std::get<int>(Core::gui["GameMenu"]["Window 20"].Slider2D["2D Slider"].getVariant());
 //		Core::debug.log(std::to_string(iVal));
 
-		if(Core::gui["GameMenu"]["Window 9"].Button["Play Music"].getState()) {
-			Core::audioSys->playMusic(0);
+		Mix_Volume(-1, Core::gameVars->debug.audio.volume);
+		Mix_VolumeMusic(Core::gameVars->debug.audio.volume);
+
+		if(Core::gui["GameMenu"]["Window 9"].Button["Play Music"].getState() && !Core::gui["GameMenu"]["Window 9"].Slider["Music Track"].stateChanged()) {
+//			Core::audioSys->playMusic(Core::gameVars->debug.audio.iMusicTrack);
 		}
 		else {
-			Core::audioSys->stopMusic();
+//			Core::audioSys->stopMusic();
 		}
 
 		if(Core::gui["GameMenu"]["Window 23"].Button["Toggle Animation"].getState()) {

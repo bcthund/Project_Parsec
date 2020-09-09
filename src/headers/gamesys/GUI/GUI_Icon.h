@@ -231,7 +231,7 @@ namespace Core {
 				this->id = IDs.create();
 
 				// FIXME: Create SOUNDS enumeration
-				initSound(2, 5, 6, 0, 0, true, true);
+				initSound(-1, 5, 6, 0, 0, true, true);
 
 				if(bHasParent) {
 					con->scroll.bind(*parent);

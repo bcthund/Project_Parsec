@@ -6,10 +6,12 @@
 //#include <unistd.h>
 //#include <chrono>
 //#include <thread>
+#include "types.h"
 #include "audiosys.h"
 
 namespace Core {
-	int AudioSys::iBeat = 0;
+//	int AudioSys::iBeat = 0;
+	AudioSys *t_AudioInstance::parent = nullptr;
 
 	AudioSys::AudioSys() {
 		uiRecordSize	= 32;
@@ -19,8 +21,7 @@ namespace Core {
 		iInit = INIT_NONE;
 		iDecoders = 0;
 		iChannels = 0;
-		bMute = false;
-		Mix_SetPostMix(setBeat, NULL);
+//		Mix_SetPostMix(setBeat, NULL);
 	}
 
 	AudioSys::~AudioSys() {
@@ -74,35 +75,19 @@ namespace Core {
 	}
 
 	bool AudioSys::load() {
-
-		Core::debug.log("Load Sound Effects {\n");
-		Core::debug.logIncreaseIndent();
-
 		MemBlock memBlock;
 
-//		__uint8_t iCount		= 0;
-//		std::string sDir		= "./audio/effects/";
-//		std::string sFile		= "";
-
-		// Load Sound Effects
-//		iCount = 0;			sFile = "battle_hit.ogg";			loadSound(iCount, sDir+sFile);
-//		iCount = 1;			sFile = "click1.ogg";				loadSound(iCount, "./audio/gui/"+sFile);
-//		iCount = 2;			sFile = "click2.ogg";				loadSound(iCount, "./audio/gui/"+sFile);
-//
-//		iCount = 3;			sFile = "check1.ogg";				loadSound(iCount, "./audio/gui/"+sFile);
-//		iCount = 4;			sFile = "check2.ogg";				loadSound(iCount, "./audio/gui/"+sFile);
-//
-//		iCount = 5;			sFile = "icon1.ogg";				loadSound(iCount, "./audio/gui/"+sFile);
-//		iCount = 6;			sFile = "icon2.ogg";				loadSound(iCount, "./audio/gui/"+sFile);
-//
-//		iCount = 7;			sFile = "slider1.ogg";				loadSound(iCount, "./audio/gui/"+sFile);
-//		iCount = 8;			sFile = "slider2.ogg";				loadSound(iCount, "./audio/gui/"+sFile);
+		// =============================
+		//	Load Sounds
+		// -----------------------------
+		Core::debug.log("Load Sound Effects {\n");
+		Core::debug.logIncreaseIndent();
 
 		sFilename		= "audio.bin";
 		readFile((sDir+sFilename), memBlock);
 
 		for (uint d=0; d<memBlock.size; d+=uiRecordSize) {
-			//t_AnimationDefinition *newData = new t_AnimationDefinition();
+			t_SoundDefinition *newSound = new t_SoundDefinition();
 
 			int id		= (__uint16_t)( (__uint8_t)(memBlock.buffer[0+d])*256 + (__uint8_t)(memBlock.buffer[1+d]) );
 			int spare	= (__uint16_t)( (__uint8_t)(memBlock.buffer[2+d])*256 + (__uint8_t)(memBlock.buffer[3+d]) );
@@ -112,40 +97,34 @@ namespace Core {
 				if (memBlock.buffer[i+d]!=0) sAudioFile+=(unsigned char)memBlock.buffer[i+d];
 				else break;
 
-			loadSound(id, sAudioDir+sAudioFile);
+			newSound->chunk = Mix_LoadWAV((sAudioDir+sAudioFile).c_str());
+			if(newSound->chunk) {
+				debug.log("["+std::to_string(id)+"] "+sAudioFile+"\n", debug().YELLOW);
+				newSound->bLoad = true;
+			}
+			else {
+				debug.log("["+std::to_string(id)+"] "+sAudioFile+" FAILED\n", debug().RED);
+			}
 
-			debug.log("["+std::to_string(id)+"] "+sAudioFile+"\n", debug().YELLOW);
+			//sound.add(id, newSound);
+			Sound.data.add(id, newSound);
+
 		}
-
-
-//		iCount = SOUNDS.BATTLE.SWORD_HIT;			sFile = "battle_hit.ogg";			loadSound(iCount, sDir+sFile);
-//		iCount = SOUNDS.BATTLE.GLANCE;				sFile = "battle_glance.ogg";		loadSound(iCount, sDir+sFile);
-//		iCount = SOUNDS.BATTLE.DODGE;				sFile = "battle_dodge.ogg";			loadSound(iCount, sDir+sFile);
-//		iCount = SOUNDS.BATTLE.DEFLECT;				sFile = "battle_deflect.ogg";		loadSound(iCount, sDir+sFile);
-//		iCount = SOUNDS.BATTLE.BLOCK;				sFile = "battle_block.ogg";			loadSound(iCount, sDir+sFile);
-//		iCount = SOUNDS.JOURNAL.OPEN;				sFile = "journal_open.ogg";			loadSound(iCount, sDir+sFile);
-//		iCount = SOUNDS.JOURNAL.CLOSE;				sFile = "journal_close.ogg";		loadSound(iCount, sDir+sFile);
-//		iCount = SOUNDS.JOURNAL.NEXT;				sFile = "journal_next.ogg";			loadSound(iCount, sDir+sFile);
-//		iCount = SOUNDS.JOURNAL.PREV;				sFile = "journal_prev.ogg";			loadSound(iCount, sDir+sFile);
-
-		//******************************************************************************************************************************
 
 		Core::debug.logDecreaseIndent();
 		Core::debug.log("}\n");
+
+		// =============================
+		//	Load Music
+		// -----------------------------
 		Core::debug.log("Load Music {\n");
 		Core::debug.logIncreaseIndent();
-
-		// Load Music
-//		iCount = 0;
-//		std::string sMusicFile = "Sneaky Adventure.mp3";
-//		musicItem[iCount].music = Mix_LoadMUS((sMusicDir + sMusicFile).c_str());
-//		Core::debug.log("["+std::to_string(iCount)+"] "+sMusicFile+" (Incomplete Loader)\n", Core::debug().RED);
 
 		sFilename		= "music.bin";
 		readFile((sDir+sFilename), memBlock);
 
 		for (uint d=0; d<memBlock.size; d+=uiRecordSize) {
-			//t_AnimationDefinition *newData = new t_AnimationDefinition();
+			t_MusicDefinition *newMusic = new t_MusicDefinition();
 
 			int id		= (__uint16_t)( (__uint8_t)(memBlock.buffer[0+d])*256 + (__uint8_t)(memBlock.buffer[1+d]) );
 			int spare	= (__uint16_t)( (__uint8_t)(memBlock.buffer[2+d])*256 + (__uint8_t)(memBlock.buffer[3+d]) );
@@ -155,86 +134,18 @@ namespace Core {
 				if (memBlock.buffer[i+d]!=0) sAudioFile+=(unsigned char)memBlock.buffer[i+d];
 				else break;
 
-			musicItem[id].music = Mix_LoadMUS((sMusicDir + sAudioFile).c_str());
-			if(musicItem[id].music) musicItem[id].bLoad = true;
+			newMusic->music = Mix_LoadMUS((sMusicDir + sAudioFile).c_str());
+			if(newMusic->music) {
+				debug.log("["+std::to_string(id)+"] "+sAudioFile+"\n", debug().YELLOW);
+				newMusic->bLoad = true;
+			}
+			else {
+				debug.log("["+std::to_string(id)+"] "+sAudioFile+" FAILED\n", debug().RED);
+			}
 
-			//loadSound(id, sAudioDir+sAudioFile);
+			Music.data.add(id, newMusic);
 
-			debug.log("["+std::to_string(id)+"] "+sAudioFile+"\n", debug().YELLOW);
 		}
-
-
-//		if(!musicItem[iCount].sample) {
-//			cout << "[" << (int)iCount << "] Error loading '"<< (sDir + sFile) << "': " << Mix_GetError() << endl;
-//		}
-//		else {
-//			cout << "   [" << (int)iCount << "] '" << (sDir + sFile) << "'" << endl;
-//			musicItem[iCount].bLoad = true;
-//		}
-//		if(musicItem[iCount].music) musicItem[iCount].bLoad = true;
-
-//		++iCount;
-//		sFile = "Vanishing.ogg";
-//		musicItem[iCount].sample = Mix_LoadMUS((sDir + sFile).c_str());
-//		if(!musicItem[iCount].sample) {
-//			cout << "[" << (int)iCount << "] Error loading '"<< (sDir + sFile) << "': " << Mix_GetError() << endl;
-//		}
-//		else {
-//			cout << "   [" << (int)iCount << "] '" << (sDir + sFile) << "'" << endl;
-//			musicItem[iCount].bLoad = true;
-//		}
-//
-//		++iCount;
-//		sFile = "Killers.ogg";
-//		musicItem[iCount].sample = Mix_LoadMUS((sDir + sFile).c_str());
-//		if(!musicItem[iCount].sample) {
-//			cout << "[" << (int)iCount << "] Error loading '"<< (sDir + sFile) << "': " << Mix_GetError() << endl;
-//		}
-//		else {
-//			cout << "   [" << (int)iCount << "] '" << (sDir + sFile) << "'" << endl;
-//			musicItem[iCount].bLoad = true;
-//		}
-
-	//	try {
-	//		if (gameVars->debug.load) printf("\n ###################\n");
-	//		if (gameVars->debug.load) printf("## LOADING ICONS\n");
-	//		MemBlock *memBlock = new MemBlock;
-	//		std::string theImage;
-	//		gameVars->texture.icons.Begin(gameVars->texture.uiNumTextures);
-	//		std::ifstream myFile((char*)"icons.bin", std::ifstream::in | std::ifstream::binary);
-	//		if (myFile.is_open()) {
-	//			if( memBlock->buffer ) {
-	//				delete[] memBlock->buffer;
-	//				memBlock->buffer = NULL;
-	//			}
-	//			myFile.seekg(0, std::ifstream::end);
-	//			memBlock->size = myFile.tellg();
-	//			memBlock->buffer = new char[memBlock->size];
-	//			myFile.seekg(0, std::ifstream::beg);
-	//			myFile.read(memBlock->buffer, memBlock->size);
-	//			myFile.close();
-	//		}
-	//		else memBlock->size = 0;
-	//
-	//		for (int d=0; d<memBlock->size; d+=gameVars->recordSize.imageId) {
-	//			int theId=0;
-	//			for (int i=0; i<4; i++) theId+=(unsigned char)memBlock->buffer[i+d];
-	//
-	//			theImage = "";
-	//			for (int i=4; i<32; i++)
-	//				if (memBlock->buffer[i+d]!=0) theImage+=(unsigned char)memBlock->buffer[i+d];
-	//				else break;
-	//
-	//			if (gameVars->debug.load) printf(" [%i] %s\n", theId, theImage.c_str());
-	//			gameVars->texture.icons.Load(gameVars->dir.icons, theImage, theId, false, GL_NEAREST);
-	//		}
-	//		delete memBlock;
-	//
-	//		return true;
-	//	}
-	//	catch(...) {
-	//		return false;
-	//	}
 
 		Core::debug.log("}\n");
 		Core::debug.logDecreaseIndent();
@@ -242,87 +153,172 @@ namespace Core {
 		return true;
 	}
 
-	void AudioSys::loadSound(int iCount, std::string sLoad) {
-//		Core::debug.log("["+std::to_string(iCount)+"] "+sLoad+" (Incomplete Loader)\n", Core::debug().RED);
-
-		soundItem[iCount].chunk = Mix_LoadWAV(sLoad.c_str());
-		//if(!soundItem[iCount].sample) cout << "[" << iCount << "] Error loading '"<< sLoad << "': " << Mix_GetError() << endl;
-		//else { cout << "   [" << iCount << "] '" << sLoad << "'" << endl; soundItem[iCount].bLoad = true; }
-
-		if(soundItem[iCount].chunk) soundItem[iCount].bLoad = true;
-
-		// Preview sound after loading
-	//	playSound(iCount, 0, -1);
-	//	Timer t;
-	//	t.start();
-	//	int i = t.get_ticks();
-	//	while(t.get_ticks()<(i+500));
-	}
-
-	void AudioSys::playSound(int iSample, int iLoop, bool bOverlap, int iChannel) {	// 0=play once (no loops), -1=first available channel
-		if(bOverlap || !Mix_Playing(iChannel)) {
-			Mix_HaltChannel(iChannel);
-			Mix_PlayChannel(iChannel, soundItem[iSample].chunk, iLoop);
+	void AudioSys::SoundInterface::play(int iSample, int iLoop, bool bOverlap, int iChannel) {	// 0=play once (no loops), -1=first available channel
+		if (!bMute) {
+			if (iChannel>=0 && Mix_Paused(iChannel)) {
+				Mix_Resume(iChannel);
+			}
+			else if ( (iChannel==-1) || (iChannel>=0 && !Mix_Playing(iChannel) && bOverlap) ) {
+				Mix_HaltChannel(iChannel);
+				Mix_PlayChannel(iChannel, data[iSample]->chunk, iLoop);
+			}
 		}
 	}
 
-	void AudioSys::playMusic(int iSample, int iLoop, int iFade) {
+	void AudioSys::SoundInterface::pause(int iChannel) {
+		Mix_Pause(iChannel);
+	}
+
+	void AudioSys::SoundInterface::stop(int iChannel) {
+		Mix_HaltChannel(iChannel);
+	}
+
+	void AudioSys::SoundInterface::mute() {
+		bMute = true;
+		Mix_Volume(-1, 0);
+	}
+
+	void AudioSys::SoundInterface::unmute() {
+		bMute = false;
+		Mix_Volume(-1, iVolume);
+	}
+
+	void AudioSys::SoundInterface::setVolume(int iVol) {
+		if(!bMute) {
+			iVolume = iVol;
+			Mix_Volume(-1, iVolume);
+		}
+	}
+
+
+	void AudioSys::MusicInterface::play(int iSample, int iLoop, int iFade) {
 		if (!bMute) {
-			if(!Mix_PlayingMusic()) {																	// If music isn't already playing
-				if(musicItem[iSample].bLoad) {													// If this sample was successfully loaded
+			if(Mix_PausedMusic()) {
+				Mix_ResumeMusic();
+			}
+			else if(!Mix_PlayingMusic()) {											// If music isn't already playing
+				if(data[iSample]->bLoad) {										// If this sample was successfully loaded
 					if(iFade>0) {
-						Mix_FadeInMusic(musicItem[iSample].music, iLoop, iFade);
+						Mix_FadeInMusic(data[iSample]->music, iLoop, iFade);
 					}
-					else Mix_PlayMusic(musicItem[iSample].music, iLoop);			// Play the music!
+					else Mix_PlayMusic(data[iSample]->music, iLoop);			// Play the music!
 				}
 			}
 		}
 	}
 
-//	void AudioSys::playMusic(__uint8_t ui) {
-//		if (!bMute) {
-//			switch(ui) {
-//				case MUSIC_WORLDEXPLORE: {
-//					// todo: Randomize all available music
-//					//int iRand = rand() %
-//				}
-//				break;
-//				case MUSIC_WORLDBATTLE: {
-//
-//				}
-//				break;
-//			}
-//		}
-//	}
-
-	void AudioSys::fadeOutMusic(__uint8_t ui, int ms=1000) {
-//		if (!bMute) {
-//			switch(ui) {
-//				case MUSIC_WORLDEXPLORE: {
-//					Mix_FadeOutMusic(ms);
-//				}
-//				break;
-//				case MUSIC_WORLDBATTLE: {
-//					Mix_FadeOutMusic(ms);
-//				}
-//				break;
-//			}
-//		}
+	void AudioSys::MusicInterface::pause() {
+		Mix_PauseMusic();
 	}
 
-	void AudioSys::stopMusic() {
+	void AudioSys::MusicInterface::stop() {
 		Mix_HaltMusic();
 	}
 
-	//void AudioSys::getBeat(int chan, void *stream, int len, void *udata) {
-	void AudioSys::setBeat(void *udata, __uint8_t *stream, int len) {
-		//cout << len << "\t" << &stream << endl;
-		//printf("[%i] %i\n", len, *stream);
-		iBeat = *stream;
-		//cout << "[" << len << "]\t" << iBeat << endl;
+	void AudioSys::MusicInterface::mute() {
+		bMute = true;
+		Mix_Volume(-1, 0);
 	}
 
-	__uint8_t AudioSys::getBeat() {
-		return iBeat;
+	void AudioSys::MusicInterface::unmute() {
+		bMute = false;
+		Mix_Volume(-1, iVolume);
 	}
+
+	void AudioSys::MusicInterface::setVolume(int iVol) {
+		if(!bMute) {
+			iVolume = iVol;
+			Mix_Volume(-1, iVolume);
+		}
+	}
+
+	//void AudioSys::getBeat(int chan, void *stream, int len, void *udata) {
+//	void AudioSys::setBeat(void *udata, __uint8_t *stream, int len) {
+//		//cout << len << "\t" << &stream << endl;
+//		//printf("[%i] %i\n", len, *stream);
+//		iBeat = *stream;
+//		//cout << "[" << len << "]\t" << iBeat << endl;
+//	}
+
+//	__uint8_t AudioSys::getBeat() {
+//		return iBeat;
+//	}
+
+
+
+	// ============================================================================================================================
+	//	t_AudioInstance
+	// ============================================================================================================================
+
+	t_AudioInstance::t_AudioInstance() {
+//		list.setSource("t_AnimationInstance");
+		parent = &audioSys;
+	}
+
+	t_AudioInstance::~t_AudioInstance() {
+
+	}
+
+	void t_AudioInstance::add(std::string name, int iSample, int iLoop, bool bOverlap, int iChannel) {
+		t_SoundItem *newSound = new t_SoundItem();
+		newSound->iSample = iSample;
+		newSound->loop = iLoop;
+		newSound->iChannel = iChannel;
+		newSound->bOverlap = bOverlap;
+		sound.add(name, newSound);
+	}
+
+	void t_AudioInstance::remove(std::string name) {
+		sound.remove(name);
+	}
+
+	void t_AudioInstance::play(std::string name) {
+		parent->Sound.play(sound[name]->iSample, sound[name]->loop, sound[name]->bOverlap, sound[name]->iChannel);
+	}
+
+	void t_AudioInstance::pause(std::string name) {
+		parent->Sound.pause(sound[name]->iChannel);
+	}
+
+	void t_AudioInstance::stop(std::string name) {
+		parent->Sound.stop(sound[name]->iChannel);
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

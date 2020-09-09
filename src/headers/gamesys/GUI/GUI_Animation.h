@@ -172,7 +172,7 @@ namespace Core {
 				animationInstance[this->id].rate = con->iUpdateRate;
 				animationInstance[this->id].iSample = con->iSample;
 				animationInstance[this->id].loop = con->iLoop;
-				animationInstance[this->id].id = animation[con->sAnimationImage].id;
+				animationInstance[this->id].id = animationSys[con->sAnimationImage].id;
 
 				animationInstance.update(this->id);
 			}

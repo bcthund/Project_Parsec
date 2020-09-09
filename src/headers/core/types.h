@@ -1670,7 +1670,7 @@ namespace Core {
 				}
 				else if(bThrow) {
 					std::ostringstream sMessage;
-					sMessage << "Duplicate Key in t_Map: '" << key << "'";
+					sMessage << "Name in t_Map doesn't exist: '" << key << "'";
 					throw std::runtime_error(sMessage.str());
 				}
 
@@ -1966,11 +1966,11 @@ namespace Core {
 
 	};
 
-	template <typename T>
+	template <typename KEY, typename VALUE>
 	class t_UMap {
 		private:
 			std::string sErrorSource;
-			std::unordered_map< std::string, T > typeList;
+			std::unordered_map< KEY, VALUE > typeList;
 
 		public:
 			t_UMap() {
@@ -1981,17 +1981,21 @@ namespace Core {
 			}
 			virtual ~t_UMap() {}
 
-			bool checkName(std::string name, bool bThrow=true) {
-				if(typeList.count(name)>0) return true;
+			bool checkKey(KEY key, bool bThrow=true) {
+				if(typeList.count(key)>0) return true;
 				else {
-					if (bThrow) throw std::runtime_error("UMap: ["+std::string(sErrorSource)+"] Invalid Item Name: '"+name+"'");
+					if (bThrow) {
+						std::ostringstream sMessage;
+						sMessage << "UMap: [" << sErrorSource << "] Invalid Item Name: '" << key << "'";
+						throw std::runtime_error(sMessage.str());
+					}
 					else return false;
 				}
 			}
 
-			virtual T & operator[](std::string name)	{
-				checkName(name);
-				return typeList[name];
+			virtual VALUE & operator[](KEY key)	{
+				checkKey(key);
+				return typeList[key];
 			}
 
 			virtual void setSource(std::string source) {
@@ -2005,31 +2009,44 @@ namespace Core {
 
 //			virtual T & add(std::string name, const T t, bool bThrow=true) {
 //			void add(std::string name, const T t, bool bThrow=true) {
-			virtual T & add(std::string name, const T t, bool bThrow=true) {
-				if(!checkName(name, false)) {
-					typeList.insert(std::make_pair(name, t));
-					return typeList[name];
+			virtual VALUE & add(KEY key, VALUE value, bool bThrow=true) {
+				if(!checkKey(key, false)) {
+					typeList.insert(std::make_pair(key, value));
+					return typeList[key];
 				}
 				else {
-					if(bThrow) throw std::runtime_error("Duplicate name in t_UMap: '"+name+"'");
-					else return typeList[name];
+					if(bThrow) {
+						std::ostringstream sMessage;
+						sMessage << "Duplicate Key in t_UMap: '" << key << "'";
+						throw std::runtime_error(sMessage.str());
+					}
+					else return typeList[key];
 				}
 //				return nullptr;
 			}
 
-			virtual void remove(std::string name, bool bThrow=true) {
-				if(checkName(name, false)) {
-					typeList.erase(name);
+			virtual void remove(KEY key, bool bThrow=true) {
+				if(checkKey(key, false)) {
+					typeList.erase(key);
 				}
-				else {
-					if(bThrow) throw std::runtime_error("Name in t_UMap doesn't exist: '"+name+"'");
+				else if(bThrow) {
+					std::ostringstream sMessage;
+					sMessage << "Key in t_Map doesn't exist: '" << key << "'";
+					throw std::runtime_error(sMessage.str());
 				}
 
 			}
 
-			virtual T & get(std::string name)	{
-				checkName(name);
-				return typeList[name];
+			virtual VALUE & get(KEY key)	{
+				checkKey(key);
+				return typeList[key];
+			}
+
+			KEY getKey(VALUE value) {
+				for (const auto& item : typeList) {
+					if(item.second == value) return item.first;
+				}
+				return KEY();
 			}
 
 			int size() {

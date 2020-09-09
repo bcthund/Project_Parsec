@@ -333,7 +333,7 @@ namespace Core {
 				else con->exec();
 
 				// FIXME: Create SOUNDS enumeration
-				initSound(3, 7, 8, -1, 0, false, true);
+				initSound(-1, 7, 8, -1, 0, false, true);
 
 				update();
 				setValue(*this->valuePtr);

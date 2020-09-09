@@ -33,7 +33,7 @@ namespace Core {
 	extern class PostProcess			*	postProcess;
 	extern class _Collision				*	collision;
 	extern class _Helper				*	helper;
-	extern class AudioSys				*	audioSys;
+	extern class AudioSys				audioSys;
 	extern class _Joint					*	skeleton;
 	extern class _Profile				*   profiles;
 	extern class _FrameRate				*	framerate;
@@ -44,7 +44,7 @@ namespace Core {
 	extern class _ParticleEmitter		*	particles;
 //	extern class Stipple				*	stipple;
 	extern class Stipple				stipple;
-	extern class _AnimationSys			animation;
+	extern class _AnimationSys			animationSys;
 
 	extern struct GameVars				*	gameVars;
 
