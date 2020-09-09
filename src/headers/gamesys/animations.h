@@ -97,7 +97,7 @@ namespace Core {
 	 ******************************************************************************************************************** */
 	class _AnimationSys {
 		private:
-			t_AudioInstance	audio;
+			t_SoundInstance	audio;
 			//AudioSys 	*audioSys;
 //				Texture		texture;
 			uint 		uiRecordSize;
@@ -268,7 +268,7 @@ namespace Core {
 		public:
 			//t_VectorMap<T*> list;
 			t_UMap<std::string, T*> list;
-			t_AudioInstance audio;
+			t_SoundInstance audio;
 
 			/*
 			 * size/x,y...........Specifies the size of the animation

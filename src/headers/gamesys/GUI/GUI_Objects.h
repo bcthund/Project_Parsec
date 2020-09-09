@@ -500,7 +500,7 @@ namespace Core {
 //						bool bOverlapOn;
 //						bool bOverlapOff;
 //						int iChannel;
-						t_AudioInstance audio;
+						t_SoundInstance audio;
 
 						void initSound(int iChannel, int iSampleOn, int iSampleOff, int iLoopOn, int iLoopOff, bool bOverlapOn, bool bOverlapOff);
 						void Sound_PlayOn();

@@ -130,7 +130,7 @@ bool _Game::load() {
 
 	//animation->startAnimation(128, 128, Core::gameVars->player.active->transform.pos, Core::Vector3f(100, 0, 100), 0, 10, 100, 0, false);
 //	animation2.add("World Animation Test", "slash_00.png", 128, 128, -1, 100, -1).setCameraTarget(&Core::gameVars->player.active->transform.pos, Core::Vector3f(100, 0, 100));
-	animation2.add("World Animation Test", "rotate.png", 128, 128, -1, 10, -1);
+	animation2.add("World Animation Test", "rotate.png", 128, 128, -1, 0, -1);
 	animation2.start("World Animation Test");
 
 

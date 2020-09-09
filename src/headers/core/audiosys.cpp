@@ -11,7 +11,8 @@
 
 namespace Core {
 //	int AudioSys::iBeat = 0;
-	AudioSys *t_AudioInstance::parent = nullptr;
+	AudioSys *t_SoundInstance::parent = nullptr;
+	AudioSys *t_MusicInstance::parent = nullptr;
 
 	AudioSys::AudioSys() {
 		uiRecordSize	= 32;
@@ -250,43 +251,74 @@ namespace Core {
 	//	t_AudioInstance
 	// ============================================================================================================================
 
-	t_AudioInstance::t_AudioInstance() {
-//		list.setSource("t_AnimationInstance");
+	t_SoundInstance::t_SoundInstance() {
+		audio.setSource("t_SoundInstance");
 		parent = &audioSys;
 	}
 
-	t_AudioInstance::~t_AudioInstance() {
+	t_SoundInstance::~t_SoundInstance() {
 
 	}
 
-	void t_AudioInstance::add(std::string name, int iSample, int iLoop, bool bOverlap, int iChannel) {
+	void t_SoundInstance::add(std::string name, int iSample, int iLoop, bool bOverlap, int iChannel) {
 		t_SoundItem *newSound = new t_SoundItem();
 		newSound->iSample = iSample;
 		newSound->loop = iLoop;
 		newSound->iChannel = iChannel;
 		newSound->bOverlap = bOverlap;
-		sound.add(name, newSound);
+		audio.add(name, newSound);
 	}
 
-	void t_AudioInstance::remove(std::string name) {
-		sound.remove(name);
+	void t_SoundInstance::remove(std::string name) {
+		audio.remove(name);
 	}
 
-	void t_AudioInstance::play(std::string name) {
-		parent->Sound.play(sound[name]->iSample, sound[name]->loop, sound[name]->bOverlap, sound[name]->iChannel);
+	void t_SoundInstance::play(std::string name) {
+		parent->Sound.play(audio[name]->iSample, audio[name]->loop, audio[name]->bOverlap, audio[name]->iChannel);
 	}
 
-	void t_AudioInstance::pause(std::string name) {
-		parent->Sound.pause(sound[name]->iChannel);
+	void t_SoundInstance::pause(std::string name) {
+		parent->Sound.pause(audio[name]->iChannel);
 	}
 
-	void t_AudioInstance::stop(std::string name) {
-		parent->Sound.stop(sound[name]->iChannel);
+	void t_SoundInstance::stop(std::string name) {
+		parent->Sound.stop(audio[name]->iChannel);
 	}
 
 
+	t_MusicInstance::t_MusicInstance() {
+		audio.setSource("t_AnimationInstance");
+		parent = &audioSys;
+	}
 
+	t_MusicInstance::~t_MusicInstance() {
 
+	}
+
+	void t_MusicInstance::add(std::string name, int iSample, int iLoop, bool bOverlap, int iFade) {
+		t_MusicItem *newMusic = new t_MusicItem();
+		newMusic->iSample = iSample;
+		newMusic->loop = iLoop;
+		newMusic->iFade = iFade;
+		newMusic->bOverlap = bOverlap;
+		audio.add(name, newMusic);
+	}
+
+	void t_MusicInstance::remove(std::string name) {
+		audio.remove(name);
+	}
+
+	void t_MusicInstance::play(std::string name) {
+		parent->Music.play(audio[name]->iSample, audio[name]->loop, audio[name]->iFade);
+	}
+
+	void t_MusicInstance::pause() {
+		parent->Music.pause();
+	}
+
+	void t_MusicInstance::stop() {
+		parent->Music.stop();
+	}
 
 
 

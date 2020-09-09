@@ -26,7 +26,6 @@ namespace Core {
 			bool		bIsPaused;
 			bool		bOverlap;
 			int			loop;
-			int			iChannel;
 
 			t_AudioItem() {
 				iSample			= 0;
@@ -34,11 +33,28 @@ namespace Core {
 				bIsPaused		= false;
 				bOverlap		= true;
 				loop			= 1;
+			}
+	};
+
+	class t_SoundItem : public t_AudioItem {
+		public:
+			int			iChannel;
+
+			t_SoundItem() {
+				t_AudioItem();
 				iChannel		= -1;
 			}
 	};
-	typedef t_AudioItem t_SoundItem;
-	typedef t_AudioItem t_MusicItem;
+
+	class t_MusicItem : public t_AudioItem {
+		public:
+			int			iFade;
+
+			t_MusicItem() {
+				t_AudioItem();
+				iFade		= 0;
+			}
+	};
 
 	class AudioSys {
 		private:
@@ -159,25 +175,42 @@ namespace Core {
 	 * @brief
 	 *
 	 ******************************************************************************************************************** */
-	class t_AudioInstance {
+	class t_SoundInstance {
 		public:
 			static AudioSys *parent;
 
-			t_UMap<std::string, t_SoundItem*> sound;
-			t_UMap<std::string, t_MusicItem*> music;
+			t_UMap<std::string, t_SoundItem*> audio;
 
-			void add(std::string name, int iSample, int iLoop, bool bOverlap, int iChannel);
+			void add(std::string name, int iSample, int iLoop, bool bOverlap, int iChannel=-1);
 			void remove(std::string name);
 
 			void play(std::string name);
 			void pause(std::string name);
 			void stop(std::string name);
 
-//			T& operator[](int id)				{	return *list[id];		}
-//			T& operator[](std::string name)		{	return *list[name];		}
+			t_SoundItem& operator[](std::string name)		{	return *audio[name];		}
 
-			t_AudioInstance();
-			~t_AudioInstance();
+			t_SoundInstance();
+			~t_SoundInstance();
+	};
+
+	class t_MusicInstance {
+		public:
+			static AudioSys *parent;
+
+			t_UMap<std::string, t_MusicItem*> audio;
+
+			void add(std::string name, int iSample, int iLoop, bool bOverlap, int iFade=0);
+			void remove(std::string name);
+
+			void play(std::string name);
+			void pause();
+			void stop();
+
+			t_MusicItem& operator[](std::string name)		{	return *audio[name];		}
+
+			t_MusicInstance();
+			~t_MusicInstance();
 	};
 
 

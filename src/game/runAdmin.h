@@ -186,7 +186,10 @@ class _Admin {
 		void initColors();
 		void run();
 		bool bInit;
-		Core::t_AudioInstance audio;
+		struct {
+			Core::t_SoundInstance sound;
+			Core::t_MusicInstance music;
+		} audio;
 };
 
 _Admin::_Admin(_Game *gamePtr) :
@@ -220,7 +223,10 @@ void _Admin::init() {
 	Core::debug.log("Init GUI {\n");
 	Core::debug.logIncreaseIndent();
 
-
+	//audio.add("Sample Music", 0, -1)
+	audio.music.add("Sample Music 0", 0, -1, true, 0);
+	audio.music.add("Sample Music 1", 1, -1, true, 0);
+	audio.music.add("Sample Music 2", 2, -1, true, 0);
 
 	if (!bOneShot[0]) {
 		Core::debug.log("[0] Master Container\n", Core::debug().YELLOW);
@@ -2197,9 +2203,14 @@ void _Admin::run() {
 
 		if(Core::gui["GameMenu"]["Window 9"].Button["Play Music"].getState() && !Core::gui["GameMenu"]["Window 9"].Slider["Music Track"].stateChanged()) {
 //			Core::audioSys->playMusic(Core::gameVars->debug.audio.iMusicTrack);
+			audio.music.play("Sample Music "+std::to_string(Core::gameVars->debug.audio.iMusicTrack));
+//			audio.music.add("Sample Music 0", 0, -1, true, 0);
+//			audio.music.add("Sample Music 1", 1, -1, true, 0);
+//			audio.music.add("Sample Music 2", 2, -1, true, 0);
 		}
 		else {
 //			Core::audioSys->stopMusic();
+			audio.music.stop();
 		}
 
 		if(Core::gui["GameMenu"]["Window 23"].Button["Toggle Animation"].getState()) {
