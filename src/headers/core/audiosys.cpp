@@ -160,7 +160,7 @@ namespace Core {
 				Mix_Resume(iChannel);
 			}
 			else if ( (iChannel==-1) || (iChannel>=0 && !Mix_Playing(iChannel) && bOverlap) ) {
-				Mix_HaltChannel(iChannel);
+				if(iChannel>=0 && !bOverlap) Mix_HaltChannel(iChannel);
 				Mix_PlayChannel(iChannel, data[iSample]->chunk, iLoop);
 			}
 		}
@@ -197,7 +197,7 @@ namespace Core {
 			if(Mix_PausedMusic()) {
 				Mix_ResumeMusic();
 			}
-			else if(!Mix_PlayingMusic()) {											// If music isn't already playing
+			else if(!Mix_PlayingMusic()) {										// If music isn't already playing
 				if(data[iSample]->bLoad) {										// If this sample was successfully loaded
 					if(iFade>0) {
 						Mix_FadeInMusic(data[iSample]->music, iLoop, iFade);
@@ -210,6 +210,10 @@ namespace Core {
 
 	void AudioSys::MusicInterface::pause() {
 		Mix_PauseMusic();
+	}
+
+	void AudioSys::MusicInterface::fadeOut(int iFade) {
+		Mix_FadeOutMusic(iFade);
 	}
 
 	void AudioSys::MusicInterface::stop() {

@@ -154,7 +154,7 @@ namespace Core {
 					bool bMute;
 					void play(int iSample, int iLoop=-1, int iFade=0);
 					void pause();
-					// TODO: void fadeOutMusic(__uint8_t ui, int ms);
+					void fadeOut(int iFade);
 					void stop();
 					void mute();
 					void unmute();

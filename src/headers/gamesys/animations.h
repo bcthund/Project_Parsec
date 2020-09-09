@@ -321,6 +321,8 @@ namespace Core {
 		type->size.x			= x;
 		type->size.y			= y;
 		list.add(name, type);
+		audio.add(name, iSample, 0, true, -1);
+
 		return *list[name];
 	}
 
@@ -397,6 +399,7 @@ namespace Core {
 				list[name]->bSamplePlayed = true;
 				//audioSys->playSound(list[name]->iSample);
 				// TODO: audio.play("temp");
+				audio.play(name);
 			}
 
 			glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
@@ -428,6 +431,7 @@ namespace Core {
 				list[name]->bSamplePlayed = true;
 //				audioSys->playSound(list[name]->iSample);
 				// TODO: audio.play("temp");
+				audio.play(name);
 			}
 
 			glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
