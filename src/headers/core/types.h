@@ -1730,10 +1730,17 @@ namespace Core {
 				return typeList[id];
 			}
 
-			virtual T & add(T t) {
+//			virtual T & add(T t) {
+//				typeList.push_back(t);
+//				int id = typeList.size() - 1;
+//				return typeList[id];
+//
+//			}
+
+			int add(T t) {
 				typeList.push_back(t);
 				int id = typeList.size() - 1;
-				return typeList[id];
+				return id;
 
 			}
 
@@ -1802,13 +1809,14 @@ namespace Core {
 //	char sErrorSource[] = "Undefined";
 //	template <typename T, char *T_ErrorSource="Undefined">
 //	template <typename T, FixedString S>
-	template <typename T>
+	template <typename VALUE>
 	class t_VectorMap {
 		private:
 			std::string sErrorSource;
-			std::vector<T> typeList;
+			std::vector<VALUE> typeList;
 			//TODO: std::unordered_map< std::string, T > typeList;
 			Map_si map;
+//			std::unordered_map< std::string, uint >
 
 		public:
 //			t_VectorMap(std::string source) {
@@ -1836,12 +1844,12 @@ namespace Core {
 				}
 			}
 
-			virtual T & operator[](std::string name)	{
+			virtual VALUE & operator[](std::string name)	{
 				checkName(name);
 				return typeList[map[name]];
 			}
 
-			virtual T & operator[](int id)	{
+			virtual VALUE & operator[](int id)	{
 				checkID(id);
 				return typeList[id];
 			}
@@ -1877,7 +1885,7 @@ namespace Core {
 
 //			virtual T & add(std::string name, const T t, bool bThrow=true) {
 //			void add(std::string name, const T t, bool bThrow=true) {
-			virtual T & add(std::string name, const T t, bool bThrow=true) {
+			virtual VALUE & add(std::string name, const VALUE t, bool bThrow=true) {
 				if(!checkName(name, false)) {
 					//typeList.emplace_back(t);
 					typeList.push_back(t);
@@ -1920,12 +1928,12 @@ namespace Core {
 
 			}
 
-			virtual T & get(std::string name)	{
+			virtual VALUE & get(std::string name)	{
 				checkName(name);
 				return typeList[map[name]];
 			}
 
-			virtual T & get(int id)	{
+			virtual VALUE & get(int id)	{
 				checkID(id);
 				return typeList[id];
 			}
@@ -2065,6 +2073,110 @@ namespace Core {
 			auto begin() 	const	{ return typeList.cbegin(); }
 			auto end() 		const	{ return typeList.cend(); }
 	};
+
+//	struct CompPair
+//	{
+//		template<typename T>
+//		bool operator()(const T &l, const T &r) const
+//		{
+//			if (l.first == r.first)
+//				return l.second > r.second;
+//
+//			return l.first < r.first;
+//		}
+//	};
+//	typedef std::pair<int, std::string> Pair_IS;
+//	template <typename VALUE>
+//	class t_PairMap {
+//		private:
+//			std::string sErrorSource;
+//			std::unordered_map< Pair_IS, VALUE, CompPair > typeList;
+//
+//		public:
+//			t_PairMap() {
+//				sErrorSource = "Undefined Source";
+//			}
+//			t_PairMap(std::string source) {
+//				sErrorSource = source;
+//			}
+//			virtual ~t_PairMap() {}
+//
+////			bool checkKey(std::variant<int, std::string> key, bool bThrow=true) {
+////				if(typeList.count(key)>0) return true;
+////				else {
+////					if (bThrow) {
+////						std::ostringstream sMessage;
+////						// TODO: sMessage << "UMap: [" << sErrorSource << "] Invalid Item Name: '" << key << "'";
+////						throw std::runtime_error(sMessage.str());
+////					}
+////					else return false;
+////				}
+////			}
+//
+//			virtual VALUE & operator[](std::variant<int, std::string> key)	{
+////				checkKey(key);
+//				return typeList[key];
+//			}
+//
+//			virtual void setSource(std::string source) {
+//				sErrorSource = source;
+//			}
+//
+//			virtual VALUE & add(std::variant<int, std::string> key, VALUE value, bool bThrow=true) {
+////				if(!checkKey(key, false)) {
+//					typeList.insert(std::make_pair(key, value));
+//					return typeList[key];
+////				}
+////				else {
+////					if(bThrow) {
+////						std::ostringstream sMessage;
+////						// TODO: sMessage << "Duplicate Key in t_UMap: '" << key << "'";
+////						throw std::runtime_error(sMessage.str());
+////					}
+////					else return typeList[key];
+////				}
+//			}
+//
+//			virtual void remove(std::variant<int, std::string> key, bool bThrow=true) {
+////				if(checkKey(key, false)) {
+//					typeList.erase(key);
+////				}
+////				else if(bThrow) {
+////					std::ostringstream sMessage;
+////					// TODO: sMessage << "Key in t_Map doesn't exist: '" << key << "'";
+////					throw std::runtime_error(sMessage.str());
+////				}
+//
+//			}
+//
+//			virtual VALUE & get(std::variant<int, std::string> key)	{
+////				checkKey(key);
+//				return typeList[key];
+//			}
+//
+//			Pair_IS getKey(VALUE value) {
+//				for (const auto& item : typeList) {
+//					if(item.second == value) return item.first;
+//				}
+//				return Pair_IS();
+//			}
+//
+//			int size() {
+//				return typeList.size();
+//			}
+//
+//			/*
+//			 * Allow Iteration
+//			 *
+//			 * Example:
+//			 * 	t_Vector<T> items;
+//			 * 	for(auto item : items) {}
+//			 */
+//			auto begin() 			{ return typeList.begin(); }
+//			auto end() 				{ return typeList.end(); }
+//			auto begin() 	const	{ return typeList.cbegin(); }
+//			auto end() 		const	{ return typeList.cend(); }
+//	};
 
 //	template <typename T>
 //	class t_UMap : public std::unordered_map< std::string, T > {

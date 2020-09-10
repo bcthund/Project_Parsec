@@ -108,8 +108,11 @@ namespace Core {
 			}
 
 			//sound.add(id, newSound);
-			Sound.data.add(id, newSound);
+//			int index = Sound.data.add(newSound);
+			Sound.add(id, sAudioFile, newSound);
 
+			//Sound.data.add(id, newSound);
+//			Sound.data.add(std::make_pair(id, sAudioFile), newSound);
 		}
 
 		Core::debug.logDecreaseIndent();
@@ -144,7 +147,9 @@ namespace Core {
 				debug.log("["+std::to_string(id)+"] "+sAudioFile+" FAILED\n", debug().RED);
 			}
 
-			Music.data.add(id, newMusic);
+//			Music.data.add(id, newMusic);
+//			Music.data.add(std::make_pair(id, sAudioFile), newMusic);
+			Music.add(id, sAudioFile, newMusic);
 
 		}
 
@@ -152,6 +157,12 @@ namespace Core {
 		Core::debug.logDecreaseIndent();
 
 		return true;
+	}
+
+	void AudioSys::SoundInterface::add(int id, std::string name, t_SoundDefinition *newData) {
+		int index = data.add(newData);
+		map_id.add(id, index);
+		map_name.add(name, index);
 	}
 
 	void AudioSys::SoundInterface::play(int iSample, int iLoop, bool bOverlap, int iChannel) {	// 0=play once (no loops), -1=first available channel
@@ -191,6 +202,12 @@ namespace Core {
 		}
 	}
 
+
+	void AudioSys::MusicInterface::add(int id, std::string name, t_MusicDefinition *newData) {
+		int index = data.add(newData);
+		map_id.add(id, index);
+		map_name.add(name, index);
+	}
 
 	void AudioSys::MusicInterface::play(int iSample, int iLoop, int iFade) {
 		if (!bMute) {

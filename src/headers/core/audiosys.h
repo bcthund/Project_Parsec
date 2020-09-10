@@ -125,33 +125,52 @@ namespace Core {
 			class SoundInterface {
 					friend class AudioSys;
 				private:
-					t_UMap<int, t_SoundDefinition*> data;
+//					typedef std::pair<int, std::string> pair;
+//					t_UMap<pair, t_SoundDefinition*> data;
+//					t_UMap<int, t_SoundDefinition*> data;
+//					t_VectorMap<t_SoundDefinition*> data;
+
+					t_UMap<int, int> map_id;
+					t_UMap<std::string, int> map_name;
+					t_Vector1T<t_SoundDefinition*> data;
+//					t_VectorMap<t_SoundDefinition*> data;
 					AudioSys * parent;
 
 				public:
 					int iVolume;
 					bool bMute;
+					void add(int id, std::string name, t_SoundDefinition *newData);
 					void play(int iSample, int iLoop=0, bool bOverlap=true, int iChannel=-1);
 					void pause(int iChannel=-1);
 					void stop(int iChannel=-1);
 					void mute();
 					void unmute();
 					void setVolume(int iVol);
-					t_SoundDefinition & operator[](int iSample)		{	return *data[iSample];	}
+					t_SoundDefinition & operator[](int iSample)			{	return *data[map_id[iSample]];	}
+					t_SoundDefinition & operator[](std::string name)	{	return *data[map_name[name]];	}
 					SoundInterface(AudioSys * p) { parent = p; iVolume=128; bMute=false; }
-					~SoundInterface() { for (auto & item : data) delete item.second; }
+//					~SoundInterface() { for (auto & item : data) delete item.second; }
+					~SoundInterface() { for (auto & item : data) delete item; }
 			};
 			SoundInterface Sound = SoundInterface(this);
 
 			class MusicInterface {
 					friend class AudioSys;
 				private:
-					t_UMap<int, t_MusicDefinition*> data;
+//					t_PairMap<t_MusicDefinition*> data;
+//					t_UMap<int, t_MusicDefinition*> data;
+//					t_VectorMap<t_MusicDefinition*> data;
+
+					t_UMap<int, int> map_id;
+					t_UMap<std::string, int> map_name;
+					t_Vector1T<t_MusicDefinition*> data;
+
 					AudioSys * parent;
 
 				public:
 					int iVolume;
 					bool bMute;
+					void add(int id, std::string name, t_MusicDefinition *newData);
 					void play(int iSample, int iLoop=-1, int iFade=0);
 					void pause();
 					void fadeOut(int iFade);
@@ -159,9 +178,11 @@ namespace Core {
 					void mute();
 					void unmute();
 					void setVolume(int iVol);
-					t_MusicDefinition & operator[](int iSample)		{	return *data[iSample];	}
+					t_MusicDefinition & operator[](int iSample)			{	return *data[map_id[iSample]];	}
+					t_MusicDefinition & operator[](std::string name)	{	return *data[map_name[name]];	}
 					MusicInterface(AudioSys * p) { parent = p; iVolume=128; bMute=false; }
-					~MusicInterface() { for (auto & item : data) delete item.second; }
+//					~MusicInterface() { for (auto & item : data) delete item.second; }
+					~MusicInterface() { for (auto & item : data) delete item; }
 			};
 			MusicInterface Music = MusicInterface(this);
 
