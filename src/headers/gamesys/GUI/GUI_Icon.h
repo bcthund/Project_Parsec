@@ -230,8 +230,7 @@ namespace Core {
 			void Icon::init() {
 				this->id = IDs.create();
 
-				// FIXME: Create SOUNDS enumeration
-				initSound(2, 5, 6, 0, 0, true, true);
+				initSound(audio().CHANNEL_GUI_ICON, 5, 6, 0, 0, true, true);
 
 				if(bHasParent) {
 					con->scroll.bind(*parent);

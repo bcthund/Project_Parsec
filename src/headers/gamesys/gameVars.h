@@ -281,6 +281,16 @@ namespace Core {
 
 			} gui;
 
+			struct _audio {
+				int volume;
+				int iMusicTrack;
+
+				_audio() {
+					volume = 128;
+					iMusicTrack = 0;
+				}
+			} audio;
+
 		} debug;
 
 		// FIXME: Pallettes are in the Colors class(not currently used), fix implementation

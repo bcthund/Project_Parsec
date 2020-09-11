@@ -493,45 +493,37 @@ namespace Core {
 						bool bRising;
 						bool bOneShotOn;
 						bool bOneShotOff;
-						int iSampleOn;
-						int iSampleOff;
-						int iLoopOn;
-						int iLoopOff;
-						bool bOverlapOn;
-						bool bOverlapOff;
-						int iChannel;
+//						int iSampleOn;
+//						int iSampleOff;
+//						int iLoopOn;
+//						int iLoopOff;
+//						bool bOverlapOn;
+//						bool bOverlapOff;
+//						int iChannel;
+						t_SoundInstance audio;
+
 						void initSound(int iChannel, int iSampleOn, int iSampleOff, int iLoopOn, int iLoopOff, bool bOverlapOn, bool bOverlapOff);
 						void Sound_PlayOn();
 						void Sound_AbortState();
+						void Sound_StopOn();
+						void Sound_StopOff();
 						void Sound_PlayOff();
 						void Sound_PlayAuto(iState eState, bool bRepeat=false);
 						AudioFeedback() {
-							iChannel	= 0;
 							bRising		= false;
 							bOneShotOn	= false;
 							bOneShotOff	= true;
-							iSampleOn	= 1;
-							iSampleOff	= 2;
-							iLoopOn		= 0;
-							iLoopOff	= 0;
-							bOverlapOn	= false;
-							bOverlapOff	= false;
 						}
 				};
 
 				void AudioFeedback::initSound(int iChannel, int iSampleOn, int iSampleOff, int iLoopOn, int iLoopOff, bool bOverlapOn, bool bOverlapOff) {
-					this->iChannel		= iChannel;
-					this->iSampleOn		= iSampleOn;
-					this->iSampleOff	= iSampleOff;
-					this->iLoopOn		= iLoopOn;
-					this->iLoopOff		= iLoopOff;
-					this->bOverlapOn	= bOverlapOn;
-					this->bOverlapOff	= bOverlapOff;
+					audio.add("SampleOn", iSampleOn, iLoopOn, bOverlapOn, iChannel);
+					audio.add("SampleOff", iSampleOff, iLoopOff, bOverlapOff, iChannel);
 				}
 
 				void AudioFeedback::Sound_PlayOn() {
 //					if(!bOneShotOn) {
-						Core::audioSys->playSound(iSampleOn, iLoopOn, bOverlapOn, iChannel);
+						audio.play("SampleOn");
 						bOneShotOn = true;
 //					}
 				}
@@ -540,22 +532,28 @@ namespace Core {
 					bOneShotOn = false;
 				}
 
+				void AudioFeedback::Sound_StopOn() {
+					audio.stop("SampleOn");
+				}
+
+				void AudioFeedback::Sound_StopOff() {
+					audio.stop("SampleOff");
+				}
+
 				void AudioFeedback::Sound_PlayOff() {
 					if(bOneShotOn) {
-						Core::audioSys->playSound(iSampleOff, iLoopOff, bOverlapOff, iChannel);
+						audio.play("SampleOff");
 						bOneShotOn = false;
 					}
 				}
 
 				void AudioFeedback::Sound_PlayAuto(iState eState, bool bRepeat) {
 					if( (eState&STATE_ACTIVE) && (!bRising || bRepeat) ) {
-//						std::cout << "On\n";
-						Core::audioSys->playSound(iSampleOn, iLoopOn, bOverlapOn, iChannel);
+						audio.play("SampleOn");
 						bRising = true;
 					}
-					else if( !(eState&STATE_ACTIVE) && (bRising) && !Mix_Playing(-1) ) {
-//						std::cout << "Off\n";
-						Core::audioSys->playSound(iSampleOff, iLoopOff, bOverlapOff, iChannel);
+					else if( !(eState&STATE_ACTIVE) && (bRising) /*&& !Mix_Playing(-1)*/ ) {
+						audio.play("SampleOff");
 						bRising = false;
 					}
 				}

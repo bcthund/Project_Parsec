@@ -97,7 +97,8 @@ namespace Core {
 	 ******************************************************************************************************************** */
 	class _AnimationSys {
 		private:
-			AudioSys 	*audioSys;
+			t_SoundInstance	audio;
+			//AudioSys 	*audioSys;
 //				Texture		texture;
 			uint 		uiRecordSize;
 			std::string sFilename,
@@ -127,7 +128,8 @@ namespace Core {
 		public:
 			Timer timer;
 			//_AnimationSys();
-			_AnimationSys(AudioSys &a);
+//			_AnimationSys(AudioSys &a);
+			_AnimationSys();
 			~_AnimationSys();
 //				// TODO: Load these associations from file, the number is equal to the id of the animation which is also equal to its array index (typically iA in this file)
 //				struct _ANIMATIONS {
@@ -148,8 +150,8 @@ namespace Core {
 
 	};
 
-	_AnimationSys::_AnimationSys(/*Matrix_System *m,*/ AudioSys &a) {
-		audioSys		= &a;
+//	_AnimationSys::_AnimationSys(/*Matrix_System *m,*/ AudioSys &a) {
+	_AnimationSys::_AnimationSys() {
 		uiRecordSize	= 32;
 		sFilename		= "animations.bin";
 		sDir			= "./system/";
@@ -265,7 +267,8 @@ namespace Core {
 	class t_AnimationInstance {
 		public:
 			//t_VectorMap<T*> list;
-			t_UMap<T*> list;
+			t_UMap<std::string, T*> list;
+			t_SoundInstance audio;
 
 			/*
 			 * size/x,y...........Specifies the size of the animation
@@ -307,7 +310,7 @@ namespace Core {
 
 	template <typename T> T& t_AnimationInstance<T>::add(std::string name, std::string sAnimation, float x, float y, int loop, uint rate, int iSample) {
 		T *type = new T;
-		type->id				= animation[sAnimation].id;							// Store the id of the global animation
+		type->id				= animationSys[sAnimation].id;							// Store the id of the global animation
 		type->bActive			= false;											// Flag the animation as inactive, use start() to enable
 		type->rate				= rate;												// Update the requested rate
 		type->ticks				= 0;
@@ -318,13 +321,15 @@ namespace Core {
 		type->size.x			= x;
 		type->size.y			= y;
 		list.add(name, type);
+		audio.add(name, iSample, 0, true, -1);
+
 		return *list[name];
 	}
 
 	template <typename T> void t_AnimationInstance<T>::start(std::string name) {
 		if(!list[name]->bActive || list[name]->bIsPaused) {
 			list[name]->bActive			= true;
-			list[name]->ticks			= animation.timer.get_ticks();
+			list[name]->ticks			= animationSys.timer.get_ticks();
 			if(!list[name]->bIsPaused) {
 				list[name]->bSamplePlayed	= false;
 				list[name]->currentFrame	= 0;
@@ -360,12 +365,12 @@ namespace Core {
 
 	template <typename T> void t_AnimationInstance<T>::update(std::string name) {
 		if(list[name]->bActive) {
-			if(animation.timer.get_ticks()>=(list[name]->ticks+list[name]->rate)) {
+			if(animationSys.timer.get_ticks()>=(list[name]->ticks+list[name]->rate)) {
 				++list[name]->currentFrame;
-				list[name]->ticks		= animation.timer.get_ticks();
+				list[name]->ticks		= animationSys.timer.get_ticks();
 			}
 
-			if(list[name]->currentFrame >= animation[list[name]->id].frames) {
+			if(list[name]->currentFrame >= animationSys[list[name]->id].frames) {
 				if(list[name]->loop == -1) list[name]->currentFrame=0;
 				else {
 					--list[name]->currentLoop;
@@ -392,7 +397,9 @@ namespace Core {
 
 			if( (!list[name]->bSamplePlayed) && (list[name]->iSample>=0) && (list[name]->currentFrame==0) ) {
 				list[name]->bSamplePlayed = true;
-				audioSys->playSound(list[name]->iSample);
+				//audioSys->playSound(list[name]->iSample);
+				// TODO: audio.play("temp");
+				audio.play(name);
 			}
 
 			glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
@@ -406,8 +413,8 @@ namespace Core {
 				matrix->SetTransform();
 				shader->getUniform(GLS_FONT);
 
-				animation[list[name]->id].texture.Set(animation[list[name]->id].image);
-				animation[list[name]->id].vao[list[name]->currentFrame].Draw();
+				animationSys[list[name]->id].texture.Set(animationSys[list[name]->id].image);
+				animationSys[list[name]->id].vao[list[name]->currentFrame].Draw();
 			matrix->Pop();
 
 			matrix->SetProjection(matrix->MM_PERSPECTIVE);
@@ -422,7 +429,9 @@ namespace Core {
 
 			if( (!list[name]->bSamplePlayed) && (list[name]->iSample>=0) && (list[name]->currentFrame==0) ) {
 				list[name]->bSamplePlayed = true;
-				audioSys->playSound(list[name]->iSample);
+//				audioSys->playSound(list[name]->iSample);
+				// TODO: audio.play("temp");
+				audio.play(name);
 			}
 
 			glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
@@ -445,8 +454,8 @@ namespace Core {
 				matrix->SetTransform();
 				shader->getUniform(GLS_FONT);
 
-				animation[list[name]->id].texture.Set(animation[list[name]->id].image);
-				animation[list[name]->id].vao[list[name]->currentFrame].Draw();
+				animationSys[list[name]->id].texture.Set(animationSys[list[name]->id].image);
+				animationSys[list[name]->id].vao[list[name]->currentFrame].Draw();
 			matrix->Pop();
 
 			matrix->SetProjection(matrix->MM_PERSPECTIVE);
@@ -505,8 +514,8 @@ namespace Core {
 					shader->getUniform(GLS_FONT);
 
 					//texture.Set(animation[iA].image);
-					animation[list[name]->id].texture.Set(animation[list[name]->id].image);
-					animation[list[name]->id].vao[list[name]->currentFrame].Draw();
+					animationSys[list[name]->id].texture.Set(animationSys[list[name]->id].image);
+					animationSys[list[name]->id].vao[list[name]->currentFrame].Draw();
 				matrix->Pop();
 			matrix->Pop();
 

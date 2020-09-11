@@ -676,7 +676,7 @@
 		PostProcess			*	postProcess	= new PostProcess();
 		_Collision			*	collision	= new _Collision();
 		_Helper				*	helper		= new _Helper();
-		AudioSys			*	audioSys	= new AudioSys();
+		AudioSys			audioSys;//	= new AudioSys();
 		_Joint				*	skeleton	= new _Joint();			// TODO: Test instance, remove
 		_Profile			*   profiles	= new _Profile();
 		_FrameRate			*	framerate	= new _FrameRate();
@@ -688,7 +688,8 @@
 //		SimplexNoise		*	snoise		= new SimplexNoise();
 //		Stipple				*	stipple		= new Stipple();
 		Stipple				stipple			= Stipple();
-		_AnimationSys		animation		= _AnimationSys(*audioSys);
+//		_AnimationSys		animationSys	= _AnimationSys(*audioSys);
+		_AnimationSys		animationSys	= _AnimationSys();
 
 		GameVars			*	gameVars	= new GameVars();
 
@@ -807,8 +808,8 @@
 			matrix->SetProjection(matrix->MM_PERSPECTIVE);
 			//matrix->SetProjection(matrix->MM_ORTHO);
 
-			audioSys->init();
-			audioSys->load();
+			audioSys.init();
+			audioSys.load();
 
 			textSys->init();
 			textSys->load();
@@ -826,9 +827,9 @@
 			spriteSys->load();
 			spriteSys->calc();
 
-			animation.init();
-			animation.load();
-			animation.calc();
+			animationSys.init();
+			animationSys.load();
+			animationSys.calc();
 
 			glClearColor(	Core::gameVars->screen.vClearColorCurrent[0],
 							Core::gameVars->screen.vClearColorCurrent[1],
@@ -865,7 +866,7 @@
 			delete framerate;//		= new _FrameRate();
 			delete profiles;//		= new _Profile();
 			delete skeleton;//		= new _Joint();			// TODO: Test instance, remove
-			delete audioSys;//		= new AudioSys();
+//			delete audioSys;//		= new AudioSys();
 			delete helper;//		= new _Helper();
 			delete collision;//		= new _Collision();
 			delete postProcess;//	= new PostProcess();
