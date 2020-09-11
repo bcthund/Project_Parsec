@@ -332,8 +332,7 @@ namespace Core {
 				}
 				else con->exec();
 
-				// FIXME: Create SOUNDS enumeration
-				initSound(-1, 7, 8, -1, 0, false, true);
+				initSound(audio().CHANNEL_GUI_SLIDER, 7, 8, -1, 0, true, true);
 
 				update();
 				setValue(*this->valuePtr);
@@ -548,6 +547,7 @@ namespace Core {
 							this->bFocusPresent = true;
 							this->sActiveObject = this->id;
 							this->eObjectState = STATE_ACTIVE;
+							Sound_StopOff();
 							Sound_PlayOn();
 						}
 						else if(bHasFocus && (this->eObjectState&STATE_ACTIVE) && Core::mouse->checkState()!=Core::_Mouse::MOUSE_LEFT_DOWN) {
@@ -555,6 +555,7 @@ namespace Core {
 							this->bFocusPresent = false;
 							if(this->sActiveObject == this->id) this->sActiveObject = "";
 							this->eObjectState = STATE_NONE;
+							Sound_StopOn();
 							Sound_PlayOff();
 						}
 						else if(!bHasFocus && !(this->eObjectState&STATE_ACTIVE) && (this->mState&Core::_Mouse::MOUSE_HOVER)) {

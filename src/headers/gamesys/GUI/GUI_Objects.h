@@ -505,6 +505,8 @@ namespace Core {
 						void initSound(int iChannel, int iSampleOn, int iSampleOff, int iLoopOn, int iLoopOff, bool bOverlapOn, bool bOverlapOff);
 						void Sound_PlayOn();
 						void Sound_AbortState();
+						void Sound_StopOn();
+						void Sound_StopOff();
 						void Sound_PlayOff();
 						void Sound_PlayAuto(iState eState, bool bRepeat=false);
 						AudioFeedback() {
@@ -528,6 +530,14 @@ namespace Core {
 
 				void AudioFeedback::Sound_AbortState() {
 					bOneShotOn = false;
+				}
+
+				void AudioFeedback::Sound_StopOn() {
+					audio.stop("SampleOn");
+				}
+
+				void AudioFeedback::Sound_StopOff() {
+					audio.stop("SampleOff");
 				}
 
 				void AudioFeedback::Sound_PlayOff() {

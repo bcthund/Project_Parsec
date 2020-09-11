@@ -21,7 +21,8 @@ namespace Core {
 		sMusicDir		= "./audio/music/";
 		iInit = INIT_NONE;
 		iDecoders = 0;
-		iChannels = 0;
+		iChannels = 128;			///< Allocate 128 channels total
+		iReservedChannels = 32;		///< Reserve first 32 channels (0-31)
 //		Mix_SetPostMix(setBeat, NULL);
 	}
 
@@ -34,41 +35,43 @@ namespace Core {
 		Core::debug.logIncreaseIndent();
 
 		bool bFail = false;
+		iInit = 0;
 
 		if(Mix_Init(MIX_INIT_OGG) != MIX_INIT_OGG) {
-			Core::debug.log("Mix_Init: error\n");
+			Core::debug.log("Mix_Init: error\n", Core::debug().RED);
 			bFail = true;
 		}
 		else {
-			Core::debug.log("Mix_Init: success\n");
-			iInit=iInit&INIT_MIX_INIT;
+			Core::debug.log("Mix_Init: success\n", Core::debug().YELLOW);
+			iInit |= INIT_MIX_INIT;
 		}
 
 		if(SDL_Init(SDL_INIT_AUDIO)==-1) {
-			Core::debug.log("SDL_Init: error\n");
+			Core::debug.log("SDL_Init: error\n", Core::debug().RED);
 			bFail = true;
 		}
 		else {
-			Core::debug.log("Sdl_Init: success\n");
-			iInit=iInit&INIT_SDL_INIT_AUDIO;
+			Core::debug.log("Sdl_Init: success\n", Core::debug().YELLOW);
+			iInit |= INIT_SDL_INIT_AUDIO;
 		}
 
 		if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 4096)==-1) {
-			Core::debug.log("Mix_OpenAudio: error\n");
+			Core::debug.log("Mix_OpenAudio: error\n", Core::debug().RED);
 			bFail = true;
 		}
 		else {
-			Core::debug.log("Mix_OpenAudio: success\n");
-			iInit=iInit&INIT_MIX_OPENAUDIO;
+			Core::debug.log("Mix_OpenAudio: success\n", Core::debug().YELLOW);
+			iInit |= INIT_MIX_OPENAUDIO;
 		}
 
 		iDecoders = Mix_GetNumMusicDecoders();
-		Core::debug.log("Decoders: "+std::to_string(iDecoders)+"\n");
+		Core::debug.log("Decoders: "+std::to_string(iDecoders)+"\n", Core::debug().YELLOW);
 
-		// FIXME: Add an enumeration for channels (0=Animations, 1=GUI_Buttons, 2=GUI_Sliders, etc)
-		iChannels = 64;
 		Mix_AllocateChannels(iChannels);
-		Core::debug.log("Allocated channels: "+std::to_string(iChannels)+"\n");
+		Core::debug.log("Allocated channels: "+std::to_string(iChannels)+"\n", Core::debug().YELLOW);
+
+		Mix_ReserveChannels(iReservedChannels);
+		Core::debug.log("Reserved Channels: "+std::to_string(iReservedChannels)+"\n", Core::debug().YELLOW);
 
 		Core::debug.logDecreaseIndent();
 		Core::debug.print("}\n");
