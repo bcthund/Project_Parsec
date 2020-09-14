@@ -20,7 +20,7 @@ class _Game {
 		Core::_Keyboard keyboard;
 		//Core::GameSys::_O2D * o2d;
 		//Core::GameSys::_O3D * o3d;
-		Core::GameSys::_WorldMap	* world;
+//		Core::GameSys::_WorldMap	* world;
 //		Core::GameSys::AnimationSys * animation;
 		Core::t_AnimationInstance<Core::t_AnimationItem3D>	animation2;
 		//Core::GameSys::Atmosphere atmosphere;
@@ -93,7 +93,7 @@ class _Game {
 			keyboard.calc(SDLK_HOME, Core::_Keyboard::KEYTYPE_REPEAT);
 			keyboard.calc(SDLK_END, Core::_Keyboard::KEYTYPE_REPEAT);
 
-			world	= new Core::GameSys::_WorldMap(/*Core::matrix, *Core::shader,*/ *Core::collision, *Core::helper);
+//			world	= new Core::GameSys::_WorldMap(/*Core::matrix, *Core::shader,*/ *Core::collision, *Core::helper);
 
 			iDebugLight = 0;
 			iDebugObject = 3;
@@ -102,7 +102,7 @@ class _Game {
 
 		~_Game() {
 			//delete o2d;
-			delete world;
+//			delete world;
 			//delete o3d;
 //			delete animation;
 		}
@@ -117,8 +117,8 @@ bool _Game::load() {
 	//o3d->init();
 	//o3d->load();
 	//o3d->calc();
-	world->load();
-	world->calc();
+//	world->load();
+//	world->calc();
 
 	Core::mouse->init(0, Core::gameVars->player.active->transform.pos);
 	Core::mouse->init(1, Core::gameVars->player.active->transform.pos);
@@ -145,8 +145,8 @@ bool _Game::load() {
 	// Translate sphere to first light position
 	// TODO: Fix light translation
 	//			- Need to add access functions
-	Core::Vector3f vTemp = world->lights->GetPos(iDebugLight);
-	world->o3d->data.items[iDebugObject].posMod = vTemp;
+//	Core::Vector3f vTemp = world->lights->GetPos(iDebugLight);
+//	world->o3d->data.items[iDebugObject].posMod = vTemp;
 
 //	{
 //		// FIXME: This pointer is not deleted anywhere, does it hav eto be a pointer?
@@ -399,7 +399,7 @@ void _Game::Update() {
 	// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 	glEnable(GL_DEPTH_TEST);
 	Core::profiles->runProfile(Core::profiles->builtIn.RunGame_DrawWorld, true);
-	world->draw();
+//	world->draw();
 	Core::profiles->runProfile(Core::profiles->builtIn.RunGame_DrawWorld, false);
 
 	// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -468,9 +468,9 @@ void _Game::Update() {
 
 	//Core::Vector3f vTemp = world->lights->GetPos(iDebugLight);
 
-	animation2["World Animation Test"].setCameraTarget(&Core::gameVars->player.active->transform.pos, world->lights->GetPosPtr(iDebugLight));
-	animation2.update("World Animation Test");
-	animation2.draw("World Animation Test");
+//	animation2["World Animation Test"].setCameraTarget(&Core::gameVars->player.active->transform.pos, world->lights->GetPosPtr(iDebugLight));
+//	animation2.update("World Animation Test");
+//	animation2.draw("World Animation Test");
 	Core::profiles->runProfile(Core::profiles->builtIn.RunGame_Animation, false);
 
 
@@ -483,7 +483,8 @@ void _Game::Update() {
 	GLuint ppWorld = Core::postProcess->EndRenderLayer();
 //	Core::postProcess->RenderToScreen();
 //	GLuint ppWorld = Core::postProcess->ApplyBrightness(Core::Vector3f(2.0, 2.0, 2.0));
-	GLuint ppWashout = Core::postProcess->ApplyBrightness(world->atmosphere->satellite->getAlpha("Sun")/2.0f);		// TODO: [PP] Add a Screen Post Processing Effect
+//	GLuint ppWashout = Core::postProcess->ApplyBrightness(world->atmosphere->satellite->getAlpha("Sun")/2.0f);		// TODO: [PP] Add a Screen Post Processing Effect
+	GLuint ppWashout = Core::postProcess->ApplyBrightness(1.0f);
 
 	GLuint ppContrast = Core::postProcess->ApplyContrast(2.0f);
 	//GLuint ppBrightness = Core::postProcess->ApplyBrightness(Core::Vector3f(2.0, 2.0, 2.0));
@@ -501,12 +502,12 @@ void _Game::Update() {
 	Core::postProcess->RenderLayer("Layer1");
 	glClearColor(0,0,0,1);
 	glClear( Core::gameVars->screen.clear );
-	Core::colors.PushFront(Core::Color(1.0f, 1.0f, 1.0f, world->atmosphere->satellite->getAlpha("Sun")*1.5 ));
+//	Core::colors.PushFront(Core::Color(1.0f, 1.0f, 1.0f, world->atmosphere->satellite->getAlpha("Sun")*1.5 ));
 	Core::colors.SetActive(Core::colors.COLOR_FRONT);
-	world->atmosphere->draw(world->atmosphere->MODE_SATELLITE, "Moon");
-	world->atmosphere->draw(world->atmosphere->MODE_SATELLITE, "Sun");
+//	world->atmosphere->draw(world->atmosphere->MODE_SATELLITE, "Moon");
+//	world->atmosphere->draw(world->atmosphere->MODE_SATELLITE, "Sun");
 	Core::colors.PopFront();
-	world->atmosphere->draw(world->atmosphere->MODE_FLARES, "Sun");
+//	world->atmosphere->draw(world->atmosphere->MODE_FLARES, "Sun");
 
 	GLuint ppRadialPrep = Core::postProcess->EndRenderLayer();
 	GLuint ppRadial = Core::postProcess->ApplyRadialBlur(ppRadialPrep);
@@ -604,7 +605,7 @@ void _Game::Update() {
 	 * 		- pTimer
 	 */
 	Core::profiles->runProfile(Core::profiles->builtIn.RunGame_TextSys, true);
-	int iResult = (int)Core::occlusion->ReadResultui("Sun");
+//	int iResult = (int)Core::occlusion->ReadResultui("Sun");
 
 
 	/*
@@ -647,10 +648,10 @@ void _Game::Update() {
 	Core::textSys->drawVar2<float>(1,  -9, "X: ", Core::gameVars->player.active->transform.pos.x, 3, Core::GUI::CONSTRAIN_LEFT);
 	Core::textSys->drawVar2<float>(1,  -10, "Y: ", Core::gameVars->player.active->transform.pos.y, 3, Core::GUI::CONSTRAIN_LEFT);
 	Core::textSys->drawVar2<float>(1,  -11, "Z: ", Core::gameVars->player.active->transform.pos.z, 3, Core::GUI::CONSTRAIN_LEFT);
-	Core::textSys->drawVar2<int>(1,    -12, "iResult: ", iResult, 3, Core::GUI::CONSTRAIN_LEFT);
-	float fResult = Core::occlusion->GetRatio("Sun");
+//	Core::textSys->drawVar2<int>(1,    -12, "iResult: ", iResult, 3, Core::GUI::CONSTRAIN_LEFT);
+//	float fResult = Core::occlusion->GetRatio("Sun");
 
-	Core::textSys->drawVar2<float>(1,  -13, "fResult: ", fResult, 3, Core::GUI::CONSTRAIN_LEFT);
+//	Core::textSys->drawVar2<float>(1,  -13, "fResult: ", fResult, 3, Core::GUI::CONSTRAIN_LEFT);
 	Core::textSys->drawVar2<float>(1,  -14, "Light: ", iDebugLight, 3, Core::GUI::CONSTRAIN_LEFT);
 
 	Core::textSys->drawVar2<float>(1,  -16, "mouseRay: ", Core::mouse->rays[0].dir.x, 3, Core::GUI::CONSTRAIN_LEFT);
@@ -1194,24 +1195,24 @@ void _Game::ProcessInput() {
 //		std::cout << vTemp.x << ", " << vTemp.y << ", " << vTemp.z << std::endl;
 	}
 
-	if (keyboard.keys[SDLK_F4].bActive) {
-		if(keyboard.keys[SDLK_LCTRL].bActive) {
-			iDebugObject+=1;
-			if(iDebugObject>world->o3d->data.idcount) {
-				iDebugObject = 0;
-			}
-			Core::Vector3f vTemp = world->lights->GetPos(iDebugLight);
-			world->o3d->data.items[iDebugObject].posMod = vTemp;
-		}
-		else {
-			iDebugLight+=1;
-			if(iDebugLight>=world->lights->GetNumLights()) {
-				iDebugLight = 0;
-			}
-			Core::Vector3f vTemp = world->lights->GetPos(iDebugLight);
-			world->o3d->data.items[iDebugObject].posMod = vTemp;
-		}
-	}
+//	if (keyboard.keys[SDLK_F4].bActive) {
+//		if(keyboard.keys[SDLK_LCTRL].bActive) {
+//			iDebugObject+=1;
+//			if(iDebugObject>world->o3d->data.idcount) {
+//				iDebugObject = 0;
+//			}
+//			Core::Vector3f vTemp = world->lights->GetPos(iDebugLight);
+//			world->o3d->data.items[iDebugObject].posMod = vTemp;
+//		}
+//		else {
+//			iDebugLight+=1;
+//			if(iDebugLight>=world->lights->GetNumLights()) {
+//				iDebugLight = 0;
+//			}
+//			Core::Vector3f vTemp = world->lights->GetPos(iDebugLight);
+//			world->o3d->data.items[iDebugObject].posMod = vTemp;
+//		}
+//	}
 
 //	if (keyboard.keys[SDLK_F5].bActive)		{	Core::gameVars->screen.iPolygonMode = GL_FILL;	}
 //	if (keyboard.keys[SDLK_F6].bActive)		{	Core::gameVars->screen.iPolygonMode = GL_LINE;	}
@@ -1264,69 +1265,69 @@ void _Game::ProcessInput() {
 		// TODO: Fix Light Control
 		// ===================
 		// Light control
-		if (iDebugLight != iPlayerLight) {
-			if (keyboard.keys[SDLK_UP].bActive) {
-				Core::Vector3f vTemp = world->lights->GetPos(iDebugLight);
-				vTemp.y += fMoveModSpeed;
-				world->lights->SetPos(iDebugLight, vTemp);
-				world->o3d->data.items[iDebugObject].posMod = vTemp;
-				//std::cout << vTemp.x << ", " << vTemp.y << ", " << vTemp.z << std::endl;
-			}
-
-			if (keyboard.keys[SDLK_DOWN].bActive) {
-				Core::Vector3f vTemp = world->lights->GetPos(iDebugLight);
-				vTemp.y -= fMoveModSpeed;
-				world->lights->SetPos(iDebugLight, vTemp);
-				world->o3d->data.items[iDebugObject].posMod = vTemp;
-				//std::cout << vTemp.x << ", " << vTemp.y << ", " << vTemp.z << std::endl;
-			}
-
-			if (keyboard.keys[SDLK_LEFT].bActive) {
-				/*
-				 * TODO: Add in rotation debugging
-				 *
-				 * If this is done right the lights may be able to be saved
-				 * to the map file. Game editing from within the game could
-				 * be a huge bonus rather than rewriting a separate
-				 * renderer.
-				 */
-
-				//if(keyboard.keys[SDLK_LCTRL]) {
-				//	Core::Vector3f vTemp = world->lights->GetDir(iDebugLight);
-				//}
-				//else {
-					Core::Vector3f vTemp = world->lights->GetPos(iDebugLight);
-					vTemp.x -= fMoveModSpeed;
-					world->lights->SetPos(iDebugLight, vTemp);
-					world->o3d->data.items[iDebugObject].posMod = vTemp;
-					//std::cout << vTemp.x << ", " << vTemp.y << ", " << vTemp.z << std::endl;
-				//}
-			}
-
-			if (keyboard.keys[SDLK_RIGHT].bActive) {
-				Core::Vector3f vTemp = world->lights->GetPos(iDebugLight);
-				vTemp.x += fMoveModSpeed;
-				world->lights->SetPos(iDebugLight, vTemp);
-				world->o3d->data.items[iDebugObject].posMod = vTemp;
-				//std::cout << vTemp.x << ", " << vTemp.y << ", " << vTemp.z << std::endl;
-			}
-
-			if (keyboard.keys[SDLK_END].bActive) {
-				Core::Vector3f vTemp = world->lights->GetPos(iDebugLight);
-				vTemp.z += fMoveModSpeed;
-				world->lights->SetPos(iDebugLight, vTemp);
-				world->o3d->data.items[iDebugObject].posMod = vTemp;
-				//std::cout << vTemp.x << ", " << vTemp.y << ", " << vTemp.z << std::endl;
-			}
-
-			if (keyboard.keys[SDLK_HOME].bActive) {
-				Core::Vector3f vTemp = world->lights->GetPos(iDebugLight);
-				vTemp.z -= fMoveModSpeed;
-				world->lights->SetPos(iDebugLight, vTemp);
-				world->o3d->data.items[iDebugObject].posMod = vTemp;
-				//std::cout << vTemp.x << ", " << vTemp.y << ", " << vTemp.z << std::endl;
-			}
-		}
+//		if (iDebugLight != iPlayerLight) {
+//			if (keyboard.keys[SDLK_UP].bActive) {
+//				Core::Vector3f vTemp = world->lights->GetPos(iDebugLight);
+//				vTemp.y += fMoveModSpeed;
+//				world->lights->SetPos(iDebugLight, vTemp);
+//				world->o3d->data.items[iDebugObject].posMod = vTemp;
+//				//std::cout << vTemp.x << ", " << vTemp.y << ", " << vTemp.z << std::endl;
+//			}
+//
+//			if (keyboard.keys[SDLK_DOWN].bActive) {
+//				Core::Vector3f vTemp = world->lights->GetPos(iDebugLight);
+//				vTemp.y -= fMoveModSpeed;
+//				world->lights->SetPos(iDebugLight, vTemp);
+//				world->o3d->data.items[iDebugObject].posMod = vTemp;
+//				//std::cout << vTemp.x << ", " << vTemp.y << ", " << vTemp.z << std::endl;
+//			}
+//
+//			if (keyboard.keys[SDLK_LEFT].bActive) {
+//				/*
+//				 * TODO: Add in rotation debugging
+//				 *
+//				 * If this is done right the lights may be able to be saved
+//				 * to the map file. Game editing from within the game could
+//				 * be a huge bonus rather than rewriting a separate
+//				 * renderer.
+//				 */
+//
+//				//if(keyboard.keys[SDLK_LCTRL]) {
+//				//	Core::Vector3f vTemp = world->lights->GetDir(iDebugLight);
+//				//}
+//				//else {
+//					Core::Vector3f vTemp = world->lights->GetPos(iDebugLight);
+//					vTemp.x -= fMoveModSpeed;
+//					world->lights->SetPos(iDebugLight, vTemp);
+//					world->o3d->data.items[iDebugObject].posMod = vTemp;
+//					//std::cout << vTemp.x << ", " << vTemp.y << ", " << vTemp.z << std::endl;
+//				//}
+//			}
+//
+//			if (keyboard.keys[SDLK_RIGHT].bActive) {
+//				Core::Vector3f vTemp = world->lights->GetPos(iDebugLight);
+//				vTemp.x += fMoveModSpeed;
+//				world->lights->SetPos(iDebugLight, vTemp);
+//				world->o3d->data.items[iDebugObject].posMod = vTemp;
+//				//std::cout << vTemp.x << ", " << vTemp.y << ", " << vTemp.z << std::endl;
+//			}
+//
+//			if (keyboard.keys[SDLK_END].bActive) {
+//				Core::Vector3f vTemp = world->lights->GetPos(iDebugLight);
+//				vTemp.z += fMoveModSpeed;
+//				world->lights->SetPos(iDebugLight, vTemp);
+//				world->o3d->data.items[iDebugObject].posMod = vTemp;
+//				//std::cout << vTemp.x << ", " << vTemp.y << ", " << vTemp.z << std::endl;
+//			}
+//
+//			if (keyboard.keys[SDLK_HOME].bActive) {
+//				Core::Vector3f vTemp = world->lights->GetPos(iDebugLight);
+//				vTemp.z -= fMoveModSpeed;
+//				world->lights->SetPos(iDebugLight, vTemp);
+//				world->o3d->data.items[iDebugObject].posMod = vTemp;
+//				//std::cout << vTemp.x << ", " << vTemp.y << ", " << vTemp.z << std::endl;
+//			}
+//		}
 
 		// ===================
 		// Player Control

@@ -785,29 +785,29 @@ void _Admin::init() {
 		con.setStep(1.0f, 10.0f, 100.0f);
 		con.setY(300);
 		con.setMinMax(-1000.0f, 1000.0f);
-		Core::gui["GameMenu"]["Window 1"].Slider.add("Light Pos X", &game->world->lights->GetPos(game->iDebugLight).x, con);
+//		Core::gui["GameMenu"]["Window 1"].Slider.add("Light Pos X", &game->world->lights->GetPos(game->iDebugLight).x, con);
 
 		con.setY(275);
 		con.setMinMax(-1000.0f, 1000.0f);
-		Core::gui["GameMenu"]["Window 1"].Slider.add("Light Pos Y", &game->world->lights->GetPos(game->iDebugLight).y, con);
+//		Core::gui["GameMenu"]["Window 1"].Slider.add("Light Pos Y", &game->world->lights->GetPos(game->iDebugLight).y, con);
 
 		con.setY(250);
 		con.setMinMax(-1000.0f, 1000.0f);
-		Core::gui["GameMenu"]["Window 1"].Slider.add("Light Pos Z", &game->world->lights->GetPos(game->iDebugLight).z, con);
+//		Core::gui["GameMenu"]["Window 1"].Slider.add("Light Pos Z", &game->world->lights->GetPos(game->iDebugLight).z, con);
 
 		// Direction
 		con.setStep(0.01f, 0.1f, 1.0f);
 		con.setY(200);
 		con.setMinMax(-1.0f, 1.0f);
-		Core::gui["GameMenu"]["Window 1"].Slider.add("Light Dir X", &game->world->lights->GetDir(game->iDebugLight).x, con);
+//		Core::gui["GameMenu"]["Window 1"].Slider.add("Light Dir X", &game->world->lights->GetDir(game->iDebugLight).x, con);
 
 		con.setY(175);
 		con.setMinMax(-1.0f, 1.0f);
-		Core::gui["GameMenu"]["Window 1"].Slider.add("Light Dir Y", &game->world->lights->GetDir(game->iDebugLight).y, con);
+//		Core::gui["GameMenu"]["Window 1"].Slider.add("Light Dir Y", &game->world->lights->GetDir(game->iDebugLight).y, con);
 
 		con.setY(150);
 		con.setMinMax(-1.0f, 1.0f);
-		Core::gui["GameMenu"]["Window 1"].Slider.add("Light Dir Z", &game->world->lights->GetDir(game->iDebugLight).z, con);
+//		Core::gui["GameMenu"]["Window 1"].Slider.add("Light Dir Z", &game->world->lights->GetDir(game->iDebugLight).z, con);
 
 		bOneShot[30] = true;
 	}
@@ -831,14 +831,14 @@ void _Admin::init() {
 		con.label.setAnchor(Core::GUI::CONSTRAIN_BOTTOM);
 		con.field.setOrigin(Core::GUI::CONSTRAIN_BOTTOM);
 		con.field.setAnchor(Core::GUI::CONSTRAIN_TOP);
-		Core::gui["GameMenu"]["Window 5"].Slider.add("X - Horizontal T", &game->world->lights->GetPos(game->iDebugLight).x, con);
+//		Core::gui["GameMenu"]["Window 5"].Slider.add("X - Horizontal T", &game->world->lights->GetPos(game->iDebugLight).x, con);
 
 		con.setPos(0, -120);
 		con.label.setOrigin(Core::GUI::CONSTRAIN_LEFT);
 		con.label.setAnchor(Core::GUI::CONSTRAIN_RIGHT);
 		con.field.setOrigin(Core::GUI::CONSTRAIN_RIGHT);
 		con.field.setAnchor(Core::GUI::CONSTRAIN_LEFT);
-		Core::gui["GameMenu"]["Window 5"].Slider.add("X - Horizontal M", &game->world->lights->GetPos(game->iDebugLight).x, con);
+//		Core::gui["GameMenu"]["Window 5"].Slider.add("X - Horizontal M", &game->world->lights->GetPos(game->iDebugLight).x, con);
 
 		con.setMinMax(1000.0f, -1000.0f);
 		con.setPos(0, -170);
@@ -846,7 +846,7 @@ void _Admin::init() {
 		con.label.setAnchor(Core::GUI::CONSTRAIN_TOP);
 		con.field.setOrigin(Core::GUI::CONSTRAIN_TOP);
 		con.field.setAnchor(Core::GUI::CONSTRAIN_BOTTOM);
-		Core::gui["GameMenu"]["Window 5"].Slider.add("X - Horizontal B", &game->world->lights->GetPos(game->iDebugLight).x, con);
+//		Core::gui["GameMenu"]["Window 5"].Slider.add("X - Horizontal B", &game->world->lights->GetPos(game->iDebugLight).x, con);
 
 		con.swapOrientation();
 
@@ -856,14 +856,14 @@ void _Admin::init() {
 		con.label.setAnchor(Core::GUI::CONSTRAIN_BOTTOM);
 		con.field.setOrigin(Core::GUI::CONSTRAIN_BOTTOM);
 		con.field.setAnchor(Core::GUI::CONSTRAIN_TOP);
-		Core::gui["GameMenu"]["Window 5"].Slider.add("X - Vertical T", &game->world->lights->GetPos(game->iDebugLight).x, con);
+//		Core::gui["GameMenu"]["Window 5"].Slider.add("X - Vertical T", &game->world->lights->GetPos(game->iDebugLight).x, con);
 
 		con.setPos(0, -350);
 		con.label.setOrigin(Core::GUI::CONSTRAIN_LEFT);
 		con.label.setAnchor(Core::GUI::CONSTRAIN_RIGHT);
 		con.field.setOrigin(Core::GUI::CONSTRAIN_RIGHT);
 		con.field.setAnchor(Core::GUI::CONSTRAIN_LEFT);
-		Core::gui["GameMenu"]["Window 5"].Slider.add("X - Vertical M", &game->world->lights->GetPos(game->iDebugLight).x, con);
+//		Core::gui["GameMenu"]["Window 5"].Slider.add("X - Vertical M", &game->world->lights->GetPos(game->iDebugLight).x, con);
 
 		con.setMinMax(1000.0f, -1000.0f);
 		con.setPos(180, -350);
@@ -871,7 +871,7 @@ void _Admin::init() {
 		con.label.setAnchor(Core::GUI::CONSTRAIN_TOP);
 		con.field.setOrigin(Core::GUI::CONSTRAIN_TOP);
 		con.field.setAnchor(Core::GUI::CONSTRAIN_BOTTOM);
-		Core::gui["GameMenu"]["Window 5"].Slider.add("X - Vertical B", &game->world->lights->GetPos(game->iDebugLight).x, con);
+//		Core::gui["GameMenu"]["Window 5"].Slider.add("X - Vertical B", &game->world->lights->GetPos(game->iDebugLight).x, con);
 
 		bOneShot[31] = true;
 	}
@@ -2343,21 +2343,21 @@ void _Admin::run() {
 		 * Change slider pointers for lighting
 		 */
 //		if(Core::gui["GameMenu"]["Window 5"].Slider["DebugLight"].state()==Core::_Mouse::MOUSE_LEFT_DOWN || Core::gui["GameMenu"]["Window 5"].Slider["DebugLight"].state()==Core::_Mouse::MOUSE_LEFT) {
-		if(Core::gui["GameMenu"]["Window 1"].Slider["DebugLight"].stateChanged()) {
-			Core::gui["GameMenu"]["Window 1"].Slider["Light Pos X"].setPointer(&game->world->lights->GetPos(game->iDebugLight).x);
-			Core::gui["GameMenu"]["Window 1"].Slider["Light Pos Y"].setPointer(&game->world->lights->GetPos(game->iDebugLight).y);
-			Core::gui["GameMenu"]["Window 1"].Slider["Light Pos Z"].setPointer(&game->world->lights->GetPos(game->iDebugLight).z);
-			Core::gui["GameMenu"]["Window 1"].Slider["Light Dir X"].setPointer(&game->world->lights->GetDir(game->iDebugLight).x);
-			Core::gui["GameMenu"]["Window 1"].Slider["Light Dir Y"].setPointer(&game->world->lights->GetDir(game->iDebugLight).y);
-			Core::gui["GameMenu"]["Window 1"].Slider["Light Dir Z"].setPointer(&game->world->lights->GetDir(game->iDebugLight).z);
-		}
-		game->world->o3d->data.items[game->iDebugObject].posMod = game->world->lights->GetPos(game->iDebugLight);
-		game->world->o3d->data.items[game->iDebugObject].rotMod = game->world->lights->GetDir(game->iDebugLight);
+//		if(Core::gui["GameMenu"]["Window 1"].Slider["DebugLight"].stateChanged()) {
+//			Core::gui["GameMenu"]["Window 1"].Slider["Light Pos X"].setPointer(&game->world->lights->GetPos(game->iDebugLight).x);
+//			Core::gui["GameMenu"]["Window 1"].Slider["Light Pos Y"].setPointer(&game->world->lights->GetPos(game->iDebugLight).y);
+//			Core::gui["GameMenu"]["Window 1"].Slider["Light Pos Z"].setPointer(&game->world->lights->GetPos(game->iDebugLight).z);
+//			Core::gui["GameMenu"]["Window 1"].Slider["Light Dir X"].setPointer(&game->world->lights->GetDir(game->iDebugLight).x);
+//			Core::gui["GameMenu"]["Window 1"].Slider["Light Dir Y"].setPointer(&game->world->lights->GetDir(game->iDebugLight).y);
+//			Core::gui["GameMenu"]["Window 1"].Slider["Light Dir Z"].setPointer(&game->world->lights->GetDir(game->iDebugLight).z);
+//		}
+//		game->world->o3d->data.items[game->iDebugObject].posMod = game->world->lights->GetPos(game->iDebugLight);
+//		game->world->o3d->data.items[game->iDebugObject].rotMod = game->world->lights->GetDir(game->iDebugLight);
 
 		// Update map noise
-		if(Core::gameVars->debug.gui.b1 || Core::gameVars->debug.gui.b2 || Core::gameVars->debug.gui.b3 || Core::gameVars->debug.gui.b4) {
-			game->world->map->update();
-		}
+//		if(Core::gameVars->debug.gui.b1 || Core::gameVars->debug.gui.b2 || Core::gameVars->debug.gui.b3 || Core::gameVars->debug.gui.b4) {
+//			game->world->map->update();
+//		}
 
 		Core::gameVars->font.update();	// FIXME: Make font standalone class and fix resize
 	////	Core::textSys->init();			// FIXME: Needs either a VAO update, or scaling based on font size
