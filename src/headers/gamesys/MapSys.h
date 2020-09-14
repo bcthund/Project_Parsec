@@ -605,7 +605,7 @@ namespace Core {
 
 
 
-
+		// TODO: Test Eclipse Branch 1
 		class t_MapInstance {
 			private:
 //				static MapSys mapSys;
