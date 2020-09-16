@@ -113,7 +113,7 @@ namespace Core {
 
 			// Reserved Channels map (name as used)
 			struct s_Channels {
-				const int	CHANNEL_NONE			= -1,
+				const int	CHANNEL_NONE			= -1,	///< Selects next available channel not on reserved list
 							CHANNEL_SYSTEM			= 0,
 							CHANNEL_GUI_ANIMATION	= 1,	///< Not currently used, multiple animations is possible so may not use
 							CHANNEL_GUI_BUTTON		= 2,
@@ -146,7 +146,79 @@ namespace Core {
 							CHANNEL_29				= 29,
 							CHANNEL_30				= 30,
 							CHANNEL_31				= 31;
-			} channels;
+			} CHANNEL;
+
+			// Default Audio Samples
+			struct s_Audio {
+				const int	AUDIO_0					= 0,
+							AUDIO_1					= 1,
+							AUDIO_2					= 2,
+							AUDIO_3					= 3,
+							AUDIO_4					= 4,
+							AUDIO_5					= 5,
+							AUDIO_6					= 6,
+							AUDIO_7					= 7,
+							AUDIO_8					= 8,
+							AUDIO_9					= 9,
+							AUDIO_10				= 10,
+							AUDIO_11				= 11,
+							AUDIO_12				= 12,
+							AUDIO_13				= 13,
+							AUDIO_14				= 14,
+							AUDIO_15				= 15,
+							AUDIO_16				= 16,
+							AUDIO_17				= 17,
+							AUDIO_18				= 18,
+							AUDIO_19				= 19,
+							AUDIO_20				= 20,
+							AUDIO_21				= 21,
+							AUDIO_22				= 22,
+							AUDIO_23				= 23,
+							AUDIO_24				= 24,
+							AUDIO_25				= 25,
+							AUDIO_26				= 26,
+							AUDIO_27				= 27,
+							AUDIO_28				= 28,
+							AUDIO_29				= 29,
+							AUDIO_30				= 30,
+							AUDIO_31				= 31;
+			} AUDIO;
+
+			// Default Music
+			struct s_Music {
+				const int	MUSIC_0					= 0,
+							MUSIC_1					= 1,
+							MUSIC_2					= 2,
+							MUSIC_3					= 3,
+							MUSIC_4					= 4,
+							MUSIC_5					= 5,
+							MUSIC_6					= 6,
+							MUSIC_7					= 7,
+							MUSIC_8					= 8,
+							MUSIC_9					= 9,
+							MUSIC_10				= 10,
+							MUSIC_11				= 11,
+							MUSIC_12				= 12,
+							MUSIC_13				= 13,
+							MUSIC_14				= 14,
+							MUSIC_15				= 15,
+							MUSIC_16				= 16,
+							MUSIC_17				= 17,
+							MUSIC_18				= 18,
+							MUSIC_19				= 19,
+							MUSIC_20				= 20,
+							MUSIC_21				= 21,
+							MUSIC_22				= 22,
+							MUSIC_23				= 23,
+							MUSIC_24				= 24,
+							MUSIC_25				= 25,
+							MUSIC_26				= 26,
+							MUSIC_27				= 27,
+							MUSIC_28				= 28,
+							MUSIC_29				= 29,
+							MUSIC_30				= 30,
+							MUSIC_31				= 31;
+			} MUSIC;
 
 			class SoundInterface {
 					friend class AudioSys;
@@ -225,8 +297,10 @@ namespace Core {
 			void pause(std::string name);
 			void stop(std::string name);
 
-			AudioSys::s_Channels & operator()()				{	return parent->channels;	}
-			t_SoundItem& operator[](std::string name)		{	return *audio[name];		}
+			AudioSys::s_Audio defaulAudio()					{	return parent->AUDIO;	}		///< Get default audio index
+			AudioSys::s_Music defaultMusic()				{	return parent->MUSIC;	}		///< Get default music index
+			AudioSys::s_Channels & operator()()				{	return parent->CHANNEL;	}		///< Get reserved channel number
+			t_SoundItem& operator[](std::string name)		{	return *audio[name];	}		///< Get a sound item by name
 
 			t_SoundInstance();
 			~t_SoundInstance();
