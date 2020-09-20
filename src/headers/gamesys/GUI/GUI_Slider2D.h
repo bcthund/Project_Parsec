@@ -412,7 +412,7 @@ namespace Core {
 				}
 				else con->exec();
 
-				initSound(audio.channel().CHANNEL_GUI_SLIDER, 7, 8, -1, 0, true, true);
+				initSound(audio.channel().CHANNEL_3_GUI_SLIDER, 7, 8, -1, 0, true, true);
 
 				update();
 				setX_Value(*this->xValuePtr);

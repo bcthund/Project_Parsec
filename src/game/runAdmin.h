@@ -224,9 +224,9 @@ void _Admin::init() {
 	Core::debug.logIncreaseIndent();
 
 	//audio.add("Sample Music", 0, -1)
-	audio.music.add("Sample Music 0", 0, -1, true, 0);
-	audio.music.add("Sample Music 1", 1, -1, true, 0);
-	audio.music.add("Sample Music 2", 2, -1, true, 0);
+	audio.music.add("Sample Music 0", audio.music().MUSIC_0_MainMenu, -1, true, 0);
+	audio.music.add("Sample Music 1", audio.music().MUSIC_11_BattleNormal, -1, true, 0);
+	audio.music.add("Sample Music 2", audio.music().MUSIC_25_ExploreGrassland, -1, true, 0);
 
 	if (!bOneShot[0]) {
 		Core::debug.log("[0] Master Container\n", Core::debug().YELLOW);
