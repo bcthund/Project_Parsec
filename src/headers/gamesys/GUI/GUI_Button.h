@@ -223,7 +223,7 @@ namespace Core {
 			void Button::init() {
 				this->id = IDs.create();
 
-				initSound(audio.channel().CHANNEL_2_GUI_BUTTON, 1, 2, 0, 0, true, true);
+				initSound(audio.channel().CHANNEL_2_GUI_BUTTON, audio().AUDIO_0_GUI_CLICK_ON, audio().AUDIO_1_GUI_CLICK_OFF, 0, 0, true, true);
 
 				if(bHasParent) {
 					con->scroll.bind(*parent);

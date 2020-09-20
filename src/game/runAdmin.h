@@ -2105,7 +2105,7 @@ void _Admin::init() {
 		prop.setAnimation("slash_00.png");
 		prop.setUpdateRate(100);
 		prop.setLoops(1);
-		prop.setSample(0);
+		prop.setSample(32);
 		prop.startAnimation(false);
 		prop.showBackground();
 		prop.showLabel();
