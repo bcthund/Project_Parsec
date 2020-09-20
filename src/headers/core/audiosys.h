@@ -186,38 +186,56 @@ namespace Core {
 
 			// Default Music
 			struct s_Music {
-				const int	MUSIC_0					= 0,
-							MUSIC_1					= 1,
-							MUSIC_2					= 2,
-							MUSIC_3					= 3,
-							MUSIC_4					= 4,
-							MUSIC_5					= 5,
-							MUSIC_6					= 6,
-							MUSIC_7					= 7,
-							MUSIC_8					= 8,
-							MUSIC_9					= 9,
-							MUSIC_10				= 10,
-							MUSIC_11				= 11,
-							MUSIC_12				= 12,
-							MUSIC_13				= 13,
-							MUSIC_14				= 14,
-							MUSIC_15				= 15,
-							MUSIC_16				= 16,
-							MUSIC_17				= 17,
-							MUSIC_18				= 18,
-							MUSIC_19				= 19,
-							MUSIC_20				= 20,
-							MUSIC_21				= 21,
-							MUSIC_22				= 22,
-							MUSIC_23				= 23,
-							MUSIC_24				= 24,
-							MUSIC_25				= 25,
-							MUSIC_26				= 26,
-							MUSIC_27				= 27,
-							MUSIC_28				= 28,
-							MUSIC_29				= 29,
-							MUSIC_30				= 30,
-							MUSIC_31				= 31;
+				const int	MUSIC_MainMenu				= 0,
+							MUSIC_1						= 1,
+							MUSIC_2						= 2,
+							MUSIC_3						= 3,
+							MUSIC_4						= 4,
+							MUSIC_5						= 5,
+							MUSIC_6						= 6,
+							MUSIC_7						= 7,
+							MUSIC_8						= 8,
+							MUSIC_9						= 9,
+							MUSIC_BattleLight			= 10,
+							MUSIC_BattleNormal			= 11,
+							MUSIC_BattleHeavy			= 12,
+							MUSIC_BattleBoss			= 13,
+							MUSIC_BattleSpecial			= 14,
+							MUSIC_BattleImpossible		= 15,
+							MUSIC_Battle_6				= 16,
+							MUSIC_Battle_7				= 17,
+							MUSIC_Battle_8				= 18,
+							MUSIC_Battle_9				= 19,
+							MUSIC_ExploreOcean			= 20,
+							MUSIC_ExploreWetland		= 21,
+							MUSIC_ExploreTemperateForest= 22,
+							MUSIC_ExploreTropicalForest	= 23,
+							MUSIC_ExploreMountain		= 24,
+							MUSIC_ExploreGrassland		= 25,
+							MUSIC_ExploreDesert			= 26,
+							MUSIC_ExplorePolar			= 27,
+							MUSIC_Explore_8				= 28,
+							MUSIC_Explore_9				= 29,
+							MUSIC_30					= 30,
+							MUSIC_31					= 31,
+							MUSIC_32					= 32,
+							MUSIC_33					= 33,
+							MUSIC_34					= 34,
+							MUSIC_35					= 35,
+							MUSIC_36					= 36,
+							MUSIC_37					= 37,
+							MUSIC_38					= 38,
+							MUSIC_39					= 39,
+							MUSIC_Dungeon_0				= 40,
+							MUSIC_Dungeon_1				= 41,
+							MUSIC_Dungeon_2				= 42,
+							MUSIC_Dungeon_3				= 43,
+							MUSIC_Dungeon_4				= 44,
+							MUSIC_Dungeon_5				= 45,
+							MUSIC_Dungeon_6				= 46,
+							MUSIC_Dungeon_7				= 47,
+							MUSIC_Dungeon_8				= 48,
+							MUSIC_Dungeon_9				= 49;
 			} MUSIC;
 
 			class SoundInterface {
@@ -297,9 +315,9 @@ namespace Core {
 			void pause(std::string name);
 			void stop(std::string name);
 
-			AudioSys::s_Audio defaulAudio()					{	return parent->AUDIO;	}		///< Get default audio index
-			AudioSys::s_Music defaultMusic()				{	return parent->MUSIC;	}		///< Get default music index
-			AudioSys::s_Channels & operator()()				{	return parent->CHANNEL;	}		///< Get reserved channel number
+//			AudioSys::s_Audio defaultAudio()				{	return parent->AUDIO;	}		///< Get default audio index
+//			AudioSys::s_Channels & operator()()				{	return parent->CHANNEL;	}		///< Get reserved channel number
+			AudioSys::s_Channels & channel()				{	return parent->CHANNEL;	}		///< Get reserved channel number
 			t_SoundItem& operator[](std::string name)		{	return *audio[name];	}		///< Get a sound item by name
 
 			t_SoundInstance();
@@ -319,6 +337,7 @@ namespace Core {
 			void pause();
 			void stop();
 
+//			AudioSys::s_Music defaultMusic()				{	return parent->MUSIC;	}		///< Get default music index
 			t_MusicItem& operator[](std::string name)		{	return *audio[name];		}
 
 			t_MusicInstance();

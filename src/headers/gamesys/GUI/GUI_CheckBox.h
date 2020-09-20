@@ -220,7 +220,7 @@ namespace Core {
 				else con->exec();
 				update();
 
-				initSound(audio().CHANNEL_GUI_CHECK, 3, 4, 0, 0, true, true);
+				initSound(audio.channel().CHANNEL_GUI_CHECK, 3, 4, 0, 0, true, true);
 
 				// Create button window with contraints to parent if present
 				if (bHasParent) box = Object::Window(*parent, name, con);
