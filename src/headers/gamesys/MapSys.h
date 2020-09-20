@@ -87,7 +87,37 @@ namespace Core {
 
 			protected:
 
+
 			public:
+				struct _Simplex {
+					int res;
+					float tex_scale;
+					int terrain_size;
+					float terrain_height_offset;
+
+					Vector2f offset;
+					float frequency, amplitude, lacunarity, persistance;
+					int octaves;
+					float power;
+					float scale;
+					float delta;
+					_Simplex() {
+						res = 256;
+						tex_scale = 128.0f;
+						terrain_size = 16384;
+						terrain_height_offset = 0.0f;
+
+						delta		= 32.0f;
+						frequency	= 0.00025f; //0.0006; //0.000076; //0.00025f;
+						amplitude	= 1.0f;
+						lacunarity	= 2.9f; //6.553f; //6.004; //6.75325; //8.0f;
+						persistance	= 0.33f; //0.139f; //0.150; //0.175; //0.175f;
+						power		= 1.0f;
+						scale		= 875.0f; //500.0f; //275.0f; //1750; //2500;
+						octaves		= 3;
+					}
+				} simplex;
+
 				MapSys() {
 					Core::debug.log("Construct MapSys {");
 //					mapData = nullptr;
@@ -605,10 +635,12 @@ namespace Core {
 
 
 
-		// TODO: Test Eclipse Branch 2
+		/**
+		 * @brief Defines all the components in a single map Chunk
+		 *
+		 */
 		class t_MapInstance {
 			private:
-//				static MapSys mapSys;
 
 			public:
 				static MapSys mapSys;

@@ -56,6 +56,8 @@ class _Game {
 			// Moved to Below light initialization until lights are moved to world class
 			//world	= new Core::GameSys::_WorldMap(*Core::matrix, *Core::shader, );
 
+			world.init();
+
 			fTest_fScaleOld = Core::gameVars->screen.fScale;
 
 			bHasFocus = true;
@@ -120,6 +122,8 @@ bool _Game::load() {
 	//o3d->calc();
 //	world->load();
 //	world->calc();
+
+	world.load();
 
 	Core::mouse->init(0, Core::gameVars->player.active->transform.pos);
 	Core::mouse->init(1, Core::gameVars->player.active->transform.pos);
@@ -364,6 +368,9 @@ void _Game::Run() {
 //	Core::particles->update("Water");
 	Core::particles->update();		// Update all with emitter sorting
 
+	// TODO: update timer
+	world.update();
+
 	Update();
 }
 
@@ -400,7 +407,7 @@ void _Game::Update() {
 	// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 	glEnable(GL_DEPTH_TEST);
 	Core::profiles->runProfile(Core::profiles->builtIn.RunGame_DrawWorld, true);
-//	world->draw();
+	world.draw();
 	Core::profiles->runProfile(Core::profiles->builtIn.RunGame_DrawWorld, false);
 
 	// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -485,7 +492,7 @@ void _Game::Update() {
 //	Core::postProcess->RenderToScreen();
 //	GLuint ppWorld = Core::postProcess->ApplyBrightness(Core::Vector3f(2.0, 2.0, 2.0));
 //	GLuint ppWashout = Core::postProcess->ApplyBrightness(world->atmosphere->satellite->getAlpha("Sun")/2.0f);		// TODO: [PP] Add a Screen Post Processing Effect
-	GLuint ppWashout = Core::postProcess->ApplyBrightness(1.0f);
+	GLuint ppWashout = Core::postProcess->ApplyBrightness(0.0f);
 
 	GLuint ppContrast = Core::postProcess->ApplyContrast(2.0f);
 	//GLuint ppBrightness = Core::postProcess->ApplyBrightness(Core::Vector3f(2.0, 2.0, 2.0));
@@ -516,8 +523,9 @@ void _Game::Update() {
 	Core::glinit->RestoreClearColor();
 
 	Core::postProcess->RenderToScreen(ppScatter);
-	Core::postProcess->RenderToWindow(ppWorld, Core::Vector3f(-360, -200, 0), 0.25f);
-	Core::postProcess->RenderToWindow(ppRadial, Core::Vector3f( 360, -200, 0), 0.25f);
+//	Core::postProcess->RenderToScreen(ppWorld);
+//	Core::postProcess->RenderToWindow(ppWorld, Core::Vector3f(-360, -200, 0), 0.25f);
+//	Core::postProcess->RenderToWindow(ppRadial, Core::Vector3f( 360, -200, 0), 0.25f);
 
 //	Core::postProcess->RenderToScreen(ppWorld);
 //	Core::postProcess->RenderToWindow(ppRadialPrep, Core::Vector3f(-360, -200, 0), 0.25f);

@@ -48,35 +48,72 @@
 namespace Core {
 	namespace GameSys {
 
-
-		// Test 2
+		/**
+		 * @brief Contains the entire definition for the world inclusing atmosphere, lighting, and all map chunks
+		 */
 		class _World {
 			private:
 
 			public:
-				Atmosphere					* atmosphere;
-				_Lights						* lights;
+				int iViewDistance;
+				Atmosphere					atmosphere;
+				_Lights						lights;
 				t_VectorMap<t_MapInstance>	map;
-				_World() {}
-				~_World() {}
+				_World();
+				~_World();
 
-				void init();
-				void update();
-				void draw();
+				void init();			///< Initialize all members
+				void load();			///< Load initial terrain, O2D, and O3D
+				void update();			///< Update terrain, O2D and O3D according to chunk status (distance check)
+				void draw();			///< Draw all currently defined chunks
 		};
 
+		_World::_World() {
+			iViewDistance = 4096;
+
+			// TODO: Allow stting these values when _World defined (add constructor)
+			Core::GameSys::t_MapInstance::mapSys.simplex.res					= 256;
+			Core::GameSys::t_MapInstance::mapSys.simplex.tex_scale				= 128.0f;
+			Core::GameSys::t_MapInstance::mapSys.simplex.terrain_size			= 16384;
+			Core::GameSys::t_MapInstance::mapSys.simplex.terrain_height_offset	= 0.0f;
+			Core::GameSys::t_MapInstance::mapSys.simplex.delta					= 32.0f;
+			Core::GameSys::t_MapInstance::mapSys.simplex.frequency				= 0.00025f;
+			Core::GameSys::t_MapInstance::mapSys.simplex.amplitude				= 1.0f;
+			Core::GameSys::t_MapInstance::mapSys.simplex.lacunarity				= 2.9f;
+			Core::GameSys::t_MapInstance::mapSys.simplex.persistance			= 0.33f;
+			Core::GameSys::t_MapInstance::mapSys.simplex.power					= 1.0f;
+			Core::GameSys::t_MapInstance::mapSys.simplex.scale					= 875.0f;
+			Core::GameSys::t_MapInstance::mapSys.simplex.octaves				= 3;
+		}
+
+		_World::~_World() {
+		}
+
 		void _World::init() {
-			lights = new _Lights();
-			atmosphere = new Atmosphere();
+			atmosphere.init();
+			lights.init();
+		}
+
+		void _World::load() {
 			// TODO: Load initial maps out to distance
+
+			atmosphere.load();
+			atmosphere.calc();
+
+			lights.load();
+			lights.calc(Core::gameVars->screen.fScale);
 		}
 
 		void _World::update() {
-
+			atmosphere.update(atmosphere.MODE_SATELLITE);
+			atmosphere.update(atmosphere.MODE_FLORA);
 		}
 
 		void _World::draw() {
+			atmosphere.skybox.exosphere.draw();
 
+			// Reference
+			//map->draw(Core::GLS_PHONG, *lights);
 		}
 
 
