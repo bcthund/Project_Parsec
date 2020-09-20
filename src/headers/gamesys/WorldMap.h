@@ -57,8 +57,8 @@ namespace Core {
 				Atmosphere					* atmosphere;
 				_Lights						* lights;
 				t_VectorMap<t_MapInstance>	map;
-				_World();
-				~_World();
+				_World() {}
+				~_World() {}
 
 				void init();
 				void update();
