@@ -49,7 +49,7 @@ namespace Core {
 	namespace GameSys {
 
 
-		// Test 1
+		// Test 2
 		class _World {
 			private:
 
