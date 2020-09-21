@@ -55,31 +55,48 @@ namespace Core {
 				float tex_scale;
 				int terrain_size;
 				float terrain_height_offset;
-
-//				Vector2f offset;
-				float frequency, amplitude, lacunarity, persistance;
-				int octaves;
-				float power;
-				float scale;
 				float delta;
+
+				struct t_NoiseParams {
+					float frequency, amplitude, lacunarity, persistance;
+					int octaves;
+					float power;
+					float scale;
+
+					t_NoiseParams() {
+						frequency	= 0.00025f; //0.0006; //0.000076; //0.00025f;
+						amplitude	= 1.0f;
+						lacunarity	= 2.9f; //6.553f; //6.004; //6.75325; //8.0f;
+						persistance	= 0.33f; //0.139f; //0.150; //0.175; //0.175f;
+						power		= 1.0f;
+						scale		= 875.0f; //500.0f; //275.0f; //1750; //2500;
+						octaves		= 3;
+					}
+				};
+
+//				t_UMap<std::string, t_NoiseParams> params;
+				t_VectorMap<t_NoiseParams> params;
+
 				Simplex() {
 					bEnable		= true;
 
-					//res = 256;
+//					res = 256;
 					res = 32;
 					tex_scale = 128.0f;
 //					terrain_size = 16384;
-					terrain_size = 1024;
+					terrain_size = 8192;
 					terrain_height_offset = 0.0f;
 
 					delta		= 32.0f;
-					frequency	= 0.00025f; //0.0006; //0.000076; //0.00025f;
-					amplitude	= 1.0f;
-					lacunarity	= 2.9f; //6.553f; //6.004; //6.75325; //8.0f;
-					persistance	= 0.33f; //0.139f; //0.150; //0.175; //0.175f;
-					power		= 1.0f;
-					scale		= 875.0f; //500.0f; //275.0f; //1750; //2500;
-					octaves		= 3;
+
+					//params.add(t_NoiseParams());
+//					frequency	= 0.00025f; //0.0006; //0.000076; //0.00025f;
+//					amplitude	= 1.0f;
+//					lacunarity	= 2.9f; //6.553f; //6.004; //6.75325; //8.0f;
+//					persistance	= 0.33f; //0.139f; //0.150; //0.175; //0.175f;
+//					power		= 1.0f;
+//					scale		= 875.0f; //500.0f; //275.0f; //1750; //2500;
+//					octaves		= 3;
 				}
 			};
 

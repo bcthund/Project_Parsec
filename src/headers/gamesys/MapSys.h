@@ -124,8 +124,8 @@ namespace Core {
 //				void draw(Core::SHADER_PROGRAMS iShader, Core::_Lights &lights);
 				double getPerlinElevation(float x, float z, float w, float h);
 				double getPerlinMoisture(float x, float z, float w, float h);
-				double getSimplexElevation(float x, float z, Map::Simplex &simplex);		// w and h for convenience, not used
-				double getSimplexElevation(float x, float z, float freq, float amp, float lac, float per, int oct);
+				double getSimplexElevation(float x, float z, Map::Simplex &simplex);
+//				double getSimplexElevation(float x, float z, float freq, float amp, float lac, float per, int oct);
 				double getFractalElevation(float x, float z);
 		};
 
@@ -465,50 +465,36 @@ namespace Core {
 
 		double MapSys::getSimplexElevation(float x, float z, Map::Simplex &simplex) {
 
-			SimplexNoise simNoise1 = SimplexNoise( simplex.frequency,
-												   simplex.amplitude,
-												   simplex.lacunarity, //+((x+Core::gameVars->debug.noise.simplex.offset.x+z+Core::gameVars->debug.noise.simplex.offset.y)/1000.0f),
-												   simplex.persistance );
-			double e1 = simNoise1.fractal(	simplex.octaves,
-											x,
-											z);
-			e1 = std::pow(e1, simplex.power)*simplex.scale;
+			double e1 = 0.0f;
 
-			// TODO: Implement additional simplex layers (t_UMap of Simplex?)
-//			SimplexNoise simNoise2 = SimplexNoise( gameVars->debug.noise.simplex[1].frequency,
-//												   gameVars->debug.noise.simplex[1].amplitude,
-//												   gameVars->debug.noise.simplex[1].lacunarity, //+((x+Core::gameVars->debug.noise.simplex.offset.x+z+Core::gameVars->debug.noise.simplex.offset.y)/1000.0f),
-//												   gameVars->debug.noise.simplex[1].persistance );
-//			double e2 = simNoise2.fractal(	gameVars->debug.noise.simplex[1].octaves,
-//											x+Core::gameVars->debug.noise.simplex[1].offset.x,
-//											z+Core::gameVars->debug.noise.simplex[1].offset.y);
-//			e2 = std::pow(e2, gameVars->debug.noise.simplex[1].power)*gameVars->debug.noise.simplex[1].scale;
-//
-//			double e3 = e1+e2;
-//			return e3;
+			for( auto const &layer : simplex.params ) {
+				double e1a = 0.0f;
+				double e1b = 0.0f;
+				SimplexNoise simNoise1 = SimplexNoise( layer.frequency,
+													   layer.amplitude,
+													   layer.lacunarity, //+((x+Core::gameVars.debug.noise.simplex.offset.x+z+Core::gameVars.debug.noise.simplex.offset.y)/1000.0f),
+													   layer.persistance );
+
+				e1a = simNoise1.fractal(	layer.octaves,
+										x,
+										z);
+
+				e1b += (std::pow(e1a, layer.power)*layer.scale);
+
+				e1 += e1b;
+
+//				debug.log("["+	std::to_string(e1a)+"]["+
+//								std::to_string(e1b)+"] "+
+//								std::to_string(layer.frequency)+", "+
+//								std::to_string(layer.amplitude)+", "+
+//								std::to_string(layer.lacunarity)+", "+
+//								std::to_string(layer.persistance)+", "+
+//								std::to_string(layer.octaves)+", "+
+//								std::to_string(layer.scale)+", "+
+//								std::to_string(layer.power)+"\n");
+			}
+
 			return e1;
-
-//			SimplexNoise simNoise1 = SimplexNoise( gameVars->debug.noise.simplex[0].frequency,
-//												   gameVars->debug.noise.simplex[0].amplitude,
-//												   gameVars->debug.noise.simplex[0].lacunarity, //+((x+Core::gameVars->debug.noise.simplex.offset.x+z+Core::gameVars->debug.noise.simplex.offset.y)/1000.0f),
-//												   gameVars->debug.noise.simplex[0].persistance );
-//			double e1 = simNoise1.fractal(	gameVars->debug.noise.simplex[0].octaves,
-//											x+Core::gameVars->debug.noise.simplex[0].offset.x,
-//											z+Core::gameVars->debug.noise.simplex[0].offset.y);
-//			e1 = std::pow(e1, gameVars->debug.noise.simplex[0].power)*gameVars->debug.noise.simplex[0].scale;
-//
-//			SimplexNoise simNoise2 = SimplexNoise( gameVars->debug.noise.simplex[1].frequency,
-//												   gameVars->debug.noise.simplex[1].amplitude,
-//												   gameVars->debug.noise.simplex[1].lacunarity, //+((x+Core::gameVars->debug.noise.simplex.offset.x+z+Core::gameVars->debug.noise.simplex.offset.y)/1000.0f),
-//												   gameVars->debug.noise.simplex[1].persistance );
-//			double e2 = simNoise2.fractal(	gameVars->debug.noise.simplex[1].octaves,
-//											x+Core::gameVars->debug.noise.simplex[1].offset.x,
-//											z+Core::gameVars->debug.noise.simplex[1].offset.y);
-//			e2 = std::pow(e2, gameVars->debug.noise.simplex[1].power)*gameVars->debug.noise.simplex[1].scale;
-//
-//			double e3 = e1+e2;
-//
-//			return e3;
 		}
 
 		double MapSys::getFractalElevation(float x, float z) {
@@ -526,128 +512,6 @@ namespace Core {
 
 			return e1;
 		}
-
-
-//		void MapSys::draw(Core::SHADER_PROGRAMS iShader, Core::_Lights &lights) {
-//			glActiveTexture(GL_TEXTURE0);
-////			Core::sysTex->set(Core::sysTex->TEX_TESTPATTERN);
-//			Core::sysTex->set(Core::sysTex->TEX_DIRT);
-////			Core::sysTex->set(Core::sysTex->TEX_GRASS);
-////			gameVars->texture.terrain.Set("dirt1.png");
-////
-////			glActiveTexture(GL_TEXTURE1);
-////			gameVars->texture.terrain.Set("grass1.png");
-////
-////			glActiveTexture(GL_TEXTURE2);
-////			gameVars->texture.terrain.Set("rocky1.png");
-////
-////			glActiveTexture(GL_TEXTURE3);
-////			gameVars->texture.terrain.Set("cliff1.png");
-////
-////			glActiveTexture(GL_TEXTURE4);
-////			gameVars->texture.terrain.Set("dirt2.png");
-////
-////			glActiveTexture(GL_TEXTURE5);
-////			gameVars->texture.terrain.Set("grass2.png");
-////
-////			glActiveTexture(GL_TEXTURE6);
-////			gameVars->texture.terrain.Set("rocky2.png");
-////
-////			glActiveTexture(GL_TEXTURE7);
-////			gameVars->texture.terrain.Set("cliff2.png");
-////
-////			glActiveTexture(GL_TEXTURE8);
-////			atmosphere->water.tex.Set(atmosphere->water.sWorld);
-////
-////			glActiveTexture(GL_TEXTURE0);
-////
-////			Core.shader.use(iShader);
-////			std::cout << "Drawing Map...";
-////			for (int x=0; x<data.iSize; x++) {
-////				for (int z=0; z<data.iSize; z++) {
-//
-//			/*
-//			 * Temporary drawing routine
-//			 */
-//			int x=0, z=0;
-//					glEnable(GL_CULL_FACE);
-//					Core::matrix->Push();
-//						// Center World
-//
-//						// Move chunk according to player
-//						matrix->Rotate(Core::gameVars->player.active->transform.rot[0], 1.0, 0.0, 0.0);
-//						matrix->Rotate(Core::gameVars->player.active->transform.rot[1], 0.0, 1.0, 0.0);
-//						matrix->Translate(Core::gameVars->player.active->transform.pos[0], Core::gameVars->player.active->transform.pos[1], Core::gameVars->player.active->transform.pos[2]);
-//
-//						// Move chunk into place (Do in loader so lighting works easily)
-//						Core::matrix->Scale(1*Core::gameVars->screen.fScale, 1*Core::gameVars->screen.fScale, 1*Core::gameVars->screen.fScale);
-//						matrix->Translate(x*1024*Core::gameVars->screen.fScale, 0.0f, z*1024*Core::gameVars->screen.fScale);
-//						matrix->SetTransform();
-//
-//						shader->use(iShader);
-//						shader->getUniform(iShader, &lights);
-//
-//						mapData[0][0].Draw(GLM_DRAW_ELEMENTS);
-//
-//						// Draw vertex normals (~6fps drop)
-//						if(Core::gameVars->debug.gui.b5) {
-//							glLineWidth(1.0f);
-//							shader->use(GLS_NORMAL_LINE2);
-//							shader->getUniform(GLS_NORMAL_LINE2);
-//							mapData[0][0].Draw(GLM_DRAW_ELEMENTS);
-//						}
-//
-//						//glActiveTexture(GL_TEXTURE0);	Core::sysTex->set(Core::sysTex->TEX_WATER);
-//						//mapData[0][1].Draw(GLM_DRAW_ELEMENTS);
-//
-//						//glActiveTexture(GL_TEXTURE0);	Core::sysTex->set(Core::sysTex->TEX_ROCK);
-//						//mapData[1][0].Draw(GLM_DRAW_ELEMENTS);
-//
-//						//glActiveTexture(GL_TEXTURE0);	Core::sysTex->set(Core::sysTex->TEX_DIRT);
-//						//mapData[1][1].Draw(GLM_DRAW_ELEMENTS);
-//
-//						glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-//					Core::matrix->Pop();
-////					glEnable(GL_CULL_FACE);
-////					glDisable(GL_CULL_FACE);
-////				}
-////			}
-//
-//
-//
-////					Core.matrix.Push();
-////						Core.matrix.Translate(x*1024*gameVars->screen.iScale, 0, z*1024*gameVars->screen.iScale);
-////						Core.matrix.Scale(16*gameVars->screen.iScale, 16*gameVars->screen.iScale, 16*gameVars->screen.iScale);
-////						Core.matrix.SetTransform();
-////						Core.shader.getUniform(*atmosphere, iShader);
-////						//	if(bOcclude) occlusion.StartQuery("World Map", iNum);
-////								mapData[x][z].vao->Draw(GLM_DRAW_ELEMENTS);
-////						//	if(bOcclude) occlusion.EndQuery("World Map", iNum);
-////					Core.matrix.Pop();
-////				}
-////				std::cout << std::endl;
-////			}
-////			std::cout << "Done" << std::endl;
-//		}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

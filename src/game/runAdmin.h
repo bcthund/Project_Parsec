@@ -608,34 +608,34 @@ void _Admin::init() {
 		Core::gui["GameMenu"]["Window 3"].Slider.add("Delta", &game->world.simplex.delta, con);
 
 		// Frequency
-		con.setY(210);
-		con.setMinMax(-0.001f, 0.001f);
-		con.setStep(0.00001f, 0.00005f, 0.0001f);
-		Core::gui["GameMenu"]["Window 3"].Slider.add("Frequency", &game->world.simplex.frequency, con);
+//		con.setY(210);
+//		con.setMinMax(-0.001f, 0.001f);
+//		con.setStep(0.00001f, 0.00005f, 0.0001f);
+//		Core::gui["GameMenu"]["Window 3"].Slider.add("Frequency", &game->world.simplex.frequency, con);
 
 		// Lacunarity
-		con.setY(180);
-		con.setMinMax(-10.0f, 10.0f);
-		con.setStep(0.01f, 0.1f, 1.0f);
-		Core::gui["GameMenu"]["Window 3"].Slider.add("Lacunarity", &game->world.simplex.lacunarity, con);
+//		con.setY(180);
+//		con.setMinMax(-10.0f, 10.0f);
+//		con.setStep(0.01f, 0.1f, 1.0f);
+//		Core::gui["GameMenu"]["Window 3"].Slider.add("Lacunarity", &game->world.simplex.lacunarity, con);
 
 		// Persistance
-		con.setY(150);
-		con.setMinMax(-1.0f, 1.0f);
-		con.setStep(0.001f, 0.01f, 0.1f);
-		Core::gui["GameMenu"]["Window 3"].Slider.add("Persistance", &game->world.simplex.persistance, con);
+//		con.setY(150);
+//		con.setMinMax(-1.0f, 1.0f);
+//		con.setStep(0.001f, 0.01f, 0.1f);
+//		Core::gui["GameMenu"]["Window 3"].Slider.add("Persistance", &game->world.simplex.persistance, con);
 
 		// Scale
-		con.setY(120);
-		con.setMinMax(0.1f, 5000.0f);
-		con.setStep(1.0f, 10.0f, 100.0f);
-		Core::gui["GameMenu"]["Window 3"].Slider.add("Scale", &game->world.simplex.scale, con);
+//		con.setY(120);
+//		con.setMinMax(0.1f, 5000.0f);
+//		con.setStep(1.0f, 10.0f, 100.0f);
+//		Core::gui["GameMenu"]["Window 3"].Slider.add("Scale", &game->world.simplex.scale, con);
 
 		// Octaves
-		con.setY(90);
-		con.setMinMax(1.0f, 10.0f);
-		con.setStep(1.0f, 10.0f, 100.0f);
-		Core::gui["GameMenu"]["Window 3"].Slider.add("Octaves", &game->world.simplex.octaves, con);
+//		con.setY(90);
+//		con.setMinMax(1.0f, 10.0f);
+//		con.setStep(1.0f, 10.0f, 100.0f);
+//		Core::gui["GameMenu"]["Window 3"].Slider.add("Octaves", &game->world.simplex.octaves, con);
 
 		// World Scale
 		con.setY(40);
