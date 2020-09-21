@@ -84,7 +84,7 @@ namespace Core {
 					res = 32;
 					tex_scale = 128.0f;
 //					terrain_size = 16384;
-					terrain_size = 8192;
+					terrain_size = 1024;
 					terrain_height_offset = 0.0f;
 
 					delta		= 32.0f;
