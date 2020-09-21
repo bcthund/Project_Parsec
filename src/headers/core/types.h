@@ -1635,7 +1635,7 @@ namespace Core {
 						// FIXME: Create a throwRuntimeError() function that accepts '<<'
 
 						std::ostringstream sMessage;
-						sMessage << "Invalid Key in t_Map: '" << key << "'";
+						sMessage << "Key '" << key << "' doesn't exist.";
 						throw std::runtime_error(sMessage.str());
 					}
 					else return false;
@@ -1670,7 +1670,7 @@ namespace Core {
 				}
 				else if(bThrow) {
 					std::ostringstream sMessage;
-					sMessage << "Name in t_Map doesn't exist: '" << key << "'";
+					sMessage << "Key '" << key << "' doesn't exist.";
 					throw std::runtime_error(sMessage.str());
 				}
 
@@ -1720,7 +1720,7 @@ namespace Core {
 			bool checkID(int id, bool bThrow=true) {
 				if(id >= 0 && id < typeList.size()) return true;
 				else {
-					if (bThrow) throw std::runtime_error("Invalid ID: '"+std::to_string(id)+"'");
+					if (bThrow) throw std::runtime_error("ID '"+std::to_string(id)+"' doesn't exist.");
 					else return false;
 				}
 			}
@@ -1749,7 +1749,7 @@ namespace Core {
 					typeList.erase(typeList.begin() + id);
 				}
 				else {
-					if(bThrow) throw std::runtime_error("ID in t_Vector doesn't exist: '"+std::to_string(id)+"'");
+					if(bThrow) throw std::runtime_error("ID '"+std::to_string(id)+"' doesn't exist;");
 				}
 
 			}
@@ -1831,7 +1831,7 @@ namespace Core {
 			bool checkName(std::string name, bool bThrow=true) {
 				if(map.count(name)>0) return true;
 				else {
-					if (bThrow) throw std::runtime_error("t_VectorMap: ["+std::string(sErrorSource)+"] Invalid Item Name: '"+name+"'");
+					if (bThrow) throw std::runtime_error("t_VectorMap: ["+std::string(sErrorSource)+"] Name '"+name+"' doesn't exist.");
 					else return false;
 				}
 			}
@@ -1839,7 +1839,7 @@ namespace Core {
 			bool checkID(int id, bool bThrow=true) {
 				if(id >= 0 && id < typeList.size()) return true;
 				else {
-					if (bThrow) throw std::runtime_error("t_VectorMap: ["+std::string(sErrorSource)+"] Invalid ID: '"+std::to_string(id)+"'");
+					if (bThrow) throw std::runtime_error("t_VectorMap: ["+std::string(sErrorSource)+"] ID: '"+std::to_string(id)+"' doesn't exist.");
 					else return false;
 				}
 			}
@@ -1923,7 +1923,7 @@ namespace Core {
 					map.erase(name);
 				}
 				else {
-					if(bThrow) throw std::runtime_error("Name in t_VectorMap doesn't exist: '"+name+"'");
+					if(bThrow) throw std::runtime_error("Name '"+name+"' doesn't exist.");
 				}
 
 			}
@@ -1960,17 +1960,17 @@ namespace Core {
 			 * 	t_Vector<T> items;
 			 * 	for(auto item : items) {}
 			 */
-//			typedef T* iterator;
-//			typedef const T* const_iterator;
-//			iterator begin() 					{ return &typeList[0]; }
-//			iterator end() 						{ return &typeList[typeList.size()]; }
-//			const_iterator cbegin() 	const	{ return &typeList[0]; }
-//			const_iterator cend() 		const	{ return &typeList[typeList.size()]; }
+			typedef VALUE* iterator;
+			typedef const VALUE* const_iterator;
+			iterator begin() 					{ return &typeList[0]; }
+			iterator end() 						{ return &typeList[typeList.size()]; }
+			const_iterator cbegin() 	const	{ return &typeList[0]; }
+			const_iterator cend() 		const	{ return &typeList[typeList.size()]; }
 
-			auto begin() 			{ return typeList.begin(); }
-			auto end() 				{ return typeList.end(); }
-			auto begin() 	const	{ return typeList.cbegin(); }
-			auto end() 		const	{ return typeList.cend(); }
+//			auto begin() 			{ return typeList.begin(); }
+//			auto end() 				{ return typeList.end(); }
+//			auto begin() 	const	{ return typeList.cbegin(); }
+//			auto end() 		const	{ return typeList.cend(); }
 
 	};
 
@@ -1994,7 +1994,7 @@ namespace Core {
 				else {
 					if (bThrow) {
 						std::ostringstream sMessage;
-						sMessage << "UMap: [" << sErrorSource << "] Invalid Item Name: '" << key << "'";
+						sMessage << "UMap: [" << sErrorSource << "] Name '" << key << "' doesn't exist.";
 						throw std::runtime_error(sMessage.str());
 					}
 					else return false;
