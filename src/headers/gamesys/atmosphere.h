@@ -48,7 +48,7 @@
 #include "gl4_5/glcorearb.h"
 
 namespace Core {
-	namespace GameSys {
+	namespace Sys {
 //		struct Atmosphere_Data {
 //			struct _Satellite {
 //				Vector3f	vPosition;			// Rectangular coordinates of light

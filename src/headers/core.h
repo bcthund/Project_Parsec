@@ -616,7 +616,10 @@
 	#include "./gamesys/O3D.h"				// Draws perspective 3D objects to the world
 	#include "./gamesys/atmosphere.h"
 	#include "./gamesys/MenuSys.h"			// Draws interactable text to the screen. Can detect hover and clicks.
+
 	#include "./gamesys/MapSys.h"
+	#include "./gamesys/MapInstance.h"
+
 	#include "./gamesys/GUI/GUI.h"
 	//#include "./MenuSys/MenuClass.h"
 
@@ -693,6 +696,9 @@
 
 		GameVars			*	gameVars	= new GameVars();
 
+		namespace Sys {
+			MapSys				mapSys;
+		}
 		_IconSys			*	iconSys		= new _IconSys();
 		_SpriteSys			*	spriteSys	= new _SpriteSys();
 		_TextSys			*	textSys		= new _TextSys();
@@ -818,6 +824,9 @@
 			//Core::GameSys::winSys.init();
 //			winSys->load();
 //			winSys->calc();
+
+			Core::Sys::mapSys.init();
+			//mapSys.init();
 
 			//Core::iconSys.init();
 			iconSys->load();

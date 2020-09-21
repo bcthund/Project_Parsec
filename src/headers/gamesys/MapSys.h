@@ -19,49 +19,15 @@
 
 #include <chrono>	// Used for random Seed for Map perlin (temporary)
 #include <libnoise/noise.h>
+//#include "../core/types.h"
 #include "../core/core_functions.h"
 #include "../core/vao.h"
 #include "../core/texture.h"
 #include "../core/FractalNoise.h"
+#include "./MapData.h"
 
 namespace Core {
-	namespace GameSys {
-
-		struct MapData {
-			Data3f * vVerts;
-			Data3f * vNorms;
-			Data2f * vCoords;
-			GLuint * vIndex;
-			Vector3ui * vGroups;
-			long numDrawVerts;
-			long numVerts;
-			long numFaces;
-			VAO vao;
-
-			MapData() {
-				numVerts = 0;
-				numFaces = 0;
-				numDrawVerts = 0;
-
-				vVerts  = nullptr;
-				vNorms  = nullptr;
-				vCoords = nullptr;
-				vIndex  = nullptr;
-				vGroups = nullptr;
-			}
-
-			~MapData() {
-				delete[] vVerts;
-				delete[] vNorms;
-				delete[] vCoords;
-				delete[] vIndex;
-				delete[] vGroups;
-			}
-
-		};
-
-
-
+	namespace Sys {
 
 		class MapSys {
 			private:
@@ -634,56 +600,6 @@ namespace Core {
 
 
 
-
-		/**
-		 * @brief Defines all the components in a single map Chunk
-		 *
-		 */
-		class t_MapInstance {
-			private:
-
-			public:
-				static MapSys mapSys;
-
-				struct t_TerrainInterface {
-					t_MapInstance * parent;
-					MapData	data;
-					void update();
-					void draw();
-					t_TerrainInterface(t_MapInstance * p) { parent = p; }
-				};
-				t_TerrainInterface Terrain = t_TerrainInterface(this);
-
-				struct t_O2DInterface {
-					t_MapInstance * parent;
-					_O2DData data;
-					void update();
-					void draw();
-					t_O2DInterface(t_MapInstance * p) { parent = p; }
-				};
-				t_O2DInterface O2D = t_O2DInterface(this);
-
-				struct t_O3DInterface {
-					t_MapInstance * parent;
-					_O3DData data;
-					void update();
-					void draw();
-					t_O3DInterface(t_MapInstance * p) { parent = p; }
-				};
-				t_O3DInterface O3D = t_O3DInterface(this);
-
-				t_MapInstance();
-				~t_MapInstance();
-		};
-
-		t_MapInstance::t_MapInstance() {
-			mapSys.init();
-		}
-
-		t_MapInstance::~t_MapInstance() {
-		}
-
-		MapSys t_MapInstance::mapSys;
 
 
 

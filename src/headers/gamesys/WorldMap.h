@@ -11,6 +11,7 @@
 
 #include "../core/extern.h"
 #include "../core/core_functions.h"
+#include "./MapInstance.h"
 //#include "O2D.h"
 //#include "O3D.h"
 
@@ -46,7 +47,7 @@
  */
 
 namespace Core {
-	namespace GameSys {
+	namespace Sys {
 
 		/**
 		 * @brief Contains the entire definition for the world inclusing atmosphere, lighting, and all map chunks
@@ -58,7 +59,7 @@ namespace Core {
 				int iViewDistance;
 				Atmosphere					atmosphere;
 				_Lights						lights;
-				t_VectorMap<t_MapInstance>	map;
+				t_UMap<std::string, t_MapInstance*>	map;		///< Index = 0xFFFFFFFF where the first 0xFFFF is the X-grid and the second 0xFFFF is the Y grid
 				_World();
 				~_World();
 
@@ -72,21 +73,25 @@ namespace Core {
 			iViewDistance = 4096;
 
 			// TODO: Allow stting these values when _World defined (add constructor)
-			Core::GameSys::t_MapInstance::mapSys.simplex.res					= 256;
-			Core::GameSys::t_MapInstance::mapSys.simplex.tex_scale				= 128.0f;
-			Core::GameSys::t_MapInstance::mapSys.simplex.terrain_size			= 16384;
-			Core::GameSys::t_MapInstance::mapSys.simplex.terrain_height_offset	= 0.0f;
-			Core::GameSys::t_MapInstance::mapSys.simplex.delta					= 32.0f;
-			Core::GameSys::t_MapInstance::mapSys.simplex.frequency				= 0.00025f;
-			Core::GameSys::t_MapInstance::mapSys.simplex.amplitude				= 1.0f;
-			Core::GameSys::t_MapInstance::mapSys.simplex.lacunarity				= 2.9f;
-			Core::GameSys::t_MapInstance::mapSys.simplex.persistance			= 0.33f;
-			Core::GameSys::t_MapInstance::mapSys.simplex.power					= 1.0f;
-			Core::GameSys::t_MapInstance::mapSys.simplex.scale					= 875.0f;
-			Core::GameSys::t_MapInstance::mapSys.simplex.octaves				= 3;
+			// TODO: These should probably be local so there can bu multiple worlds (i.e. voids) with unique settings
+			// TODO: These likely won't have any effect here because mapSys hasn't been initialized anywhere yet
+//			Core::t_MapInstance::mapSys.init();
+//			Core::t_MapInstance::mapSys.simplex.res					= 256;
+//			Core::t_MapInstance::mapSys.simplex.tex_scale				= 128.0f;
+//			Core::t_MapInstance::mapSys.simplex.terrain_size			= 1024;
+//			Core::t_MapInstance::mapSys.simplex.terrain_height_offset	= 0.0f;
+//			Core::t_MapInstance::mapSys.simplex.delta					= 32.0f;
+//			Core::t_MapInstance::mapSys.simplex.frequency				= 0.00025f;
+//			Core::t_MapInstance::mapSys.simplex.amplitude				= 1.0f;
+//			Core::t_MapInstance::mapSys.simplex.lacunarity				= 2.9f;
+//			Core::t_MapInstance::mapSys.simplex.persistance			= 0.33f;
+//			Core::t_MapInstance::mapSys.simplex.power					= 1.0f;
+//			Core::t_MapInstance::mapSys.simplex.scale					= 1.0f;		//875.0f;
+//			Core::t_MapInstance::mapSys.simplex.octaves				= 3;
 		}
 
 		_World::~_World() {
+			for (auto item : map) delete item.second;
 		}
 
 		void _World::init() {
@@ -95,13 +100,20 @@ namespace Core {
 		}
 
 		void _World::load() {
-			// TODO: Load initial maps out to distance
-
 			atmosphere.load();
 			atmosphere.calc();
 
 			lights.load();
 			lights.calc(Core::gameVars->screen.fScale);
+
+			// TODO: Load initial maps out to distance
+			t_MapInstance *newMap = new t_MapInstance("0100_0100");
+			map.add("0100_0100", newMap);
+			map["0100_0100"]->load();
+
+			newMap = new t_MapInstance("0101_0100");
+			map.add("0101_0100", newMap);
+			map["0101_0100"]->load();
 		}
 
 		void _World::update() {
@@ -112,8 +124,104 @@ namespace Core {
 		void _World::draw() {
 			atmosphere.skybox.exosphere.draw();
 
-			// Reference
-			//map->draw(Core::GLS_PHONG, *lights);
+
+
+			glActiveTexture(GL_TEXTURE0);
+//			Core::sysTex->set(Core::sysTex->TEX_TESTPATTERN);
+			Core::sysTex->set(Core::sysTex->TEX_DIRT);
+//			Core::sysTex->set(Core::sysTex->TEX_GRASS);
+//			gameVars->texture.terrain.Set("dirt1.png");
+//
+//			glActiveTexture(GL_TEXTURE1);
+//			gameVars->texture.terrain.Set("grass1.png");
+//
+//			glActiveTexture(GL_TEXTURE2);
+//			gameVars->texture.terrain.Set("rocky1.png");
+//
+//			glActiveTexture(GL_TEXTURE3);
+//			gameVars->texture.terrain.Set("cliff1.png");
+//
+//			glActiveTexture(GL_TEXTURE4);
+//			gameVars->texture.terrain.Set("dirt2.png");
+//
+//			glActiveTexture(GL_TEXTURE5);
+//			gameVars->texture.terrain.Set("grass2.png");
+//
+//			glActiveTexture(GL_TEXTURE6);
+//			gameVars->texture.terrain.Set("rocky2.png");
+//
+//			glActiveTexture(GL_TEXTURE7);
+//			gameVars->texture.terrain.Set("cliff2.png");
+//
+//			glActiveTexture(GL_TEXTURE8);
+//			atmosphere->water.tex.Set(atmosphere->water.sWorld);
+//
+//			glActiveTexture(GL_TEXTURE0);
+
+			int x=0, z=0;
+			glEnable(GL_CULL_FACE);
+			Core::matrix->Push();
+				// Move chunk according to player
+				matrix->Rotate(Core::gameVars->player.active->transform.rot[0], 1.0, 0.0, 0.0);
+				matrix->Rotate(Core::gameVars->player.active->transform.rot[1], 0.0, 1.0, 0.0);
+				matrix->Translate(Core::gameVars->player.active->transform.pos[0], Core::gameVars->player.active->transform.pos[1], Core::gameVars->player.active->transform.pos[2]);
+
+				// Move chunk into place (Do in loader so lighting works easily)
+				Core::matrix->Scale(1*Core::gameVars->screen.fScale, 1*Core::gameVars->screen.fScale, 1*Core::gameVars->screen.fScale);
+				//matrix->Translate(x*1024*Core::gameVars->screen.fScale, 0.0f, z*1024*Core::gameVars->screen.fScale);
+				matrix->Translate(	x*Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].terrain_size*Core::gameVars->screen.fScale,
+									0.0f,
+									z*Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].terrain_size*Core::gameVars->screen.fScale);
+
+				matrix->SetTransform();
+
+				shader->use(Core::GLS_PHONG);
+				shader->getUniform(Core::GLS_PHONG, &lights);
+
+				map["0100_0100"]->draw(Core::GLS_PHONG, lights);
+
+				// Draw vertex normals (~6fps drop)
+				if(Core::gameVars->debug.gui.b5) {
+					glLineWidth(1.0f);
+					shader->use(GLS_NORMAL_LINE2);
+					shader->getUniform(GLS_NORMAL_LINE2);
+					map["0100_0100"]->draw(Core::GLS_PHONG, lights);
+				}
+
+				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+			Core::matrix->Pop();
+
+			x=1, z=0;
+			glEnable(GL_CULL_FACE);
+			Core::matrix->Push();
+				// Move chunk according to player
+				matrix->Rotate(Core::gameVars->player.active->transform.rot[0], 1.0, 0.0, 0.0);
+				matrix->Rotate(Core::gameVars->player.active->transform.rot[1], 0.0, 1.0, 0.0);
+				matrix->Translate(Core::gameVars->player.active->transform.pos[0], Core::gameVars->player.active->transform.pos[1], Core::gameVars->player.active->transform.pos[2]);
+
+				// Move chunk into place (Do in loader so lighting works easily)
+				Core::matrix->Scale(1*Core::gameVars->screen.fScale, 1*Core::gameVars->screen.fScale, 1*Core::gameVars->screen.fScale);
+				matrix->Translate(	x*Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].terrain_size*Core::gameVars->screen.fScale,
+									0.0f,
+									z*Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].terrain_size*Core::gameVars->screen.fScale);
+				matrix->SetTransform();
+
+				shader->use(Core::GLS_PHONG);
+				shader->getUniform(Core::GLS_PHONG, &lights);
+
+				map["0101_0100"]->draw(Core::GLS_PHONG, lights);
+
+				// Draw vertex normals (~6fps drop)
+				if(Core::gameVars->debug.gui.b5) {
+					glLineWidth(1.0f);
+					shader->use(GLS_NORMAL_LINE2);
+					shader->getUniform(GLS_NORMAL_LINE2);
+					map["0101_0100"]->draw(Core::GLS_PHONG, lights);
+				}
+
+				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+			Core::matrix->Pop();
+
 		}
 
 

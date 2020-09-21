@@ -26,7 +26,7 @@
  */
 
 namespace Core {
-	namespace GameSys {
+	namespace Sys {
 		struct _O3DData {
 			int id;
 			Vector3f pos;

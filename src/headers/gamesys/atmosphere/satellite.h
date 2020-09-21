@@ -22,7 +22,7 @@
 //#include "../GameTime.h"
 
 namespace Core {
-	namespace GameSys {
+	namespace Sys {
 		struct _SatelliteData {
 //			Atmosphere		&parent;			// Access to parent class
 
@@ -154,7 +154,7 @@ namespace Core {
 				//Core::Map_is	rmap;
 				t_VectorMap<_SatelliteData*> data;
 
-				_Satellite(Atmosphere &f);
+				_Satellite(Sys::Atmosphere &f);
 				~_Satellite();
 				bool		add(_SatelliteData *data);
 
@@ -195,7 +195,7 @@ namespace Core {
 				Core::Degrees	getZenith(int id)						{ return data[id]->degInclination; };
 
 			private:
-				Atmosphere		&parent;			// Access to parent class
+				Sys::Atmosphere		&parent;			// Access to parent class
 				static bool		bTexLoaded;			// Has the textures file been loaded yet
 				static Texture	tex;				// Global textures list, prevents copies of textures
 				bool			init();
@@ -220,7 +220,7 @@ namespace Core {
 		const std::string	_Satellite::FILENAME		= "satellite.bin";
 		const std::string	_Satellite::TEXDIR			= "./texture/atmosphere/satellite/";
 
-		_Satellite::_Satellite(Atmosphere &f) : parent(f) {
+		_Satellite::_Satellite(Sys::Atmosphere &f) : parent(f) {
 			iNumObjects = 0;
 			for (int n=0; n<32; n++) {
 				bErrorONS[n] = false;

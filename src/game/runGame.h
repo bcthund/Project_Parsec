@@ -22,7 +22,7 @@ class _Game {
 		//Core::GameSys::_O3D * o3d;
 //		Core::GameSys::_WorldMap	* world;
 //		Core::GameSys::AnimationSys * animation;
-		Core::GameSys::_World world;
+		Core::Sys::_World world;
 		Core::t_AnimationInstance<Core::t_AnimationItem3D>	animation2;
 		//Core::GameSys::Atmosphere atmosphere;
 		//Core::OCCLUSION	occlusion;

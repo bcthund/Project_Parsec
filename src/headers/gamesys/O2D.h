@@ -25,7 +25,7 @@
  */
 
 namespace Core {
-	namespace GameSys {
+	namespace Sys {
 		struct _O2DData {
 			int   * blend;   		// The depth offset of the object
 			float * r;   			// Rotation for static objects (events)

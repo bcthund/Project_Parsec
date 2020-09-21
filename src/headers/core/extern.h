@@ -49,6 +49,10 @@ namespace Core {
 	extern struct GameVars				*	gameVars;
 
 	//namespace GameSys {
+	namespace Sys {
+		extern class MapSys				mapSys;
+	}
+
 	extern class _IconSys		*	iconSys;
 	extern class _SpriteSys		*	spriteSys;
 	extern class _TextSys		*	textSys;

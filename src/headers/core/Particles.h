@@ -137,7 +137,7 @@ namespace Core {
 		};
 	};
 
-	namespace GameSys {		class Atmosphere; }
+	namespace Sys {		class Atmosphere; }
 	class _Particles {
 		public:
 //			_ParticleDataOld * data;
@@ -146,7 +146,7 @@ namespace Core {
 			t_VectorMap<_ParticleDataOld*> data;
 
 
-			_Particles(GameSys::Atmosphere &f, float fScale);
+			_Particles(Sys::Atmosphere &f, float fScale);
 			~_Particles();
 
 			bool		add(_ParticleDataOld data);
@@ -165,7 +165,7 @@ namespace Core {
 			void		draw(int id);
 
 		private:
-			GameSys::Atmosphere		&parent;			// Access to parent class
+			Sys::Atmosphere		&parent;			// Access to parent class
 //			Vector3f		*vCamPos;			// Access to current camera (player) position
 			float 			fWorldScale;		// Access to world scale
 			bool			init();
