@@ -681,11 +681,9 @@ void _Game::Update() {
 	Core::textSys->drawVar2<float>(21, -20, "", -Core::mouse->y+Core::gameVars->screen.half.y, 3, Core::GUI::CONSTRAIN_LEFT);
 
 
-
-
-	Core::textSys->drawVar2<int>(1,  -21,   "Terrain Quads: ", std::pow(Core::gameVars->debug.noise.simplex[0].res, 2), 3, Core::GUI::CONSTRAIN_LEFT);
-	Core::textSys->drawVar2<int>(1,  -22,   " Terrain Tris: ", std::pow(Core::gameVars->debug.noise.simplex[0].res, 2) * 2, 3, Core::GUI::CONSTRAIN_LEFT);
-	Core::textSys->drawVar2<int>(1,  -23,   "Terrain Verts: ", std::pow(Core::gameVars->debug.noise.simplex[0].res, 2) * 6, 3, Core::GUI::CONSTRAIN_LEFT);
+	Core::textSys->drawVar2<int>(1,  -21,   "Terrain Quads: ", std::pow(world.simplex.res, 2), 3, Core::GUI::CONSTRAIN_LEFT);
+	Core::textSys->drawVar2<int>(1,  -22,   " Terrain Tris: ", std::pow(world.simplex.res, 2) * 2, 3, Core::GUI::CONSTRAIN_LEFT);
+	Core::textSys->drawVar2<int>(1,  -23,   "Terrain Verts: ", std::pow(world.simplex.res, 2) * 6, 3, Core::GUI::CONSTRAIN_LEFT);
 
 //	Core::textSys->drawVar2<int>(1,  -21,   "Terrain Quads: ", Core::gameVars->debug.noise.simplex[0].res*2, 3, Core::GUI::CONSTRAIN_LEFT);
 //	Core::textSys->drawVar2<int>(1,  -22,   " Terrain Tris: ", Core::gameVars->debug.noise.simplex[0].res*2*2, 3, Core::GUI::CONSTRAIN_LEFT);

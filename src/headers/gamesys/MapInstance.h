@@ -25,6 +25,7 @@ namespace Core {
 		class t_MapInstance {
 			private:
 				unsigned int x, y;		///< Used to determine distance and load O2D, O3D, etc.
+				Map::Simplex *simplex;
 
 			public:
 //				static MapSys mapSys;
@@ -37,7 +38,7 @@ namespace Core {
 
 				struct t_TerrainInterface {
 					t_MapInstance * parent;
-					MapData	data;
+					Map::Data	data;
 //					void update();
 					void draw();
 					t_TerrainInterface(t_MapInstance * p) { parent = p; }
@@ -62,22 +63,24 @@ namespace Core {
 				};
 				t_O3DInterface O3D = t_O3DInterface(this);
 
-				t_MapInstance();
-				t_MapInstance(std::string offset);
+				t_MapInstance(Map::Simplex *simplex);
+				t_MapInstance(std::string offset, Map::Simplex *simplex);
 				~t_MapInstance();
 		};
 
 //		MapSys t_MapInstance::mapSys;
 
-		t_MapInstance::t_MapInstance() {
+		t_MapInstance::t_MapInstance(Map::Simplex *simplex) {
 			x = 0;
 			y = 0;
+			this->simplex = simplex;
 //			mapSys.init();
 		}
 
-		t_MapInstance::t_MapInstance(std::string offset) {
+		t_MapInstance::t_MapInstance(std::string offset, Map::Simplex *simplex) {
 			x = 0;
 			y = 0;
+			this->simplex = simplex;
 			setOffset(offset);
 
 //			mapSys.init();
@@ -101,7 +104,7 @@ namespace Core {
 
 		void t_MapInstance::load() {
 			debug.log("Loading Map: ("+std::to_string(x)+"), ("+std::to_string(y)+")\n");
-			Sys::mapSys.load(Terrain.data);
+			Sys::mapSys.load(x*simplex->terrain_size, y*simplex->terrain_size, Terrain.data, *simplex);
 			Sys::mapSys.calc(Terrain.data);
 		}
 

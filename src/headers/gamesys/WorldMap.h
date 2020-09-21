@@ -59,6 +59,7 @@ namespace Core {
 				int iViewDistance;
 				Atmosphere					atmosphere;
 				_Lights						lights;
+				Map::Simplex				simplex;
 				t_UMap<std::string, t_MapInstance*>	map;		///< Index = 0xFFFFFFFF where the first 0xFFFF is the X-grid and the second 0xFFFF is the Y grid
 				_World();
 				~_World();
@@ -107,11 +108,11 @@ namespace Core {
 			lights.calc(Core::gameVars->screen.fScale);
 
 			// TODO: Load initial maps out to distance
-			t_MapInstance *newMap = new t_MapInstance("0100_0100");
+			t_MapInstance *newMap = new t_MapInstance("0100_0100", &simplex);
 			map.add("0100_0100", newMap);
 			map["0100_0100"]->load();
 
-			newMap = new t_MapInstance("0101_0100");
+			newMap = new t_MapInstance("0101_0100", &simplex);
 			map.add("0101_0100", newMap);
 			map["0101_0100"]->load();
 		}
@@ -169,15 +170,13 @@ namespace Core {
 				// Move chunk into place (Do in loader so lighting works easily)
 				Core::matrix->Scale(1*Core::gameVars->screen.fScale, 1*Core::gameVars->screen.fScale, 1*Core::gameVars->screen.fScale);
 				//matrix->Translate(x*1024*Core::gameVars->screen.fScale, 0.0f, z*1024*Core::gameVars->screen.fScale);
-				matrix->Translate(	x*Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].terrain_size*Core::gameVars->screen.fScale,
+				matrix->Translate(	x*simplex.terrain_size*Core::gameVars->screen.fScale,
 									0.0f,
-									z*Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].terrain_size*Core::gameVars->screen.fScale);
+									z*simplex.terrain_size*Core::gameVars->screen.fScale);
 
 				matrix->SetTransform();
-
 				shader->use(Core::GLS_PHONG);
 				shader->getUniform(Core::GLS_PHONG, &lights);
-
 				map["0100_0100"]->draw(Core::GLS_PHONG, lights);
 
 				// Draw vertex normals (~6fps drop)
@@ -188,27 +187,15 @@ namespace Core {
 					map["0100_0100"]->draw(Core::GLS_PHONG, lights);
 				}
 
-				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-			Core::matrix->Pop();
-
-			x=1, z=0;
-			glEnable(GL_CULL_FACE);
-			Core::matrix->Push();
-				// Move chunk according to player
-				matrix->Rotate(Core::gameVars->player.active->transform.rot[0], 1.0, 0.0, 0.0);
-				matrix->Rotate(Core::gameVars->player.active->transform.rot[1], 0.0, 1.0, 0.0);
-				matrix->Translate(Core::gameVars->player.active->transform.pos[0], Core::gameVars->player.active->transform.pos[1], Core::gameVars->player.active->transform.pos[2]);
-
-				// Move chunk into place (Do in loader so lighting works easily)
-				Core::matrix->Scale(1*Core::gameVars->screen.fScale, 1*Core::gameVars->screen.fScale, 1*Core::gameVars->screen.fScale);
-				matrix->Translate(	x*Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].terrain_size*Core::gameVars->screen.fScale,
+				// Draw additional map
+				x=1, z=0;
+				matrix->Translate(	x*simplex.terrain_size,
 									0.0f,
-									z*Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].terrain_size*Core::gameVars->screen.fScale);
+									z*simplex.terrain_size);
 				matrix->SetTransform();
 
 				shader->use(Core::GLS_PHONG);
 				shader->getUniform(Core::GLS_PHONG, &lights);
-
 				map["0101_0100"]->draw(Core::GLS_PHONG, lights);
 
 				// Draw vertex normals (~6fps drop)
@@ -219,8 +206,40 @@ namespace Core {
 					map["0101_0100"]->draw(Core::GLS_PHONG, lights);
 				}
 
+
 				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 			Core::matrix->Pop();
+
+//			x=1, z=0;
+//			glEnable(GL_CULL_FACE);
+//			Core::matrix->Push();
+//				// Move chunk according to player
+//				matrix->Rotate(Core::gameVars->player.active->transform.rot[0], 1.0, 0.0, 0.0);
+//				matrix->Rotate(Core::gameVars->player.active->transform.rot[1], 0.0, 1.0, 0.0);
+//				matrix->Translate(Core::gameVars->player.active->transform.pos[0], Core::gameVars->player.active->transform.pos[1], Core::gameVars->player.active->transform.pos[2]);
+//
+//				// Move chunk into place (Do in loader so lighting works easily)
+//				Core::matrix->Scale(1*Core::gameVars->screen.fScale, 1*Core::gameVars->screen.fScale, 1*Core::gameVars->screen.fScale);
+//				matrix->Translate(	x*simplex.terrain_size*Core::gameVars->screen.fScale,
+//									0.0f,
+//									z*simplex.terrain_size*Core::gameVars->screen.fScale);
+//				matrix->SetTransform();
+//
+//				shader->use(Core::GLS_PHONG);
+//				shader->getUniform(Core::GLS_PHONG, &lights);
+//
+//				map["0101_0100"]->draw(Core::GLS_PHONG, lights);
+//
+//				// Draw vertex normals (~6fps drop)
+//				if(Core::gameVars->debug.gui.b5) {
+//					glLineWidth(1.0f);
+//					shader->use(GLS_NORMAL_LINE2);
+//					shader->getUniform(GLS_NORMAL_LINE2);
+//					map["0101_0100"]->draw(Core::GLS_PHONG, lights);
+//				}
+//
+//				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+//			Core::matrix->Pop();
 
 		}
 
