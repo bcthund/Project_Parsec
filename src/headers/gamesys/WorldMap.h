@@ -72,7 +72,7 @@ namespace Core {
 		};
 
 		_World::_World() {
-			iViewDistance = 8192;
+			iViewDistance = 8192*4;
 //			iViewDistance = 16384;
 		}
 
@@ -93,18 +93,37 @@ namespace Core {
 			lights.calc(Core::gameVars->screen.fScale);
 
 			simplex.params.add("Base", Map::Simplex::t_NoiseParams());
+			simplex.params.add("Hills", Map::Simplex::t_NoiseParams());
+			simplex.params.add("Valleys", Map::Simplex::t_NoiseParams());
 			simplex.params.add("Mountain", Map::Simplex::t_NoiseParams());
 
 			simplex.res = 16;
 			simplex.terrain_size = 1024;
 
+			// Slight bumpy terrain
 			simplex.params["Base"].frequency		= 0.00013f;
 			simplex.params["Base"].amplitude		= 1.0f;
-			simplex.params["Base"].lacunarity		= 2.6f;
-			simplex.params["Base"].persistance		= -0.37f;
+			simplex.params["Base"].lacunarity		= 3.6f;
+			simplex.params["Base"].persistance		= 1.0f; //-0.37f;
 			simplex.params["Base"].power			= 1.0f;
-			simplex.params["Base"].scale			= 875.0f;
+			simplex.params["Base"].scale			= 100.0f;
 			simplex.params["Base"].octaves			= 3;
+
+			simplex.params["Hills"].frequency		= 0.00008f;
+			simplex.params["Hills"].amplitude		= 2.0f;
+			simplex.params["Hills"].lacunarity		= 2.2f; //2.6f;
+			simplex.params["Hills"].persistance		= 1.8f; //-0.37f;
+			simplex.params["Hills"].power			= 2.0f;
+			simplex.params["Hills"].scale			= 1000.0f;
+			simplex.params["Hills"].octaves			= 2;
+
+			simplex.params["Valleys"].frequency		= 0.000005f;
+			simplex.params["Valleys"].amplitude		= 5.0f;
+			simplex.params["Valleys"].lacunarity	= 1.8f; //1.6f;
+			simplex.params["Valleys"].persistance	= -2.0f; //-2.5f; //-0.37f;
+			simplex.params["Valleys"].power			= 3.0f; //4.0f;
+			simplex.params["Valleys"].scale			= -500.0f;
+			simplex.params["Valleys"].octaves		= 4;
 
 			simplex.params["Mountain"].frequency	= 0.00002f;
 			simplex.params["Mountain"].amplitude	= 1.0f;
@@ -230,9 +249,9 @@ namespace Core {
 				for ( auto chunk : map ) {
 					Core::matrix->Push();
 
+						// TODO: Pass this shader, translating here causes issues with lights repeating
 						int iX = chunk.second->x-32768;
 						int iZ = chunk.second->z-32768;
-
 						matrix->Translate(	iX*fPreScale,
 											0.0f,
 											iZ*fPreScale);
