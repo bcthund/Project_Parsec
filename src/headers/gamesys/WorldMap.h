@@ -72,7 +72,8 @@ namespace Core {
 		};
 
 		_World::_World() {
-			iViewDistance = 4096;
+			iViewDistance = 8192;
+//			iViewDistance = 16384;
 		}
 
 		_World::~_World() {
@@ -94,14 +95,16 @@ namespace Core {
 			simplex.params.add("Base", Map::Simplex::t_NoiseParams());
 			simplex.params.add("Mountain", Map::Simplex::t_NoiseParams());
 
-			simplex.params["Base"].frequency	= 0.00013f;
-			simplex.params["Base"].amplitude	= 1.0f;
-			simplex.params["Base"].lacunarity	= 2.6f;
-			simplex.params["Base"].persistance	= -0.37f;
-			simplex.params["Base"].power		= 1.0f;
-			simplex.params["Base"].scale		= 875.0f;
-//			simplex.params["Base"].scale		= 87.5f;
-			simplex.params["Base"].octaves		= 3;
+			simplex.res = 16;
+			simplex.terrain_size = 1024;
+
+			simplex.params["Base"].frequency		= 0.00013f;
+			simplex.params["Base"].amplitude		= 1.0f;
+			simplex.params["Base"].lacunarity		= 2.6f;
+			simplex.params["Base"].persistance		= -0.37f;
+			simplex.params["Base"].power			= 1.0f;
+			simplex.params["Base"].scale			= 875.0f;
+			simplex.params["Base"].octaves			= 3;
 
 			simplex.params["Mountain"].frequency	= 0.00002f;
 			simplex.params["Mountain"].amplitude	= 1.0f;
@@ -109,27 +112,37 @@ namespace Core {
 			simplex.params["Mountain"].persistance	= 0.11f;
 			simplex.params["Mountain"].power		= 1.0f;
 			simplex.params["Mountain"].scale		= 5000.0f;
-//			simplex.params["Mountain"].scale		= 1000.0f;
 			simplex.params["Mountain"].octaves		= 1;
 
 			//simplex.params.add("Ocean", Map::Simplex::t_NoiseParams());
 
-			// TODO: Load initial maps out to distance
-			t_MapInstance *newMap = new t_MapInstance("8000_8000");
-			map.add("8000_8000", newMap);
-			map["8000_8000"]->load(simplex);
+			int iMax = iViewDistance/simplex.terrain_size;
+			for(int x=-iMax; x<iMax; x++) {
+				for(int z=-iMax; z<iMax; z++) {
 
-			newMap = new t_MapInstance("8001_8000");
-			map.add("8001_8000", newMap);
-			map["8001_8000"]->load(simplex);
+					int dist = std::sqrt((x*x)+(z*z));
+					if(dist < iMax) {
+						debug.log("Distance = "+std::to_string(dist)+"/"+std::to_string(iMax)+": ");
+						std::stringstream ssx, ssz;
+						ssx << std::setfill ('0') << std::setw(4);
+						ssx << std::hex << (x+32768);
 
-			newMap = new t_MapInstance("8000_8001");
-			map.add("8000_8001", newMap);
-			map["8000_8001"]->load(simplex);
+						ssz << std::setfill ('0') << std::setw(4);
+						ssz << std::hex << (z+32768);
 
-			newMap = new t_MapInstance("8001_8001");
-			map.add("8001_8001", newMap);
-			map["8001_8001"]->load(simplex);
+						std::string mapName = ssx.str() + "_" + ssz.str();
+
+						t_MapInstance *newMap = new t_MapInstance(mapName);
+						map.add(mapName, newMap);
+
+						// Will load center map at different resolution
+//						if(x==0 && z==0) simplex.res = 32;
+//						else simplex.res = 8;
+
+						map[mapName]->load(simplex);
+					}
+				}
+			}
 
 
 
@@ -199,12 +212,20 @@ namespace Core {
 				// Move chunk according to player
 				matrix->Rotate(Core::gameVars->player.active->transform.rot[0], 1.0, 0.0, 0.0);
 				matrix->Rotate(Core::gameVars->player.active->transform.rot[1], 0.0, 1.0, 0.0);
-				matrix->Translate(Core::gameVars->player.active->transform.pos[0], Core::gameVars->player.active->transform.pos[1], Core::gameVars->player.active->transform.pos[2]);
+				matrix->Translate(Core::gameVars->player.active->transform.pos[0]-(simplex.terrain_size/2),
+								  Core::gameVars->player.active->transform.pos[1],
+								  Core::gameVars->player.active->transform.pos[2]-(simplex.terrain_size/2));
 
 				// Move chunk into place (Do in loader so lighting works easily)
 				Core::matrix->Scale(1*Core::gameVars->screen.fScale, 1*Core::gameVars->screen.fScale, 1*Core::gameVars->screen.fScale);
 				//matrix->Translate(x*1024*Core::gameVars->screen.fScale, 0.0f, z*1024*Core::gameVars->screen.fScale);
 
+				//shader->use(Core::GLS_PHONG);
+				Core::SHADER_PROGRAMS eShader = Core::GLS_PHONG;
+//				Core::SHADER_PROGRAMS eShader = Core::GLS_FLAT;
+				shader->use(eShader);
+
+				float fPreScale = simplex.terrain_size*Core::gameVars->screen.fScale;
 
 				for ( auto chunk : map ) {
 					Core::matrix->Push();
@@ -212,23 +233,24 @@ namespace Core {
 						int iX = chunk.second->x-32768;
 						int iZ = chunk.second->z-32768;
 
-						matrix->Translate(	iX*simplex.terrain_size*Core::gameVars->screen.fScale,
+						matrix->Translate(	iX*fPreScale,
 											0.0f,
-											iZ*simplex.terrain_size*Core::gameVars->screen.fScale);
+											iZ*fPreScale);
+
 
 						matrix->SetTransform();
-						shader->use(Core::GLS_PHONG);
-						shader->getUniform(Core::GLS_PHONG, &lights);
-						chunk.second->draw(Core::GLS_PHONG, lights);
-						debug.log("Drawing '"+chunk.first+"'\n");
+//						shader->use(Core::GLS_PHONG);
+						shader->getUniform(eShader, &lights);
+						chunk.second->draw(eShader);
+//						debug.log("Drawing '"+chunk.first+"'\n");
 
 						// Draw vertex normals (~6fps drop)
-						if(Core::gameVars->debug.gui.b5) {
-							glLineWidth(1.0f);
-							shader->use(GLS_NORMAL_LINE2);
-							shader->getUniform(GLS_NORMAL_LINE2);
-							chunk.second->draw(Core::GLS_PHONG, lights);
-						}
+//						if(Core::gameVars->debug.gui.b5) {
+//							glLineWidth(1.0f);
+//							shader->use(GLS_NORMAL_LINE2);
+//							shader->getUniform(GLS_NORMAL_LINE2);
+//							chunk.second->draw(Core::GLS_PHONG);
+//						}
 
 					Core::matrix->Pop();
 				}

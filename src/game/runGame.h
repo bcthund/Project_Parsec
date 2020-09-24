@@ -369,7 +369,8 @@ void _Game::Run() {
 	Core::particles->update();		// Update all with emitter sorting
 
 	// TODO: update timer
-	world.update();
+	// FIXME: SEG FAULT
+//	world.update();
 
 	Update();
 }

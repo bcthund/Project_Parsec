@@ -34,7 +34,7 @@ namespace Core {
 				void setOffset(std::string offset);
 				void load(std::string offset, Map::Simplex &simplex);
 //				void update();
-				void draw(Core::SHADER_PROGRAMS iShader, Core::_Lights &lights);
+				void draw(Core::SHADER_PROGRAMS iShader);
 
 				struct t_TerrainInterface {
 					t_MapInstance * parent;
@@ -109,7 +109,7 @@ namespace Core {
 //		void t_MapInstance::update() {
 //		}
 
-		void t_MapInstance::draw(Core::SHADER_PROGRAMS iShader, Core::_Lights &lights) {
+		void t_MapInstance::draw(Core::SHADER_PROGRAMS iShader) {
 //		void MapSys::draw(Core::SHADER_PROGRAMS iShader, Core::_Lights &lights) {
 //			glActiveTexture(GL_TEXTURE0);
 //			Core::sysTex->set(Core::sysTex->TEX_TESTPATTERN);
