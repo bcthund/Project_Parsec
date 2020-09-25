@@ -370,7 +370,7 @@ void _Game::Run() {
 
 	// TODO: update timer
 	// FIXME: SEG FAULT
-//	world.update();
+	world.update();
 
 	Update();
 }

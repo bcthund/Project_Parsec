@@ -370,7 +370,7 @@ namespace Core {
 					//skybox.thermosphere.fScale	= skybox.mesosphere.fScale+1000;
 					//skybox.exosphere.fScale		= skybox.thermosphere.fScale+1000;
 
-					skybox.troposphere.fScale		= 50000;
+					skybox.troposphere.fScale		= 100000;
 					skybox.stratosphere.fScale		= skybox.troposphere.fScale;		//Divide by 2 because the stratosphere has a model twice as big
 					skybox.mesosphere.fScale		= skybox.stratosphere.fScale;
 					skybox.thermosphere.fScale		= skybox.mesosphere.fScale;
@@ -1903,6 +1903,7 @@ namespace Core {
 
 		void Atmosphere::draw(uint mode, ...) {
 			glDisable(GL_CULL_FACE);
+			glDisable(GL_DEPTH);
 
 //			if(mode == MODE_TROPOSPHERE) {
 //				glActiveTexture(GL_TEXTURE0);
@@ -2131,6 +2132,7 @@ namespace Core {
 //		}
 //		glEnable(GL_CULL_FACE);
 //	}
+			glEnable(GL_DEPTH);
 			glEnable(GL_CULL_FACE);
 		}
 	}

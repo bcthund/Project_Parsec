@@ -467,6 +467,7 @@ namespace Core {
 
 			double e1 = 0.0f;
 
+			// TODO: Implement simplex modification functions
 			for( auto const &layer : simplex.params ) {
 				double e1a = 0.0f;
 				double e1b = 0.0f;

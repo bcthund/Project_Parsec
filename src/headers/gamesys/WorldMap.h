@@ -56,12 +56,14 @@ namespace Core {
 			private:
 
 			public:
-				int iViewDistance;
+//				int iViewDistance;
 				Atmosphere					atmosphere;
 				_Lights						lights;
 //				t_Vector1T<Map::Simplex>	simplex;
 				Map::Simplex				simplex;
 				t_UMap<std::string, t_MapInstance*>	map;		///< Index = 0xFFFFFFFF where the first 0xFFFF is the X-grid and the second 0xFFFF is the Y grid
+//				int iMax;										///< Maximum view distance in chunks
+//				void set_iMax();
 				_World();
 				~_World();
 
@@ -72,8 +74,12 @@ namespace Core {
 		};
 
 		_World::_World() {
-			iViewDistance = 8192*4;
-//			iViewDistance = 16384;
+			// Default values
+//			iViewDistance = 8192*2;
+			simplex.iViewDistance = 1024*32;
+			simplex.res = 16;
+			simplex.terrain_size = 1024;
+			simplex.set_iMax();
 		}
 
 		_World::~_World() {
@@ -92,13 +98,14 @@ namespace Core {
 			lights.load();
 			lights.calc(Core::gameVars->screen.fScale);
 
-			simplex.params.add("Base", Map::Simplex::t_NoiseParams());
-			simplex.params.add("Hills", Map::Simplex::t_NoiseParams());
-			simplex.params.add("Valleys", Map::Simplex::t_NoiseParams());
-			simplex.params.add("Mountain", Map::Simplex::t_NoiseParams());
+			simplex.params.add("Base", Map::t_NoiseParams());
+			simplex.params.add("Hills", Map::t_NoiseParams());
+			simplex.params.add("Valleys", Map::t_NoiseParams());
+			simplex.params.add("Mountain", Map::t_NoiseParams());
 
 			simplex.res = 16;
 			simplex.terrain_size = 1024;
+
 
 			// Slight bumpy terrain
 			simplex.params["Base"].frequency		= 0.00013f;
@@ -121,7 +128,7 @@ namespace Core {
 			simplex.params["Valleys"].amplitude		= 5.0f;
 			simplex.params["Valleys"].lacunarity	= 1.8f; //1.6f;
 			simplex.params["Valleys"].persistance	= -2.0f; //-2.5f; //-0.37f;
-			simplex.params["Valleys"].power			= 3.0f; //4.0f;
+			simplex.params["Valleys"].power			= 4.0f; //4.0f;
 			simplex.params["Valleys"].scale			= -500.0f;
 			simplex.params["Valleys"].octaves		= 4;
 
@@ -135,13 +142,14 @@ namespace Core {
 
 			//simplex.params.add("Ocean", Map::Simplex::t_NoiseParams());
 
-			int iMax = iViewDistance/simplex.terrain_size;
-			for(int x=-iMax; x<iMax; x++) {
-				for(int z=-iMax; z<iMax; z++) {
+			//iMax = iViewDistance/simplex.terrain_size;
+			simplex.set_iMax();
+			for(int x=-simplex.iMax; x<simplex.iMax; x++) {
+				for(int z=-simplex.iMax; z<simplex.iMax; z++) {
 
 					int dist = std::sqrt((x*x)+(z*z));
-					if(dist < iMax) {
-						debug.log("Distance = "+std::to_string(dist)+"/"+std::to_string(iMax)+": ");
+					if(dist < simplex.iMax) {
+						debug.log("Distance = "+std::to_string(dist)+"/"+std::to_string(simplex.iMax)+": ");
 						std::stringstream ssx, ssz;
 						ssx << std::setfill ('0') << std::setw(4);
 						ssx << std::hex << (x+32768);
@@ -151,7 +159,7 @@ namespace Core {
 
 						std::string mapName = ssx.str() + "_" + ssz.str();
 
-						t_MapInstance *newMap = new t_MapInstance(mapName);
+						t_MapInstance *newMap = new t_MapInstance(mapName);		// NOTE: mapName translates into the map offset here
 						map.add(mapName, newMap);
 
 						// Will load center map at different resolution
@@ -164,28 +172,30 @@ namespace Core {
 			}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+			// TESTING: Change view distance for distance calculation visualization (grass/dirt texture)
+//			simplex.iViewDistance = 1024*8;
 
 
 		}
 
+//		void _World::set_iMax() {
+//			iMax = iViewDistance/simplex.terrain_size;
+//		}
+
 		void _World::update() {
 			atmosphere.update(atmosphere.MODE_SATELLITE);
-			atmosphere.update(atmosphere.MODE_FLORA);
+//			atmosphere.update(atmosphere.MODE_FLORA);
+
+
+			simplex.set_iMax();	// In case parameters have changed
+			//int iMax = iViewDistance/simplex.terrain_size;
+
+			// Update distance for all chunks according to players current position
+			for ( auto chunk : map ) {
+				chunk.second->calcDistance(gameVars->player.active->transform.pos, simplex.terrain_size);
+				chunk.second->bDraw = chunk.second->distance<simplex.iMax;
+				//if(chunk.second->distance>iMax) debug.log("Chunk '"+chunk.first+"' is outside max range. ("+std::to_string(chunk.second->distance)+">"+std::to_string(iMax)+")\n");
+			}
 		}
 
 		void _World::draw() {
@@ -247,31 +257,36 @@ namespace Core {
 				float fPreScale = simplex.terrain_size*Core::gameVars->screen.fScale;
 
 				for ( auto chunk : map ) {
-					Core::matrix->Push();
+//					if(chunk.second->bDraw) {	// Will hide terrain outside view range
+						Core::matrix->Push();
 
-						// TODO: Pass this shader, translating here causes issues with lights repeating
-						int iX = chunk.second->x-32768;
-						int iZ = chunk.second->z-32768;
-						matrix->Translate(	iX*fPreScale,
-											0.0f,
-											iZ*fPreScale);
+							if(chunk.second->distance>simplex.iMax) Core::sysTex->set(Core::sysTex->TEX_DIRT);
+							else Core::sysTex->set(Core::sysTex->TEX_GRASS);
+
+							// TODO: Pass this shader, translating here causes issues with lights repeating
+							int iX = chunk.second->x-32768;
+							int iZ = chunk.second->z-32768;
+							matrix->Translate(	iX*fPreScale,
+												0.0f,
+												iZ*fPreScale);
 
 
-						matrix->SetTransform();
-//						shader->use(Core::GLS_PHONG);
-						shader->getUniform(eShader, &lights);
-						chunk.second->draw(eShader);
-//						debug.log("Drawing '"+chunk.first+"'\n");
+							matrix->SetTransform();
+	//						shader->use(Core::GLS_PHONG);
+							shader->getUniform(eShader, &lights);
+							chunk.second->draw(eShader);
+	//						debug.log("Drawing '"+chunk.first+"'\n");
 
-						// Draw vertex normals (~6fps drop)
-//						if(Core::gameVars->debug.gui.b5) {
-//							glLineWidth(1.0f);
-//							shader->use(GLS_NORMAL_LINE2);
-//							shader->getUniform(GLS_NORMAL_LINE2);
-//							chunk.second->draw(Core::GLS_PHONG);
-//						}
+							// Draw vertex normals (~6fps drop)
+	//						if(Core::gameVars->debug.gui.b5) {
+	//							glLineWidth(1.0f);
+	//							shader->use(GLS_NORMAL_LINE2);
+	//							shader->getUniform(GLS_NORMAL_LINE2);
+	//							chunk.second->draw(Core::GLS_PHONG);
+	//						}
 
-					Core::matrix->Pop();
+						Core::matrix->Pop();
+//					}
 				}
 
 				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
