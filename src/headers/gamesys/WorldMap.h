@@ -106,6 +106,7 @@ namespace Core {
 
 			simplex.res = 8;
 			simplex.terrain_size = 1024;
+			simplex.tex_scale = 1.0f;
 
 
 			// Slight bumpy terrain
@@ -274,29 +275,36 @@ namespace Core {
 
 			glActiveTexture(GL_TEXTURE0);
 //			Core::sysTex->set(Core::sysTex->TEX_TESTPATTERN);
-			Core::sysTex->set(Core::sysTex->TEX_DIRT);
+			Core::sysTex->set(Core::sysTex->TEX_DIRT1);
 //			Core::sysTex->set(Core::sysTex->TEX_GRASS);
 //			gameVars->texture.terrain.Set("dirt1.png");
 //
-//			glActiveTexture(GL_TEXTURE1);
+			glActiveTexture(GL_TEXTURE1);
+			Core::sysTex->set(Core::sysTex->TEX_DIRT2);
 //			gameVars->texture.terrain.Set("grass1.png");
 //
-//			glActiveTexture(GL_TEXTURE2);
+			glActiveTexture(GL_TEXTURE2);
+			Core::sysTex->set(Core::sysTex->TEX_GRASS1);
 //			gameVars->texture.terrain.Set("rocky1.png");
 //
-//			glActiveTexture(GL_TEXTURE3);
+			glActiveTexture(GL_TEXTURE3);
+			Core::sysTex->set(Core::sysTex->TEX_GRASS2);
 //			gameVars->texture.terrain.Set("cliff1.png");
 //
-//			glActiveTexture(GL_TEXTURE4);
+			glActiveTexture(GL_TEXTURE4);
+			Core::sysTex->set(Core::sysTex->TEX_ROCKY1);
 //			gameVars->texture.terrain.Set("dirt2.png");
 //
-//			glActiveTexture(GL_TEXTURE5);
+			glActiveTexture(GL_TEXTURE5);
+			Core::sysTex->set(Core::sysTex->TEX_ROCKY2);
 //			gameVars->texture.terrain.Set("grass2.png");
 //
-//			glActiveTexture(GL_TEXTURE6);
+			glActiveTexture(GL_TEXTURE6);
+			Core::sysTex->set(Core::sysTex->TEX_CLIFF1);
 //			gameVars->texture.terrain.Set("rocky2.png");
 //
-//			glActiveTexture(GL_TEXTURE7);
+			glActiveTexture(GL_TEXTURE7);
+			Core::sysTex->set(Core::sysTex->TEX_CLIFF2);
 //			gameVars->texture.terrain.Set("cliff2.png");
 //
 //			glActiveTexture(GL_TEXTURE8);
@@ -329,10 +337,10 @@ namespace Core {
 //					if(chunk.second->bDraw) {	// Will hide terrain outside view range
 						Core::matrix->Push();
 
-							if(chunk.second->distance>simplex.iMax) Core::sysTex->set(Core::sysTex->TEX_DIRT);
-							else Core::sysTex->set(Core::sysTex->TEX_GRASS);
+//							if(chunk.second->distance>simplex.iMax) Core::sysTex->set(Core::sysTex->TEX_DIRT);
+//							else Core::sysTex->set(Core::sysTex->TEX_GRASS);
 
-							// TODO: Pass this shader, translating here causes issues with lights repeating
+							// TODO: Pass this to shader, translating here causes issues with lights repeating
 							int iX = chunk.second->x-32768;
 							int iZ = chunk.second->z-32768;
 							matrix->Translate(	iX*fPreScale,

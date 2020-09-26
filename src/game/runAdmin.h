@@ -284,19 +284,19 @@ void _Admin::init() {
 
 		cMaster.enableScissor();
 		//cMaster.setTextured();
-		cMaster.setTexture(Core::sysTex->TEX_GRASSYROCK, Core::sysTex->get());
+		cMaster.setTexture(Core::sysTex->TEX_ROCKY_GRASS, Core::sysTex->get());
 		cMaster.setTextureScrollRate(2.0f);
 		cMaster.colorBack.base		= &Core::colors[Core::colors().White];
 		cMaster.colorBack.active	= &Core::colors[Core::colors().White];
 		cMaster.colorBack.highlight	= &Core::colors[Core::colors().White];
 		Core::gui["GameMenu"].add("Window 4", cMaster);
-		cMaster.setTexture(Core::sysTex->TEX_GRASS, Core::sysTex->get());
+		cMaster.setTexture(Core::sysTex->TEX_GRASS1, Core::sysTex->get());
 		cMaster.setTextureScrollRate(0.5f);
 		cMaster.colorBack.base		= &Core::colors[Core::colors().White];
 		cMaster.colorBack.active	= &Core::colors[Core::colors().White];
 		cMaster.colorBack.highlight	= &Core::colors[Core::colors().White];
 		Core::gui["GameMenu"].add("Window 21", cMaster);
-		cMaster.setTexture(Core::sysTex->TEX_GRASSYDIRT, Core::sysTex->get());
+		cMaster.setTexture(Core::sysTex->TEX_MUD1, Core::sysTex->get());
 		cMaster.setTextureScrollRate(-0.2f);
 		cMaster.colorBack.base		= &Core::colors[Core::colors().Gray50];
 		cMaster.colorBack.active	= &Core::colors[Core::colors().White];

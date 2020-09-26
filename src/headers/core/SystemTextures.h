@@ -23,12 +23,20 @@ namespace Core {
 			enum eTexList {
 				TEX_TESTPATTERN = 0,
 				TEX_WATER,
-				TEX_DIRT,
-				TEX_GRASSYDIRT,
-				TEX_GRASS,
-				TEX_GRASSYROCK,
+				TEX_BOULDER,
+				TEX_CLIFF1,
+				TEX_CLIFF2,
+				TEX_DIRT1,
+				TEX_DIRT2,
+				TEX_GRASS1,
+				TEX_GRASS2,
+				TEX_MUD1,
+				TEX_MUD2,
 				TEX_ROCK,
-				TEX_CLIFF,
+				TEX_ROCKY_DIRT,
+				TEX_ROCKY_GRASS,
+				TEX_ROCKY1,
+				TEX_ROCKY2,
 				TEX_LAST
 				};
 
