@@ -475,8 +475,8 @@ namespace Core {
 													   layer.persistance );
 
 				e1a = simNoise1.fractal(	layer.octaves,
-										x,
-										z);
+											x,
+											z);
 
 				e1b += (std::pow(e1a, layer.power)*layer.scale);
 

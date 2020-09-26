@@ -60,7 +60,7 @@ namespace Core {
 				Atmosphere					atmosphere;
 				_Lights						lights;
 //				t_Vector1T<Map::Simplex>	simplex;
-				Map::Simplex				simplex;
+				t_UMap<std::string, Map::Simplex*>	simplex;
 				t_UMap<std::string, t_MapInstance*>	map;		///< Index = 0xFFFFFFFF where the first 0xFFFF is the X-grid and the second 0xFFFF is the Y grid
 //				int iMax;										///< Maximum view distance in chunks
 //				void set_iMax();
@@ -76,15 +76,26 @@ namespace Core {
 		_World::_World() {
 			// Default values
 //			iViewDistance = 8192*2;
-//			simplex.iViewDistance = 1024*32;
-			simplex.iViewDistance = 1024*32;
-			simplex.res = 8;
-			simplex.terrain_size = 1024;
-			simplex.set_iMax();
+//			simplex["Terrain"]->iViewDistance = 1024*32;
+
+			Map::Simplex *newSimplex = new Map::Simplex();
+			newSimplex->iViewDistance = 1024*16;
+			newSimplex->res = 4;
+			newSimplex->terrain_size = 1024;
+			newSimplex->set_iMax();
+			simplex.add("Terrain", newSimplex);
+
+			newSimplex = new Map::Simplex();
+			newSimplex->iViewDistance = 1024*16;
+			newSimplex->res = 1;
+			newSimplex->terrain_size = 1024;
+			newSimplex->set_iMax();
+			simplex.add("Water", newSimplex);
 		}
 
 		_World::~_World() {
 			for (auto item : map) delete item.second;
+			for (auto item : simplex) delete item.second;
 		}
 
 		void _World::init() {
@@ -99,59 +110,73 @@ namespace Core {
 			lights.load();
 			lights.calc(Core::gameVars->screen.fScale);
 
-			simplex.params.add("Base", Map::t_NoiseParams());
-			simplex.params.add("Hills", Map::t_NoiseParams());
-			simplex.params.add("Valleys", Map::t_NoiseParams());
-			simplex.params.add("Mountain", Map::t_NoiseParams());
+			simplex["Water"]->params.add("Base", Map::t_NoiseParams());
+			simplex["Water"]->res							= 1;
+			simplex["Water"]->terrain_size					= 1024;
+			simplex["Water"]->tex_scale						= 1.0f;
+			simplex["Water"]->terrain_height_offset			= -500.0f;
+			simplex["Water"]->params["Base"].frequency		= 0.00013f;
+			simplex["Water"]->params["Base"].amplitude		= 1.0f;
+			simplex["Water"]->params["Base"].lacunarity		= 2.0f;
+			simplex["Water"]->params["Base"].persistance	= 2.0f;
+			simplex["Water"]->params["Base"].power			= 1.0f;
+			simplex["Water"]->params["Base"].scale			= 100.0f;
+			simplex["Water"]->params["Base"].octaves		= 2;
 
-			simplex.res = 8;
-			simplex.terrain_size = 1024;
-			simplex.tex_scale = 1.0f;
+
+			simplex["Terrain"]->params.add("Base", Map::t_NoiseParams());
+			simplex["Terrain"]->params.add("Hills", Map::t_NoiseParams());
+			simplex["Terrain"]->params.add("Valleys", Map::t_NoiseParams());
+			simplex["Terrain"]->params.add("Mountain", Map::t_NoiseParams());
+
+			simplex["Terrain"]->res = 4;
+			simplex["Terrain"]->terrain_size = 1024;
+			simplex["Terrain"]->tex_scale = 10.0f;
 
 
 			// Slight bumpy terrain
-			simplex.params["Base"].frequency		= 0.00013f;
-			simplex.params["Base"].amplitude		= 1.0f;
-			simplex.params["Base"].lacunarity		= 3.6f;
-			simplex.params["Base"].persistance		= 1.0f; //-0.37f;
-			simplex.params["Base"].power			= 1.0f;
-			simplex.params["Base"].scale			= 100.0f;
-			simplex.params["Base"].octaves			= 3;
+			simplex["Terrain"]->params["Base"].frequency		= 0.00013f;
+			simplex["Terrain"]->params["Base"].amplitude		= 1.0f;
+			simplex["Terrain"]->params["Base"].lacunarity		= 2.0f;
+			simplex["Terrain"]->params["Base"].persistance		= 2.0f;
+			simplex["Terrain"]->params["Base"].power			= 3.0f;
+			simplex["Terrain"]->params["Base"].scale			= 250.0f; //100.0f;
+			simplex["Terrain"]->params["Base"].octaves			= 4; //3;
 
-			simplex.params["Hills"].frequency		= 0.00008f;
-			simplex.params["Hills"].amplitude		= 2.0f;
-			simplex.params["Hills"].lacunarity		= 2.2f; //2.6f;
-			simplex.params["Hills"].persistance		= 1.8f; //-0.37f;
-			simplex.params["Hills"].power			= 2.0f;
-			simplex.params["Hills"].scale			= 1000.0f;
-			simplex.params["Hills"].octaves			= 2;
+			simplex["Terrain"]->params["Hills"].frequency		= 0.00008f;
+			simplex["Terrain"]->params["Hills"].amplitude		= 2.0f;
+			simplex["Terrain"]->params["Hills"].lacunarity		= 2.2f;
+			simplex["Terrain"]->params["Hills"].persistance		= 1.8f;
+			simplex["Terrain"]->params["Hills"].power			= 3.0f;
+			simplex["Terrain"]->params["Hills"].scale			= 1000.0f;
+			simplex["Terrain"]->params["Hills"].octaves			= 2; //2;
 
-			simplex.params["Valleys"].frequency		= 0.000005f;
-			simplex.params["Valleys"].amplitude		= 5.0f;
-			simplex.params["Valleys"].lacunarity	= 1.8f; //1.6f;
-			simplex.params["Valleys"].persistance	= -2.0f; //-2.5f; //-0.37f;
-			simplex.params["Valleys"].power			= 3.0f; //4.0f;
-			simplex.params["Valleys"].scale			= -500.0f;
-			simplex.params["Valleys"].octaves		= 4;
+			simplex["Terrain"]->params["Valleys"].frequency		= 0.000005f;
+			simplex["Terrain"]->params["Valleys"].amplitude		= 5.0f;
+			simplex["Terrain"]->params["Valleys"].lacunarity	= 2.8f;
+			simplex["Terrain"]->params["Valleys"].persistance	= -1.0f;
+			simplex["Terrain"]->params["Valleys"].power			= 3.0f;
+			simplex["Terrain"]->params["Valleys"].scale			= -500.0f;
+			simplex["Terrain"]->params["Valleys"].octaves		= 3; //4;
 
-			simplex.params["Mountain"].frequency	= 0.00002f;
-			simplex.params["Mountain"].amplitude	= 1.0f;
-			simplex.params["Mountain"].lacunarity	= 0.7f;
-			simplex.params["Mountain"].persistance	= 0.11f;
-			simplex.params["Mountain"].power		= 1.0f;
-			simplex.params["Mountain"].scale		= 5000.0f;
-			simplex.params["Mountain"].octaves		= 1;
+			simplex["Terrain"]->params["Mountain"].frequency	= 0.00001f;
+			simplex["Terrain"]->params["Mountain"].amplitude	= 100.0f;
+			simplex["Terrain"]->params["Mountain"].lacunarity	= 0.25f;
+			simplex["Terrain"]->params["Mountain"].persistance	= 0.025f;
+			simplex["Terrain"]->params["Mountain"].power		= 3.0f;
+			simplex["Terrain"]->params["Mountain"].scale		= 20000.0f;
+			simplex["Terrain"]->params["Mountain"].octaves		= 4; //1;
 
-			//simplex.params.add("Ocean", Map::Simplex::t_NoiseParams());
+			//simplex["Terrain"]->params.add("Ocean", Map::Simplex::t_NoiseParams());
 
-			//iMax = iViewDistance/simplex.terrain_size;
-			simplex.set_iMax();
-			for(int x=-simplex.iMax; x<simplex.iMax; x++) {
-				for(int z=-simplex.iMax; z<simplex.iMax; z++) {
+			//iMax = iViewDistance/simplex["Terrain"]->terrain_size;
+			simplex["Terrain"]->set_iMax();
+			for(int x=-simplex["Terrain"]->iMax; x<simplex["Terrain"]->iMax; x++) {
+				for(int z=-simplex["Terrain"]->iMax; z<simplex["Terrain"]->iMax; z++) {
 
 					int dist = std::sqrt((x*x)+(z*z));
-					if(dist < simplex.iMax) {
-//						debug.log("Distance = "+std::to_string(dist)+"/"+std::to_string(simplex.iMax)+": ");
+					if(dist < simplex["Terrain"]->iMax) {
+//						debug.log("Distance = "+std::to_string(dist)+"/"+std::to_string(simplex["Terrain"]->iMax)+": ");
 						std::stringstream ssx, ssz;
 						ssx << std::setfill ('0') << std::setw(4);
 						ssx << std::hex << (x+32768);
@@ -165,44 +190,44 @@ namespace Core {
 						map.add(mapName, newMap);
 
 						// Will load center map at different resolution
-//						if(x==0 && z==0) simplex.res = 32;
-//						else simplex.res = 8;
+//						if(x==0 && z==0) simplex["Terrain"]->res = 32;
+//						else simplex["Terrain"]->res = 8;
 
-						map[mapName]->load(&simplex);
+						map[mapName]->load(simplex["Terrain"], simplex["Water"]);
 					}
 				}
 			}
 
 			// TESTING: Change view distance for distance calculation visualization (grass/dirt texture)
-//			simplex.iViewDistance = 1024*8;
+//			simplex["Terrain"]->iViewDistance = 1024*8;
 
 		}
 
 //		void _World::set_iMax() {
-//			iMax = iViewDistance/simplex.terrain_size;
+//			iMax = iViewDistance/simplex["Terrain"]->terrain_size;
 //		}
 
 		void _World::update() {
 			atmosphere.update(atmosphere.MODE_SATELLITE);
 //			atmosphere.update(atmosphere.MODE_FLORA);
 
-			simplex.set_iMax();	// In case parameters have changed
-			//int iMax = iViewDistance/simplex.terrain_size;
+			simplex["Terrain"]->set_iMax();	// In case parameters have changed
+			//int iMax = iViewDistance/simplex["Terrain"]->terrain_size;
 
 			t_Vector1T<std::string> removeMaps;
 
 			// Update distance for all chunks according to players current position
 			for ( auto chunk : map ) {
-				chunk.second->calcDistance(gameVars->player.active->transform.pos, simplex.terrain_size);
-				chunk.second->bDraw = chunk.second->distance<simplex.iMax;
+				chunk.second->calcDistance(gameVars->player.active->transform.pos, simplex["Terrain"]->terrain_size);
+				chunk.second->bDraw = chunk.second->distance<simplex["Terrain"]->iMax;
 
 				// TODO: Remove chunks beyond visibility
 				//	- Start a timer when bDraw active
 				//	- If timer expires, then drop chunk (prevents player from turning around needed to reload maps for a limited time)
 
 				//if(chunk.second->distance>iMax) debug.log("Chunk '"+chunk.first+"' is outside max range. ("+std::to_string(chunk.second->distance)+">"+std::to_string(iMax)+")\n");
-				if(chunk.second->distance>simplex.iMax) {
-//					debug.log("Chunk '"+chunk.first+"' is outside max range. ("+std::to_string(chunk.second->distance)+">"+std::to_string(simplex.iMax)+")\n");
+				if(chunk.second->distance>simplex["Terrain"]->iMax) {
+//					debug.log("Chunk '"+chunk.first+"' is outside max range. ("+std::to_string(chunk.second->distance)+">"+std::to_string(simplex["Terrain"]->iMax)+")\n");
 					//std::string removeMap = chunk.first;
 					//map.remove(removeMap);
 					removeMaps.add(chunk.first);
@@ -218,12 +243,12 @@ namespace Core {
 			}
 
 			// Check for new chunks in range
-			for(int x=-simplex.iMax; x<simplex.iMax; x++) {
-				for(int z=-simplex.iMax; z<simplex.iMax; z++) {
+			for(int x=-simplex["Terrain"]->iMax; x<simplex["Terrain"]->iMax; x++) {
+				for(int z=-simplex["Terrain"]->iMax; z<simplex["Terrain"]->iMax; z++) {
 					// Get players current chunk
 					Vector2f vA;
-					vA.x = -gameVars->player.active->transform.pos.x/simplex.terrain_size;
-					vA.y = -gameVars->player.active->transform.pos.z/simplex.terrain_size;
+					vA.x = -gameVars->player.active->transform.pos.x/simplex["Terrain"]->terrain_size;
+					vA.y = -gameVars->player.active->transform.pos.z/simplex["Terrain"]->terrain_size;
 
 					// Rounding
 					if(vA.x<0) vA.x-=1.0f; else vA.x+=1.0f;
@@ -253,11 +278,11 @@ namespace Core {
 						float distance = (vB-vA).length();
 
 						// Check if new chunk is in valid range
-						if(distance < simplex.iMax) {
+						if(distance < simplex["Terrain"]->iMax) {
 							// Load new chunk
 							t_MapInstance *newMap = new t_MapInstance(mapName);		// NOTE: mapName translates into the map offset here
 							map.add(mapName, newMap);
-							map[mapName]->load(&simplex);
+							map[mapName]->load(simplex["Terrain"], simplex["Water"]);
 						}
 					}
 				}
@@ -271,73 +296,67 @@ namespace Core {
 		void _World::draw() {
 			atmosphere.skybox.exosphere.draw();
 
-
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 			glActiveTexture(GL_TEXTURE0);
-//			Core::sysTex->set(Core::sysTex->TEX_TESTPATTERN);
 			Core::sysTex->set(Core::sysTex->TEX_DIRT1);
-//			Core::sysTex->set(Core::sysTex->TEX_GRASS);
-//			gameVars->texture.terrain.Set("dirt1.png");
-//
+
 			glActiveTexture(GL_TEXTURE1);
 			Core::sysTex->set(Core::sysTex->TEX_DIRT2);
-//			gameVars->texture.terrain.Set("grass1.png");
-//
+
 			glActiveTexture(GL_TEXTURE2);
 			Core::sysTex->set(Core::sysTex->TEX_GRASS1);
-//			gameVars->texture.terrain.Set("rocky1.png");
-//
+
 			glActiveTexture(GL_TEXTURE3);
 			Core::sysTex->set(Core::sysTex->TEX_GRASS2);
-//			gameVars->texture.terrain.Set("cliff1.png");
-//
+
 			glActiveTexture(GL_TEXTURE4);
 			Core::sysTex->set(Core::sysTex->TEX_ROCKY1);
-//			gameVars->texture.terrain.Set("dirt2.png");
-//
+
 			glActiveTexture(GL_TEXTURE5);
 			Core::sysTex->set(Core::sysTex->TEX_ROCKY2);
-//			gameVars->texture.terrain.Set("grass2.png");
-//
+
 			glActiveTexture(GL_TEXTURE6);
 			Core::sysTex->set(Core::sysTex->TEX_CLIFF1);
-//			gameVars->texture.terrain.Set("rocky2.png");
-//
+
 			glActiveTexture(GL_TEXTURE7);
 			Core::sysTex->set(Core::sysTex->TEX_CLIFF2);
-//			gameVars->texture.terrain.Set("cliff2.png");
-//
-//			glActiveTexture(GL_TEXTURE8);
-//			atmosphere->water.tex.Set(atmosphere->water.sWorld);
-//
-//			glActiveTexture(GL_TEXTURE0);
 
-//			int x=0, z=0;
-			glEnable(GL_CULL_FACE);
+			glActiveTexture(GL_TEXTURE8);
+			Core::sysTex->set(Core::sysTex->TEX_MUD1);
+
+			glActiveTexture(GL_TEXTURE9);
+			Core::sysTex->set(Core::sysTex->TEX_MUD2);
+
+			glActiveTexture(GL_TEXTURE10);
+			Core::sysTex->set(Core::sysTex->TEX_WATER);
+
+//			glEnable(GL_CULL_FACE);
+//			glDisable(GL_CULL_FACE);
 			Core::matrix->Push();
 				// Move chunk according to player
 				matrix->Rotate(Core::gameVars->player.active->transform.rot[0], 1.0, 0.0, 0.0);
 				matrix->Rotate(Core::gameVars->player.active->transform.rot[1], 0.0, 1.0, 0.0);
-				matrix->Translate(Core::gameVars->player.active->transform.pos[0]-(simplex.terrain_size/2),
+				matrix->Translate(Core::gameVars->player.active->transform.pos[0]-(simplex["Terrain"]->terrain_size/2),
 								  Core::gameVars->player.active->transform.pos[1],
-								  Core::gameVars->player.active->transform.pos[2]-(simplex.terrain_size/2));
+								  Core::gameVars->player.active->transform.pos[2]-(simplex["Terrain"]->terrain_size/2));
 
 				// Move chunk into place (Do in loader so lighting works easily)
 				Core::matrix->Scale(1*Core::gameVars->screen.fScale, 1*Core::gameVars->screen.fScale, 1*Core::gameVars->screen.fScale);
 				//matrix->Translate(x*1024*Core::gameVars->screen.fScale, 0.0f, z*1024*Core::gameVars->screen.fScale);
 
 				//shader->use(Core::GLS_PHONG);
-				Core::SHADER_PROGRAMS eShader = Core::GLS_PHONG;
+//				Core::SHADER_PROGRAMS eShader = Core::GLS_PHONG;
 //				Core::SHADER_PROGRAMS eShader = Core::GLS_FLAT;
-				shader->use(eShader);
+//				shader->use(eShader);
 
-				float fPreScale = simplex.terrain_size*Core::gameVars->screen.fScale;
+				float fPreScale = simplex["Terrain"]->terrain_size*Core::gameVars->screen.fScale;
 
 				for ( auto chunk : map ) {
 //					if(chunk.second->bDraw) {	// Will hide terrain outside view range
 						Core::matrix->Push();
 
-//							if(chunk.second->distance>simplex.iMax) Core::sysTex->set(Core::sysTex->TEX_DIRT);
+//							if(chunk.second->distance>simplex["Terrain"]->iMax) Core::sysTex->set(Core::sysTex->TEX_DIRT);
 //							else Core::sysTex->set(Core::sysTex->TEX_GRASS);
 
 							// TODO: Pass this to shader, translating here causes issues with lights repeating
@@ -349,9 +368,10 @@ namespace Core {
 
 
 							matrix->SetTransform();
-	//						shader->use(Core::GLS_PHONG);
-							shader->getUniform(eShader, &lights);
-							chunk.second->draw(eShader);
+							shader->use(Core::GLS_PHONG);
+							shader->getUniform(Core::GLS_PHONG, &lights);
+							chunk.second->drawTerrain();
+
 	//						debug.log("Drawing '"+chunk.first+"'\n");
 
 							// Draw vertex normals (~6fps drop)
@@ -366,7 +386,20 @@ namespace Core {
 //					}
 				}
 
-				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+				for ( auto chunk : map ) {
+						Core::matrix->Push();
+							int iX = chunk.second->x-32768;
+							int iZ = chunk.second->z-32768;
+							matrix->Translate(	iX*fPreScale,
+												0.0f,
+												iZ*fPreScale);
+
+							matrix->SetTransform();
+							shader->use(Core::GLS_WATER);
+							shader->getUniform(Core::GLS_WATER, &lights);
+							chunk.second->drawWater();
+						Core::matrix->Pop();
+				}
 			Core::matrix->Pop();
 
 //			x=1, z=0;
@@ -379,9 +412,9 @@ namespace Core {
 //
 //				// Move chunk into place (Do in loader so lighting works easily)
 //				Core::matrix->Scale(1*Core::gameVars->screen.fScale, 1*Core::gameVars->screen.fScale, 1*Core::gameVars->screen.fScale);
-//				matrix->Translate(	x*simplex.terrain_size*Core::gameVars->screen.fScale,
+//				matrix->Translate(	x*simplex["Terrain"]->terrain_size*Core::gameVars->screen.fScale,
 //									0.0f,
-//									z*simplex.terrain_size*Core::gameVars->screen.fScale);
+//									z*simplex["Terrain"]->terrain_size*Core::gameVars->screen.fScale);
 //				matrix->SetTransform();
 //
 //				shader->use(Core::GLS_PHONG);
@@ -410,9 +443,9 @@ namespace Core {
 //
 //				// Move chunk into place (Do in loader so lighting works easily)
 //				Core::matrix->Scale(1*Core::gameVars->screen.fScale, 1*Core::gameVars->screen.fScale, 1*Core::gameVars->screen.fScale);
-//				matrix->Translate(	x*simplex.terrain_size*Core::gameVars->screen.fScale,
+//				matrix->Translate(	x*simplex["Terrain"]->terrain_size*Core::gameVars->screen.fScale,
 //									0.0f,
-//									z*simplex.terrain_size*Core::gameVars->screen.fScale);
+//									z*simplex["Terrain"]->terrain_size*Core::gameVars->screen.fScale);
 //				matrix->SetTransform();
 //
 //				shader->use(Core::GLS_PHONG);
@@ -442,9 +475,9 @@ namespace Core {
 //
 //				// Move chunk into place (Do in loader so lighting works easily)
 //				Core::matrix->Scale(1*Core::gameVars->screen.fScale, 1*Core::gameVars->screen.fScale, 1*Core::gameVars->screen.fScale);
-//				matrix->Translate(	x*simplex.terrain_size*Core::gameVars->screen.fScale,
+//				matrix->Translate(	x*simplex["Terrain"]->terrain_size*Core::gameVars->screen.fScale,
 //									0.0f,
-//									z*simplex.terrain_size*Core::gameVars->screen.fScale);
+//									z*simplex["Terrain"]->terrain_size*Core::gameVars->screen.fScale);
 //				matrix->SetTransform();
 //
 //				shader->use(Core::GLS_PHONG);

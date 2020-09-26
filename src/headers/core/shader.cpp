@@ -207,6 +207,14 @@ namespace Core {
 				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
 				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
 				break;
+			case(Core::GLS_WATER):
+				sFileName	= "phong";
+//				std::cout << sOffset << "[" << sFileName << "]";
+				uiGLA		= GLASet.VERTEX_NORMAL_TEXTURE0;
+				//if (debug2) cout << "Loading Shader '" << sFileName << "'" << endl;
+				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
+				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
+				break;
 			case(Core::GLS_PHONG_O2D):
 				sFileName	= "phongO2D";
 //				std::cout << sOffset << "[" << sFileName << "]";
@@ -982,7 +990,11 @@ namespace Core {
 			  locTexture5,
 			  locTexture6,
 			  locTexture7,
+			  locTexture8,
+			  locTexture9,
+			  locTexture10,
 			  locObjPos,
+			  locWater,
 			  //locShadow,
 			  locColor,
 			  *locLightPos,
@@ -1088,19 +1100,24 @@ namespace Core {
 			goto ExitFunc;
 		}
 
-		if(eShader==Core::GLS_PHONG) {
-			locTexture0	= glGetUniformLocation(uiShaders[eShader], "texDirt1");
-			locTexture1	= glGetUniformLocation(uiShaders[eShader], "texDirt2");
-			locTexture2	= glGetUniformLocation(uiShaders[eShader], "texGrass1");
-			locTexture3	= glGetUniformLocation(uiShaders[eShader], "texGrass2");
-			locTexture4	= glGetUniformLocation(uiShaders[eShader], "texRocky1");
-			locTexture5	= glGetUniformLocation(uiShaders[eShader], "texRocky2");
-			locTexture6	= glGetUniformLocation(uiShaders[eShader], "texCliff1");
-			locTexture7	= glGetUniformLocation(uiShaders[eShader], "texCliff2");
+		if(eShader==Core::GLS_PHONG || eShader==Core::GLS_WATER) {
+			locTexture0		= glGetUniformLocation(uiShaders[eShader], "texDirt1");
+			locTexture1		= glGetUniformLocation(uiShaders[eShader], "texDirt2");
+			locTexture2		= glGetUniformLocation(uiShaders[eShader], "texGrass1");
+			locTexture3		= glGetUniformLocation(uiShaders[eShader], "texGrass2");
+			locTexture4		= glGetUniformLocation(uiShaders[eShader], "texRocky1");
+			locTexture5		= glGetUniformLocation(uiShaders[eShader], "texRocky2");
+			locTexture6		= glGetUniformLocation(uiShaders[eShader], "texCliff1");
+			locTexture7		= glGetUniformLocation(uiShaders[eShader], "texCliff2");
+			locTexture8		= glGetUniformLocation(uiShaders[eShader], "texMud1");
+			locTexture9		= glGetUniformLocation(uiShaders[eShader], "texMud2");
+			locTexture10	= glGetUniformLocation(uiShaders[eShader], "texWater");
 
-			locMVP		= glGetUniformLocation(uiShaders[eShader], "mvpMatrix");
-			locMV		= glGetUniformLocation(uiShaders[eShader], "mvMatrix");
-			locMP		= glGetUniformLocation(uiShaders[eShader], "mpMatrix");
+			locMVP			= glGetUniformLocation(uiShaders[eShader], "mvpMatrix");
+			locMV			= glGetUniformLocation(uiShaders[eShader], "mvMatrix");
+			locMP			= glGetUniformLocation(uiShaders[eShader], "mpMatrix");
+
+			locWater		= glGetUniformLocation(uiShaders[eShader], "bWater");
 
 			glUniform1i(locTexture0,	0);
 			glUniform1i(locTexture1,	1);
@@ -1110,10 +1127,16 @@ namespace Core {
 			glUniform1i(locTexture5,	5);
 			glUniform1i(locTexture6,	6);
 			glUniform1i(locTexture7,	7);
+			glUniform1i(locTexture8,	8);
+			glUniform1i(locTexture9,	9);
+			glUniform1i(locTexture10,	10);
 
 			glUniformMatrix4fv(locMVP,	1,	GL_FALSE,	matrix->GetModelViewProjection().data);
 			glUniformMatrix4fv(locMV,	1,	GL_FALSE,	matrix->GetModelView().data);
 			glUniformMatrix4fv(locMP,	1,	GL_FALSE,	matrix->GetProjectionMatrix().data);
+
+			if(eShader==Core::GLS_WATER) glUniform1i(locWater, true);
+			else glUniform1i(locWater, false);
 
 			locNumLights			= glGetUniformLocation(uiShaders[eShader], "iNumLights");
 			glUniform1i(locNumLights,				lights->GetNumLights());

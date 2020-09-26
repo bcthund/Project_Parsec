@@ -569,25 +569,25 @@ void _Admin::init() {
 		con.setMinMax(1.0f, 2048.0f);
 		con.setStep(1.0f, 2.0f, 10.0f);
 
-		Core::gui["GameMenu"]["Window 3"].Slider.add("Resolution", &game->world.simplex.res, con);
+		Core::gui["GameMenu"]["Window 3"].Slider.add("Resolution", &game->world.simplex["Terrain"]->res, con);
 
 		//
 		con.setY(410);
 		con.setMinMax(1.0f, 1000.0f);
 		con.setStep(1.0f, 2.0f, 10.0f);
-		Core::gui["GameMenu"]["Window 3"].Slider.add("Tex Scale", &game->world.simplex.tex_scale, con);
+		Core::gui["GameMenu"]["Window 3"].Slider.add("Tex Scale", &game->world.simplex["Terrain"]->tex_scale, con);
 
 		//
 		con.setY(380);
 		con.setMinMax(1.0f, 100000.0f);
 		con.setStep(1.0f, 10.0f, 100.0f);
-		Core::gui["GameMenu"]["Window 3"].Slider.add("Terrain Size", &game->world.simplex.terrain_size, con);
+		Core::gui["GameMenu"]["Window 3"].Slider.add("Terrain Size", &game->world.simplex["Terrain"]->terrain_size, con);
 
 		// Offset X
 		con.setY(350);
 		con.setMinMax(-10000.0f, 10000.0f);
 		con.setStep(1.0f, 10.0f, 100.0f);
-		Core::gui["GameMenu"]["Window 3"].Slider.add("Terrain Height", &game->world.simplex.terrain_height_offset, con);
+		Core::gui["GameMenu"]["Window 3"].Slider.add("Terrain Height", &game->world.simplex["Terrain"]->terrain_height_offset, con);
 
 		// Offset X
 //		con.setY(300);
@@ -605,7 +605,7 @@ void _Admin::init() {
 		con.setY(240);
 		con.setMinMax(1.0f, 100.0f);
 		con.setStep(1.0f, 2.0f, 10.0f);
-		Core::gui["GameMenu"]["Window 3"].Slider.add("Delta", &game->world.simplex.delta, con);
+		Core::gui["GameMenu"]["Window 3"].Slider.add("Delta", &game->world.simplex["Terrain"]->delta, con);
 
 		// Frequency
 //		con.setY(210);
