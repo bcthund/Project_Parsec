@@ -33,7 +33,7 @@ namespace Core {
 			private:
 				enum eTerrainType { TERRAIN_FLAT, TERRAIN_PERLIN, TERRAIN_SIMPLEX, TERRAIN_FRACTAL };
 //				void generateTerrainChunk(Map::Data &map, float SIZE, int VERTEX_COUNT, eTerrainType eType=TERRAIN_PERLIN, int iTexScale=1, float fHeightOffset=0.0f);
-				void generateTerrainChunk(int x, int z, Map::Data &map, Map::Simplex &simplex);
+				void generateTerrainChunk(int x, int z, Map::Data &map, Map::Simplex *simplex);
 
 				// Setup Perlin Noise
 				unsigned seed1 = 42;
@@ -118,13 +118,13 @@ namespace Core {
 //				Map::Data terrainChunk[4];		// Generic terrain chunk (TODO: LOD array)
 				Texture tex;				// Map specific textures
 				bool init();
-				bool load(int x, int z, Map::Data &ref, Map::Simplex &simplex);
+				bool load(int x, int z, Map::Data &ref, Map::Simplex *simplex);
 				bool calc(Map::Data &ref);
-				void update(int x, int z, Map::Data &ref, Map::Simplex &simplex);
+				void update(int x, int z, Map::Data &ref, Map::Simplex *simplex);
 //				void draw(Core::SHADER_PROGRAMS iShader, Core::_Lights &lights);
 				double getPerlinElevation(float x, float z, float w, float h);
 				double getPerlinMoisture(float x, float z, float w, float h);
-				double getSimplexElevation(float x, float z, Map::Simplex &simplex);
+				double getSimplexElevation(float x, float z, Map::Simplex *simplex);
 //				double getSimplexElevation(float x, float z, float freq, float amp, float lac, float per, int oct);
 				double getFractalElevation(float x, float z);
 		};
@@ -207,13 +207,13 @@ namespace Core {
 		/*
 		 * Create generic terrain chunks
 		 */
-		bool MapSys::load(int x, int z, Map::Data &ref, Map::Simplex &simplex) {
+		bool MapSys::load(int x, int z, Map::Data &ref, Map::Simplex *simplex) {
 //			Core::debug.log("Load MapSys {");
 
 			/*
 			 * Simulate loading entire world (first load essentially)
 			 */
-			Core::profiles->startProfile(Core::profiles->builtIn.MapSys_GeneratePerlin);
+//			Core::profiles->startProfile(Core::profiles->builtIn.MapSys_GeneratePerlin);
 
 //				switch(TERRAIN_TYPE) {
 //					case TERRAIN_PERLIN:
@@ -238,7 +238,7 @@ namespace Core {
 //						break;
 //				}
 
-			Core::profiles->stopProfile(Core::profiles->builtIn.MapSys_GeneratePerlin);
+//			Core::profiles->stopProfile(Core::profiles->builtIn.MapSys_GeneratePerlin);
 
 //			Core::debug.print(" Done, Generation time = "+std::to_string(Core::profiles->getTime(Core::profiles->builtIn.MapSys_GeneratePerlin))+" ", Core::debug().GREEN);
 //			Core::debug.print("}\n");
@@ -256,16 +256,15 @@ namespace Core {
 		 * Vertex_Count = Number of vertices per side (can be used for LOD?)
 		 */
 		//void MapSys::generateTerrainChunk(Map::Data &chunk, float SIZE, int VERTEX_COUNT, eTerrainType eType, int iTexScale, float fHeightOffset){
-		void MapSys::generateTerrainChunk(int x, int z, Map::Data &chunk, Map::Simplex &simplex){
+		void MapSys::generateTerrainChunk(int x, int z, Map::Data &chunk, Map::Simplex *simplex){
 
 			// TODO: Allow eType to be changed
-			float SIZE			= simplex.terrain_size;
-			int VERTEX_COUNT	= simplex.res+1;
+			float SIZE			= simplex->terrain_size;
+			int VERTEX_COUNT	= simplex->res+1;
 			eTerrainType eType	= TERRAIN_SIMPLEX;
-			int iTexScale		= simplex.tex_scale;
-			float fHeightOffset	= simplex.terrain_height_offset;
-			float DELTA			= simplex.delta;
-
+			int iTexScale		= simplex->tex_scale;
+			float fHeightOffset	= simplex->terrain_height_offset;
+			float DELTA			= simplex->delta;
 
 			chunk.numVerts = VERTEX_COUNT * VERTEX_COUNT;
 			chunk.numDrawVerts = 6*(VERTEX_COUNT-1)*(VERTEX_COUNT-1);
@@ -273,7 +272,6 @@ namespace Core {
 			chunk.vNorms = new Data3f[chunk.numVerts];
 			chunk.vCoords = new Data2f[chunk.numVerts];
 			chunk.vIndex = new GLuint[chunk.numDrawVerts];
-
 
 			long vertexPointer = 0;
 			for(int i=0;i<VERTEX_COUNT;i++){
@@ -405,7 +403,7 @@ namespace Core {
 			return true;
 		}
 
-		void MapSys::update(int x, int z, Map::Data &ref, Map::Simplex &simplex) {
+		void MapSys::update(int x, int z, Map::Data &ref, Map::Simplex *simplex) {
 
 //			switch(TERRAIN_TYPE) {
 //				case TERRAIN_PERLIN:
@@ -463,12 +461,12 @@ namespace Core {
 			return 0.0f;
 		}
 
-		double MapSys::getSimplexElevation(float x, float z, Map::Simplex &simplex) {
+		double MapSys::getSimplexElevation(float x, float z, Map::Simplex *simplex) {
 
 			double e1 = 0.0f;
 
 			// TODO: Implement simplex modification functions
-			for( auto const &layer : simplex.params ) {
+			for( auto const &layer : simplex->params ) {
 				double e1a = 0.0f;
 				double e1b = 0.0f;
 				SimplexNoise simNoise1 = SimplexNoise( layer.frequency,

@@ -32,10 +32,10 @@ namespace Core {
 				bool		 bDraw;		///< Controls drawing according to distance value
 //				static MapSys mapSys;
 
-				void load(Map::Simplex &simplex);
+				void load(Map::Simplex *simplex);
 				void setOffset(std::string offset);
 				float calcDistance(Vector3f a=Vector3f(0.0f), int terrain_size=1);
-				void load(std::string offset, Map::Simplex &simplex);
+				void load(std::string offset, Map::Simplex *simplex);
 //				void update();
 				void draw(Core::SHADER_PROGRAMS iShader);
 
@@ -89,18 +89,18 @@ namespace Core {
 		}
 
 		void t_MapInstance::setOffset(std::string offset) {
-			debug.log("Setting Map Offset: ");
+//			debug.log("Setting Map Offset: ");
 			std::stringstream ssx;
 			ssx << std::hex << offset.substr(0, 4);
 			ssx >> x;
-			debug.print(ssx.str()+", ");
+//			debug.print(ssx.str()+", ");
 
 			std::stringstream ssz;
 			ssz << std::hex << offset.substr(5, 4);
 			ssz >> z;
 
 			calcDistance();
-			debug.print(ssz.str()+"\n");
+//			debug.print(ssz.str()+"\n");
 		}
 
 		// when a=[0,0], player is at starting position
@@ -109,6 +109,10 @@ namespace Core {
 			Vector2f vA;
 			vA.x = -a.x/terrain_size;
 			vA.y = -a.z/terrain_size;
+
+			// Rounding
+			if(vA.x<0) vA.x-=1.0f; else vA.x+=1.0f;
+			if(vA.y<0) vA.y-=1.0f; else vA.y+=1.0f;
 
 			// Calculate distance in grid chunks
 			Vector2f vB;
@@ -119,13 +123,13 @@ namespace Core {
 			return distance;
 		}
 
-		void t_MapInstance::load(Map::Simplex &simplex) {
-			debug.log("Loading Map: ("+std::to_string(x)+"), ("+std::to_string(z)+")\n");
-			Sys::mapSys.load(x*simplex.terrain_size, z*simplex.terrain_size, Terrain.data, simplex);
+		void t_MapInstance::load(Map::Simplex *simplex) {
+//			debug.log("Loading Map: ("+std::to_string(x)+"), ("+std::to_string(z)+")\n");
+			Sys::mapSys.load(x*simplex->terrain_size, z*simplex->terrain_size, Terrain.data, simplex);
 			Sys::mapSys.calc(Terrain.data);
 		}
 
-		void t_MapInstance::load(std::string offset, Map::Simplex &simplex) {
+		void t_MapInstance::load(std::string offset, Map::Simplex *simplex) {
 			setOffset(offset);
 			load(simplex);
 		}

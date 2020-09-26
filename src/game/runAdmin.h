@@ -566,7 +566,7 @@ void _Admin::init() {
 
 		//
 		con.setY(440);
-		con.setMinMax(8.0f, 2048.0f);
+		con.setMinMax(1.0f, 2048.0f);
 		con.setStep(1.0f, 2.0f, 10.0f);
 
 		Core::gui["GameMenu"]["Window 3"].Slider.add("Resolution", &game->world.simplex.res, con);

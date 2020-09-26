@@ -77,8 +77,8 @@ namespace Core {
 			// Default values
 //			iViewDistance = 8192*2;
 //			simplex.iViewDistance = 1024*32;
-			simplex.iViewDistance = 1024*16;
-			simplex.res = 16;
+			simplex.iViewDistance = 1024*32;
+			simplex.res = 8;
 			simplex.terrain_size = 1024;
 			simplex.set_iMax();
 		}
@@ -104,7 +104,7 @@ namespace Core {
 			simplex.params.add("Valleys", Map::t_NoiseParams());
 			simplex.params.add("Mountain", Map::t_NoiseParams());
 
-			simplex.res = 16;
+			simplex.res = 8;
 			simplex.terrain_size = 1024;
 
 
@@ -167,13 +167,13 @@ namespace Core {
 //						if(x==0 && z==0) simplex.res = 32;
 //						else simplex.res = 8;
 
-						map[mapName]->load(simplex);
+						map[mapName]->load(&simplex);
 					}
 				}
 			}
 
 			// TESTING: Change view distance for distance calculation visualization (grass/dirt texture)
-			simplex.iViewDistance = 1024*4;
+//			simplex.iViewDistance = 1024*8;
 
 		}
 
@@ -185,39 +185,55 @@ namespace Core {
 			atmosphere.update(atmosphere.MODE_SATELLITE);
 //			atmosphere.update(atmosphere.MODE_FLORA);
 
-
 			simplex.set_iMax();	// In case parameters have changed
 			//int iMax = iViewDistance/simplex.terrain_size;
+
+			t_Vector1T<std::string> removeMaps;
 
 			// Update distance for all chunks according to players current position
 			for ( auto chunk : map ) {
 				chunk.second->calcDistance(gameVars->player.active->transform.pos, simplex.terrain_size);
 				chunk.second->bDraw = chunk.second->distance<simplex.iMax;
+
+				// TODO: Remove chunks beyond visibility
+				//	- Start a timer when bDraw active
+				//	- If timer expires, then drop chunk (prevents player from turning around needed to reload maps for a limited time)
+
 				//if(chunk.second->distance>iMax) debug.log("Chunk '"+chunk.first+"' is outside max range. ("+std::to_string(chunk.second->distance)+">"+std::to_string(iMax)+")\n");
+				if(chunk.second->distance>simplex.iMax) {
+//					debug.log("Chunk '"+chunk.first+"' is outside max range. ("+std::to_string(chunk.second->distance)+">"+std::to_string(simplex.iMax)+")\n");
+					//std::string removeMap = chunk.first;
+					//map.remove(removeMap);
+					removeMaps.add(chunk.first);
+				}
 			}
 
+			// Drop maps outside view range
+			if(removeMaps.size()>0) {
+				for (auto removeMap : removeMaps ) {
+					delete map[removeMap];
+					map.remove(removeMap);
+				}
+			}
 
 			// Check for new chunks in range
 			for(int x=-simplex.iMax; x<simplex.iMax; x++) {
 				for(int z=-simplex.iMax; z<simplex.iMax; z++) {
-
-
-
 					// Get players current chunk
 					Vector2f vA;
 					vA.x = -gameVars->player.active->transform.pos.x/simplex.terrain_size;
 					vA.y = -gameVars->player.active->transform.pos.z/simplex.terrain_size;
 
 					// Rounding
-					if(vA.x<0) vA.x-=0.5f; else vA.x+=0.5f;
-					if(vA.y<0) vA.y-=0.5f; else vA.y+=0.5f;
+					if(vA.x<0) vA.x-=1.0f; else vA.x+=1.0f;
+					if(vA.y<0) vA.y-=1.0f; else vA.y+=1.0f;
 
 					// Get offset chunk
 					Vector2f vB;
 					vB.x = x+int(vA.x);
 					vB.y = z+int(vA.y);
 
-					// TODO: Check if chunk is already loaded, should be one of first steps in new chunk check
+					// Get mapName, needed to check if loaded or load new
 					std::stringstream ssx, ssz;
 					ssx << std::setfill ('0') << std::setw(4);
 					ssx << std::hex << int(vB.x+32768);
@@ -225,35 +241,23 @@ namespace Core {
 					ssz << std::hex << int(vB.y+32768);
 					std::string mapName = ssx.str() + "_" + ssz.str();
 
-					debug.log(" Player Chunk = ("+std::to_string(vA.x)+","+std::to_string(vA.y)+")\n");
+//					debug.log(" Player Chunk = ("+std::to_string(vA.x)+","+std::to_string(vA.y)+")\n");
 //					debug.log("Terrain Chunk = ("+std::to_string(x)+","+std::to_string(z)+")\n");
 //					debug.log(" Offset Chunk = ("+std::to_string(vB.x)+","+std::to_string(vB.y)+") ["+ssx.str()+", "+ssz.str()+"]: ");
-					debug.log(" Offset Chunk = ("+std::to_string(vB.x)+","+std::to_string(vB.y)+") ["+mapName+"]: ");
+//					debug.log(" Offset Chunk = ("+std::to_string(vB.x)+","+std::to_string(vB.y)+") ["+mapName+"]: ");
 
-//					debug.log("Checking ("+ssx.str()+","+ssz.str()+"): Distance = "+std::to_string(distance)+"\n");
-
-					// TODO: If "Map Not Loaded" {
+					// Check if chunk is already loaded
 					if(!map.checkKey(mapName, false)) {
-						// TODO: Calculate distance from current chunk to new chunk
+						// Calculate distance from current chunk to new chunk
 						float distance = (vB-vA).length();
 
-						// TODO: Check if new chunk is in valid range
+						// Check if new chunk is in valid range
 						if(distance < simplex.iMax) {
-							debug.log("New Map - Within Range!\n\n");
-							//debug.log("Distance = "+std::to_string(dist)+"/"+std::to_string(simplex.iMax)+": ");
-							// TODO: Load new chunk
-							// TODO: Do this as a background thread?
-
+							// Load new chunk
 							t_MapInstance *newMap = new t_MapInstance(mapName);		// NOTE: mapName translates into the map offset here
 							map.add(mapName, newMap);
-							map[mapName]->load(simplex);
+							map[mapName]->load(&simplex);
 						}
-						else {
-							debug.log("New Map - Outside Range!\n\n");
-						}
-					}
-					else {
-						debug.log("Existing Map!\n\n");
 					}
 				}
 			}

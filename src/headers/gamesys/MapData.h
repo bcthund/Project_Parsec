@@ -121,10 +121,11 @@ namespace Core {
 				}
 
 				Simplex() {
+					debug.log("NEW SIMPLEX!\n");
 					bEnable		= true;
 
 //					res = 256;
-					res = 8;
+					res = 16;
 					tex_scale = 128.0f;
 //					terrain_size = 16384;
 					terrain_size = 1024;
