@@ -70,9 +70,11 @@ void main(void) {
 	for(int light=0; light<iNumLights; light++) {
 		diffuse += AddLight(iType[light], vLightDir[light], vLightPos[light], vDiffuseColor[light], vAmbientColor[light], vSpecularColor[light], vAttenuation[light], fMaxDarkness);
 		//ambient += vAmbientColor[light].rgb * texColor.rgb;
+		ambient += vAmbientColor[light].rgb;
 	}
 	//fragmentColor = vec4(ambient.rgb + (texColor.rgb * diffuse.rgb), texColor.a);
 	vec3 gamma = vec3(1.0/2.2);
-	vec3 finalColor = ambient.rgb + (texColor.rgb * diffuse.rgb);
+	//vec3 finalColor = ambient.rgb + (texColor.rgb * diffuse.rgb);
+	vec3 finalColor = texColor.rgb * (ambient.rgb + diffuse.rgb);
 	fragmentColor = vec4(pow(finalColor, gamma), texColor.a);
 }

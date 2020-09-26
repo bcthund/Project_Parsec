@@ -106,24 +106,14 @@ namespace Core {
 		// when a=[0,0], player is at starting position
 		float t_MapInstance::calcDistance(Vector3f a, int terrain_size) {
 			// Convert player coords to grid chunks
-//			int aX = -(a.x+(terrain_size/2.0f))/terrain_size,
-//				aZ = -(a.z+(terrain_size/2.0f))/terrain_size;
-			float aX = -a.x/terrain_size,
-				  aZ = -a.z/terrain_size;
-//			Vector2f vA = Vector2f(aX, aZ);
 			Vector2f vA;
-			vA.x = aX;
-			vA.y = aZ;
+			vA.x = -a.x/terrain_size;
+			vA.y = -a.z/terrain_size;
 
 			// Calculate distance in grid chunks
-			int bX = x-32768,
-				bZ = z-32768;
-//			Vector2f vB = Vector2f(bX, bZ);
 			Vector2f vB;
-			vB.x = bX;
-			vB.y = bZ;
-//			distance = abs(sqrt(aX*aX+aZ*aZ)-sqrt(bX*bX+bZ*bZ));//-a.length();
-			//distance = sqrt(aX*aX+aZ*aZ)-sqrt(bX*bX+bZ*bZ);//-a.length();
+			vB.x = int(x-32768);
+			vB.y = int(z-32768);
 			distance = (vB-vA).length();
 //			debug.log(std::to_string(distance)+" ["+std::to_string(aX)+", "+std::to_string(aZ)+"] ["+std::to_string(bX)+", "+std::to_string(bZ)+"]\n");
 			return distance;

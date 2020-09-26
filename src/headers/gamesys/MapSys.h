@@ -208,7 +208,7 @@ namespace Core {
 		 * Create generic terrain chunks
 		 */
 		bool MapSys::load(int x, int z, Map::Data &ref, Map::Simplex &simplex) {
-			Core::debug.log("Load MapSys {");
+//			Core::debug.log("Load MapSys {");
 
 			/*
 			 * Simulate loading entire world (first load essentially)
@@ -240,8 +240,8 @@ namespace Core {
 
 			Core::profiles->stopProfile(Core::profiles->builtIn.MapSys_GeneratePerlin);
 
-			Core::debug.print(" Done, Generation time = "+std::to_string(Core::profiles->getTime(Core::profiles->builtIn.MapSys_GeneratePerlin))+" ", Core::debug().GREEN);
-			Core::debug.print("}\n");
+//			Core::debug.print(" Done, Generation time = "+std::to_string(Core::profiles->getTime(Core::profiles->builtIn.MapSys_GeneratePerlin))+" ", Core::debug().GREEN);
+//			Core::debug.print("}\n");
 			return true;
 		}
 
@@ -391,7 +391,7 @@ namespace Core {
 		 * TODO: Calc(); Do general map calculations. (including LOD management?)
 		 */
 		bool MapSys::calc(Map::Data &ref) {
-			Core::debug.log("Calc Map {");
+//			Core::debug.log("Calc Map {");
 
 			ref.vao.Begin(GL_TRIANGLES, ref.numVerts, ref.numDrawVerts, 1);
 			ref.vao.CopyData(GLA_VERTEX, ref.vVerts);
@@ -400,8 +400,8 @@ namespace Core {
 			ref.vao.CopyData(GLA_INDEX, ref.vIndex, ref.numDrawVerts);
 			ref.vao.End();
 
-			Core::debug.print(" Done ", Core::debug().GREEN);
-			Core::debug.print("}\n");
+//			Core::debug.print(" Done ", Core::debug().GREEN);
+//			Core::debug.print("}\n");
 			return true;
 		}
 
