@@ -223,7 +223,7 @@ namespace Core {
 			void ColorSwatch::updateObjectState(iState eExternState) {
 
 				if(!(eExternState&STATE_NONE) && !(eExternState&STATE_UPDATE)) {
-					mState = Core::mouse->checkInput(gameVars->screen.half.x+con->pos.x, gameVars->screen.half.y-con->pos.y, con->size.x, con->size.y);
+					mState = Core::mouse->checkInput(gameVars->screen.activeProjection->half.x+con->pos.x, gameVars->screen.activeProjection->half.y-con->pos.y, con->size.x, con->size.y);
 				}
 				else this->mState = Core::_Mouse::MOUSE_NONE;
 

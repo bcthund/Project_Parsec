@@ -154,7 +154,7 @@ namespace Core {
 //				matrix->Translate( (Core::gameVars->font.vSize[0]*x)+Core::gameVars->font.screenCoords[0]+(w*32), (-Core::gameVars->font.vSize[1]*y)+Core::gameVars->font.screenCoords[1]-(h*32), 0.0 );
 //			}
 //			else {
-//				matrix->Translate( x+Core::gameVars->screen.origin[0]+(w*32), -y+Core::gameVars->screen.origin[1]-(h*32), 0.0 );
+//				matrix->Translate( x+Core::gameVars->screen.activeProjection->origin[0]+(w*32), -y+Core::gameVars->screen.activeProjection->origin[1]-(h*32), 0.0 );
 //			}
 //
 //			matrix->Scale(w,h,1);
@@ -257,7 +257,7 @@ namespace Core {
 		void _SpriteSys::draw(Core::GUI::Props *con, std::string sTex) {
 			glDisable(GL_CULL_FACE);
 			glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-			matrix->SetProjection(matrix->MM_ORTHO);
+			matrix->setProjection(matrix->MM_ORTHO, "ortho");
 			shader->use(GLS_FONT);
 
 			glDisable(GL_DEPTH_TEST);
@@ -282,7 +282,7 @@ namespace Core {
 				vao.Draw();
 
 			matrix->Pop();
-			matrix->SetProjection(matrix->MM_PERSPECTIVE);
+			matrix->setProjection(matrix->MM_PERSPECTIVE, "standard");
 			glEnable(GL_DEPTH_TEST);
 
 			glEnable(GL_CULL_FACE);
@@ -312,7 +312,7 @@ namespace Core {
 	//	//		matrix->Translate( (Core::gameVars->font.vSize[0]*x)+Core::gameVars->font.screenCoords[0]+(w*32), (-Core::gameVars->font.vSize[1]*y)+Core::gameVars->font.screenCoords[1]-(h*32), 0.0 );
 	//	//	}
 	//	//	else {
-	//	//		matrix->Translate( x+Core::gameVars->screen.origin[0]+(w*32), -y+Core::gameVars->screen.origin[1]-(h*32), 0.0 );
+	//	//		matrix->Translate( x+Core::gameVars->screen.activeProjection->origin[0]+(w*32), -y+Core::gameVars->screen.activeProjection->origin[1]-(h*32), 0.0 );
 	//	//	}
 	//	//	matrix->Scale(w,h,1);
 	//	//	// Do not set texture if bNoSet true, texture is set elsewhere
@@ -325,7 +325,7 @@ namespace Core {
 	//		//shader->use(uiShader);
 	//		//glDisable(GL_DEPTH_TEST);
 	//		//matrix->Push();
-	//		//	matrix->Translate( x+Core::gameVars->screen.origin[0]+(w*32), -y+Core::gameVars->screen.origin[1]-(h*32), 0.0 );
+	//		//	matrix->Translate( x+Core::gameVars->screen.activeProjection->origin[0]+(w*32), -y+Core::gameVars->screen.activeProjection->origin[1]-(h*32), 0.0 );
 	//		//	matrix->Scale(w, h, 1);
 	//
 	//			glActiveTexture(GL_TEXTURE0);
@@ -376,14 +376,14 @@ namespace Core {
 		uint _SpriteSys::draw(int x, int y, float w, float h, std::string sTex, bool textOffset) {
 			glDisable(GL_CULL_FACE);
 			glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-			matrix->SetProjection(matrix->MM_ORTHO);
+			matrix->setProjection(matrix->MM_ORTHO, "ortho");
 			shader->use(GLS_FONT);
 
 			glDisable(GL_DEPTH_TEST);
 			matrix->Push();
 				matrix->Translate( x, y, 0.0f );
 //				if (textOffset) matrix->Translate( (Core::gameVars->font.vSize[0]*x)+Core::gameVars->font.screenCoords[0]+(w*32), (-Core::gameVars->font.vSize[1]*y)+Core::gameVars->font.screenCoords[1]-(h*32), 0.0 );
-//				else matrix->Translate( x+Core::gameVars->screen.origin[0]+(w*32), -y+Core::gameVars->screen.origin[1]-(h*32), 0.0 );
+//				else matrix->Translate( x+Core::gameVars->screen.activeProjection->origin[0]+(w*32), -y+Core::gameVars->screen.activeProjection->origin[1]-(h*32), 0.0 );
 
 				matrix->Scale( w, h, 1);
 
@@ -397,7 +397,7 @@ namespace Core {
 				vao.Draw();
 
 			matrix->Pop();
-			matrix->SetProjection(matrix->MM_PERSPECTIVE);
+			matrix->setProjection(matrix->MM_PERSPECTIVE, "standard");
 			glEnable(GL_DEPTH_TEST);
 
 			glEnable(GL_CULL_FACE);
@@ -431,7 +431,7 @@ namespace Core {
 //			matrix->SetProjection(matrix->MM_ORTHO);
 //			matrix->Push();
 //				if (textOffset) matrix->Translate( (Core::gameVars->font.vSize[0]*x)+Core::gameVars->font.screenCoords[0]+(w*32), (-Core::gameVars->font.vSize[1]*y)+Core::gameVars->font.screenCoords[1]-(h*32), 0.0 );
-//				else matrix->Translate( x+Core::gameVars->screen.origin[0]+(w*32), -y+Core::gameVars->screen.origin[1]-(h*32), 0.0 );
+//				else matrix->Translate( x+Core::gameVars->screen.activeProjection->origin[0]+(w*32), -y+Core::gameVars->screen.activeProjection->origin[1]-(h*32), 0.0 );
 //
 //				matrix->Scale(w,h,1);
 //				//colors.SetActive(eColor);

@@ -370,7 +370,7 @@ namespace Core {
 					//skybox.thermosphere.fScale	= skybox.mesosphere.fScale+1000;
 					//skybox.exosphere.fScale		= skybox.thermosphere.fScale+1000;
 
-					skybox.troposphere.fScale		= 100000;
+					skybox.troposphere.fScale		= 500000;
 					skybox.stratosphere.fScale		= skybox.troposphere.fScale;		//Divide by 2 because the stratosphere has a model twice as big
 					skybox.mesosphere.fScale		= skybox.stratosphere.fScale;
 					skybox.thermosphere.fScale		= skybox.mesosphere.fScale;
@@ -1348,7 +1348,7 @@ namespace Core {
 				loadPly.load(loadFile);
 				//if (gameVars->debug.load)
 				//std::cout << "[" <<  loadPly.numDrawVerts << "]...";
-				skybox.exosphere.vao.Begin(GL_TRIANGLES,	loadPly.numVerts,	loadPly.numDrawVerts, 1);
+				skybox.exosphere.vao.Begin(GL_TRIANGLES,		loadPly.numVerts,	loadPly.numDrawVerts, 1);
 				skybox.exosphere.vao.CopyData(GLA_VERTEX,		loadPly.vVerts);
 				skybox.exosphere.vao.CopyData(GLA_NORMAL,		loadPly.vNorms);
 				skybox.exosphere.vao.CopyData(GLA_TEXTURE,		loadPly.vCoords, 0);
@@ -1903,7 +1903,7 @@ namespace Core {
 
 		void Atmosphere::draw(uint mode, ...) {
 			glDisable(GL_CULL_FACE);
-			glDisable(GL_DEPTH);
+			glDisable(GL_DEPTH_TEST);
 
 //			if(mode == MODE_TROPOSPHERE) {
 //				glActiveTexture(GL_TEXTURE0);
@@ -1969,6 +1969,9 @@ namespace Core {
 //				//glActiveTexture(GL_TEXTURE0);
 //			}
 //			else if(mode == MODE_EXOSPHERE) {
+
+			matrix->setProjection(Core::Matrix_System::MM_PERSPECTIVE, "atmosphere");
+
 			if(mode == MODE_EXOSPHERE) {
 
 				matrix->Push();
@@ -2030,6 +2033,8 @@ namespace Core {
 					particlesOld->draw(sType);
 				matrix->Pop();
 			}
+
+			matrix->setProjection(Core::Matrix_System::MM_PERSPECTIVE, "standard");
 //	else if(mode == MOON) {
 //		glActiveTexture(GL_TEXTURE0);
 //		moon.tex.Set(moon.sImage);
@@ -2132,7 +2137,7 @@ namespace Core {
 //		}
 //		glEnable(GL_CULL_FACE);
 //	}
-			glEnable(GL_DEPTH);
+			glEnable(GL_DEPTH_TEST);
 			glEnable(GL_CULL_FACE);
 		}
 	}

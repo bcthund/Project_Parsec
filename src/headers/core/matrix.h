@@ -18,14 +18,22 @@ namespace Core {
 		protected:
 			int iStackDepth;
 			Matrix44f	*	mvpStack;
+
+
+			// TODO: All Matrix44f can be lumped into t_UMap and then chosen by name rather than enum
 			Matrix44f		projMatrix;
-			Matrix44f		perspectiveMatrix;
+			//Matrix44f		perspectiveMatrix;
+			t_UMap<std::string, Matrix44f*> perspectiveMatrix;
 			Matrix44f		orthographicMatrix;
+
 			Matrix33f		mNormalMatrix;
 			Matrix44f		mLookAt;
 			Matrix44f		lightMatrix;
 		public:
-			enum MATRIX_MODES {  MM_PERSPECTIVE, MM_ORTHO, MM_LIGHT };
+			enum MATRIX_MODES { MM_ORTHO,
+								MM_LIGHT,
+								MM_PERSPECTIVE // MUST BE LAST! Perspective matrix can by anything at this value or above, so we can use "MM_PERSPECTIVE + n"
+							  };
 			int				iCurrentStack;
 			Matrix44f	*	mvStack;
 			Matrix44f	*	mMatrix;		// Model Matrix
@@ -56,10 +64,10 @@ namespace Core {
 			//void		Apply					(Matrix44f 	&mMatrix);
 
 			// Set the matrix states
-			void		SetPerspective			(Degrees degFov, float fAspect, float fNear, float fFar);
+			void		addPerspective			(std::string name, Degrees degFov, float fAspect, float fNear, float fFar);
 			void		SetOrtho				(float fHalfWidth, float fHalfHeight, float fNear, float fFar);
 			void		SetLight				(float fHalfWidth, float fHalfHeight, float fNear, float fFar);
-			void		SetProjection			(GLenum eProj);
+			void		setProjection			(GLenum eProj, std::string name);
 			void		LookAt					(Vector3f vEye, Vector3f vCenter, Vector3f vUp);
 			const		Matrix44f& GetLookAt	(Vector3f vEye, Vector3f vCenter, Vector3f vUp);		//Return a "Look At" matrix (i.e. view matrix)
 

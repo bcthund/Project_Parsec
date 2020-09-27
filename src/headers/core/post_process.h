@@ -591,7 +591,7 @@ namespace Core {
 			fY = (vuiScreenSize.y/2)-y;
 		}
 
-		matrix->SetProjection(matrix->MM_ORTHO);
+		matrix->setProjection(matrix->MM_ORTHO, "ortho");
 		shader->use(uiShader);
 
 		glDisable(GL_DEPTH_TEST);
@@ -603,7 +603,7 @@ namespace Core {
 			shader->getUniform(uiShader);
 			vao.Draw();
 			matrix->Pop();
-		matrix->SetProjection(matrix->MM_PERSPECTIVE);
+		matrix->setProjection(matrix->MM_PERSPECTIVE, "standard");
 		glEnable(GL_DEPTH_TEST);
 	}
 
@@ -622,7 +622,7 @@ namespace Core {
 		Core::colors.PushFront(Core::colors[Core::colors().White]);
 		Core::colors.SetActive(Core::colors.COLOR_FRONT);
 
-		matrix->SetProjection(matrix->MM_ORTHO);
+		matrix->setProjection(matrix->MM_ORTHO, "ortho");
 //		shader->use(uiShader);
 
 		glDisable(GL_DEPTH_TEST);
@@ -634,7 +634,7 @@ namespace Core {
 			//shader->getUniform(uiShader);
 			vao.Draw();
 			matrix->Pop();
-		matrix->SetProjection(matrix->MM_PERSPECTIVE);
+		matrix->setProjection(matrix->MM_PERSPECTIVE, "standard");
 		glEnable(GL_DEPTH_TEST);
 		Core::colors.PopFront();
 	}
@@ -648,7 +648,7 @@ namespace Core {
 		Core::colors.PushFront(Core::colors[Core::colors().White]);
 		Core::colors.SetActive(Core::colors.COLOR_FRONT);
 
-		matrix->SetProjection(matrix->MM_ORTHO);
+		matrix->setProjection(matrix->MM_ORTHO, "ortho");
 		shader->use(uiShader);
 
 		glDisable(GL_DEPTH_TEST);
@@ -662,7 +662,7 @@ namespace Core {
 			shader->getUniform(uiShader);
 			vao.Draw();
 			matrix->Pop();
-		matrix->SetProjection(matrix->MM_PERSPECTIVE);
+		matrix->setProjection(matrix->MM_PERSPECTIVE, "standard");
 		glEnable(GL_DEPTH_TEST);
 		Core::colors.PopFront();
 	}

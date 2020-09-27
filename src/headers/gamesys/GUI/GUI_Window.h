@@ -256,7 +256,7 @@ namespace Core {
 //				if(eExternState!=STATE_NONE && !(eExternState&STATE_UPDATE)) eObjectState = eExternState;
 //				else eObjectState = STATE_NONE;
 //
-//				mState = Core::mouse->checkInput(gameVars->screen.half.x+con->pos.x, gameVars->screen.half.y-con->pos.y, con->size.x, con->size.y);
+//				mState = Core::mouse->checkInput(gameVars->screen.activeProjection->half.x+con->pos.x, gameVars->screen.activeProjection->half.y-con->pos.y, con->size.x, con->size.y);
 //				// Report if mouse is in button space (debounce turning off)
 //				if(mState!=Core::_Mouse::MOUSE_NONE) { eObjectState = eObjectState|STATE_FOCUS; timeFocusDebounce.split(); }
 //				else if (timeFocusDebounce.get_splitdiff() > iFocusDebounce) eObjectState = eObjectState&~STATE_FOCUS;
@@ -283,10 +283,10 @@ namespace Core {
 					if(!(eExternState&STATE_UPDATE)) {
 						if(parent!=nullptr && parent->scroll.getEnabled()) {
 							Vector2f vPos = con->getScrollPos();
-							mState = Core::mouse->checkInput(gameVars->screen.half.x+vPos.x, gameVars->screen.half.y-vPos.y, con->size.x, con->size.y);
+							mState = Core::mouse->checkInput(gameVars->screen.activeProjection->half.x+vPos.x, gameVars->screen.activeProjection->half.y-vPos.y, con->size.x, con->size.y);
 						}
 						else {
-							mState = Core::mouse->checkInput(gameVars->screen.half.x+con->pos.x, gameVars->screen.half.y-con->pos.y, con->size.x, con->size.y);
+							mState = Core::mouse->checkInput(gameVars->screen.activeProjection->half.x+con->pos.x, gameVars->screen.activeProjection->half.y-con->pos.y, con->size.x, con->size.y);
 						}
 					}
 					else mState = Core::_Mouse::MOUSE_NONE;
@@ -355,8 +355,8 @@ namespace Core {
 			 */
 			void Window::checkScrollVisibility() {
 				Vector2f vPos = con->getPos();
-				vPos.x += Core::gameVars->screen.half.x;
-				vPos.y = Core::gameVars->screen.half.y - vPos.y;
+				vPos.x += Core::gameVars->screen.activeProjection->half.x;
+				vPos.y = Core::gameVars->screen.activeProjection->half.y - vPos.y;
 
 				activeContainer->scroll.iMaxScroll = std::max(activeContainer->scroll.iMaxScroll, int(vPos.y));
 //				activeContainer->scroll.iMaxScroll = std::max(activeContainer->scroll.iMaxScroll, int(vPos.y-(con->size.y)));
@@ -385,7 +385,7 @@ namespace Core {
 						glDisable(GL_DEPTH_TEST);
 						glDisable(GL_CULL_FACE);
 
-						matrix->SetProjection(matrix->MM_ORTHO);
+						matrix->setProjection(matrix->MM_ORTHO, "ortho");
 						shader->use(GLS_MENU);
 
 						//if(!bFocusPresent) updateObjectState(eExternState);
@@ -459,7 +459,7 @@ namespace Core {
 							vao.Draw();
 						matrix->Pop();
 
-						matrix->SetProjection(matrix->MM_PERSPECTIVE);
+						matrix->setProjection(matrix->MM_PERSPECTIVE, "standard");
 						colors.PopFront();
 						colors.PopBack();
 						glEnable(GL_CULL_FACE);

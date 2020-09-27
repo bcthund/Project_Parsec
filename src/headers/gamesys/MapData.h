@@ -103,6 +103,7 @@ namespace Core {
 				}
 			};
 
+			// TODO: Split into Simplix and Chunk data, a chunk may not necessarily need simplex data (water)
 			struct Simplex {
 				bool bEnable;	// Enable these debug variables
 				int res;

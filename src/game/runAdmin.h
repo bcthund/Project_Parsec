@@ -2050,7 +2050,7 @@ void _Admin::init() {
 		prop.colorB.base		= &Core::colors[Core::colors().Red];
 		prop.colorB.active		= &Core::colors[Core::colors().Red];
 		prop.colorB.highlight	= &Core::colors[Core::colors().Red];
-//		Core::gui["GameMenu"]["Window 22"].Line.add("Line Test", Core::Vector2i(0, 0), Core::Vector2i((int)Core::gameVars->screen.half.x, (int)Core::gameVars->screen.half.y), prop);
+//		Core::gui["GameMenu"]["Window 22"].Line.add("Line Test", Core::Vector2i(0, 0), Core::Vector2i((int)Core::gameVars->screen.activeProjection->half.x, (int)Core::gameVars->screen.activeProjection->half.y), prop);
 		Core::gui["GameMenu"]["Window 22"].Line.add("Line Test 1", Core::Vector2f(0, 0), Core::Vector2f(400, 0), prop);
 
 		prop.colorA.base		= &Core::colors[Core::colors().White];
@@ -2507,7 +2507,7 @@ void _Admin::run() {
 
 void _Admin::GetInput() {
 	SDL_PumpEvents();
-	Core::mouse->update(Core::gameVars->screen.half.x, Core::gameVars->screen.half.y);
+	Core::mouse->update(Core::gameVars->screen.activeProjection->half.x, Core::gameVars->screen.activeProjection->half.y);
 
 	// TODO: Add a ReturnFocus function, uses a timeout
 	keyboard.event = SDL_GetKeyboardState(NULL);
@@ -2583,7 +2583,7 @@ void _Admin::ProcessInput() {
 		Core::gameVars->runState.admin=false;
 //		bShowOneShot = false;
 		Core::mouse->ToggleMouse(SDL_TRUE);
-		//SDL_WarpMouseInWindow(Core::glinit->window, Core::gameVars->screen.fHalfW, Core::gameVars->screen.fHalfH);
+		//SDL_WarpMouseInWindow(Core::glinit->window, Core::gameVars->screen.activeProjection->fHalfW, Core::gameVars->screen.activeProjection->fHalfH);
 		//SDL_ShowCursor(SDL_DISABLE);
 	}
 	if (keyboard.keys[SDLK_F2].bActive) {

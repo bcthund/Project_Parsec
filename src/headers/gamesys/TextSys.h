@@ -1683,7 +1683,7 @@ namespace Core {
 		 * ****************************************************************************************************************************** */
 		void _TextSys::start(int x, int y, int fontNum, Core::_Colors::_ACTIVE_COLOR eColor) {
 			glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-			matrix->SetProjection(matrix->MM_ORTHO);
+			matrix->setProjection(matrix->MM_ORTHO, "ortho");
 			shader->use(GLS_FONT);
 			glDisable(GL_DEPTH_TEST);
 			matrix->Push();
@@ -1706,7 +1706,7 @@ namespace Core {
 		 * ****************************************************************************************************************************** */
 		void _TextSys::stop() {
 			matrix->Pop();
-			matrix->SetProjection(matrix->MM_PERSPECTIVE);
+			matrix->setProjection(matrix->MM_PERSPECTIVE, "standard");
 			glEnable(GL_DEPTH_TEST);
 		}
 
@@ -1807,7 +1807,7 @@ namespace Core {
 		 * ****************************************************************************************************************************** */
 		void _TextSys::draw(GUI::Props *con, std::string buffer, GUI::iConstrain anchor) {
 			glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-			matrix->SetProjection(matrix->MM_ORTHO);
+			matrix->setProjection(matrix->MM_ORTHO, "ortho");
 			shader->use(GLS_FONT);
 			glDisable(GL_DEPTH_TEST);
 			matrix->Push();
@@ -1854,7 +1854,7 @@ namespace Core {
 
 			}
 			matrix->Pop();
-			matrix->SetProjection(matrix->MM_PERSPECTIVE);
+			matrix->setProjection(matrix->MM_PERSPECTIVE, "standard");
 			glEnable(GL_DEPTH_TEST);
 		}
 
@@ -1880,8 +1880,8 @@ namespace Core {
 					con->limit.y = (con->size.y-(con->vPadding.top+con->vPadding.bottom))/(Core::gameVars->font.vSize.y);
 				}
 				else {
-					con->limit.x = gameVars->screen.res.x;
-					con->limit.y = gameVars->screen.res.y;
+					con->limit.x = gameVars->screen.activeProjection->res.x;
+					con->limit.y = gameVars->screen.activeProjection->res.y;
 				}
 				//con->limit.y = con->size.y-(con->vPadding.top+con->vPadding.bottom);
 				//con->limit.y = con->size.y-con->vPadding.top; //+con->vPadding.bottom);

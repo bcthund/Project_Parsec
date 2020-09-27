@@ -509,9 +509,9 @@ namespace Core {
 
 				if(parent!=nullptr && parent->scroll.getEnabled()) i0 += con->scroll.getX();
 				if(this->con->xMinValue<this->con->xMaxValue)
-					f1 = getNormalized(i0-Core::gameVars->screen.half.x, xMinPos, xMaxPos);
+					f1 = getNormalized(i0-Core::gameVars->screen.activeProjection->half.x, xMinPos, xMaxPos);
 				else
-					f1 = getNormalized(i0-Core::gameVars->screen.half.x, xMaxPos, xMinPos);
+					f1 = getNormalized(i0-Core::gameVars->screen.activeProjection->half.x, xMaxPos, xMinPos);
 
 				i2 = xSpanValue;
 
@@ -533,9 +533,9 @@ namespace Core {
 
 				if(parent!=nullptr && parent->scroll.getEnabled()) i0 += con->scroll.getY();
 				if(this->con->yMinValue<this->con->yMaxValue)
-					f1 = getNormalized(i0-Core::gameVars->screen.half.y, yMinPos, yMaxPos);
+					f1 = getNormalized(i0-Core::gameVars->screen.activeProjection->half.y, yMinPos, yMaxPos);
 				else
-					f1 = getNormalized(i0-Core::gameVars->screen.half.y, yMaxPos, yMinPos);
+					f1 = getNormalized(i0-Core::gameVars->screen.activeProjection->half.y, yMaxPos, yMinPos);
 
 				i2 = ySpanValue;
 
@@ -612,10 +612,10 @@ namespace Core {
 				else {
 					if(!(eExternState&STATE_UPDATE)) {
 						Vector2f vPos = slider.con->getScrollPos();
-						Core::_Mouse::iMouseState test1 = Core::mouse->checkInput(gameVars->screen.half.x+vPos.x, gameVars->screen.half.y-vPos.y, slider.con->size.x, slider.con->size.y);
+						Core::_Mouse::iMouseState test1 = Core::mouse->checkInput(gameVars->screen.activeProjection->half.x+vPos.x, gameVars->screen.activeProjection->half.y-vPos.y, slider.con->size.x, slider.con->size.y);
 
 						vPos = control.con->getScrollPos();
-						Core::_Mouse::iMouseState test2 = Core::mouse->checkInput(gameVars->screen.half.x+vPos.x, gameVars->screen.half.y-vPos.y, control.con->size.x, control.con->size.y);
+						Core::_Mouse::iMouseState test2 = Core::mouse->checkInput(gameVars->screen.activeProjection->half.x+vPos.x, gameVars->screen.activeProjection->half.y-vPos.y, control.con->size.x, control.con->size.y);
 						mState = test1 | test2;
 					}
 					else this->mState = Core::_Mouse::MOUSE_NONE;

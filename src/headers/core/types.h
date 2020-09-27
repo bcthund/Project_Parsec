@@ -2003,7 +2003,8 @@ namespace Core {
 
 			virtual VALUE & operator[](KEY key)	{
 				checkKey(key);
-				return typeList[key];
+				//return typeList[key];
+				return typeList.at(key);
 			}
 
 			virtual void setSource(std::string source) {
@@ -2017,7 +2018,7 @@ namespace Core {
 
 //			virtual T & add(std::string name, const T t, bool bThrow=true) {
 //			void add(std::string name, const T t, bool bThrow=true) {
-			virtual VALUE & add(KEY key, VALUE value, bool bThrow=true) {
+			VALUE & add(KEY key, VALUE value, bool bThrow=true) {
 				if(!checkKey(key, false)) {
 					typeList.insert(std::make_pair(key, value));
 					return typeList[key];
@@ -2072,6 +2073,26 @@ namespace Core {
 			auto end() 				{ return typeList.end(); }
 			auto begin() 	const	{ return typeList.cbegin(); }
 			auto end() 		const	{ return typeList.cend(); }
+	};
+
+	// Data used for Projection Matrix
+	struct t_ProjectionData {
+		std::string name;
+		Vector2f res;
+		Degrees degFov;
+		float fNear, fFar;
+		float fScreenAspect, fDistanceAspect;
+		Vector2f half;
+		Vector2i origin;
+
+		void init() {
+			fScreenAspect	= res.x/res.y;
+			fDistanceAspect	= fNear/fFar;
+			half.x			= res.x/2;
+			half.y			= res.y/2;
+			origin[0]		= -half.x;
+			origin[1]		= half.y;
+		}
 	};
 
 //	struct CompPair
