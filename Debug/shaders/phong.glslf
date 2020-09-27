@@ -26,6 +26,8 @@ uniform sampler2D texCliff1;
 uniform sampler2D texCliff2;
 uniform sampler2D texMud1;
 uniform sampler2D texMud2;
+uniform sampler2D texSnow1;
+uniform sampler2D texSnow2;
 uniform sampler2D texWater;
 
 // float fHigh         =  64.0f;
@@ -33,12 +35,15 @@ uniform sampler2D texWater;
 // float fLow          =   8.0f;
 // float fBottom       =  -8.0f;
 
-float fHigh         =  10000.0f;
-float fMid          =   8000.0f;
-float fLow          =   1000.0f;
-float fLevel        =   -500.0f;
-float fBottom       =  -1000.0f;
+float fOffset       =    500.0f;
+float fPeak         =  15000.0f + fOffset;
+float fHigh         =  10000.0f + fOffset;
+float fMid          =   6000.0f + fOffset;
+float fLow          =   1000.0f + fOffset;
+float fLevel        =   -500.0f + fOffset;
+float fBottom       =  -1000.0f + fOffset;
 
+float fadePeak      =   5000.0f;//8.0f;
 float fadeHigh      =   2000.0f;//8.0f;
 float fadeMid       =   2000.0f;//8.0f;
 float fadeLow       =   1000.0f;//8.0f;
@@ -119,13 +124,15 @@ void main(void) {
 	}
 	else {
         //MULTI TEXTURE HANDLING
+        float t5=0.0f;
         float t4=0.0f;
         float t3=0.0f;
         float t2=0.0f;
         float t1=0.0f;
         float t0=0.0f;
         float tot=0.0f;
-        if (data.vVert.y >= fHigh) { t4=1.0f; tot=1; }
+        if (data.vVert.y >= fPeak) { t5=1.0f; tot=1; }
+        else if ((data.vVert.y <= fPeak)  && (data.vVert.y > fHigh))    { t5=clamp((data.vVert.y-fHigh)/fadePeak,    0.0, 1.0); t4=1-t5; tot=1; }
         else if ((data.vVert.y <= fHigh)  && (data.vVert.y > fMid))     { t4=clamp((data.vVert.y-fMid)/fadeHigh,     0.0, 1.0); t3=1-t4; tot=1; }
         else if ((data.vVert.y <= fMid)   && (data.vVert.y > fLow))     { t3=clamp((data.vVert.y-fLow)/fadeMid,      0.0, 1.0); t2=1-t3; tot=1; }
         else if ((data.vVert.y <= fLow)   && (data.vVert.y > fLevel))   { t2=clamp((data.vVert.y-fLevel)/fadeLow,    0.0, 1.0); t1=1-t2; tot=1; }
@@ -136,14 +143,16 @@ void main(void) {
             vNewColor1 = vec4(0.0f),
             vNewColor2 = vec4(0.0f),
             vNewColor3 = vec4(0.0f),
-            vNewColor4 = vec4(0.0f);
+            vNewColor4 = vec4(0.0f),
+            vNewColor5 = vec4(0.0f);
         if(t0>0.0f) vNewColor0 = mix( texture2D(texMud1,   data.vTexCoords), texture2D(texMud2,   data.vTexCoords), 1.30-(data.vNormal.y+0.1)) * t0;
         if(t1>0.0f) vNewColor1 = mix( texture2D(texDirt1,  data.vTexCoords), texture2D(texDirt2,  data.vTexCoords), 1.30-(data.vNormal.y+0.1)) * t1;
         if(t2>0.0f) vNewColor2 = mix( texture2D(texGrass1, data.vTexCoords), texture2D(texGrass2, data.vTexCoords), 1.30-(data.vNormal.y+0.1)) * t2;
         if(t3>0.0f) vNewColor3 = mix( texture2D(texRocky1, data.vTexCoords), texture2D(texRocky2, data.vTexCoords), 1.30-(data.vNormal.y+0.1)) * t3;
         if(t4>0.0f) vNewColor4 = mix( texture2D(texCliff1, data.vTexCoords), texture2D(texCliff2, data.vTexCoords), 1.30-(data.vNormal.y+0.1)) * t4;
+        if(t5>0.0f) vNewColor5 = mix( texture2D(texSnow1,  data.vTexCoords), texture2D(texSnow2,  data.vTexCoords), 1.30-(data.vNormal.y+0.1)) * t5;
 
-        texColor = (vNewColor0 + vNewColor1 + vNewColor2 + vNewColor3 + vNewColor4);
+        texColor = (vNewColor0 + vNewColor1 + vNewColor2 + vNewColor3 + vNewColor4 + vNewColor5);
     
         finalColor = texColor.rgb * (ambient.rgb + diffuse.rgb);
         //fragmentColor = vec4(pow(finalColor, gamma), texColor.a);

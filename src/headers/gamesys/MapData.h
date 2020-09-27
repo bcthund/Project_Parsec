@@ -131,7 +131,6 @@ namespace Core {
 //					terrain_size = 16384;
 					terrain_size = 1024;
 					terrain_height_offset = 0.0f;
-
 					delta		= 32.0f;
 
 					set_iMax();

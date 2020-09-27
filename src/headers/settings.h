@@ -243,14 +243,14 @@ namespace Core {
 
 //		gameVars->screen.half.x						=	gameVars->screen.res.x/2;	//To speed up calculations
 //		gameVars->screen.half.y						=	gameVars->screen.res.y/2;	//To speed up calculations
-		gameVars->screen.bpp							=	16; 					//Display color depth
+		gameVars->screen.bpp						=	16; 					//Display color depth
 		gameVars->screen.frameRate					=	120; 					//Set the desired frame rate (fps) (Needs improvement, does not reach value properly)
 		//gameVars->screen.iTerrainGrid				=	1;						//Size of the terrain grid to load
 		//if (argc>0)	gameVars->screen.iTerrainGrid	=	strtol(argv[1], NULL, 10);				//Size of the terrain grid to load
 		//else		gameVars->screen.iTerrainGrid	=	9;						//Size of the terrain grid to load
 		//gameVars->screen.iGridOffset				=	gameVars->screen.iTerrainGrid/2;		//Used for loading map files
 		gameVars->screen.fScale						=	1.00f;						// TODO: Move to state class (Size of the terrain grid to load)
-		gameVars->controls.moveSpeed					=	0.25f * gameVars->screen.fScale;			//Character movement adjustment, reset by framerate later
+		gameVars->controls.moveSpeed				=	0.25f * gameVars->screen.fScale;			//Character movement adjustment, reset by framerate later
 //		gameVars->screen.fNear						=	1.0f;					//The near clipping plane
 //		gameVars->screen.fFar						=	500000.0f;				//The far clipping plane
 //		gameVars->screen.fNear						=	250000.0f;					//The near clipping plane
@@ -281,7 +281,7 @@ namespace Core {
 		gameVars->screen.projectionData["standard"]->res.x				= 1280;
 		gameVars->screen.projectionData["standard"]->res.y				= 720;
 		gameVars->screen.projectionData["standard"]->fNear				= 50.0f;
-		gameVars->screen.projectionData["standard"]->fFar				= 200000.0f;
+		gameVars->screen.projectionData["standard"]->fFar				= 500000.0f;
 		gameVars->screen.projectionData["standard"]->degFov				= 80;
 		gameVars->screen.setActiveProjection("standard").init();
 

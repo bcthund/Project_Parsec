@@ -993,6 +993,8 @@ namespace Core {
 			  locTexture8,
 			  locTexture9,
 			  locTexture10,
+			  locTexture11,
+			  locTexture12,
 			  locObjPos,
 			  locWater,
 			  //locShadow,
@@ -1111,7 +1113,9 @@ namespace Core {
 			locTexture7		= glGetUniformLocation(uiShaders[eShader], "texCliff2");
 			locTexture8		= glGetUniformLocation(uiShaders[eShader], "texMud1");
 			locTexture9		= glGetUniformLocation(uiShaders[eShader], "texMud2");
-			locTexture10	= glGetUniformLocation(uiShaders[eShader], "texWater");
+			locTexture10	= glGetUniformLocation(uiShaders[eShader], "texSnow1");
+			locTexture11	= glGetUniformLocation(uiShaders[eShader], "texSnow2");
+			locTexture12	= glGetUniformLocation(uiShaders[eShader], "texWater");
 
 			locMVP			= glGetUniformLocation(uiShaders[eShader], "mvpMatrix");
 			locMV			= glGetUniformLocation(uiShaders[eShader], "mvMatrix");
@@ -1130,6 +1134,8 @@ namespace Core {
 			glUniform1i(locTexture8,	8);
 			glUniform1i(locTexture9,	9);
 			glUniform1i(locTexture10,	10);
+			glUniform1i(locTexture11,	11);
+			glUniform1i(locTexture12,	12);
 
 			glUniformMatrix4fv(locMVP,	1,	GL_FALSE,	matrix->GetModelViewProjection().data);
 			glUniformMatrix4fv(locMV,	1,	GL_FALSE,	matrix->GetModelView().data);
