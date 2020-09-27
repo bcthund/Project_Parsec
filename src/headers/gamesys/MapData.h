@@ -83,16 +83,16 @@ namespace Core {
 				float fWeight;
 			};
 
-			struct t_NoiseParams {
+			struct t_SimplexParams {
 				float frequency, amplitude, lacunarity, persistance;
 				int octaves;
 				float power;
 				float scale;
 
 				// TODO: Implement
-				t_Vector1T<t_SimplexFunction> function;
+//				t_SimplexParams<t_SimplexFunction> function;
 
-				t_NoiseParams() {
+				t_SimplexParams() {
 					frequency	= 0.00025f; //0.0006; //0.000076; //0.00025f;
 					amplitude	= 1.0f;
 					lacunarity	= 2.9f; //6.553f; //6.004; //6.75325; //8.0f;
@@ -103,48 +103,135 @@ namespace Core {
 				}
 			};
 
-			// TODO: Split into Simplix and Chunk data, a chunk may not necessarily need simplex data (water)
-			struct Simplex {
+			struct t_PerlinParams {
+				t_PerlinParams() {}
+			};
+
+			struct t_FractalParams {
+				t_FractalParams() {}
+			};
+
+			struct t_RidgedParams {
+				t_RidgedParams() {}
+			};
+
+			// There only needs to be one of these per WorldMap
+			// Pointer created by noise type so multiple definition CAN exist (water with a larger chunk size)
+			struct t_ChunkData {
 				bool bEnable;	// Enable these debug variables
-				int res;
+				int chunk_resolution;
 				float tex_scale;
-				int terrain_size;
-				float terrain_height_offset;
+				int chunk_size;
+				float chunk_height_offset;
 				float delta;
 				int iMax;
 				int iViewDistance;
 
-//				t_UMap<std::string, t_NoiseParams> params;
-				t_VectorMap<t_NoiseParams> params;
-
 				void set_iMax() {
-					iMax = iViewDistance/terrain_size;
+					iMax = iViewDistance/chunk_size;
 				}
 
-				Simplex() {
-					debug.log("NEW SIMPLEX!\n");
+				t_ChunkData() {
 					bEnable		= true;
-
-//					res = 256;
-					res = 16;
+					chunk_resolution = 16;
 					tex_scale = 128.0f;
-//					terrain_size = 16384;
-					terrain_size = 1024;
-					terrain_height_offset = 0.0f;
+					chunk_size = 1024;
+					chunk_height_offset = 0.0f;
 					delta		= 32.0f;
 
 					set_iMax();
-
-					//params.add(t_NoiseParams());
-//					frequency	= 0.00025f; //0.0006; //0.000076; //0.00025f;
-//					amplitude	= 1.0f;
-//					lacunarity	= 2.9f; //6.553f; //6.004; //6.75325; //8.0f;
-//					persistance	= 0.33f; //0.139f; //0.150; //0.175; //0.175f;
-//					power		= 1.0f;
-//					scale		= 875.0f; //500.0f; //275.0f; //1750; //2500;
-//					octaves		= 3;
 				}
 			};
+
+			// TODO: Smoothstep either as Simplex option or additional type
+			struct t_Simplex {
+				t_ChunkData *parent;
+				t_VectorMap<t_SimplexParams> params;
+
+				t_Simplex(t_ChunkData *p) { parent = p; }
+			};
+
+			struct t_Perlin {
+				t_ChunkData *parent;
+				t_VectorMap<t_PerlinParams> params;
+
+				t_Perlin(t_ChunkData *p) { parent = p; }
+			};
+
+			struct t_Fractal {
+				t_ChunkData *parent;
+				t_VectorMap<t_FractalParams> params;
+
+				t_Fractal(t_ChunkData *p) { parent = p; }
+			};
+
+			struct t_Ridged {
+				t_ChunkData *parent;
+				t_VectorMap<t_RidgedParams> params;
+
+				t_Ridged(t_ChunkData *p) { parent = p; }
+			};
+
+			// TODO: Smoothstep either as Simplex option or additional type
+//			struct t_Ridged {
+//				t_ChunkData *parent;
+//				t_VectorMap<t_RidgedParams> params;
+//
+//				t_Ridged(t_ChunkData *p) { parent = p; }
+//			};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 		} /* namespace Map */

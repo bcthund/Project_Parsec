@@ -32,10 +32,18 @@ namespace Core {
 				bool		 bDraw;		///< Controls drawing according to distance value
 //				static MapSys mapSys;
 
-				void load(Map::Simplex *simplex, Map::Simplex *simplexWater);
+//				void load(Map::Simplex *simplex, Map::Simplex *simplexWater);
+				void load(Map::t_Simplex *noise);
+				void load(Map::t_Perlin *noise);
+				void load(Map::t_Fractal *noise);
+				void load(Map::t_Ridged *noise);
 				void setOffset(std::string offset);
-				float calcDistance(Vector3f a=Vector3f(0.0f), int terrain_size=1);
-				void load(std::string offset, Map::Simplex *simplex, Map::Simplex *simplexWater);
+				float update(Vector3f a=Vector3f(0.0f), int terrain_size=1);	///< Perform updates to chunk data and return current chunk distance
+//				void load(std::string offset, Map::Simplex *simplex, Map::Simplex *simplexWater);
+				void load(std::string offset, Map::t_Simplex *noise);
+				void load(std::string offset, Map::t_Perlin  *noise);
+				void load(std::string offset, Map::t_Fractal *noise);
+				void load(std::string offset, Map::t_Ridged  *noise);
 				void drawTerrain();
 				void drawWater();
 
@@ -102,16 +110,16 @@ namespace Core {
 			ssz << std::hex << offset.substr(5, 4);
 			ssz >> z;
 
-			calcDistance();
+			update();
 //			debug.print(ssz.str()+"\n");
 		}
 
 		// when a=[0,0], player is at starting position
-		float t_MapInstance::calcDistance(Vector3f a, int terrain_size) {
+		float t_MapInstance::update(Vector3f pos, int terrain_size) {
 			// Convert player coords to grid chunks
 			Vector2f vA;
-			vA.x = -a.x/terrain_size;
-			vA.y = -a.z/terrain_size;
+			vA.x = -pos.x/terrain_size;
+			vA.y = -pos.z/terrain_size;
 
 			// Rounding
 			if(vA.x<0) vA.x-=1.0f; else vA.x+=1.0f;
@@ -126,22 +134,62 @@ namespace Core {
 			return distance;
 		}
 
-		void t_MapInstance::load(Map::Simplex *simplexTerrain, Map::Simplex *simplexWater) {
-//			debug.log("Loading Map: ("+std::to_string(x)+"), ("+std::to_string(z)+")\n");
-			Sys::mapSys.load(x*simplexTerrain->terrain_size, z*simplexTerrain->terrain_size, Terrain.data, simplexTerrain);
+//		void t_MapInstance::load(Map::t_Simplex *simplexTerrain, Map::Simplex *simplexWater) {
+////			debug.log("Loading Map: ("+std::to_string(x)+"), ("+std::to_string(z)+")\n");
+//			Sys::mapSys.load(x*simplexTerrain->terrain_size, z*simplexTerrain->terrain_size, Terrain.data, simplexTerrain);
+//			Sys::mapSys.calc(Terrain.data);
+//
+//			// TODO: Water
+//			Sys::mapSys.load(x*simplexWater->terrain_size, z*simplexWater->terrain_size, Water.data, simplexWater);
+//			Sys::mapSys.calc(Water.data);
+//
+//			// TODO: O2D
+//			// TODO: O3D
+//		}
+
+		void t_MapInstance::load(Map::t_Simplex *noise) {
+			Sys::mapSys.load(x*noise->parent->chunk_size, z*noise->parent->chunk_size, Terrain.data, noise);
 			Sys::mapSys.calc(Terrain.data);
-
-			// TODO: Water
-			Sys::mapSys.load(x*simplexWater->terrain_size, z*simplexWater->terrain_size, Water.data, simplexWater);
-			Sys::mapSys.calc(Water.data);
-
-			// TODO: O2D
-			// TODO: O3D
 		}
 
-		void t_MapInstance::load(std::string offset, Map::Simplex *simplexTerrain, Map::Simplex *simplexWater) {
+		void t_MapInstance::load(Map::t_Perlin *noise) {
+			Sys::mapSys.load(x*noise->parent->chunk_size, z*noise->parent->chunk_size, Terrain.data, noise);
+			Sys::mapSys.calc(Terrain.data);
+		}
+
+		void t_MapInstance::load(Map::t_Fractal *noise) {
+			Sys::mapSys.load(x*noise->parent->chunk_size, z*noise->parent->chunk_size, Terrain.data, noise);
+			Sys::mapSys.calc(Terrain.data);
+		}
+
+		void t_MapInstance::load(Map::t_Ridged *noise) {
+			Sys::mapSys.load(x*noise->parent->chunk_size, z*noise->parent->chunk_size, Terrain.data, noise);
+			Sys::mapSys.calc(Terrain.data);
+		}
+
+//		void t_MapInstance::load(std::string offset, Map::Simplex *simplexTerrain, Map::Simplex *simplexWater) {
+//			setOffset(offset);
+//			load(simplexTerrain, simplexWater);
+//		}
+
+		void t_MapInstance::load(std::string offset, Map::t_Simplex *noise) {
 			setOffset(offset);
-			load(simplexTerrain, simplexWater);
+			load(noise);
+		}
+
+		void t_MapInstance::load(std::string offset, Map::t_Perlin *noise) {
+			setOffset(offset);
+			load(noise);
+		}
+
+		void t_MapInstance::load(std::string offset, Map::t_Fractal *noise) {
+			setOffset(offset);
+			load(noise);
+		}
+
+		void t_MapInstance::load(std::string offset, Map::t_Ridged *noise) {
+			setOffset(offset);
+			load(noise);
 		}
 
 //		void t_MapInstance::update() {

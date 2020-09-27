@@ -104,7 +104,8 @@ namespace Core {
 				Atmosphere					atmosphere;
 				_Lights						lights;
 //				t_Vector1T<Map::Simplex>	simplex;
-				t_UMap<std::string, Map::Simplex*>	simplex;
+				t_UMap<std::string, Map::t_ChunkData*> chunkSettings;
+				t_UMap<std::string, Map::t_Simplex*> simplex;
 				t_UMap<std::string, t_MapInstance*>	map;		///< Index = 0xFFFFFFFF where the first 0xFFFF is the X-grid and the second 0xFFFF is the Y grid
 //				int iMax;										///< Maximum view distance in chunks
 //				void set_iMax();
@@ -119,21 +120,20 @@ namespace Core {
 
 		_World::_World() {
 			// Default values
-//			iViewDistance = 8192*2;
-//			simplex["Terrain"]->iViewDistance = 1024*32;
-
-			Map::Simplex *newSimplex = new Map::Simplex();
-			newSimplex->iViewDistance = CONST_SIMPLEX.TERRAIN.VIEW_DISTANCE;
-			newSimplex->res = CONST_SIMPLEX.TERRAIN.CHUNK_RESOLUTION;
-			newSimplex->terrain_size = CONST_SIMPLEX.TERRAIN.CHUNK_SIZE;
-			newSimplex->set_iMax();
+			chunkSettings.add("Terrain", new Map::t_ChunkData);
+			chunkSettings["Terrain"]->iViewDistance = CONST_SIMPLEX.TERRAIN.VIEW_DISTANCE;
+			chunkSettings["Terrain"]->chunk_resolution = CONST_SIMPLEX.TERRAIN.CHUNK_RESOLUTION;
+			chunkSettings["Terrain"]->chunk_size = CONST_SIMPLEX.TERRAIN.CHUNK_SIZE;
+			chunkSettings["Terrain"]->set_iMax();
+			Map::t_Simplex *newSimplex = new Map::t_Simplex(chunkSettings["Terrain"]);
 			simplex.add("Terrain", newSimplex);
 
-			newSimplex = new Map::Simplex();
-			newSimplex->iViewDistance = CONST_SIMPLEX.WATER.VIEW_DISTANCE;
-			newSimplex->res = CONST_SIMPLEX.WATER.CHUNK_RESOLUTION;
-			newSimplex->terrain_size = CONST_SIMPLEX.WATER.CHUNK_SIZE;
-			newSimplex->set_iMax();
+			chunkSettings.add("Water", new Map::t_ChunkData);
+			chunkSettings["Water"]->iViewDistance = CONST_SIMPLEX.TERRAIN.VIEW_DISTANCE;
+			chunkSettings["Water"]->chunk_resolution = CONST_SIMPLEX.TERRAIN.CHUNK_RESOLUTION;
+			chunkSettings["Water"]->chunk_size = CONST_SIMPLEX.TERRAIN.CHUNK_SIZE;
+			chunkSettings["Water"]->set_iMax();
+			newSimplex = new Map::t_Simplex(chunkSettings["Water"]);
 			simplex.add("Water", newSimplex);
 		}
 
@@ -154,13 +154,13 @@ namespace Core {
 			lights.load();
 			lights.calc(Core::gameVars->screen.fScale);
 
-			simplex["Water"]->res								= CONST_SIMPLEX.WATER.CHUNK_RESOLUTION;
-			simplex["Water"]->terrain_size						= CONST_SIMPLEX.WATER.CHUNK_SIZE;
-			simplex["Water"]->tex_scale							= CONST_SIMPLEX.WATER.TEXTURE_SCALE;
-			simplex["Water"]->terrain_height_offset				= CONST_SIMPLEX.WATER.HEIGHT_OFFSET;
-			simplex["Water"]->delta								= CONST_SIMPLEX.WATER.DELTA;
+			simplex["Water"]->parent->chunk_resolution			= CONST_SIMPLEX.WATER.CHUNK_RESOLUTION;
+			simplex["Water"]->parent->chunk_size				= CONST_SIMPLEX.WATER.CHUNK_SIZE;
+			simplex["Water"]->parent->tex_scale					= CONST_SIMPLEX.WATER.TEXTURE_SCALE;
+			simplex["Water"]->parent->chunk_height_offset		= CONST_SIMPLEX.WATER.HEIGHT_OFFSET;
+			simplex["Water"]->parent->delta						= CONST_SIMPLEX.WATER.DELTA;
 
-			simplex["Water"]->params.add("Base", Map::t_NoiseParams());
+			simplex["Water"]->params.add("Base", Map::t_SimplexParams());
 			simplex["Water"]->params["Base"].frequency			= 0.00013f;
 			simplex["Water"]->params["Base"].amplitude			= 1.0f;
 			simplex["Water"]->params["Base"].lacunarity			= 2.0f;
@@ -169,13 +169,13 @@ namespace Core {
 			simplex["Water"]->params["Base"].scale				= 100.0f;
 			simplex["Water"]->params["Base"].octaves			= 2;
 
-			simplex["Terrain"]->res								= CONST_SIMPLEX.TERRAIN.CHUNK_RESOLUTION;
-			simplex["Terrain"]->terrain_size					= CONST_SIMPLEX.TERRAIN.CHUNK_SIZE;
-			simplex["Terrain"]->tex_scale						= CONST_SIMPLEX.TERRAIN.TEXTURE_SCALE;
-			simplex["Terrain"]->terrain_height_offset			= CONST_SIMPLEX.TERRAIN.HEIGHT_OFFSET;
-			simplex["Terrain"]->delta							= CONST_SIMPLEX.TERRAIN.DELTA;
+			simplex["Terrain"]->parent->chunk_resolution		= CONST_SIMPLEX.TERRAIN.CHUNK_RESOLUTION;
+			simplex["Terrain"]->parent->chunk_size				= CONST_SIMPLEX.TERRAIN.CHUNK_SIZE;
+			simplex["Terrain"]->parent->tex_scale				= CONST_SIMPLEX.TERRAIN.TEXTURE_SCALE;
+			simplex["Terrain"]->parent->chunk_height_offset		= CONST_SIMPLEX.TERRAIN.HEIGHT_OFFSET;
+			simplex["Terrain"]->parent->delta					= CONST_SIMPLEX.TERRAIN.DELTA;
 
-			simplex["Terrain"]->params.add("Base", Map::t_NoiseParams());
+			simplex["Terrain"]->params.add("Base", Map::t_SimplexParams());
 			simplex["Terrain"]->params["Base"].frequency		= 0.00013f;
 			simplex["Terrain"]->params["Base"].amplitude		= 1.0f;
 			simplex["Terrain"]->params["Base"].lacunarity		= 2.0f;
@@ -184,7 +184,7 @@ namespace Core {
 			simplex["Terrain"]->params["Base"].scale			= 250.0f; //100.0f;
 			simplex["Terrain"]->params["Base"].octaves			= 4; //3;
 
-			simplex["Terrain"]->params.add("Hills", Map::t_NoiseParams());
+			simplex["Terrain"]->params.add("Hills", Map::t_SimplexParams());
 			simplex["Terrain"]->params["Hills"].frequency		= 0.00008f;
 			simplex["Terrain"]->params["Hills"].amplitude		= 2.0f;
 			simplex["Terrain"]->params["Hills"].lacunarity		= 2.2f;
@@ -193,7 +193,7 @@ namespace Core {
 			simplex["Terrain"]->params["Hills"].scale			= 1000.0f;
 			simplex["Terrain"]->params["Hills"].octaves			= 2; //2;
 
-			simplex["Terrain"]->params.add("Valleys", Map::t_NoiseParams());
+			simplex["Terrain"]->params.add("Valleys", Map::t_SimplexParams());
 			simplex["Terrain"]->params["Valleys"].frequency		= 0.000005f;
 			simplex["Terrain"]->params["Valleys"].amplitude		= 5.0f;
 			simplex["Terrain"]->params["Valleys"].lacunarity	= 1.8f; //2.8f;
@@ -202,7 +202,7 @@ namespace Core {
 			simplex["Terrain"]->params["Valleys"].scale			= -500.0f;
 			simplex["Terrain"]->params["Valleys"].octaves		= 3; //4;
 
-			simplex["Terrain"]->params.add("Mountain", Map::t_NoiseParams());
+			simplex["Terrain"]->params.add("Mountain", Map::t_SimplexParams());
 			simplex["Terrain"]->params["Mountain"].frequency	= 0.00001f;
 			simplex["Terrain"]->params["Mountain"].amplitude	= 100.0f;
 			simplex["Terrain"]->params["Mountain"].lacunarity	= 1.025f;
@@ -211,7 +211,7 @@ namespace Core {
 			simplex["Terrain"]->params["Mountain"].scale		= 20000.0f;
 			simplex["Terrain"]->params["Mountain"].octaves		= 4; //1;
 
-			simplex["Terrain"]->params.add("Continent", Map::t_NoiseParams());
+			simplex["Terrain"]->params.add("Continent", Map::t_SimplexParams());
 			simplex["Terrain"]->params["Continent"].frequency	= 0.000001f;
 			simplex["Terrain"]->params["Continent"].amplitude	= 1.0f;
 			simplex["Terrain"]->params["Continent"].lacunarity	= 0.025f;
@@ -223,12 +223,12 @@ namespace Core {
 			//simplex["Terrain"]->params.add("Ocean", Map::Simplex::t_NoiseParams());
 
 			//iMax = iViewDistance/simplex["Terrain"]->terrain_size;
-			simplex["Terrain"]->set_iMax();
-			for(int x=-simplex["Terrain"]->iMax; x<simplex["Terrain"]->iMax; x++) {
-				for(int z=-simplex["Terrain"]->iMax; z<simplex["Terrain"]->iMax; z++) {
+			chunkSettings["Terrain"]->set_iMax();
+			for(int x=-chunkSettings["Terrain"]->iMax; x<chunkSettings["Terrain"]->iMax; x++) {
+				for(int z=-chunkSettings["Terrain"]->iMax; z<chunkSettings["Terrain"]->iMax; z++) {
 
 					int dist = std::sqrt((x*x)+(z*z));
-					if(dist < simplex["Terrain"]->iMax) {
+					if(dist < chunkSettings["Terrain"]->iMax) {
 //						debug.log("Distance = "+std::to_string(dist)+"/"+std::to_string(simplex["Terrain"]->iMax)+": ");
 						std::stringstream ssx, ssz;
 						ssx << std::setfill ('0') << std::setw(4);
@@ -246,7 +246,8 @@ namespace Core {
 //						if(x==0 && z==0) simplex["Terrain"]->res = 32;
 //						else simplex["Terrain"]->res = 8;
 
-						map[mapName]->load(simplex["Terrain"], simplex["Water"]);
+//						map[mapName]->load(simplex["Terrain"], simplex["Water"]);
+						map[mapName]->load(simplex["Terrain"]);
 					}
 				}
 			}
@@ -260,28 +261,29 @@ namespace Core {
 //			iMax = iViewDistance/simplex["Terrain"]->terrain_size;
 //		}
 
+		// TODO: Idea
 		void _World::update() {
 			atmosphere.update(atmosphere.MODE_SATELLITE);
 //			atmosphere.update(atmosphere.MODE_FLORA);
 
 
-			simplex["Terrain"]->delta = CONST_SIMPLEX.TERRAIN.DELTA;
-			simplex["Terrain"]->set_iMax();	// In case parameters have changed
+			chunkSettings["Terrain"]->delta = CONST_SIMPLEX.TERRAIN.DELTA;
+			chunkSettings["Terrain"]->set_iMax();	// In case parameters have changed
 			//int iMax = iViewDistance/simplex["Terrain"]->terrain_size;
 
 			t_Vector1T<std::string> removeMaps;
 
 			// Update distance for all chunks according to players current position
 			for ( auto chunk : map ) {
-				chunk.second->calcDistance(gameVars->player.active->transform.pos, simplex["Terrain"]->terrain_size);
-				chunk.second->bDraw = chunk.second->distance<simplex["Terrain"]->iMax;
+				chunk.second->update(gameVars->player.active->transform.pos, chunkSettings["Terrain"]->chunk_size);
+				chunk.second->bDraw = chunk.second->distance<chunkSettings["Terrain"]->iMax;
 
 				// TODO: Remove chunks beyond visibility
 				//	- Start a timer when bDraw active
 				//	- If timer expires, then drop chunk (prevents player from turning around needed to reload maps for a limited time)
 
 				//if(chunk.second->distance>iMax) debug.log("Chunk '"+chunk.first+"' is outside max range. ("+std::to_string(chunk.second->distance)+">"+std::to_string(iMax)+")\n");
-				if(chunk.second->distance>simplex["Terrain"]->iMax) {
+				if(chunk.second->distance>chunkSettings["Terrain"]->iMax) {
 //					debug.log("Chunk '"+chunk.first+"' is outside max range. ("+std::to_string(chunk.second->distance)+">"+std::to_string(simplex["Terrain"]->iMax)+")\n");
 					//std::string removeMap = chunk.first;
 					//map.remove(removeMap);
@@ -298,12 +300,12 @@ namespace Core {
 			}
 
 			// Check for new chunks in range
-			for(int x=-simplex["Terrain"]->iMax; x<simplex["Terrain"]->iMax; x++) {
-				for(int z=-simplex["Terrain"]->iMax; z<simplex["Terrain"]->iMax; z++) {
+			for(int x=-chunkSettings["Terrain"]->iMax; x<chunkSettings["Terrain"]->iMax; x++) {
+				for(int z=-chunkSettings["Terrain"]->iMax; z<chunkSettings["Terrain"]->iMax; z++) {
 					// Get players current chunk
 					Vector2f vA;
-					vA.x = -gameVars->player.active->transform.pos.x/simplex["Terrain"]->terrain_size;
-					vA.y = -gameVars->player.active->transform.pos.z/simplex["Terrain"]->terrain_size;
+					vA.x = -gameVars->player.active->transform.pos.x/chunkSettings["Terrain"]->chunk_size;
+					vA.y = -gameVars->player.active->transform.pos.z/chunkSettings["Terrain"]->chunk_size;
 
 					// Rounding
 					if(vA.x<0) vA.x-=1.0f; else vA.x+=1.0f;
@@ -333,11 +335,12 @@ namespace Core {
 						float distance = (vB-vA).length();
 
 						// Check if new chunk is in valid range
-						if(distance < simplex["Terrain"]->iMax) {
+						if(distance < chunkSettings["Terrain"]->iMax) {
 							// Load new chunk
 							t_MapInstance *newMap = new t_MapInstance(mapName);		// NOTE: mapName translates into the map offset here
 							map.add(mapName, newMap);
-							map[mapName]->load(simplex["Terrain"], simplex["Water"]);
+//							map[mapName]->load(simplex["Terrain"], simplex["Water"]);
+							map[mapName]->load(simplex["Terrain"]);
 						}
 					}
 				}
@@ -398,9 +401,9 @@ namespace Core {
 				// Move chunk according to player
 				matrix->Rotate(Core::gameVars->player.active->transform.rot[0], 1.0, 0.0, 0.0);
 				matrix->Rotate(Core::gameVars->player.active->transform.rot[1], 0.0, 1.0, 0.0);
-				matrix->Translate(Core::gameVars->player.active->transform.pos[0]-(simplex["Terrain"]->terrain_size/2),
+				matrix->Translate(Core::gameVars->player.active->transform.pos[0]-(chunkSettings["Terrain"]->chunk_size/2),
 								  Core::gameVars->player.active->transform.pos[1],
-								  Core::gameVars->player.active->transform.pos[2]-(simplex["Terrain"]->terrain_size/2));
+								  Core::gameVars->player.active->transform.pos[2]-(chunkSettings["Terrain"]->chunk_size/2));
 
 				// Move chunk into place (Do in loader so lighting works easily)
 				Core::matrix->Scale(1*Core::gameVars->screen.fScale, 1*Core::gameVars->screen.fScale, 1*Core::gameVars->screen.fScale);
@@ -411,7 +414,7 @@ namespace Core {
 //				Core::SHADER_PROGRAMS eShader = Core::GLS_FLAT;
 //				shader->use(eShader);
 
-				float fPreScale = simplex["Terrain"]->terrain_size*Core::gameVars->screen.fScale;
+				float fPreScale = chunkSettings["Terrain"]->chunk_size*Core::gameVars->screen.fScale;
 
 				for ( auto chunk : map ) {
 //					if(chunk.second->bDraw) {	// Will hide terrain outside view range
