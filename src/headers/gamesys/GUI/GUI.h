@@ -471,8 +471,8 @@ namespace Core {
 			c.setOrigin(CONSTRAIN_CENTER);
 			c.setAnchor(CONSTRAIN_CENTER);
 			c.setPos(0, 0);
-			c.setWidth(Core::gameVars->screen.res.x, SIZE_CONSTRAINT_ABSOLUTE);
-			c.setHeight(Core::gameVars->screen.res.y, SIZE_CONSTRAINT_ABSOLUTE);
+			c.setWidth(Core::gameVars->screen.activeProjection->res.x, SIZE_CONSTRAINT_ABSOLUTE);
+			c.setHeight(Core::gameVars->screen.activeProjection->res.y, SIZE_CONSTRAINT_ABSOLUTE);
 			c.setPadding(0);
 			c.colorBack.base = &colors[colors().Transparent];
 			c.colorBack.active = &colors[colors().Transparent];

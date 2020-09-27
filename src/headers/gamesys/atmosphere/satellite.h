@@ -346,8 +346,8 @@ namespace Core {
 				data[id]->iQuadSamples = (data[id]->fQuadSize * data[id]->fQuadSize);
 			}
 
-			gameVars->screen.fScreenAspect;
-			gameVars->screen.fDistanceAspect;
+			gameVars->screen.activeProjection->fScreenAspect;
+			gameVars->screen.activeProjection->fDistanceAspect;
 
 			if (data[id]->bQuery) occlusion->SetSamples(data[id]->sName, data[id]->iQuadSamples);
 
@@ -537,12 +537,12 @@ namespace Core {
 				t = "sunToCenterNormal = " + std::to_string(sunToCenterNormal.x) + ", " + std::to_string(sunToCenterNormal.y)/* + ", " + std::to_string(sunToCenter[2])*/;	//							gameSys.drawText(7, o++, t, Core::gameVars->color.green);
 				if (bDebug) std::cout << t << std::endl;
 
-				sunToCenter.x = sunToCenterNormal.x * gameVars->screen.half.x;
-				sunToCenter.y = sunToCenterNormal.y * gameVars->screen.half.y;
+				sunToCenter.x = sunToCenterNormal.x * gameVars->screen.activeProjection->half.x;
+				sunToCenter.y = sunToCenterNormal.y * gameVars->screen.activeProjection->half.y;
 				t = "sunToCenter = " + std::to_string(sunToCenter.x) + ", " + std::to_string(sunToCenter.y)/* + ", " + std::to_string(sunToCenter[2])*/;	//							gameSys.drawText(7, o++, t, Core::gameVars->color.green);
 				if (bDebug) std::cout << t << std::endl;
 
-				float sunToCenterLength = sunToCenter.length()/gameVars->screen.res.length();
+				float sunToCenterLength = sunToCenter.length()/gameVars->screen.activeProjection->res.length();
 				t = "sunToCenterLength = " + std::to_string(sunToCenterLength);										//					gameSys.drawText(1, o++, t, Core::gameVars->color.red);
 				if (bDebug) std::cout << t << std::endl;
 
@@ -579,8 +579,8 @@ namespace Core {
 								direction.x *= (i*spacing);
 								direction.y *= (i*spacing);
 
-								data[id]->vFlarePos[i].x =  ( (sunCoords_w2.x + direction.x) * Core::gameVars->screen.res.x );
-								data[id]->vFlarePos[i].y =  ( (sunCoords_w2.y + direction.y) * Core::gameVars->screen.res.y );
+								data[id]->vFlarePos[i].x =  ( (sunCoords_w2.x + direction.x) * Core::gameVars->screen.activeProjection->res.x );
+								data[id]->vFlarePos[i].y =  ( (sunCoords_w2.y + direction.y) * Core::gameVars->screen.activeProjection->res.y );
 
 								// Debug drawing
 //								Core::matrix->Translate(data[id]->vFlarePos[i].x, data[id]->vFlarePos[i].y, 1.0f);
@@ -589,7 +589,7 @@ namespace Core {
 							Core::matrix->Pop();
 						}
 					}
-					Core::matrix->SetProjection(Core::matrix->MM_PERSPECTIVE);
+					Core::matrix->setProjection(Core::matrix->MM_PERSPECTIVE, "standard");
 				Core::matrix->Pop();
 				if (bDebug) std::cout << std::endl;
 //
@@ -661,7 +661,7 @@ namespace Core {
 
 				glinit->EnableAdditiveBlending();
 				matrix->Push();
-				Core::matrix->SetProjection(Core::matrix->MM_ORTHO);
+				Core::matrix->setProjection(Core::matrix->MM_ORTHO, "ortho");
 				Core::matrix->SetIdentity();
 				for (int n=0; n<9; n++) {
 					matrix->Push();
@@ -671,7 +671,7 @@ namespace Core {
 						helper->drawPointSprite(data[id]->vFlarePos[n].z, 0.0, Color(1.0, 1.0, 1.0, data[id]->fFlareAlpha), helper->GLPOINT_CIRCLE);
 					matrix->Pop();
 				}
-				Core::matrix->SetProjection(Core::matrix->MM_PERSPECTIVE);
+				Core::matrix->setProjection(Core::matrix->MM_PERSPECTIVE, "standard");
 				matrix->Pop();
 				glinit->DisableAdditiveBlending();
 			}

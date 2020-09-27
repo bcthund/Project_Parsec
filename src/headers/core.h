@@ -714,13 +714,14 @@
 		void Setup(int argc, char* argv[]) {
 			//shader = new Shader_System;
 
+			// SETTINGS
 			Core::Setup_GameVars(argc, argv);
 
 			// TODO: Get this info from settings file
 			std::string sCaption = "Project Parsec";
 			Core::glinit->init(	sCaption,
-								Core::gameVars->screen.res.x,
-								Core::gameVars->screen.res.y,
+								Core::gameVars->screen.activeProjection->res.x,
+								Core::gameVars->screen.activeProjection->res.y,
 								Core::gameVars->screen.bpp,
 								Core::gameVars->screen.MultiSample,
 								Core::gameVars->screen.vClearColorBase);
@@ -739,7 +740,7 @@
 
 			//Core::shader = new Core::Shader_System;
 //			Core::shader->init(&Core::gameVars->player.active->transform.pos, &Core::gameVars->font.vColor);	// Must be after GlInit.init
-			Core::shader->init(&Core::gameVars->screen.res, &Core::gameVars->player.active->transform.pos);	// Must be after GlInit.init
+			Core::shader->init(&Core::gameVars->screen.activeProjection->res, &Core::gameVars->player.active->transform.pos);	// Must be after GlInit.init
 
 			// Must be after GlInit.init
 			Core::shader->load();	// Load ALL defined shaders
@@ -766,7 +767,7 @@
 //			Core::shader->load(Core::GLS_EXOSPHERE);
 
 			// Post Processing
-			Core::postProcess->init(Core::gameVars->screen.res.x, Core::gameVars->screen.res.y, Core::gameVars->screen.uiMultiSamples);
+			Core::postProcess->init(Core::gameVars->screen.activeProjection->res.x, Core::gameVars->screen.activeProjection->res.y, Core::gameVars->screen.uiMultiSamples);
 
 			// Helper Objects
 			Core::helper->init();
@@ -804,14 +805,22 @@
 //			matrix->SetOrtho(Core::gameVars->screen.fHalfW, Core::gameVars->screen.fHalfH, 1.0f, 1000.0f);
 
 			// Reverse Z Depth
-			matrix->SetPerspective(	Core::gameVars->screen.degFov,
-									(float)Core::gameVars->screen.res.x/(float)Core::gameVars->screen.res.y,
-									Core::gameVars->screen.fNear,
-									Core::gameVars->screen.fFar);
-			matrix->SetOrtho(Core::gameVars->screen.half.x, Core::gameVars->screen.half.y, 100.0f, 0.0f);
+			matrix->addPerspective(	"standard",
+									Core::gameVars->screen.projectionData["standard"]->degFov,
+									Core::gameVars->screen.projectionData["standard"]->fScreenAspect,
+									Core::gameVars->screen.projectionData["standard"]->fNear,
+									Core::gameVars->screen.projectionData["standard"]->fFar);
+
+			matrix->addPerspective(	"atmosphere",
+									Core::gameVars->screen.projectionData["atmosphere"]->degFov,
+									Core::gameVars->screen.projectionData["atmosphere"]->fScreenAspect,
+									Core::gameVars->screen.projectionData["atmosphere"]->fNear,
+									Core::gameVars->screen.projectionData["atmosphere"]->fFar);
+
+			matrix->SetOrtho(Core::gameVars->screen.projectionData["standard"]->half.x, Core::gameVars->screen.projectionData["standard"]->half.y, 100.0f, 0.0f);
 
 			// Init/Load/Calc Core Systems
-			matrix->SetProjection(matrix->MM_PERSPECTIVE);
+			matrix->setProjection(matrix->MM_PERSPECTIVE, "standard");
 			//matrix->SetProjection(matrix->MM_ORTHO);
 
 			audioSys.init();

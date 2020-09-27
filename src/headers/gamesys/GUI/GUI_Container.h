@@ -1034,11 +1034,11 @@ namespace Core {
 						int w = con->size.x-padLR,
 							h = con->size.y-padTB;
 
-						int x = ( (con->pos.x-(con->size.x/2)+con->vPadding.left )) + Core::gameVars->screen.half.x,
-							y = ( (con->pos.y-(con->size.y/2)+con->vPadding.bottom )) + Core::gameVars->screen.half.y;
+						int x = ( (con->pos.x-(con->size.x/2)+con->vPadding.left )) + Core::gameVars->screen.activeProjection->half.x,
+							y = ( (con->pos.y-(con->size.y/2)+con->vPadding.bottom )) + Core::gameVars->screen.activeProjection->half.y;
 
 						Core::scissor.push(x, y, w, h, false);
-						Core::scissor.checkInput(Core::mouse->x, Core::mouse->y, Core::gameVars->screen.res);
+						Core::scissor.checkInput(Core::mouse->x, Core::mouse->y, Core::gameVars->screen.activeProjection->res);
 					}
 
 					// Always disable scissor before drawing a container

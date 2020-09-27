@@ -319,7 +319,7 @@ void _Game::Run() {
 	//Core::Vector3f mRay = Core::mouse->GetMouseRay();
 	//Core::mouse->mouseRay = Core::mouse->GetMouseRay();	// Update mouseRay, return not needed;
 	Core::profiles->runProfile(Core::profiles->builtIn.RunGame_GetMouseRay, true);
-	Core::mouse->GetMouseRay(Core::gameVars->screen.res.x, Core::gameVars->screen.res.y, Core::gameVars->player.active->transform.rot);	// Update mouseRay, return not needed;
+	Core::mouse->GetMouseRay(Core::gameVars->screen.activeProjection->res.x, Core::gameVars->screen.activeProjection->res.y, Core::gameVars->player.active->transform.rot);	// Update mouseRay, return not needed;
 	Core::profiles->runProfile(Core::profiles->builtIn.RunGame_GetMouseRay, false);
 	/*
 	 * TODO: If a movement was made, do a collision test on O3D's and if
@@ -578,7 +578,7 @@ void _Game::Update() {
 	Core::profiles->runProfile(Core::profiles->builtIn.RunGame_DrawSprite, true);
 
 	Core::GUI::Props prop;
-	prop.setPos(-Core::gameVars->screen.half.x-115+iX, Core::gameVars->screen.half.y-32);
+	prop.setPos(-Core::gameVars->screen.activeProjection->half.x-115+iX, Core::gameVars->screen.activeProjection->half.y-32);
 	prop.setWidth(64);
 	prop.setHeight(64);
 	prop.exec();
@@ -678,8 +678,8 @@ void _Game::Update() {
 	Core::textSys->drawVar2<float>(1,  -19, "mousePos: ", Core::mouse->x, 3, Core::GUI::CONSTRAIN_LEFT);
 	Core::textSys->drawVar2<float>(21, -19, "", Core::mouse->y, 3, Core::GUI::CONSTRAIN_LEFT);
 
-	Core::textSys->drawVar2<float>(1,  -20, "mousePos: ", Core::mouse->x-Core::gameVars->screen.half.x, 3, Core::GUI::CONSTRAIN_LEFT);
-	Core::textSys->drawVar2<float>(21, -20, "", -Core::mouse->y+Core::gameVars->screen.half.y, 3, Core::GUI::CONSTRAIN_LEFT);
+	Core::textSys->drawVar2<float>(1,  -20, "mousePos: ", Core::mouse->x-Core::gameVars->screen.activeProjection->half.x, 3, Core::GUI::CONSTRAIN_LEFT);
+	Core::textSys->drawVar2<float>(21, -20, "", -Core::mouse->y+Core::gameVars->screen.activeProjection->half.y, 3, Core::GUI::CONSTRAIN_LEFT);
 
 
 //	Core::textSys->drawVar2<int>(1,  -21,   "Terrain Quads: ", std::pow(world.simplex.res, 2), 3, Core::GUI::CONSTRAIN_LEFT);
@@ -775,9 +775,9 @@ void _Game::Update() {
 	// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 	// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 	{
-		Core::matrix->SetProjection(Core::matrix->MM_ORTHO);
+		Core::matrix->setProjection(Core::matrix->MM_ORTHO, "ortho");
 		Core::Vector3f a = { 0, 0, 0 };
-		Core::Vector3f b = { -Core::gameVars->screen.half.x, -Core::gameVars->screen.half.y, 0 };
+		Core::Vector3f b = { -Core::gameVars->screen.activeProjection->half.x, -Core::gameVars->screen.activeProjection->half.y, 0 };
 		Core::Color colorA = { 1, 0, 0, 1};
 		Core::Color colorB = { 0, 1, 0, 1};
 		Core::helper->drawLine(a, b, 1, 1, colorA, colorB);
@@ -1127,14 +1127,14 @@ void _Game::Update() {
 //	if(Core::gui->isHiddenWindow("GameMenu", "Window 2") && !Core::gui->isHiddenWindow("GameMenu", "Window 1")) Core::gui->hideWindow("GameMenu", "Window 1");
 
 	// Safety Catch, make sure we are in perspective mode by default
-	Core::matrix->SetProjection(Core::matrix->MM_PERSPECTIVE);
+	Core::matrix->setProjection(Core::matrix->MM_PERSPECTIVE, "standard");
 
 //	Core::colors->PopFront();
 }
 
 void _Game::GetInput() {
 	SDL_PumpEvents();
-	Core::mouse->update(Core::gameVars->screen.half.x, Core::gameVars->screen.half.y);
+	Core::mouse->update(Core::gameVars->screen.activeProjection->half.x, Core::gameVars->screen.activeProjection->half.y);
 	//keyboard.event = SDL_GetKeyState(NULL);
 	keyboard.event = SDL_GetKeyboardState(NULL);
 	keyboard.update();
@@ -1227,7 +1227,7 @@ void _Game::ProcessInput() {
 //	if (keyboard.keys[SDLK_F7].bActive)		{	Core::gameVars->screen.iPolygonMode = GL_POINT;	}
 	if (keyboard.keys[SDLK_F8].bActive) 	{	Core::toggle(bDebugDrawMouseRay);	}
 	if (keyboard.keys[SDLK_F9].bActive) 	{	Core::mouse->SaveRay(Core::gameVars->player.active->transform.pos);	}
-	if (keyboard.keys[SDLK_F10].bActive)	{	SDL_WarpMouseInWindow(Core::glinit->window, Core::gameVars->screen.half.x, Core::gameVars->screen.half.y);	}
+	if (keyboard.keys[SDLK_F10].bActive)	{	SDL_WarpMouseInWindow(Core::glinit->window, Core::gameVars->screen.activeProjection->half.x, Core::gameVars->screen.activeProjection->half.y);	}
 	if (keyboard.keys[SDLK_F11].bActive)	{	Core::profiles->reset();	}
 	if (keyboard.keys[SDLK_F12].bActive)	{	SDL_SetWindowFullscreen(Core::glinit->window, SDL_WINDOW_FULLSCREEN);	}
 

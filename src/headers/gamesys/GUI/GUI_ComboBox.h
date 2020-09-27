@@ -338,10 +338,10 @@ namespace Core {
 				else {
 					if(!(eExternState&STATE_UPDATE)) {
 						Vector2f vPos = con->getScrollPos();
-						Core::_Mouse::iMouseState test1 = Core::mouse->checkInput(gameVars->screen.half.x+vPos.x, gameVars->screen.half.y-vPos.y, con->size.x, con->size.y);
+						Core::_Mouse::iMouseState test1 = Core::mouse->checkInput(gameVars->screen.activeProjection->half.x+vPos.x, gameVars->screen.activeProjection->half.y-vPos.y, con->size.x, con->size.y);
 
 						vPos = con->itemList.getScrollPos();
-						Core::_Mouse::iMouseState test2 = Core::mouse->checkInput(gameVars->screen.half.x+vPos.x, gameVars->screen.half.y-vPos.y, con->itemList.size.x, con->itemList.size.y);
+						Core::_Mouse::iMouseState test2 = Core::mouse->checkInput(gameVars->screen.activeProjection->half.x+vPos.x, gameVars->screen.activeProjection->half.y-vPos.y, con->itemList.size.x, con->itemList.size.y);
 //						mState = Core::_Mouse::iMouseState(test1 | test2);
 						mState = test1 | test2;
 					}

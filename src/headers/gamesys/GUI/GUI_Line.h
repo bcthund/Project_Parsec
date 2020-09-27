@@ -279,7 +279,7 @@ namespace Core {
 						else vPos = con->getPos();
 
 						Core::matrix->Translate( vPos.x, vPos.y, 0.0f );
-						Core::matrix->SetProjection(Core::matrix->MM_ORTHO);
+						Core::matrix->setProjection(Core::matrix->MM_ORTHO, "ortho");
 
 						if(eObjectState&STATE_DISABLED) {
 							if(eObjectState&STATE_HOVER)	Core::helper->drawLine(*pointA, *pointB, con->borderHover, 1.0f, gameVars->pallette.gui.disabled.text.hover, gameVars->pallette.gui.disabled.text.hover);

@@ -508,7 +508,7 @@ namespace Core {
 				void modSize(int n1, int n2)										{	size.constraint.x += n1;	size.constraint.y += n2;	}
 				void setAnchor(iConstrain e=CONSTRAIN_CENTER)						{	anchor = e;	}
 				void setOrigin(iConstrain e=CONSTRAIN_CENTER)						{	origin = e;	}
-				void exec()															{	execPos(gameVars->screen.half);	execSize(gameVars->screen.res);	}
+				void exec()															{	execPos(gameVars->screen.activeProjection->half);	execSize(gameVars->screen.activeProjection->res);	}
 				void exec(Props &c)													{	execPos(c.size/2.0f, c.pos, c.vPadding);	execSize(c.size, c.vPadding);	}
 				Vector2f getScrollPos()												{
 					Vector2f v;

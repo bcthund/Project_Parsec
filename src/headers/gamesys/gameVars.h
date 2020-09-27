@@ -29,16 +29,42 @@ namespace Core {
 		 */
 		struct Screen {
 			int bpp, frameRate;
-			Vector2f res, half;
 			int clear; // Should the screen get cleared every frame
 			//int iTerrainGrid;  //Basically the loaded view distance, should be an odd number (1,3,5,7,9 Max)
 			float fScale;				// Scale of the world, this effects calculations of EVERYTHING in the world. This makes the terrain cover a larger area.
-			float fNear, fFar, /*fHalfW, fHalfH,*/ fScreenAspect, fDistanceAspect;
 
-			Degrees degFov;
+			// Projection Matrix Data and related dependant data
+//			struct t_ProjectionData {
+//				Vector2f res;
+//				Degrees degFov;
+//				float fNear, fFar;
+//				float fScreenAspect, fDistanceAspect;
+//				Vector2f half;
+//				Vector2i origin;
+//
+//				void init() {
+//					fScreenAspect	= res.x/res.y;
+//					fDistanceAspect	= fNear/fFar;
+//					half.x			= res.x/2;
+//					half.y			= res.y/2;
+//					origin[0]		= -half.x;
+//					origin[1]		= half.y;
+//				}
+//			};
+			t_UMap<std::string, t_ProjectionData*> projectionData;
+			t_ProjectionData *activeProjection;
+
+			t_ProjectionData& setActiveProjection(std::string name) {
+				activeProjection = projectionData[name];
+				return *activeProjection;
+			}
+
+			t_ProjectionData& getActiveProjection() {
+				return *activeProjection;
+			}
+
 			bool MultiSample, bInterlaced;
 			uint uiMultiSamples;
-			Vector2i origin;
 			SDL_Surface * surface;
 			Vector4f vClearColorBase;
 			Vector4f vClearColorCurrent;
@@ -47,22 +73,23 @@ namespace Core {
 					   frameRate(0),
 					   //fHalfW(0),
 					   //fHalfH(0),
-					   fScreenAspect(0),
-					   fDistanceAspect(0),
+//					   fScreenAspect(0),
+//					   fDistanceAspect(0),
 					   clear(1),
 					   //iTerrainGrid(0),
 					   fScale(1.0f),
-					   fNear(0),
-					   fFar(0),
-					   degFov(0),
+//					   fNear(0),
+//					   fFar(0),
+//					   degFov(0),
 					   MultiSample(false),
 					   bInterlaced(false),
 					   uiMultiSamples(4) {
+				activeProjection = nullptr;
 				surface = new SDL_Surface;
-				res[0] = 0;
-				res[1] = 0;
-				half[0] = 0;
-				half[1] = 0;
+//				res[0] = 0;
+//				res[1] = 0;
+//				half[0] = 0;
+//				half[1] = 0;
 				vClearColorBase[0] = 0;
 				vClearColorBase[1] = 0;
 				vClearColorBase[2] = 0;
@@ -71,12 +98,13 @@ namespace Core {
 				vClearColorCurrent[1] = 0;
 				vClearColorCurrent[2] = 0;
 				vClearColorCurrent[3] = 0;
-				origin[0] = 0;
-				origin[1] = 0;
+//				origin[0] = 0;
+//				origin[1] = 0;
 			}
 
 			~Screen() {
 				delete surface;
+				for ( auto item : projectionData ) delete item.second;
 			}
 		} screen;
 

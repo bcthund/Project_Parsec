@@ -300,7 +300,7 @@ namespace Core {
 					// Scale particle with distance
 					float a = 0.0f;
 					float b = 0.0f;
-					float c = 1.0f/gameVars->screen.fFar;
+					float c = 1.0f/gameVars->screen.projectionData["standard"]->fFar;
 					float d = emitters[id]->particles[n].fDistance;
 					float d2 = d*d;
 					float fSize = sqrt(1/(a+b*d+c*d2));

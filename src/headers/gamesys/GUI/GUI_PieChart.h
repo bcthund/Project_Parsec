@@ -600,7 +600,7 @@ namespace Core {
 						glDisable(GL_DEPTH_TEST);
 						glDisable(GL_CULL_FACE);
 
-						matrix->SetProjection(matrix->MM_ORTHO);
+						matrix->setProjection(matrix->MM_ORTHO, "ortho");
 						shader->use(GLS_MENU);
 						matrix->Push();
 //						{
@@ -697,7 +697,7 @@ namespace Core {
 //							}
 //						}
 						matrix->Pop();
-						matrix->SetProjection(matrix->MM_PERSPECTIVE);
+						matrix->setProjection(matrix->MM_PERSPECTIVE, "standard");
 						colors.PopBack();
 						glEnable(GL_CULL_FACE);
 						glEnable(GL_DEPTH_TEST);

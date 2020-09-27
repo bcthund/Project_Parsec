@@ -49,6 +49,25 @@
 namespace Core {
 	namespace Sys {
 
+		struct {
+			struct s_COMMON {
+				const int CHUNK_SIZE		= 8192;
+				const int VIEW_DISTANCE		= CHUNK_SIZE*8;
+			};
+
+			struct : public s_COMMON {
+				const int CHUNK_RESOLUTION	= 4;
+				const float TEXTURE_SCALE	= 10.0f;
+				const float HEIGHT_OFFSET	= 0.0f;
+			} TERRAIN;
+
+			struct : public s_COMMON {
+				const int CHUNK_RESOLUTION	= 1;
+				const float TEXTURE_SCALE	= 1.0f;
+				const float HEIGHT_OFFSET	= -500.0f;
+			} WATER;
+		} CONST_SIMPLEX;
+
 		/**
 		 * @brief Contains the entire definition for the world inclusing atmosphere, lighting, and all map chunks
 		 */
@@ -79,16 +98,16 @@ namespace Core {
 //			simplex["Terrain"]->iViewDistance = 1024*32;
 
 			Map::Simplex *newSimplex = new Map::Simplex();
-			newSimplex->iViewDistance = 1024*16;
-			newSimplex->res = 4;
-			newSimplex->terrain_size = 1024;
+			newSimplex->iViewDistance = CONST_SIMPLEX.TERRAIN.VIEW_DISTANCE;
+			newSimplex->res = CONST_SIMPLEX.TERRAIN.CHUNK_RESOLUTION;
+			newSimplex->terrain_size = CONST_SIMPLEX.TERRAIN.CHUNK_SIZE;
 			newSimplex->set_iMax();
 			simplex.add("Terrain", newSimplex);
 
 			newSimplex = new Map::Simplex();
-			newSimplex->iViewDistance = 1024*16;
-			newSimplex->res = 1;
-			newSimplex->terrain_size = 1024;
+			newSimplex->iViewDistance = CONST_SIMPLEX.WATER.VIEW_DISTANCE;
+			newSimplex->res = CONST_SIMPLEX.WATER.CHUNK_RESOLUTION;
+			newSimplex->terrain_size = CONST_SIMPLEX.WATER.CHUNK_SIZE;
 			newSimplex->set_iMax();
 			simplex.add("Water", newSimplex);
 		}
@@ -110,31 +129,26 @@ namespace Core {
 			lights.load();
 			lights.calc(Core::gameVars->screen.fScale);
 
-			simplex["Water"]->params.add("Base", Map::t_NoiseParams());
-			simplex["Water"]->res							= 1;
-			simplex["Water"]->terrain_size					= 1024;
-			simplex["Water"]->tex_scale						= 1.0f;
-			simplex["Water"]->terrain_height_offset			= -500.0f;
-			simplex["Water"]->params["Base"].frequency		= 0.00013f;
-			simplex["Water"]->params["Base"].amplitude		= 1.0f;
-			simplex["Water"]->params["Base"].lacunarity		= 2.0f;
-			simplex["Water"]->params["Base"].persistance	= 2.0f;
-			simplex["Water"]->params["Base"].power			= 1.0f;
-			simplex["Water"]->params["Base"].scale			= 100.0f;
-			simplex["Water"]->params["Base"].octaves		= 2;
+			simplex["Water"]->res								= CONST_SIMPLEX.WATER.CHUNK_RESOLUTION;
+			simplex["Water"]->terrain_size						= CONST_SIMPLEX.WATER.CHUNK_SIZE;
+			simplex["Water"]->tex_scale							= CONST_SIMPLEX.WATER.TEXTURE_SCALE;
+			simplex["Water"]->terrain_height_offset				= CONST_SIMPLEX.WATER.HEIGHT_OFFSET;
 
+			simplex["Water"]->params.add("Base", Map::t_NoiseParams());
+			simplex["Water"]->params["Base"].frequency			= 0.00013f;
+			simplex["Water"]->params["Base"].amplitude			= 1.0f;
+			simplex["Water"]->params["Base"].lacunarity			= 2.0f;
+			simplex["Water"]->params["Base"].persistance		= 2.0f;
+			simplex["Water"]->params["Base"].power				= 1.0f;
+			simplex["Water"]->params["Base"].scale				= 100.0f;
+			simplex["Water"]->params["Base"].octaves			= 2;
+
+			simplex["Terrain"]->res								= CONST_SIMPLEX.TERRAIN.CHUNK_RESOLUTION;
+			simplex["Terrain"]->terrain_size					= CONST_SIMPLEX.TERRAIN.CHUNK_SIZE;
+			simplex["Terrain"]->tex_scale						= CONST_SIMPLEX.TERRAIN.TEXTURE_SCALE;
+			simplex["Terrain"]->terrain_height_offset			= CONST_SIMPLEX.TERRAIN.HEIGHT_OFFSET;
 
 			simplex["Terrain"]->params.add("Base", Map::t_NoiseParams());
-			simplex["Terrain"]->params.add("Hills", Map::t_NoiseParams());
-			simplex["Terrain"]->params.add("Valleys", Map::t_NoiseParams());
-			simplex["Terrain"]->params.add("Mountain", Map::t_NoiseParams());
-
-			simplex["Terrain"]->res = 4;
-			simplex["Terrain"]->terrain_size = 1024;
-			simplex["Terrain"]->tex_scale = 10.0f;
-
-
-			// Slight bumpy terrain
 			simplex["Terrain"]->params["Base"].frequency		= 0.00013f;
 			simplex["Terrain"]->params["Base"].amplitude		= 1.0f;
 			simplex["Terrain"]->params["Base"].lacunarity		= 2.0f;
@@ -143,6 +157,7 @@ namespace Core {
 			simplex["Terrain"]->params["Base"].scale			= 250.0f; //100.0f;
 			simplex["Terrain"]->params["Base"].octaves			= 4; //3;
 
+			simplex["Terrain"]->params.add("Hills", Map::t_NoiseParams());
 			simplex["Terrain"]->params["Hills"].frequency		= 0.00008f;
 			simplex["Terrain"]->params["Hills"].amplitude		= 2.0f;
 			simplex["Terrain"]->params["Hills"].lacunarity		= 2.2f;
@@ -151,6 +166,7 @@ namespace Core {
 			simplex["Terrain"]->params["Hills"].scale			= 1000.0f;
 			simplex["Terrain"]->params["Hills"].octaves			= 2; //2;
 
+			simplex["Terrain"]->params.add("Valleys", Map::t_NoiseParams());
 			simplex["Terrain"]->params["Valleys"].frequency		= 0.000005f;
 			simplex["Terrain"]->params["Valleys"].amplitude		= 5.0f;
 			simplex["Terrain"]->params["Valleys"].lacunarity	= 2.8f;
@@ -159,6 +175,7 @@ namespace Core {
 			simplex["Terrain"]->params["Valleys"].scale			= -500.0f;
 			simplex["Terrain"]->params["Valleys"].octaves		= 3; //4;
 
+			simplex["Terrain"]->params.add("Mountain", Map::t_NoiseParams());
 			simplex["Terrain"]->params["Mountain"].frequency	= 0.00001f;
 			simplex["Terrain"]->params["Mountain"].amplitude	= 100.0f;
 			simplex["Terrain"]->params["Mountain"].lacunarity	= 0.25f;
