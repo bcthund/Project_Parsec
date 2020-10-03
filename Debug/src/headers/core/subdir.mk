@@ -9,6 +9,7 @@ CPP_SRCS += \
 ../src/headers/core/FractalNoise.cpp \
 ../src/headers/core/FrameRate.cpp \
 ../src/headers/core/Groups.cpp \
+../src/headers/core/Noise.cpp \
 ../src/headers/core/ParticleEmitter.cpp \
 ../src/headers/core/Particles.cpp \
 ../src/headers/core/RunningStat.cpp \
@@ -41,6 +42,7 @@ OBJS += \
 ./src/headers/core/FractalNoise.o \
 ./src/headers/core/FrameRate.o \
 ./src/headers/core/Groups.o \
+./src/headers/core/Noise.o \
 ./src/headers/core/ParticleEmitter.o \
 ./src/headers/core/Particles.o \
 ./src/headers/core/RunningStat.o \
@@ -73,6 +75,7 @@ CPP_DEPS += \
 ./src/headers/core/FractalNoise.d \
 ./src/headers/core/FrameRate.d \
 ./src/headers/core/Groups.d \
+./src/headers/core/Noise.d \
 ./src/headers/core/ParticleEmitter.d \
 ./src/headers/core/Particles.d \
 ./src/headers/core/RunningStat.d \

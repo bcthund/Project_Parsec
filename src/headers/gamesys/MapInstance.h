@@ -13,7 +13,7 @@
 #include "./O2D.h"
 #include "./O3D.h"
 #include "./MapData.h"
-//#include "./MapSys.h"
+#include "../core/Noise.h"
 
 namespace Core {
 	namespace Sys {
@@ -37,7 +37,7 @@ namespace Core {
 //				void load(Map::t_Perlin *noise);
 //				void load(Map::t_Fractal *noise);
 //				void load(Map::t_Ridged *noise);
-				void load(Map::t_Noise *terrainNoise, Map::t_Noise *waterNoise);
+				void load(Core::Noise::t_Noise *terrainNoise, Core::Noise::t_Noise *waterNoise);
 				void setOffset(std::string offset);
 				float update(Vector3f a=Vector3f(0.0f), int terrain_size=1);	///< Perform updates to chunk data and return current chunk distance
 //				void load(std::string offset, Map::Simplex *simplex, Map::Simplex *simplexWater);
@@ -45,7 +45,7 @@ namespace Core {
 //				void load(std::string offset, Map::t_Perlin  *noise);
 //				void load(std::string offset, Map::t_Fractal *noise);
 //				void load(std::string offset, Map::t_Ridged  *noise);
-				void load(std::string offset, Map::t_Noise *terrainNoise, Map::t_Noise *waterNoise);
+				void load(std::string offset, Core::Noise::t_Noise *terrainNoise, Core::Noise::t_Noise *waterNoise);
 				void drawTerrain();
 				void drawWater();
 
@@ -169,7 +169,7 @@ namespace Core {
 //			Sys::mapSys.calc(Terrain.data);
 //		}
 
-		void t_MapInstance::load(Map::t_Noise *terrainNoise, Map::t_Noise *waterNoise) {
+		void t_MapInstance::load(Core::Noise::t_Noise *terrainNoise, Core::Noise::t_Noise *waterNoise) {
 			Sys::mapSys.load(x, z, Terrain.data, terrainNoise);
 			Sys::mapSys.calc(Terrain.data);
 
@@ -209,7 +209,7 @@ namespace Core {
 //			load(noise);
 //		}
 
-		void t_MapInstance::load(std::string offset, Map::t_Noise *terrainNoise, Map::t_Noise *waterNoise) {
+		void t_MapInstance::load(std::string offset, Core::Noise::t_Noise *terrainNoise, Core::Noise::t_Noise *waterNoise) {
 			setOffset(offset);
 			load(terrainNoise, waterNoise);
 		}

@@ -18,13 +18,14 @@
  */
 
 #include <chrono>	// Used for random Seed for Map perlin (temporary)
-#include <libnoise/noise.h>
 //#include "../core/types.h"
+#include "../core/Noise.h"
 #include "../core/core_functions.h"
 #include "../core/vao.h"
 #include "../core/texture.h"
-#include "../core/FractalNoise.h"
 #include "./MapData.h"
+#include <libnoise/noise.h>
+#include "../core/FractalNoise.h"
 
 namespace Core {
 	namespace Sys {
@@ -133,12 +134,12 @@ namespace Core {
 				Texture tex;					// TODO: Map specific textures
 				bool init();
 //				void load(int x, int z, Map::Data &chunk, Map::t_VariantNoise noise);
-				void load(int x, int z, Map::Data &chunk, Map::t_Noise *noise);
+				void load(int x, int z, Map::Data &chunk, Core::Noise::t_Noise *noise);
 				void calc(Map::Data &ref);
 //				void update(int x, int z, Map::Data &chunk, Map::t_VariantNoise noise);
-				void update(int x, int z, Map::Data &chunk, Map::t_Noise *noise);
+				void update(int x, int z, Map::Data &chunk, Core::Noise::t_Noise *noise);
 //				double getElevation(float x, float z, Map::t_VariantNoise noise);
-				double getElevation(float x, float z, Map::t_Noise *noise);
+				double getElevation(float x, float z, Core::Noise::t_Noise *noise);
 		};
 
 		bool MapSys::init() {
@@ -341,7 +342,7 @@ namespace Core {
 //			}
 //		}
 
-		void MapSys::load(int x, int z, Map::Data &chunk, Map::t_Noise *noise) {
+		void MapSys::load(int x, int z, Map::Data &chunk, Core::Noise::t_Noise *noise) {
 			x = (x-32768) * noise->parent->chunk_size;
 			z = (z-32768) * noise->parent->chunk_size;
 
@@ -459,7 +460,7 @@ namespace Core {
 //			ref.vao.End();
 //		}
 
-		void MapSys::update(int x, int z, Map::Data &ref, Map::t_Noise *noise) {
+		void MapSys::update(int x, int z, Map::Data &ref, Core::Noise::t_Noise *noise) {
 			load( x, z, ref, noise);
 
 			ref.vao.Begin(GL_TRIANGLES, ref.numVerts, ref.numDrawVerts, 1);
@@ -524,16 +525,16 @@ namespace Core {
 //			return e1;
 //		}
 
-		double MapSys::getElevation(float x, float z, Map::t_Noise *noise) {
+		double MapSys::getElevation(float x, float z, Core::Noise::t_Noise *noise) {
 			double dHeight = 0.0f;
 
 
 			for ( auto layer : noise->layers ) {
-				Map::eNoiseType type	= layer.first;
+				Core::Noise::eNoiseType type	= layer.first;
 				int index				= layer.second;
 
 				switch(type) {
-					case Map::NOISE_SIMPLEX:
+					case Core::Noise::NOISE_SIMPLEX:
 					{
 //						double nx = x/(noise->parent->chunk_size*2) - 0.5, ny = z/(noise->parent->chunk_size*2) - 0.5;
 						for( auto const &param : *noise->simplex[index] ) {
@@ -558,7 +559,7 @@ namespace Core {
 						}
 						break;
 					}
-					case Map::NOISE_PERLIN:
+					case Core::Noise::NOISE_PERLIN:
 					{
 						double nx = x/(noise->parent->chunk_size*2) - 0.5, ny = z/(noise->parent->chunk_size*2) - 0.5;
 
@@ -584,7 +585,7 @@ namespace Core {
 						}
 						break;
 					}
-					case Map::NOISE_FRACTAL:
+					case Core::Noise::NOISE_FRACTAL:
 					{
 						FractalNoise noise1;
 						for( auto const &param : *noise->fractal[index] ) {
@@ -605,7 +606,7 @@ namespace Core {
 						break;
 					}
 
-					case Map::NOISE_RIDGED_SIMPLEX:
+					case Core::Noise::NOISE_RIDGED_SIMPLEX:
 					{
 						double nx = x/(noise->parent->chunk_size*2) - 0.5, ny = z/(noise->parent->chunk_size*2) - 0.5;
 						for( auto const &param : *noise->ridgedSimplex[index] ) {
@@ -638,7 +639,7 @@ namespace Core {
 						break;
 					}
 
-					case Map::NOISE_RIDGED_PERLIN:
+					case Core::Noise::NOISE_RIDGED_PERLIN:
 					{
 //						double nx = (x/noise->parent->chunk_size)*2 - 0.5, ny = (z/noise->parent->chunk_size)*2 - 0.5;
 //						double nx = (x/1024)*2 - 0.5, ny = (z/1024)*2 - 0.5;
@@ -789,7 +790,7 @@ namespace Core {
 						break;
 					}
 
-					case Map::NOISE_VORONOI:
+					case Core::Noise::NOISE_VORONOI:
 					{
 						double nx = x/(noise->parent->chunk_size*2) - 0.5, ny = z/(noise->parent->chunk_size*2) - 0.5;
 
@@ -866,7 +867,7 @@ namespace Core {
 						break;
 					}
 
-					case Map::NOISE_BILLOW:
+					case Core::Noise::NOISE_BILLOW:
 					{
 						double nx = x/(noise->parent->chunk_size*2) - 0.5, ny = z/(noise->parent->chunk_size*2) - 0.5;
 

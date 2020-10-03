@@ -576,6 +576,7 @@
 	#include "./core/path.h"
 	#include "./core/profile.h"
 	#include "./core/joint.h"
+	#include "./core/Noise.h"
 	//#include "./core/skeleton.h"
 
 	// State settings

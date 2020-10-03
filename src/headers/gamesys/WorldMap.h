@@ -11,6 +11,7 @@
 
 #include "../core/extern.h"
 #include "../core/core_functions.h"
+#include "../core/Noise.h"
 #include "./MapInstance.h"
 //#include "O2D.h"
 //#include "O3D.h"
@@ -122,7 +123,7 @@ namespace Core {
 				_Lights						lights;
 
 				t_UMap<std::string, Map::t_ChunkData*> chunkSettings;		///< Layers of chunk settings
-				t_UMap<std::string, Map::t_Noise*> noise;					///< Layers of noise, each can have it's own chunk settings
+				t_UMap<std::string, Noise::t_Noise*> noise;					///< Layers of noise, each can have it's own chunk settings
 //				t_UMap<std::string, Map::t_Noise*> terrainNoise;
 
 //				t_UMap<std::string, Map::t_ChunkData*> chunkSettingsWater;
@@ -151,7 +152,7 @@ namespace Core {
 //			chunkSettings["Terrain"]->sea_level = 0.0f;
 			chunkSettings["Terrain"]->set_iMax();
 
-			Map::t_Noise *newTerrainNoise = new Map::t_Noise(chunkSettings["Terrain"]);
+			Noise::t_Noise *newTerrainNoise = new Noise::t_Noise(chunkSettings["Terrain"]);
 			noise.add("Terrain", newTerrainNoise);
 
 			chunkSettings.add("Water", new Map::t_ChunkData);
@@ -164,7 +165,7 @@ namespace Core {
 //			chunkSettings["Water"]->sea_level = 0.0f;
 			chunkSettings["Water"]->set_iMax();
 
-			Map::t_Noise *newWaterNoise = new Map::t_Noise(chunkSettings["Water"]);
+			Noise::t_Noise *newWaterNoise = new Noise::t_Noise(chunkSettings["Water"]);
 			noise.add("Water", newWaterNoise);
 		}
 
@@ -216,9 +217,9 @@ namespace Core {
 			 */
 
 			// Fractal Borwnian: Mountains/Continents [Simplex Test - Good Continents + Mountains in one shot (Actually Fractal Brownian Noise)]
-			Map::t_NewSimplex *newSimplex = new Map::t_NewSimplex();
-			Map::t_NewSimplex &layer0 = noise["Terrain"]->add("Layer0", newSimplex);
-			layer0.add("Mountains", new Map::t_SimplexParams());
+			Noise::t_Simplex *newSimplex = new Noise::t_Simplex();
+			Noise::t_Simplex &layer0 = noise["Terrain"]->add("Layer0", newSimplex);
+			layer0.add("Mountains", new Noise::t_SimplexParams());
 			//layer0["Mountains"]->frequency			= 0.0000005f;
 			layer0["Mountains"]->frequency			= 0.000001f;
 			layer0["Mountains"]->amplitude			= 10.0f;
@@ -233,9 +234,9 @@ namespace Core {
 			// TODO: Need to add functions for this
 
 			// Ridged-Multi: Peaks
-			Map::t_NewRidgedPerlin *newRidgedPerlin1 = new Map::t_NewRidgedPerlin();
-			Map::t_NewRidgedPerlin &layer1 = noise["Terrain"]->add("Layer1", newRidgedPerlin1);
-			layer1.add("Peaks", new Map::t_RidgedPerlinParams());
+			Noise::t_RidgedPerlin *newRidgedPerlin1 = new Noise::t_RidgedPerlin();
+			Noise::t_RidgedPerlin &layer1 = noise["Terrain"]->add("Layer1", newRidgedPerlin1);
+			layer1.add("Peaks", new Noise::t_RidgedPerlinParams());
 			layer1["Peaks"]->frequency				= 0.00001f;
 			layer1["Peaks"]->lacunarity				= 1.5f;
 //			layer1["Peaks"]->quality				= noise::QUALITY_BEST;
@@ -251,9 +252,9 @@ namespace Core {
 			layer1["Peaks"]->funcHeightLowerValue 	= 8000;
 
 			// Ridged-Multi: Lakes
-			Map::t_NewRidgedPerlin *newRidgedPerlin4 = new Map::t_NewRidgedPerlin();
-			Map::t_NewRidgedPerlin &layer4 = noise["Terrain"]->add("Layer4", newRidgedPerlin4);
-			layer4.add("Underwater", new Map::t_RidgedPerlinParams());
+			Noise::t_RidgedPerlin *newRidgedPerlin4 = new Noise::t_RidgedPerlin();
+			Noise::t_RidgedPerlin &layer4 = noise["Terrain"]->add("Layer4", newRidgedPerlin4);
+			layer4.add("Underwater", new Noise::t_RidgedPerlinParams());
 			layer4["Underwater"]->frequency				= 0.00002f;
 			layer4["Underwater"]->lacunarity				= 2.5f;
 //			layer4["Underwater"]->quality				= noise::QUALITY_BEST;
@@ -268,7 +269,7 @@ namespace Core {
 			layer4["Underwater"]->funcHeightUpperValue 	= 1500;
 			layer4["Underwater"]->funcHeightLowerValue 	= 2500;
 
-//			layer1.add("Valleys", new Map::t_RidgedPerlinParams());
+//			layer1.add("Valleys", new Noise::t_RidgedPerlinParams());
 //			layer1["Valleys"]->frequency				= 0.5f;
 //			layer1["Valleys"]->lacunarity				= 1.5f;
 ////			layer1["Valleys"]->quality					= noise::QUALITY_BEST;
