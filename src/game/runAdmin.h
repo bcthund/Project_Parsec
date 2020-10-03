@@ -565,29 +565,28 @@ void _Admin::init() {
 		Core::gui["GameMenu"]["Window 3"].Slider.add("Simplex Generator", &Core::gameVars->debug.noise.iCurrentSimplex, con);
 
 		//
-		con.setY(440);
-		con.setMinMax(1.0f, 2048.0f);
-		con.setStep(1.0f, 2.0f, 10.0f);
-
-		Core::gui["GameMenu"]["Window 3"].Slider.add("Resolution", &game->world.simplex["Terrain"]->parent->chunk_resolution, con);
-
-		//
-		con.setY(410);
-		con.setMinMax(1.0f, 1000.0f);
-		con.setStep(1.0f, 2.0f, 10.0f);
-		Core::gui["GameMenu"]["Window 3"].Slider.add("Tex Scale", &game->world.simplex["Terrain"]->parent->tex_scale, con);
+//		con.setY(440);
+//		con.setMinMax(1.0f, 2048.0f);
+//		con.setStep(1.0f, 2.0f, 10.0f);
+//		Core::gui["GameMenu"]["Window 3"].Slider.add("Resolution", &game->world.simplex["Terrain"]->parent->chunk_resolution, con);
 
 		//
-		con.setY(380);
-		con.setMinMax(1.0f, 100000.0f);
-		con.setStep(1.0f, 10.0f, 100.0f);
-		Core::gui["GameMenu"]["Window 3"].Slider.add("Terrain Size", &game->world.simplex["Terrain"]->parent->chunk_size, con);
+//		con.setY(410);
+//		con.setMinMax(1.0f, 1000.0f);
+//		con.setStep(1.0f, 2.0f, 10.0f);
+//		Core::gui["GameMenu"]["Window 3"].Slider.add("Tex Scale", &game->world.simplex["Terrain"]->parent->tex_scale, con);
 
-		// Offset X
-		con.setY(350);
-		con.setMinMax(-10000.0f, 10000.0f);
-		con.setStep(1.0f, 10.0f, 100.0f);
-		Core::gui["GameMenu"]["Window 3"].Slider.add("Terrain Height", &game->world.simplex["Terrain"]->parent->chunk_height_offset, con);
+		//
+//		con.setY(380);
+//		con.setMinMax(1.0f, 100000.0f);
+//		con.setStep(1.0f, 10.0f, 100.0f);
+//		Core::gui["GameMenu"]["Window 3"].Slider.add("Terrain Size", &game->world.simplex["Terrain"]->parent->chunk_size, con);
+
+//		// Offset X
+//		con.setY(350);
+//		con.setMinMax(-10000.0f, 10000.0f);
+//		con.setStep(1.0f, 10.0f, 100.0f);
+//		Core::gui["GameMenu"]["Window 3"].Slider.add("Terrain Height", &game->world.simplex["Terrain"]->parent->chunk_height_offset, con);
 
 		// Offset X
 //		con.setY(300);
@@ -602,10 +601,10 @@ void _Admin::init() {
 //		Core::gui["GameMenu"]["Window 3"].Slider.add("Offset Y", &game->world.simplex.offset.y, con);
 
 		// Delta
-		con.setY(240);
-		con.setMinMax(1.0f, 100.0f);
-		con.setStep(1.0f, 2.0f, 10.0f);
-		Core::gui["GameMenu"]["Window 3"].Slider.add("Delta", &game->world.simplex["Terrain"]->parent->delta, con);
+//		con.setY(240);
+//		con.setMinMax(1.0f, 100.0f);
+//		con.setStep(1.0f, 2.0f, 10.0f);
+//		Core::gui["GameMenu"]["Window 3"].Slider.add("Delta", &game->world.simplex["Terrain"]->parent->delta, con);
 
 		// Frequency
 //		con.setY(210);

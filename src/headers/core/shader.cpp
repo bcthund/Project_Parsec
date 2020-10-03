@@ -982,19 +982,20 @@ namespace Core {
 			  //locFogDensity,
 			  //locFogEquation,
 			  locCamPos,
-			  locTexture0,
-			  locTexture1,
-			  locTexture2,
-			  locTexture3,
-			  locTexture4,
-			  locTexture5,
-			  locTexture6,
-			  locTexture7,
-			  locTexture8,
-			  locTexture9,
-			  locTexture10,
-			  locTexture11,
-			  locTexture12,
+			  locTexture[32],
+//			  locTexture0,
+//			  locTexture1,
+//			  locTexture2,
+//			  locTexture3,
+//			  locTexture4,
+//			  locTexture5,
+//			  locTexture6,
+//			  locTexture7,
+//			  locTexture8,
+//			  locTexture9,
+//			  locTexture10,
+//			  locTexture11,
+//			  locTexture12,
 			  locObjPos,
 			  locWater,
 			  //locShadow,
@@ -1041,12 +1042,12 @@ namespace Core {
 		}
 
 		if(eShader==Core::GLS_FLAT || eShader==Core::GLS_PHONG_O2D) {
-			locTexture0	= glGetUniformLocation(uiShaders[eShader], "colorMap");
+			locTexture[0]	= glGetUniformLocation(uiShaders[eShader], "colorMap");
 			locMVP		= glGetUniformLocation(uiShaders[eShader], "mvpMatrix");
 			locMV		= glGetUniformLocation(uiShaders[eShader], "mvMatrix");
 			locMP		= glGetUniformLocation(uiShaders[eShader], "mpMatrix");
 
-			glUniform1i(locTexture0,	0);
+			glUniform1i(locTexture[0],	0);
 
 			glUniformMatrix4fv(locMVP,	1,	GL_FALSE,	matrix->GetModelViewProjection().data);
 			glUniformMatrix4fv(locMV,	1,	GL_FALSE,	matrix->GetModelView().data);
@@ -1103,19 +1104,23 @@ namespace Core {
 		}
 
 		if(eShader==Core::GLS_PHONG || eShader==Core::GLS_WATER) {
-			locTexture0		= glGetUniformLocation(uiShaders[eShader], "texDirt1");
-			locTexture1		= glGetUniformLocation(uiShaders[eShader], "texDirt2");
-			locTexture2		= glGetUniformLocation(uiShaders[eShader], "texGrass1");
-			locTexture3		= glGetUniformLocation(uiShaders[eShader], "texGrass2");
-			locTexture4		= glGetUniformLocation(uiShaders[eShader], "texRocky1");
-			locTexture5		= glGetUniformLocation(uiShaders[eShader], "texRocky2");
-			locTexture6		= glGetUniformLocation(uiShaders[eShader], "texCliff1");
-			locTexture7		= glGetUniformLocation(uiShaders[eShader], "texCliff2");
-			locTexture8		= glGetUniformLocation(uiShaders[eShader], "texMud1");
-			locTexture9		= glGetUniformLocation(uiShaders[eShader], "texMud2");
-			locTexture10	= glGetUniformLocation(uiShaders[eShader], "texSnow1");
-			locTexture11	= glGetUniformLocation(uiShaders[eShader], "texSnow2");
-			locTexture12	= glGetUniformLocation(uiShaders[eShader], "texWater");
+			locTexture[0]	= glGetUniformLocation(uiShaders[eShader], "texDirt1");
+			locTexture[1]	= glGetUniformLocation(uiShaders[eShader], "texDirt2");
+			locTexture[2]	= glGetUniformLocation(uiShaders[eShader], "texGrass1");
+			locTexture[3]	= glGetUniformLocation(uiShaders[eShader], "texGrass2");
+			locTexture[4]	= glGetUniformLocation(uiShaders[eShader], "texRocky1");
+			locTexture[5]	= glGetUniformLocation(uiShaders[eShader], "texRocky2");
+			locTexture[6]	= glGetUniformLocation(uiShaders[eShader], "texCliff1");
+			locTexture[7]	= glGetUniformLocation(uiShaders[eShader], "texCliff2");
+			locTexture[8]	= glGetUniformLocation(uiShaders[eShader], "texMud1");
+			locTexture[9]	= glGetUniformLocation(uiShaders[eShader], "texMud2");
+			locTexture[10]	= glGetUniformLocation(uiShaders[eShader], "texSnow1");
+			locTexture[11]	= glGetUniformLocation(uiShaders[eShader], "texSnow2");
+			locTexture[12]	= glGetUniformLocation(uiShaders[eShader], "texBeach1");
+			locTexture[13]	= glGetUniformLocation(uiShaders[eShader], "texBeach2");
+			locTexture[14]	= glGetUniformLocation(uiShaders[eShader], "texSand1");
+			locTexture[15]	= glGetUniformLocation(uiShaders[eShader], "texSand2");
+			locTexture[31]	= glGetUniformLocation(uiShaders[eShader], "texWater");
 
 			locMVP			= glGetUniformLocation(uiShaders[eShader], "mvpMatrix");
 			locMV			= glGetUniformLocation(uiShaders[eShader], "mvMatrix");
@@ -1123,19 +1128,23 @@ namespace Core {
 
 			locWater		= glGetUniformLocation(uiShaders[eShader], "bWater");
 
-			glUniform1i(locTexture0,	0);
-			glUniform1i(locTexture1,	1);
-			glUniform1i(locTexture2,	2);
-			glUniform1i(locTexture3,	3);
-			glUniform1i(locTexture4,	4);
-			glUniform1i(locTexture5,	5);
-			glUniform1i(locTexture6,	6);
-			glUniform1i(locTexture7,	7);
-			glUniform1i(locTexture8,	8);
-			glUniform1i(locTexture9,	9);
-			glUniform1i(locTexture10,	10);
-			glUniform1i(locTexture11,	11);
-			glUniform1i(locTexture12,	12);
+			glUniform1i(locTexture[0],	0);
+			glUniform1i(locTexture[1],	1);
+			glUniform1i(locTexture[2],	2);
+			glUniform1i(locTexture[3],	3);
+			glUniform1i(locTexture[4],	4);
+			glUniform1i(locTexture[5],	5);
+			glUniform1i(locTexture[6],	6);
+			glUniform1i(locTexture[7],	7);
+			glUniform1i(locTexture[8],	8);
+			glUniform1i(locTexture[9],	9);
+			glUniform1i(locTexture[10],	10);
+			glUniform1i(locTexture[11],	11);
+			glUniform1i(locTexture[12],	12);
+			glUniform1i(locTexture[13],	13);
+			glUniform1i(locTexture[14],	14);
+			glUniform1i(locTexture[15],	15);
+			glUniform1i(locTexture[31],	31);
 
 			glUniformMatrix4fv(locMVP,	1,	GL_FALSE,	matrix->GetModelViewProjection().data);
 			glUniformMatrix4fv(locMV,	1,	GL_FALSE,	matrix->GetModelView().data);

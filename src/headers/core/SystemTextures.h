@@ -39,6 +39,10 @@ namespace Core {
 				TEX_ROCKY2,
 				TEX_SNOW1,
 				TEX_SNOW2,
+				TEX_BEACH1,
+				TEX_BEACH2,
+				TEX_SAND1,
+				TEX_SAND2,
 				TEX_LAST
 				};
 

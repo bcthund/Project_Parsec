@@ -523,8 +523,8 @@ void _Game::Update() {
 	GLuint ppScatter = Core::postProcess->ApplyCombine(ppBloom, 1.5f);
 	Core::glinit->RestoreClearColor();
 
-	Core::postProcess->RenderToScreen(ppScatter);
-//	Core::postProcess->RenderToScreen(ppWorld);
+//	Core::postProcess->RenderToScreen(ppScatter);
+	Core::postProcess->RenderToScreen(ppWorld);
 //	Core::postProcess->RenderToWindow(ppWorld, Core::Vector3f(-360, -200, 0), 0.25f);
 //	Core::postProcess->RenderToWindow(ppRadial, Core::Vector3f( 360, -200, 0), 0.25f);
 
