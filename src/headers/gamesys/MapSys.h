@@ -25,7 +25,8 @@
 #include "../core/texture.h"
 #include "./MapData.h"
 #include <libnoise/noise.h>
-#include "../core/FractalNoise.h"
+#include "../core/SimplexNoise.h"
+//#include "../core/FractalNoise.h"
 
 namespace Core {
 	namespace Sys {
@@ -536,32 +537,32 @@ namespace Core {
 				switch(type) {
 					case Core::Noise::NOISE_SIMPLEX:
 					{
-//						double nx = x/(noise->parent->chunk_size*2) - 0.5, ny = z/(noise->parent->chunk_size*2) - 0.5;
-						for( auto const &param : *noise->simplex[index] ) {
-							double e1 = 0.0f;
-							double e2 = 0.0f;
-							SimplexNoise simNoise1 = SimplexNoise( param->frequency, param->amplitude, param->lacunarity, param->persistance );
-//							e1 = simNoise1.noise( x, z, dHeight);
-//							e1 = simNoise1.fractal( param->octaves, x, z, dHeight/20000.0f);
-							e1 = simNoise1.fractal( param->octaves, x, z, 0);
-//							e1 = simNoise1.fractal( param->octaves, nx, ny, 0);
-
-							//e1 = simNoise1.fractal( param->octaves, x, z);
-
-							int sign = 1;
-							if(e1<0) sign = -1;
-
-							e2 += sign * ((std::pow(abs(e1), param->power)*param->scale));
-
-							e2 = e2+param->offset;
-
-							dHeight += e2;
-						}
+////						double nx = x/(noise->parent->chunk_size*2) - 0.5, ny = z/(noise->parent->chunk_size*2) - 0.5;
+//						for( auto const &param : *noise->simplex[index] ) {
+//							double e1 = 0.0f;
+//							double e2 = 0.0f;
+//							SimplexNoise simNoise1 = SimplexNoise( param->frequency, param->amplitude, param->lacunarity, param->persistance );
+////							e1 = simNoise1.noise( x, z, dHeight);
+////							e1 = simNoise1.fractal( param->octaves, x, z, dHeight/20000.0f);
+//							e1 = simNoise1.fractal( param->octaves, x, z, 0);
+////							e1 = simNoise1.fractal( param->octaves, nx, ny, 0);
+//
+//							//e1 = simNoise1.fractal( param->octaves, x, z);
+//
+//							int sign = 1;
+//							if(e1<0) sign = -1;
+//
+//							e2 += sign * ((std::pow(abs(e1), param->power)*param->scale));
+//
+//							e2 = e2+param->offset;
+//
+//							dHeight += e2;
+//						}
 						break;
 					}
 					case Core::Noise::NOISE_PERLIN:
 					{
-						double nx = x/(noise->parent->chunk_size*2) - 0.5, ny = z/(noise->parent->chunk_size*2) - 0.5;
+//						double nx = x/(noise->parent->chunk_size*2) - 0.5, ny = z/(noise->parent->chunk_size*2) - 0.5;
 
 						// Layers
 						for( auto const &param : *noise->perlin[index] ) {
@@ -575,69 +576,74 @@ namespace Core {
 							for(int n=0; n<param->octaves(); n++) {
 								//e1 += param->octaveData[n].amplitude * PerlinNoise( param->octaveData[n].frequency_x * nx,  param->octaveData[n].frequency_y * ny);
 //								e1 = param->octaveData[n].amplitude * genPerlin.GetValue(nx, ny, dHeight) / 2.0 + 0.5;
-								e1 = param->octaveData[n].amplitude * genPerlin.GetValue(nx, ny, 0) / 2.0 + 0.5;
+//								e1 = param->octaveData[n].amplitude * genPerlin.GetValue(nx, ny, 0) / 2.0 + 0.5;
+								e1 = param->octaveData[n].amplitude * genPerlin.GetValue(x, z, 0) / 2.0 + 0.5;
 								amplitudeTotal += param->octaveData[n].amplitude;
 							}
 							e2 /= amplitudeTotal;
 							e2 += std::pow(e1, param->power)*param->scale;
 
-							dHeight += e2;
+//							dHeight += e2;
+							dHeight = Core::Noise::applyMode(e2, dHeight, param->mode);
 						}
 						break;
 					}
 					case Core::Noise::NOISE_FRACTAL:
 					{
-						FractalNoise noise1;
+//						double nx = x/(noise->parent->chunk_size*2) - 0.5, ny = z/(noise->parent->chunk_size*2) - 0.5;
 						for( auto const &param : *noise->fractal[index] ) {
-							double  e1 = 0.0f,
-									e2 = 0.0f;
-
-							e1 = noise1.getNoise(	x,
-													z,
-													param->frequency,
-													param->lacunarity,
-													param->multiplier,
-													param->layers);
-
-							e2 += std::pow(abs(e1), param->power)*param->scale;
-
-							dHeight += e2;
-						}
-						break;
-					}
-
-					case Core::Noise::NOISE_RIDGED_SIMPLEX:
-					{
-						double nx = x/(noise->parent->chunk_size*2) - 0.5, ny = z/(noise->parent->chunk_size*2) - 0.5;
-						for( auto const &param : *noise->ridgedSimplex[index] ) {
 							double e1 = 0.0f;
 							double e2 = 0.0f;
-							double e3 = 0.0f;
 							SimplexNoise simNoise1 = SimplexNoise( param->frequency, param->amplitude, param->lacunarity, param->persistance );
-//							e1 = (param->threshold - abs(simNoise1.fractal( x, z, dHeight)));
-//							e1 = (param->threshold - abs(simNoise1.fractal( param->octaves, x, z, dHeight/20000.0f)));
-//							e1 = (param->threshold - abs(simNoise1.fractal( param->octaves, x, z)));
-							e1 = (param->threshold - abs(simNoise1.fractal( param->octaves, nx, ny)));
+//							e1 = simNoise1.noise( x, z, dHeight);
+//							e1 = simNoise1.fractal( param->octaves, x, z, dHeight/20000.0f);
+							e1 = simNoise1.fractal( param->octaves, x, z, 0);
+//							e1 = simNoise1.fractal( param->octaves, nx, ny, 0);
 
-							int sign = 1;
-							if(e1<0) sign = -1;
-							e2 = e1;
-							e3 += sign * ((std::pow(abs(e2), param->power)*param->scale));
+							//e1 = simNoise1.fractal( param->octaves, x, z);
 
-							if(param->funcHeightEnable) {
-								if(dHeight<(param->funcHeightLowerValue)) {
-									dHeight += e3 * fmax(fmin((dHeight/param->funcHeightLowerValue), 1.0f), 0.0f);
-								}
-								else if(dHeight>(param->funcHeightUpperValue)) {
-									dHeight += e3 * fmax(fmin((1.0f-(dHeight/(param->funcHeightUpperValue*2.0f))), 1.0f), 0.0f);
-								}
-								else dHeight += e3;
-							}
-							else dHeight += e3;
-
+//							int sign = 1;
+//							if(e1<0) sign = -1;
+//							e2 += sign * ((std::pow(abs(e1), param->power)*param->scale));
+//							e2 = e2+param->offset;
+							e2 = Core::Noise::applyFunctions(e1, dHeight, *param);
+							dHeight = Core::Noise::applyMode(e2, dHeight, param->mode);
 						}
 						break;
 					}
+
+//					case Core::Noise::NOISE_RIDGED_SIMPLEX:
+//					{
+//						double nx = x/(noise->parent->chunk_size*2) - 0.5, ny = z/(noise->parent->chunk_size*2) - 0.5;
+//						for( auto const &param : *noise->ridgedSimplex[index] ) {
+//							double e1 = 0.0f;
+//							double e2 = 0.0f;
+//							double e3 = 0.0f;
+//							SimplexNoise simNoise1 = SimplexNoise( param->frequency, param->amplitude, param->lacunarity, param->persistance );
+////							e1 = (param->threshold - abs(simNoise1.fractal( x, z, dHeight)));
+////							e1 = (param->threshold - abs(simNoise1.fractal( param->octaves, x, z, dHeight/20000.0f)));
+////							e1 = (param->threshold - abs(simNoise1.fractal( param->octaves, x, z)));
+//							e1 = (param->threshold - abs(simNoise1.fractal( param->octaves, nx, ny)));
+//
+//							int sign = 1;
+//							if(e1<0) sign = -1;
+//							e2 = e1;
+//							e3 += sign * ((std::pow(abs(e2), param->power)*param->scale));
+//
+//							if(param->funcHeightEnable) {
+//								if(dHeight<(param->funcHeightLowerValue)) {
+//									dHeight += e3 * fmax(fmin((dHeight/param->funcHeightLowerValue), 1.0f), 0.0f);
+//								}
+//								else if(dHeight>(param->funcHeightUpperValue)) {
+//									dHeight += e3 * fmax(fmin((1.0f-(dHeight/(param->funcHeightUpperValue*2.0f))), 1.0f), 0.0f);
+//								}
+//								else dHeight += e3;
+//							}
+//							else dHeight += e3;
+//
+//						}
+//						break;
+//					}
 
 					case Core::Noise::NOISE_RIDGED_PERLIN:
 					{
@@ -646,7 +652,7 @@ namespace Core {
 //						double nx = (x/noise->parent->chunk_size) - 0.5, ny = (z/noise->parent->chunk_size) - 0.5;
 //						double nx = x/(noise->parent->chunk_size*2) - 0.5, ny = z/(noise->parent->chunk_size*2) - 0.5;
 //						double nx = x/noise->parent->chunk_size, ny = z/noise->parent->chunk_size;
-						double nx = x, ny = z;
+//						double nx = x, ny = z;
 
 						// Layers
 						for( auto const &param : *noise->ridgedPerlin[index] ) {
@@ -684,107 +690,109 @@ namespace Core {
 //							e1 += (genRidged.GetValue(nx, ny, dHeight) / 2.0 + 0.5);
 //							e1 += (genRidged.GetValue(nx, ny, 0) / 2.0 + 0.5);
 							//e1 += (genRidged.GetValue(x, z, 0) / 2.0 + 0.5);
-//							e1 += genRidged.GetValue(x, z, 0);
-							e1 += genRidged.GetValue(nx, ny, 0);
-
-							// TODO: Implement function (Power, remove from standard params and make a function option)
-							e2 += std::pow(e1, param->power);
-
-							// TODO: Implement function option (Remap Range - Upper [Replace Upper with rescale])
-							// TODO: Implement function option (Remap Range - Lower [Replace Lower with rescale])
-//							int fMin	= -1.0f,	// default
-//								fMax	=  1.0f,	// default
-//								fNewMin =  0.0f,
-//								fNewMax =  1.0f;
-//							e2 = ((e2-fMin)/(fMax-fMin) * (fNewMax-fNewMin) + (fNewMin) );
-
-							if(param->bRiver) {
-								// TODO: Implement function option (Replace Upper)
-								if(e2>=0.005) e2 = 0.025f;
-
-								// TODO: Implement function option (Replace Lower)
-								if(e2<0.005) e2 = 0.0f;
-
-								// TODO: Implement function option (Clamp Upper)
-								e2 = fmin(e2, 1.0f);
-
-								// TODO: Implement function option (Clamp Lower)
-								e2 = fmax(e2, 0.0f);
-
-								// TODO: Implement function option (Lower Fade - Based on parent height [Will need to be reworked, as layer style allows this to run before or after scaling])
-								// TODO: Fade Distance
-//								if(dHeight<=param->funcHeightLowerValue+dHeight) {
-//									e2 = e2 * fmax(fmin((dHeight/param->funcHeightLowerValue), 1.0f), 0.0f);
+							e1 += genRidged.GetValue(x, z, 0);
+							e2 = Core::Noise::applyFunctions(e1, dHeight, *param);
+							dHeight = Core::Noise::applyMode(e2, dHeight, param->mode);
+//
+////							e1 += genRidged.GetValue(nx, ny, 0);
+//
+//							// TODO: Implement function (Power, remove from standard params and make a function option)
+//							e2 += std::pow(e1, param->power);
+//
+//							// TODO: Implement function option (Remap Range - Upper [Replace Upper with rescale])
+//							// TODO: Implement function option (Remap Range - Lower [Replace Lower with rescale])
+////							int fMin	= -1.0f,	// default
+////								fMax	=  1.0f,	// default
+////								fNewMin =  0.0f,
+////								fNewMax =  1.0f;
+////							e2 = ((e2-fMin)/(fMax-fMin) * (fNewMax-fNewMin) + (fNewMin) );
+//
+//							if(param->bRiver) {
+//								// TODO: Implement function option (Replace Upper)
+//								if(e2>=0.005) e2 = 0.025f;
+//
+//								// TODO: Implement function option (Replace Lower)
+//								if(e2<0.005) e2 = 0.0f;
+//
+//								// TODO: Implement function option (Clamp Upper)
+//								e2 = fmin(e2, 1.0f);
+//
+//								// TODO: Implement function option (Clamp Lower)
+//								e2 = fmax(e2, 0.0f);
+//
+//								// TODO: Implement function option (Lower Fade - Based on parent height [Will need to be reworked, as layer style allows this to run before or after scaling])
+//								// TODO: Fade Distance
+////								if(dHeight<=param->funcHeightLowerValue+dHeight) {
+////									e2 = e2 * fmax(fmin((dHeight/param->funcHeightLowerValue), 1.0f), 0.0f);
+////								}
+//
+//								// TODO: Implement function option (Upper Fade - Based on parent height [Will need to be reworked, as layer style allows this to run before or after scaling])
+//								// TODO: Fade Distance
+////								if(dHeight>=param->funcHeightUpperValue-dHeight) {
+////									e2 = e2 * fmax(fmin(1.0f-(dHeight/param->funcHeightUpperValue), 1.0f), 0.0f);
+////								}
+//
+//								if(param->funcHeightLowerEnable) {
+//									if(dHeight<=param->funcHeightLowerValue+dHeight) {
+//										e2 = e2 * fmax(fmin((dHeight/param->funcHeightLowerValue), 1.0f), 0.0f);
+////										e2 = e2 * (dHeight/param->funcHeightLowerValue);
+//									}
 //								}
-
-								// TODO: Implement function option (Upper Fade - Based on parent height [Will need to be reworked, as layer style allows this to run before or after scaling])
-								// TODO: Fade Distance
-//								if(dHeight>=param->funcHeightUpperValue-dHeight) {
-//									e2 = e2 * fmax(fmin(1.0f-(dHeight/param->funcHeightUpperValue), 1.0f), 0.0f);
+//
+//								if(param->funcHeightUpperEnable) {
+//									if(dHeight>=param->funcHeightUpperValue-dHeight) {
+//										e2 = e2 * fmax(fmin(1.0f-(dHeight/param->funcHeightUpperValue), 1.0f), 0.0f);
+////										e2 = e2 * (1.0f-(dHeight/param->funcHeightUpperValue));
+//									}
 //								}
-
-								if(param->funcHeightLowerEnable) {
-									if(dHeight<=param->funcHeightLowerValue+dHeight) {
-										e2 = e2 * fmax(fmin((dHeight/param->funcHeightLowerValue), 1.0f), 0.0f);
-//										e2 = e2 * (dHeight/param->funcHeightLowerValue);
-									}
-								}
-
-								if(param->funcHeightUpperEnable) {
-									if(dHeight>=param->funcHeightUpperValue-dHeight) {
-										e2 = e2 * fmax(fmin(1.0f-(dHeight/param->funcHeightUpperValue), 1.0f), 0.0f);
-//										e2 = e2 * (1.0f-(dHeight/param->funcHeightUpperValue));
-									}
-								}
-
-								// TODO: Implement function option (Scale, remove from standard params and make a function option)
-								e2 = e2*param->scale;
-
-								// TODO: Implement function option (Cull Above)
-								// TODO: Implement function option (Cull Below)
-								//  - Not really done here, maybe set a bit for return
-								//	- If height above/below threshold, then discard the triangle?
-							}
-							else {
-								// TODO: Implement function option (Clamp Upper)
-								e2 = fmin(e2, 1.0f);
-
-								// TODO: Implement function option (Clamp Lower)
-								e2 = fmax(e2, 0.0f);
-
-								e2 = e2*param->scale;
-
-								if(param->funcHeightLowerEnable) {
-									if(dHeight<=param->funcHeightLowerValue+dHeight) {
-//										e2 = e2 * fmax(fmin((dHeight/param->funcHeightLowerValue), 1.0f), -1.0f);
-										e2 = e2 * fmax(fmin((dHeight/param->funcHeightLowerValue), 1.0f), 0.0f);
-//										e2 = e2 * (dHeight/param->funcHeightLowerValue);
-									}
-								}
-
-								if(param->funcHeightUpperEnable) {
-									if(dHeight>=param->funcHeightUpperValue-dHeight) {
-//										e2 = e2 * fmax(fmin(1.0f-(dHeight/param->funcHeightUpperValue), 1.0f), -1.0f);
-										e2 = e2 * fmax(fmin(1.0f-(dHeight/param->funcHeightUpperValue), 1.0f), 0.0f);
-//										e2 = e2 * (1.0f-(dHeight/param->funcHeightUpperValue));
-									}
-								}
-							}
-
-							// TODO: Implement function option (Offset)
-							e2 = e2+param->offset;
-
-							e3 = e2;
-							dHeight += e3;
-							//dHeight += e3 * fmax(fmin((1.0f-(dHeight/(param->funcHeightUpperValue*2.0f))), 1.0f), 0.0f);
-
-
-							// CURRENTLY WORKING
-							// TODO: Implement function option
-//							if(param->funcHeightEnable) {
-//								dHeight += e3 * fmax(fmin((dHeight/param->funcHeightLowerValue), 1.0f), 0.0f);
+//
+//								// TODO: Implement function option (Scale, remove from standard params and make a function option)
+//								e2 = e2*param->scale;
+//
+//								// TODO: Implement function option (Cull Above)
+//								// TODO: Implement function option (Cull Below)
+//								//  - Not really done here, maybe set a bit for return
+//								//	- If height above/below threshold, then discard the triangle?
 //							}
-//							else dHeight += e3;
+//							else {
+//								// TODO: Implement function option (Clamp Upper)
+//								e2 = fmin(e2, 1.0f);
+//
+//								// TODO: Implement function option (Clamp Lower)
+//								e2 = fmax(e2, 0.0f);
+//
+//								e2 = e2*param->scale;
+//
+//								if(param->funcHeightLowerEnable) {
+//									if(dHeight<=param->funcHeightLowerValue+dHeight) {
+////										e2 = e2 * fmax(fmin((dHeight/param->funcHeightLowerValue), 1.0f), -1.0f);
+//										e2 = e2 * fmax(fmin((dHeight/param->funcHeightLowerValue), 1.0f), 0.0f);
+////										e2 = e2 * (dHeight/param->funcHeightLowerValue);
+//									}
+//								}
+//
+//								if(param->funcHeightUpperEnable) {
+//									if(dHeight>=param->funcHeightUpperValue-dHeight) {
+//										e2 = e2 * fmax(fmin(1.0f-(dHeight/param->funcHeightUpperValue), 1.0f), 0.0f);
+//									}
+//								}
+//							}
+//
+//							// TODO: Implement function option (Offset)
+//							e2 = e2+param->offset;
+//
+//							e3 = e2;
+////							dHeight += e3;
+//							dHeight = Core::Noise::applyMode(e3, dHeight, param->mode);
+//							//dHeight += e3 * fmax(fmin((1.0f-(dHeight/(param->funcHeightUpperValue*2.0f))), 1.0f), 0.0f);
+//
+//
+//							// CURRENTLY WORKING
+//							// TODO: Implement function option
+////							if(param->funcHeightEnable) {
+////								dHeight += e3 * fmax(fmin((dHeight/param->funcHeightLowerValue), 1.0f), 0.0f);
+////							}
+////							else dHeight += e3;
 
 						}
 						break;
@@ -792,7 +800,7 @@ namespace Core {
 
 					case Core::Noise::NOISE_VORONOI:
 					{
-						double nx = x/(noise->parent->chunk_size*2) - 0.5, ny = z/(noise->parent->chunk_size*2) - 0.5;
+//						double nx = x/(noise->parent->chunk_size*2) - 0.5, ny = z/(noise->parent->chunk_size*2) - 0.5;
 
 						// Layers
 						for( auto const &param : *noise->voronoi[index] ) {
@@ -807,8 +815,8 @@ namespace Core {
 
 							// TODO: Implement function option ([0-1] or [-1 to 1])
 //							e1 += (genVoronoi.GetValue(nx, ny, dHeight) / 2.0 + 0.5);
-							e1 += (genVoronoi.GetValue(nx, ny, 0) / 2.0 + 0.5);
-//							e1 += genVoronoi.GetValue(nx, ny, 0);
+//							e1 += (genVoronoi.GetValue(nx, ny, 0) / 2.0 + 0.5);
+							e1 += genVoronoi.GetValue(x, z, 0);
 
 							// TODO: Implement function (Power, remove from standard params and make a function option)
 							e2 += std::pow(e1, param->power);
@@ -860,7 +868,8 @@ namespace Core {
 							//	- If height above/below threshold, then discard the triangle?
 
 							e3 = e2;
-							dHeight += e3;
+//							dHeight += e3;
+							dHeight = Core::Noise::applyMode(e3, dHeight, param->mode);
 							//dHeight += e3 * fmax(fmin((1.0f-(dHeight/(param->funcHeightUpperValue*2.0f))), 1.0f), 0.0f);
 
 						}
@@ -869,7 +878,7 @@ namespace Core {
 
 					case Core::Noise::NOISE_BILLOW:
 					{
-						double nx = x/(noise->parent->chunk_size*2) - 0.5, ny = z/(noise->parent->chunk_size*2) - 0.5;
+//						double nx = x/(noise->parent->chunk_size*2) - 0.5, ny = z/(noise->parent->chunk_size*2) - 0.5;
 
 						// Layers
 						for( auto const &param : *noise->billow[index] ) {
@@ -887,8 +896,8 @@ namespace Core {
 							// TODO: Implement function option ([0-1] or [-1 to 1])
 							// TODO: Implement function option (Height for z parameter)
 //							e1 += (genBillow.GetValue(nx, ny, dHeight) / 2.0 + 0.5);
-							e1 += (genBillow.GetValue(nx, ny, 0) / 2.0 + 0.5);
-//							e1 += genRidged.GetValue(nx, ny, 0);
+//							e1 += (genBillow.GetValue(nx, ny, 0) / 2.0 + 0.5);
+							e1 += genRidged.GetValue(x, z, 0);
 
 							// TODO: Implement function (Power, remove from standard params and make a function option)
 							e2 += std::pow(e1, param->power);
@@ -929,7 +938,8 @@ namespace Core {
 							//	- If height above/below threshold, then discard the triangle?
 
 							e3 = e2;
-							dHeight += e3;
+//							dHeight += e3;
+							dHeight = Core::Noise::applyMode(e3, dHeight, param->mode);
 
 						}
 						break;
