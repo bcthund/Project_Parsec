@@ -250,7 +250,7 @@ namespace Core {
 		//else		gameVars->screen.iTerrainGrid	=	9;						//Size of the terrain grid to load
 		//gameVars->screen.iGridOffset				=	gameVars->screen.iTerrainGrid/2;		//Used for loading map files
 		gameVars->screen.fScale						=	1.00f;						// TODO: Move to state class (Size of the terrain grid to load)
-		gameVars->controls.moveSpeed				=	0.25f * gameVars->screen.fScale;			//Character movement adjustment, reset by framerate later
+		gameVars->controls.moveSpeed				=	1.0f * gameVars->screen.fScale;			//Character movement adjustment, reset by framerate later
 //		gameVars->screen.fNear						=	1.0f;					//The near clipping plane
 //		gameVars->screen.fFar						=	500000.0f;				//The far clipping plane
 //		gameVars->screen.fNear						=	250000.0f;					//The near clipping plane

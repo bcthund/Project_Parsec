@@ -576,7 +576,7 @@ namespace Core {
 							genPerlin.SetLacunarity(param->lacunarity);
 							genPerlin.SetNoiseQuality(param->quality);
 							genPerlin.SetOctaveCount(param->octaves);
-							genPerlin.SetPersistence(param->persistance);
+							genPerlin.SetPersistence(param->persistence);
 
 							e1 = genPerlin.GetValue(x, z, 0);
 							e2 = Core::Noise::applyFunctions(e1, dHeight, *param);

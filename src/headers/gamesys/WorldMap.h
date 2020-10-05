@@ -128,8 +128,29 @@ namespace Core {
 				Atmosphere					atmosphere;
 				_Lights						lights;
 
-				t_UMap<std::string, Map::t_ChunkData*> chunkSettings;		///< Layers of chunk settings
-				t_UMap<std::string, Noise::t_Noise*> noise;					///< Layers of noise, each can have it's own chunk settings
+				// Noise needs chunkSettings pointer to implement
+				struct t_LayerData {
+					t_UniformLocations* uniforms;
+					Map::t_ChunkData* chunkSettings;
+					Noise::t_Noise*	noise;
+					t_LayerData() {
+						uniforms = new t_UniformLocations();
+						chunkSettings = new Map::t_ChunkData();
+						noise = new Noise::t_Noise(chunkSettings);
+					}
+
+					t_LayerData(Map::t_ChunkData* chunkSettingsPtr) {
+						uniforms = new t_UniformLocations();
+						chunkSettings = chunkSettingsPtr;
+						noise = new Noise::t_Noise(chunkSettings);
+					}
+				};
+				t_UMap<std::string, t_LayerData*> data;
+
+//				t_UMap<std::string, t_UniformLocations> uniforms;
+
+//				t_UMap<std::string, Map::t_ChunkData*> chunkSettings;		///< Layers of chunk settings
+//				t_UMap<std::string, Noise::t_Noise*> noise;					///< Layers of noise, each can have it's own chunk settings
 //				t_UMap<std::string, Map::t_Noise*> terrainNoise;
 
 //				t_UMap<std::string, Map::t_ChunkData*> chunkSettingsWater;
@@ -146,33 +167,53 @@ namespace Core {
 		};
 
 		_World::_World() {
-			noise.setSource("WorldMap: t_Noise");
-			// Default values
-			chunkSettings.add("Terrain", new Map::t_ChunkData);
-			chunkSettings["Terrain"]->iViewDistance = CONST_SIMPLEX.TERRAIN.VIEW_DISTANCE;
-			chunkSettings["Terrain"]->chunk_resolution = CONST_SIMPLEX.TERRAIN.CHUNK_RESOLUTION;
-			chunkSettings["Terrain"]->chunk_size = CONST_SIMPLEX.TERRAIN.CHUNK_SIZE;
-			chunkSettings["Terrain"]->tex_scale = CONST_SIMPLEX.TERRAIN.TEXTURE_SCALE;
-			chunkSettings["Terrain"]->delta = CONST_SIMPLEX.TERRAIN.DELTA;
-			chunkSettings["Terrain"]->chunk_height_offset = CONST_SIMPLEX.TERRAIN.HEIGHT_OFFSET;
-//			chunkSettings["Terrain"]->sea_level = 0.0f;
-			chunkSettings["Terrain"]->set_iMax();
+//			noise.setSource("WorldMap: t_Noise");
 
-			Noise::t_Noise *newTerrainNoise = new Noise::t_Noise(chunkSettings["Terrain"]);
-			noise.add("Terrain", newTerrainNoise);
+			{
+				t_LayerData *newData = new t_LayerData();
+				data.add("Terrain", newData);
+				data["Terrain"]->chunkSettings->iViewDistance = CONST_SIMPLEX.TERRAIN.VIEW_DISTANCE;
+				data["Terrain"]->chunkSettings->chunk_resolution = CONST_SIMPLEX.TERRAIN.CHUNK_RESOLUTION;
+				data["Terrain"]->chunkSettings->chunk_size = CONST_SIMPLEX.TERRAIN.CHUNK_SIZE;
+				data["Terrain"]->chunkSettings->tex_scale = CONST_SIMPLEX.TERRAIN.TEXTURE_SCALE;
+				data["Terrain"]->chunkSettings->delta = CONST_SIMPLEX.TERRAIN.DELTA;
+				data["Terrain"]->chunkSettings->chunk_height_offset = CONST_SIMPLEX.TERRAIN.HEIGHT_OFFSET;
+				data["Terrain"]->chunkSettings->set_iMax();
+			}
+//			chunkSettings.add("Terrain", new Map::t_ChunkData);
+//			chunkSettings["Terrain"]->iViewDistance = CONST_SIMPLEX.TERRAIN.VIEW_DISTANCE;
+//			chunkSettings["Terrain"]->chunk_resolution = CONST_SIMPLEX.TERRAIN.CHUNK_RESOLUTION;
+//			chunkSettings["Terrain"]->chunk_size = CONST_SIMPLEX.TERRAIN.CHUNK_SIZE;
+//			chunkSettings["Terrain"]->tex_scale = CONST_SIMPLEX.TERRAIN.TEXTURE_SCALE;
+//			chunkSettings["Terrain"]->delta = CONST_SIMPLEX.TERRAIN.DELTA;
+//			chunkSettings["Terrain"]->chunk_height_offset = CONST_SIMPLEX.TERRAIN.HEIGHT_OFFSET;
+//			chunkSettings["Terrain"]->set_iMax();
 
-			chunkSettings.add("Water", new Map::t_ChunkData);
-			chunkSettings["Water"]->iViewDistance = CONST_SIMPLEX.WATER.VIEW_DISTANCE;
-			chunkSettings["Water"]->chunk_resolution = CONST_SIMPLEX.WATER.CHUNK_RESOLUTION;
-			chunkSettings["Water"]->chunk_size = CONST_SIMPLEX.WATER.CHUNK_SIZE;
-			chunkSettings["Water"]->tex_scale = CONST_SIMPLEX.WATER.TEXTURE_SCALE;
-			chunkSettings["Water"]->delta = CONST_SIMPLEX.WATER.DELTA;
-			chunkSettings["Water"]->chunk_height_offset = CONST_SIMPLEX.WATER.HEIGHT_OFFSET;
-//			chunkSettings["Water"]->sea_level = 0.0f;
-			chunkSettings["Water"]->set_iMax();
+//			Noise::t_Noise *newTerrainNoise = new Noise::t_Noise(chunkSettings["Terrain"]);
+//			noise.add("Terrain", newTerrainNoise);
 
-			Noise::t_Noise *newWaterNoise = new Noise::t_Noise(chunkSettings["Water"]);
-			noise.add("Water", newWaterNoise);
+			{
+				t_LayerData *newData = new t_LayerData();
+				data.add("Water", newData);
+				data["Water"]->chunkSettings->iViewDistance = CONST_SIMPLEX.WATER.VIEW_DISTANCE;
+				data["Water"]->chunkSettings->chunk_resolution = CONST_SIMPLEX.WATER.CHUNK_RESOLUTION;
+				data["Water"]->chunkSettings->chunk_size = CONST_SIMPLEX.WATER.CHUNK_SIZE;
+				data["Water"]->chunkSettings->tex_scale = CONST_SIMPLEX.WATER.TEXTURE_SCALE;
+				data["Water"]->chunkSettings->delta = CONST_SIMPLEX.WATER.DELTA;
+				data["Water"]->chunkSettings->chunk_height_offset = CONST_SIMPLEX.WATER.HEIGHT_OFFSET;
+				data["Water"]->chunkSettings->set_iMax();
+			}
+//			chunkSettings.add("Water", new Map::t_ChunkData);
+//			chunkSettings["Water"]->iViewDistance = CONST_SIMPLEX.WATER.VIEW_DISTANCE;
+//			chunkSettings["Water"]->chunk_resolution = CONST_SIMPLEX.WATER.CHUNK_RESOLUTION;
+//			chunkSettings["Water"]->chunk_size = CONST_SIMPLEX.WATER.CHUNK_SIZE;
+//			chunkSettings["Water"]->tex_scale = CONST_SIMPLEX.WATER.TEXTURE_SCALE;
+//			chunkSettings["Water"]->delta = CONST_SIMPLEX.WATER.DELTA;
+//			chunkSettings["Water"]->chunk_height_offset = CONST_SIMPLEX.WATER.HEIGHT_OFFSET;
+//			chunkSettings["Water"]->set_iMax();
+
+//			Noise::t_Noise *newWaterNoise = new Noise::t_Noise(chunkSettings["Water"]);
+//			noise.add("Water", newWaterNoise);
 		}
 
 		_World::~_World() {
@@ -198,7 +239,7 @@ namespace Core {
 
 			// [YES] Fractal Borwnian: Mountains/Continents [Simplex Test - Good Continents + Mountains in one shot (Actually Fractal Brownian Noise)]
 			Noise::t_Fractal *newFractal = new Noise::t_Fractal();
-			Noise::t_Fractal &layer0 = noise["Terrain"]->add("Layer0", newFractal);
+			Noise::t_Fractal &layer0 = data["Terrain"]->noise->add("Layer0", newFractal);
 			layer0.add("Mountains", new Noise::t_FractalParams());
 			layer0["Mountains"]->frequency			= 0.000001f;
 			layer0["Mountains"]->amplitude			= 10.0f;
@@ -207,12 +248,14 @@ namespace Core {
 			layer0["Mountains"]->octaves			= 12;
 //			layer0["Mountains"]->octaves			= 1;
 			layer0["Mountains"]->AddFunction.Power(2.0f);
-			layer0["Mountains"]->AddFunction.Scale(200000.0f);
-			layer0["Mountains"]->AddFunction.Offset(2000.0f);
+			layer0["Mountains"]->AddFunction.RemapBelow(0.0f, -10.0f, 0.0f, -1.0f, 0.0f);				// Underwater terrain gets scaled to offset multiply layer
+			layer0["Mountains"]->AddFunction.RemapBelow(-0.5f, -2.5f, -0.5f, -10.0f, -0.5f);		// Underwater terrain gets scaled to offset multiply layer
+			layer0["Mountains"]->AddFunction.Scale(150000.0f);
+			layer0["Mountains"]->AddFunction.Offset(5000.0f);
 
 			// [YES] Ridged-Multi: Peaks
 			Noise::t_RidgedPerlin *newRidgedPerlin1 = new Noise::t_RidgedPerlin();
-			Noise::t_RidgedPerlin &layer1 = noise["Terrain"]->add("Layer1", newRidgedPerlin1);
+			Noise::t_RidgedPerlin &layer1 = data["Terrain"]->noise->add("Layer1", newRidgedPerlin1);
 			layer1.add("Peaks", new Noise::t_RidgedPerlinParams());
 			layer1["Peaks"]->frequency				= 0.00001f;
 			layer1["Peaks"]->lacunarity				= 1.5f;
@@ -221,14 +264,18 @@ namespace Core {
 			layer1["Peaks"]->octaves				= 3;
 			layer1["Peaks"]->seed					= 1024.0f;
 			layer1["Peaks"]->AddFunction.Power(2.0f);
-			layer1["Peaks"]->AddFunction.FadeBelow(8000.0f, 10000.0f, 1.0f, true);
-			layer1["Peaks"]->AddFunction.FadeAbove(25000.0f, 25000.0f, 1.0f, true);
+			layer1["Peaks"]->AddFunction.Remap(0.0f, 1.0f);
+			layer1["Peaks"]->AddFunction.FadeBelow(10000.0f, 12000.0f, 1.0f, true);	// Ridges fade down to sea level
+			layer1["Peaks"]->AddFunction.FadeAbove(55000.0f, 10000.0f, 1.0f, true);	// Ridges only go so high in mountains, prevents obscene peaks
 			layer1["Peaks"]->AddFunction.Scale(10000.0f);
 
-			// TODO: [NO] Possibly multiply by layer, but do not touch underwater layer
-			Noise::t_Billow *newBillow = new Noise::t_Billow();
-			Noise::t_Billow &layer2 = noise["Terrain"]->add("Layer2", newBillow);
-			layer2.add("Continent", new Noise::t_BillowParams());
+			// [YES] Multiply by layer, but do not touch underwater layer
+//			Noise::t_Billow *newBillow = new Noise::t_Billow();
+//			Noise::t_Billow &layer2 = data["Terrain"]->noise->add("Layer2", newBillow);
+//			layer2.add("Continent", new Noise::t_BillowParams());
+			Noise::t_Perlin *newPerlin = new Noise::t_Perlin();
+			Noise::t_Perlin &layer2 = data["Terrain"]->noise->add("Layer2", newPerlin);
+			layer2.add("Continent", new Noise::t_PerlinParams());
 			layer2["Continent"]->mode					= Noise::MODE_MULTIPLY;
 			layer2["Continent"]->seed					= 4096.0f;
 			layer2["Continent"]->frequency				= 0.000001f;
@@ -236,8 +283,13 @@ namespace Core {
 			layer2["Continent"]->persistence			= 1.5f;
 			layer2["Continent"]->quality				= noise::QUALITY_FAST;
 			layer2["Continent"]->octaves				= 1;
-			//layer2["Continent"]->AddFunction.Scale(1.0f);
-			layer2["Continent"]->AddFunction.Offset(1.0f);
+//			layer2["Continent"]->AddFunction.Offset(-0.5f);
+//			layer2["Continent"]->AddFunction.Remap(0.25f, 1.0f, -1.0f, 1.0f);	// Modify previous layers by 25-100%
+			layer2["Continent"]->AddFunction.Remap(0.0f, 1.0f, -1.0f, 1.0f);	// Modify previous layers by 25-100%
+//			layer2["Continent"]->AddFunction.Remap(-0.25f, 1.0f, -1.0f, 1.0f);	// Modify previous layers by 25-100%
+//			layer2["Continent"]->AddFunction.Offset(-0.25f);
+//			layer2["Continent"]->AddFunction.Scale(1000.0f);	// For visualization only
+//			layer2["Continent"]->AddFunction.Scale(10.0f);	// For visualization only
 
 			// [YES] Ridged-Multi: Lakes
 //			Noise::t_RidgedPerlin *newRidgedPerlin4 = new Noise::t_RidgedPerlin();
@@ -310,12 +362,12 @@ namespace Core {
 //			layer4["Billow"]->AddFunction.Offset(1000.0f);
 
 
-			chunkSettings["Terrain"]->set_iMax();
-			for(int x=-chunkSettings["Terrain"]->iMax; x<chunkSettings["Terrain"]->iMax; x++) {
-				for(int z=-chunkSettings["Terrain"]->iMax; z<chunkSettings["Terrain"]->iMax; z++) {
+			data["Terrain"]->chunkSettings->set_iMax();
+			for(int x=-data["Terrain"]->chunkSettings->iMax; x<data["Terrain"]->chunkSettings->iMax; x++) {
+				for(int z=-data["Terrain"]->chunkSettings->iMax; z<data["Terrain"]->chunkSettings->iMax; z++) {
 
 					int dist = std::sqrt((x*x)+(z*z));
-					if(dist < chunkSettings["Terrain"]->iMax) {
+					if(dist < data["Terrain"]->chunkSettings->iMax) {
 						std::stringstream ssx, ssz;
 						ssx << std::setfill ('0') << std::setw(4);
 						ssx << std::hex << (x+32768);
@@ -327,7 +379,7 @@ namespace Core {
 
 						t_MapInstance *newMap = new t_MapInstance(mapName);		// NOTE: mapName translates into the map offset here
 						map.add(mapName, newMap);
-						map[mapName]->load(noise["Terrain"], noise["Water"]);
+						map[mapName]->load(data["Terrain"]->noise, data["Water"]->noise);
 					}
 				}
 			}
@@ -341,21 +393,21 @@ namespace Core {
 			atmosphere.update(atmosphere.MODE_SATELLITE);
 //			atmosphere.update(atmosphere.MODE_FLORA);
 
-			chunkSettings["Terrain"]->delta = CONST_SIMPLEX.TERRAIN.DELTA;
-			chunkSettings["Terrain"]->set_iMax();	// In case parameters have changed
+			data["Terrain"]->chunkSettings->delta = CONST_SIMPLEX.TERRAIN.DELTA;
+			data["Terrain"]->chunkSettings->set_iMax();	// In case parameters have changed
 
 			// Update distance for all chunks according to players current position
 			// Keep track of maps that are outside range and will be removed
 			t_Vector1T<std::string> removeMaps;
 			for ( auto chunk : map ) {
-				chunk.second->update(gameVars->player.active->transform.pos, chunkSettings["Terrain"]->chunk_size);
-				chunk.second->bDraw = chunk.second->distance<chunkSettings["Terrain"]->iMax;
+				chunk.second->update(gameVars->player.active->transform.pos, data["Terrain"]->chunkSettings->chunk_size);
+				chunk.second->bDraw = chunk.second->distance<data["Terrain"]->chunkSettings->iMax;
 
 				// TODO: Remove chunks beyond visibility
 				//	- Start a timer when bDraw active
 				//	- If timer expires, then drop chunk (prevents player from turning around needed to reload maps for a limited time)
 
-				if(chunk.second->distance>chunkSettings["Terrain"]->iMax) {
+				if(chunk.second->distance>data["Terrain"]->chunkSettings->iMax) {
 					removeMaps.add(chunk.first);
 				}
 			}
@@ -369,12 +421,12 @@ namespace Core {
 			}
 
 			// Check for new chunks in range
-			for(int x=-chunkSettings["Terrain"]->iMax; x<chunkSettings["Terrain"]->iMax; x++) {
-				for(int z=-chunkSettings["Terrain"]->iMax; z<chunkSettings["Terrain"]->iMax; z++) {
+			for(int x=-data["Terrain"]->chunkSettings->iMax; x<data["Terrain"]->chunkSettings->iMax; x++) {
+				for(int z=-data["Terrain"]->chunkSettings->iMax; z<data["Terrain"]->chunkSettings->iMax; z++) {
 					// Get players current chunk
 					Vector2f vA;
-					vA.x = -gameVars->player.active->transform.pos.x/chunkSettings["Terrain"]->chunk_size;
-					vA.y = -gameVars->player.active->transform.pos.z/chunkSettings["Terrain"]->chunk_size;
+					vA.x = -gameVars->player.active->transform.pos.x/data["Terrain"]->chunkSettings->chunk_size;
+					vA.y = -gameVars->player.active->transform.pos.z/data["Terrain"]->chunkSettings->chunk_size;
 
 					// Rounding
 					if(vA.x<0) vA.x-=1.0f; else vA.x+=1.0f;
@@ -399,11 +451,11 @@ namespace Core {
 						float distance = (vB-vA).length();
 
 						// Check if new chunk is in valid range
-						if(distance < chunkSettings["Terrain"]->iMax) {
+						if(distance < data["Terrain"]->chunkSettings->iMax) {
 							// Load new chunk
 							t_MapInstance *newMap = new t_MapInstance(mapName);		// NOTE: mapName translates into the map offset here
 							map.add(mapName, newMap);
-							map[mapName]->load(noise["Terrain"], noise["Water"]);
+							map[mapName]->load(data["Terrain"]->noise, data["Water"]->noise);
 						}
 					}
 				}
@@ -483,21 +535,25 @@ namespace Core {
 			glActiveTexture(GL_TEXTURE31);
 			Core::sysTex->set(Core::sysTex->TEX_WATER);
 
+			shader->use(Core::GLS_PHONG);
+			shader->getUniform(Core::GLS_PHONG, &lights, data["Terrain"]->uniforms);
+			shader->getUniform(Core::GLS_WATER, &lights, data["Water"]->uniforms);
+
 			glDisable(GL_CULL_FACE);
 			Core::matrix->Push();
 				// Move chunk according to player
 				matrix->Rotate(Core::gameVars->player.active->transform.rot[0], 1.0, 0.0, 0.0);
 				matrix->Rotate(Core::gameVars->player.active->transform.rot[1], 0.0, 1.0, 0.0);
-				matrix->Translate(Core::gameVars->player.active->transform.pos[0]-(chunkSettings["Terrain"]->chunk_size/2),
+				matrix->Translate(Core::gameVars->player.active->transform.pos[0]-(data["Terrain"]->chunkSettings->chunk_size/2),
 								  Core::gameVars->player.active->transform.pos[1],
-								  Core::gameVars->player.active->transform.pos[2]-(chunkSettings["Terrain"]->chunk_size/2));
+								  Core::gameVars->player.active->transform.pos[2]-(data["Terrain"]->chunkSettings->chunk_size/2));
 
 				// Move chunk into place (Do in loader so lighting works easily)
 				Core::matrix->Scale(1*Core::gameVars->screen.fScale, 1*Core::gameVars->screen.fScale, 1*Core::gameVars->screen.fScale);
 
-				float fPreScale = chunkSettings["Terrain"]->chunk_size*Core::gameVars->screen.fScale;
+				float fPreScale = data["Terrain"]->chunkSettings->chunk_size*Core::gameVars->screen.fScale;
 
-				shader->use(Core::GLS_PHONG);
+//				shader->use(Core::GLS_PHONG);
 //				shader->getUniform(Core::GLS_PHONG, &lights);
 
 				for ( auto chunk : map ) {
@@ -514,7 +570,8 @@ namespace Core {
 
 							matrix->SetTransform();
 //							shader->use(Core::GLS_PHONG);
-							shader->getUniform(Core::GLS_PHONG, &lights);
+//							shader->getUniform(Core::GLS_PHONG, &lights);
+							shader->setUniform(Core::GLS_PHONG, &lights, data["Terrain"]->uniforms);
 							chunk.second->drawTerrain();
 
 							// Draw vertex normals (~6fps drop)
@@ -529,7 +586,7 @@ namespace Core {
 //					}
 				}
 
-				shader->use(Core::GLS_WATER);
+//				shader->use(Core::GLS_WATER);
 //				shader->getUniform(Core::GLS_WATER, &lights);
 
 				for ( auto chunk : map ) {
@@ -542,7 +599,8 @@ namespace Core {
 
 							matrix->SetTransform();
 //							shader->use(Core::GLS_WATER);
-							shader->getUniform(Core::GLS_WATER, &lights);
+//							shader->getUniform(Core::GLS_WATER, &lights);
+							shader->setUniform(Core::GLS_WATER, &lights, data["Water"]->uniforms);
 							chunk.second->drawWater();
 						Core::matrix->Pop();
 				}

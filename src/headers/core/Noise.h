@@ -374,14 +374,14 @@ namespace Core {
 //		};
 
 		struct t_PerlinParams : virtual public t_BaseParams {
-			float frequency, lacunarity, persistance, seed;
+			float frequency, lacunarity, persistence, seed;
 			int octaves;
 			noise::NoiseQuality quality;
 
 			t_PerlinParams() {
 				frequency			= 0.00025f;
 				lacunarity			= 2.9f;
-				persistance			= 0.33f;
+				persistence			= 0.33f;
 				octaves				= 3;
 				seed				= 0.0f;
 				quality				= noise::QUALITY_STD;

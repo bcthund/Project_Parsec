@@ -41,27 +41,24 @@ namespace Core {
 			switch(paramsStruct.function) {
 				case FUNCTION_REMAP: {
 					t_FunctionParams::u_Type::t_Remap &params = *(t_FunctionParams::u_Type::t_Remap*)paramsStruct[paramsStruct.function];
-//					paramsStruct.types.remap
 					return ((newValue-params.fMin)/(params.fMax-params.fMin) * (params.fNewMax-params.fNewMin) + (params.fNewMin) );
 				}
 				case FUNCTION_REMAP_ABOVE: {
 					t_FunctionParams::u_Type::t_RemapAbove &params = *(t_FunctionParams::u_Type::t_RemapAbove*)paramsStruct[paramsStruct.function];
-					if(newValue>=params.threshold)
+					if(newValue>=params.threshold) {
 						return ((newValue-params.fMin)/(params.fMax-params.fMin) * (params.fNewMax-params.fNewMin) + (params.fNewMin) );
+					}
 					return newValue;
 				}
 				case FUNCTION_REMAP_BELOW: {
 					t_FunctionParams::u_Type::t_RemapBelow &params = *(t_FunctionParams::u_Type::t_RemapBelow*)paramsStruct[paramsStruct.function];
-					if(newValue<=params.threshold)
+					if(newValue<=params.threshold) {
 						return ((newValue-params.fMin)/(params.fMax-params.fMin) * (params.fNewMax-params.fNewMin) + (params.fNewMin) );
+					}
 					return newValue;
 				}
 				case FUNCTION_POWER: {
 					t_FunctionParams::u_Type::t_Power &params = *(t_FunctionParams::u_Type::t_Power*)paramsStruct[paramsStruct.function];
-//					#define signbit_p1_or_n1(x)  ((signbit(x) ?  -1 : 1)
-//					int sign = 1;
-//					if(e1<0) sign = -1;
-//					int sign = (std::signbit(newValue) ?  -1 : 1);
 					return (std::signbit(newValue) ?  -1 : 1) * std::pow(abs(newValue), params.value);
 				}
 				case FUNCTION_REPLACE_ABOVE: {
