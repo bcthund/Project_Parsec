@@ -173,9 +173,9 @@ namespace Core {
 				case NOISE_NONE:
 					return &none;
 					break;
-				case NOISE_SIMPLEX:
-					return &simplex;
-					break;
+//				case NOISE_SIMPLEX:
+//					return &simplex;
+//					break;
 				case NOISE_PERLIN:
 					return &perlin;
 					break;
@@ -204,11 +204,11 @@ namespace Core {
 			return *none[id];
 		}
 
-		t_Simplex &t_Noise::add(std::string name, t_Simplex* noise) {
-			int id = simplex.add(noise);
-			layers.add(name, std::make_pair(NOISE_SIMPLEX, id));
-			return *simplex[id];
-		}
+//		t_Simplex &t_Noise::add(std::string name, t_Simplex* noise) {
+//			int id = simplex.add(noise);
+//			layers.add(name, std::make_pair(NOISE_SIMPLEX, id));
+//			return *simplex[id];
+//		}
 
 		t_Perlin &t_Noise::add(std::string name, t_Perlin* noise) {
 			int id = perlin.add(noise);
@@ -254,9 +254,9 @@ namespace Core {
 			return *none[layers[name].second];
 		}
 
-		t_Simplex& t_Noise::getSimplex(std::string name) {
-			return *simplex[layers[name].second];
-		}
+//		t_Simplex& t_Noise::getSimplex(std::string name) {
+//			return *simplex[layers[name].second];
+//		}
 
 		t_Perlin& t_Noise::getPerlin(std::string name) {
 			return *perlin[layers[name].second];
@@ -288,7 +288,7 @@ namespace Core {
 
 		t_Noise::~t_Noise() {
 			for (auto item : none )				delete item;
-			for (auto item : simplex )			delete item;
+//			for (auto item : simplex )			delete item;
 			for (auto item : perlin )			delete item;
 			for (auto item : fractal )			delete item;
 //			for (auto item : ridgedSimplex )	delete item;

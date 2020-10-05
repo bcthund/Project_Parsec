@@ -368,96 +368,52 @@ namespace Core {
 			t_NoneParams() {}
 		};
 
-		struct t_SimplexParams : virtual public t_BaseParams {
-			// TODO: Needs manual octaves, use current code from t_PerlinParams
-		};
+//		struct t_SimplexParams : virtual public t_BaseParams {
+//			t_SimplexParams() {
+//			}
+//		};
 
 		struct t_PerlinParams : virtual public t_BaseParams {
+			float frequency, lacunarity, persistance, seed;
+			int octaves;
+			noise::NoiseQuality quality;
 
-			struct t_PerlinOctaves {
-				float frequency_x;
-				float frequency_y;
-				float amplitude;
-				t_PerlinOctaves(float a, float f) {
-					amplitude = a;
-					frequency_x = f;
-					frequency_y = f;
-				}
-				t_PerlinOctaves(float a, float fx, float fy) {
-					amplitude = a;
-					frequency_x = fx;
-					frequency_y = fy;
-				}
-			};
-			t_Vector1T<t_PerlinOctaves> octaveData;
-
-			void addOctave(float amplitude, float frequency) {
-				octaveData.add(t_PerlinOctaves(amplitude, frequency));
-			}
-			void addOctave(float amplitude, float frequency_x, float frequency_y) {
-				octaveData.add(t_PerlinOctaves(amplitude, frequency_x, frequency_y));
-			}
-			int octaves() { return octaveData.size(); };
-			float power;
-			float scale;
 			t_PerlinParams() {
-				power		= 1.0f;
-				scale		= 500.0f;
+				frequency			= 0.00025f;
+				lacunarity			= 2.9f;
+				persistance			= 0.33f;
+				octaves				= 3;
+				seed				= 0.0f;
+				quality				= noise::QUALITY_STD;
 			}
 		};
 
 		struct t_FractalParams : virtual public t_BaseParams {
 			float frequency, amplitude, lacunarity, persistance;
 			int octaves;
-			float power;
-			float scale;
-			float offset;
 
 			t_FractalParams() {
 				frequency			= 0.00025f;
 				amplitude			= 1.0f;
 				lacunarity			= 2.9f;
 				persistance			= 0.33f;
-				power				= 1.0f;
-				scale				= 875.0f;
 				octaves				= 3;
-				offset				= 0.0f;
 			}
 		};
 
 		struct t_RidgedPerlinParams : virtual public t_BaseParams {
-
-			bool bRiver;
-
-			bool funcHeightUpperEnable;
-			bool funcHeightLowerEnable;
-			float funcHeightUpperValue;
-			float funcHeightLowerValue;
-
 			float frequency,				// First octave frequency
 				  lacunarity,				// 1.5 to 3.5
-				  seed,						// TODO: Implement as constructor after moved to global class
-				  power,
-				  scale,
-				  offset;
+				  seed;
 			noise::NoiseQuality quality;	// QUALITY_FAST, QUALITY_STD, QUALITY_BEST
 			int octaves;					// 1 to noise::module::RIDGED_MAX_OCTAVE
 
 			t_RidgedPerlinParams(/*int seed*/) {
-				bRiver = false;
 				frequency	= 1.0f;
 				lacunarity	= 1.5f;
 				quality		= noise::QUALITY_STD;
 				seed		= 0.0f;	// TODO: Implement as constructor after moved to global class
 				octaves		= 3;
-				power		= 1.0f;
-				scale		= 1.0f;
-				offset		= 0.0f;
-
-				funcHeightUpperEnable	= false;
-				funcHeightLowerEnable	= false;
-				funcHeightUpperValue	= 8000.0f;
-				funcHeightLowerValue	= 2000.0f;
 			}
 		};
 
@@ -471,15 +427,11 @@ namespace Core {
 		struct t_VoronoiParams : virtual public t_BaseParams {
 			float frequency,
 				  displacement,
-				  scale,
-				  power,
 				  seed;				// TODO: Implement as constructor after moved to global class
 			bool  bDistance;
 			t_VoronoiParams() {
 				frequency		= 1.0f;
 				displacement	= 1.5f;
-				power			= 1.0f;
-				scale			= 1.0f;
 				seed			= 0.0f;	// TODO: Implement as constructor after moved to global class
 				bDistance		= true;
 			}
@@ -489,14 +441,7 @@ namespace Core {
 			float frequency,				// First octave frequency
 				  lacunarity,				// 1.5 to 3.5
 				  persistence,				//
-				  seed,						// TODO: Implement as constructor after moved to global class
-				  power,
-				  scale,
-				  offset;					// TODO: Add to all layers
-
-			bool funcHeightEnable;
-			float funcHeightUpperValue;
-			float funcHeightLowerValue;
+				  seed;
 
 			noise::NoiseQuality quality;	// QUALITY_FAST, QUALITY_STD, QUALITY_BEST
 			int octaves;					// 1 to noise::module::RIDGED_MAX_OCTAVE
@@ -508,13 +453,6 @@ namespace Core {
 				quality		= noise::QUALITY_STD;
 				seed		= 0.0f;	// TODO: Implement as constructor after moved to global class
 				octaves		= 3;
-				power		= 1.0f;
-				scale		= 1.0f;
-				offset		= 0.0f;
-
-				funcHeightEnable		= false;
-				funcHeightUpperValue	= 8000.0f;
-				funcHeightLowerValue	= 2000.0f;
 			}
 		};
 
@@ -530,7 +468,7 @@ namespace Core {
 		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 		enum eNoiseType { NOISE_NONE,
-						  NOISE_SIMPLEX,
+//						  NOISE_SIMPLEX,
 						  NOISE_PERLIN,
 						  NOISE_FRACTAL,
 //						  NOISE_RIDGED_SIMPLEX,
@@ -542,7 +480,7 @@ namespace Core {
 		using t_VariantNoise = std::pair<eNoiseType, int>;
 
 		using t_None = t_VectorMap<t_NoneParams*>;
-		using t_Simplex = t_VectorMap<t_SimplexParams*>;
+//		using t_Simplex = t_VectorMap<t_SimplexParams*>;
 		using t_Perlin = t_VectorMap<t_PerlinParams*>;
 		using t_Fractal = t_VectorMap<t_FractalParams*>;
 //		using t_RidgedSimplex = t_VectorMap<t_RidgedSimplexParams*>;
@@ -556,7 +494,7 @@ namespace Core {
 			protected:
 				Sys::Map::t_ChunkData *parent;
 				t_Vector1T<t_None*> 			none;
-				t_Vector1T<t_Simplex*>			simplex;
+//				t_Vector1T<t_Simplex*>			simplex;
 				t_Vector1T<t_Perlin*>			perlin;
 				t_Vector1T<t_Fractal*>			fractal;
 //				t_Vector1T<t_RidgedSimplex*>	ridgedSimplex;
@@ -570,7 +508,7 @@ namespace Core {
 				void * operator[](std::string name);
 
 				t_None &add(std::string name, t_None* noise);
-				t_Simplex &add(std::string name, t_Simplex* noise);
+//				t_Simplex &add(std::string name, t_Simplex* noise);
 				t_Perlin &add(std::string name, t_Perlin* noise);
 				t_Fractal &add(std::string name, t_Fractal* noise);
 //				t_RidgedSimplex &add(std::string name, t_RidgedSimplex* noise);
@@ -580,7 +518,7 @@ namespace Core {
 
 				// Get a generator by layer name, but must know the correct type
 				t_None& getNone(std::string name);
-				t_Simplex& getSimplex(std::string name);
+//				t_Simplex& getSimplex(std::string name);
 				t_Perlin& getPerlin(std::string name);
 				t_Fractal& getFractal(std::string name);
 //				t_RidgedSimplex& getRidgedSimplex(std::string name);

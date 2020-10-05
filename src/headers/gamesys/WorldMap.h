@@ -204,12 +204,9 @@ namespace Core {
 			layer0["Mountains"]->amplitude			= 10.0f;
 			layer0["Mountains"]->lacunarity			= 2.5f;
 			layer0["Mountains"]->persistance		= 0.50f;
-			layer0["Mountains"]->power				= 2.5f;
-			layer0["Mountains"]->scale				= 200000.0f;
 			layer0["Mountains"]->octaves			= 12;
 //			layer0["Mountains"]->octaves			= 1;
-			layer0["Mountains"]->offset				= 2000.0f;
-			layer0["Mountains"]->AddFunction.Power(2.5f);
+			layer0["Mountains"]->AddFunction.Power(2.0f);
 			layer0["Mountains"]->AddFunction.Scale(200000.0f);
 			layer0["Mountains"]->AddFunction.Offset(2000.0f);
 
@@ -222,49 +219,38 @@ namespace Core {
 //			layer1["Peaks"]->quality				= noise::QUALITY_BEST;
 			layer1["Peaks"]->quality				= noise::QUALITY_STD;
 			layer1["Peaks"]->octaves				= 3;
-			layer1["Peaks"]->power					= 2.0f;
-			layer1["Peaks"]->scale					= 15000.0f;
 			layer1["Peaks"]->seed					= 1024.0f;
-			layer1["Peaks"]->bRiver					= false;
-			layer1["Peaks"]->funcHeightUpperEnable	= false;
-			layer1["Peaks"]->funcHeightLowerEnable	= true;
-			layer1["Peaks"]->funcHeightUpperValue 	= 30000;
-			layer1["Peaks"]->funcHeightLowerValue 	= 8000;
 			layer1["Peaks"]->AddFunction.Power(2.0f);
-			layer1["Peaks"]->AddFunction.FadeBelow(15000.0f, 15000.0f, 1.0f, true);
-			layer1["Peaks"]->AddFunction.FadeAbove(50000.0f, 25000.0f, 1.0f, true);
-			layer1["Peaks"]->AddFunction.Scale(15000.0f);
+			layer1["Peaks"]->AddFunction.FadeBelow(8000.0f, 10000.0f, 1.0f, true);
+			layer1["Peaks"]->AddFunction.FadeAbove(25000.0f, 25000.0f, 1.0f, true);
+			layer1["Peaks"]->AddFunction.Scale(10000.0f);
 
 			// TODO: [NO] Possibly multiply by layer, but do not touch underwater layer
-//			Map::t_NewSimplex *newSimplex2 = new Map::t_NewSimplex();
-//			Map::t_NewSimplex &layer2 = noise["Terrain"]->add("Layer2", newSimplex2);
-//			layer2.add("Continent", new Map::t_SimplexParams());
-//			layer2["Continent"]->frequency			= 0.0000005f;
-//			layer2["Continent"]->amplitude			= 1.0f;
-//			layer2["Continent"]->lacunarity			= 0.025f;
-//			layer2["Continent"]->persistance		= 0.025f;
-//			layer2["Continent"]->power				= 3.0f;
-//			layer2["Continent"]->scale				= 10000.0f;
-//			layer2["Continent"]->octaves			= 1; //1;
+			Noise::t_Billow *newBillow = new Noise::t_Billow();
+			Noise::t_Billow &layer2 = noise["Terrain"]->add("Layer2", newBillow);
+			layer2.add("Continent", new Noise::t_BillowParams());
+			layer2["Continent"]->mode					= Noise::MODE_MULTIPLY;
+			layer2["Continent"]->seed					= 4096.0f;
+			layer2["Continent"]->frequency				= 0.000001f;
+			layer2["Continent"]->lacunarity				= 1.5f;
+			layer2["Continent"]->persistence			= 1.5f;
+			layer2["Continent"]->quality				= noise::QUALITY_FAST;
+			layer2["Continent"]->octaves				= 1;
+			//layer2["Continent"]->AddFunction.Scale(1.0f);
+			layer2["Continent"]->AddFunction.Offset(1.0f);
 
-			// [NO] Ridged-Multi: Lakes
+			// [YES] Ridged-Multi: Lakes
 //			Noise::t_RidgedPerlin *newRidgedPerlin4 = new Noise::t_RidgedPerlin();
 //			Noise::t_RidgedPerlin &layer4 = noise["Terrain"]->add("Layer4", newRidgedPerlin4);
 //			layer4.add("Underwater", new Noise::t_RidgedPerlinParams());
 //			layer4["Underwater"]->frequency				= 0.00002f;
-//			layer4["Underwater"]->lacunarity				= 2.5f;
+//			layer4["Underwater"]->lacunarity			= 2.5f;
 ////			layer4["Underwater"]->quality				= noise::QUALITY_BEST;
 //			layer4["Underwater"]->quality				= noise::QUALITY_STD;
 //			layer4["Underwater"]->octaves				= 3;
-//			layer4["Underwater"]->power					= 2.0f;
-//			layer4["Underwater"]->scale					= -10000.0f;
 //			layer4["Underwater"]->seed					= 911.0f;
-////			layer4["Underwater"]->funcHeightUpperEnable	= true;
-////			layer4["Underwater"]->funcHeightLowerEnable	= false;
-////			layer4["Underwater"]->funcHeightUpperValue 	= 1500;
-////			layer4["Underwater"]->funcHeightLowerValue 	= 2500;
 //			layer4["Underwater"]->AddFunction.Power(2.0f);
-//			layer4["Underwater"]->AddFunction.FadeAbove(1500.0f, 2500.0f, 1.0f, true);
+//			layer4["Underwater"]->AddFunction.FadeAbove(-1000.0f, 2500.0f, 1.0f, true);
 //			layer4["Underwater"]->AddFunction.Scale(-10000.0f);
 
 
@@ -285,43 +271,43 @@ namespace Core {
 //			layer1["Rivers"]->bRiver				= true;
 
 
-			// TODO: [NO] Perlin Test (reimplement)
-//			Map::t_NewPerlin *newPerlin = new Map::t_NewPerlin();
-//			Map::t_NewPerlin &layer0 = noise["Terrain"]->add("Layer0", newPerlin);
-//			layer0.add("PerlinTest", new Map::t_PerlinParams());
-//			layer0["PerlinTest"]->power = 3.6f;
-//			layer0["PerlinTest"]->scale = 10000.0f;
-//			layer0["PerlinTest"]->addOctave(1.0f,  1);
-//			layer0["PerlinTest"]->addOctave(0.48f, 2);
-//			layer0["PerlinTest"]->addOctave(0.23f, 4);
-//			layer0["PerlinTest"]->addOctave(0.10f, 8);
-//			layer0["PerlinTest"]->addOctave(0.04f, 16);
-//			layer0["PerlinTest"]->addOctave(0.02f, 32);
-
+			// [NO] Perlin Test
+//			Noise::t_Perlin *newPerlin = new Noise::t_Perlin();
+//			Noise::t_Perlin &layer0 = noise["Terrain"]->add("Layer0", newPerlin);
+//			layer0.add("PerlinTest", new Noise::t_PerlinParams());
+//			layer0["PerlinTest"]->seed				= 42.0f;
+//			layer0["PerlinTest"]->frequency			= 0.00000001f;
+//			layer0["PerlinTest"]->lacunarity		= 2.5f;
+//			layer0["PerlinTest"]->quality			= noise::QUALITY_STD;
+//			layer0["PerlinTest"]->octaves			= 6;
+//			layer0["PerlinTest"]->persistance		= 1.75f;
+//			layer0["PerlinTest"]->AddFunction.Power(2.0f);
+//			layer0["PerlinTest"]->AddFunction.Scale(1000.0f);
 
 			// [NO] Voronoi Test
-//			Map::t_NewVoronoi *newVoronoi = new Map::t_NewVoronoi();
-//			Map::t_NewVoronoi &layer3 = noise["Terrain"]->add("Layer3", newVoronoi);
-//			layer3.add("Voronoi", new Map::t_VoronoiParams());
-//			layer3["Voronoi"]->frequency				= 10.0f;
+//			Noise::t_Voronoi *newVoronoi = new Noise::t_Voronoi();
+//			Noise::t_Voronoi &layer3 = noise["Terrain"]->add("Layer3", newVoronoi);
+//			layer3.add("Voronoi", new Noise::t_VoronoiParams());
+//			layer3["Voronoi"]->seed						= 420.0f;
+//			layer3["Voronoi"]->frequency				= 0.0001f;
 //			layer3["Voronoi"]->displacement				= 0.0f;
 //			layer3["Voronoi"]->bDistance				= true;
-//			layer3["Voronoi"]->power					= 2.0f;
-//			layer3["Voronoi"]->scale					= 10000.0f;
+//			layer3["Voronoi"]->AddFunction.Power(2.0f);
+//			layer3["Voronoi"]->AddFunction.Scale(1000.0f);
 
 			// [NO] Billow Test
-//			Map::t_NewBillow *newBillow = new Map::t_NewBillow();
-//			Map::t_NewBillow &layer4 = noise["Terrain"]->add("Layer4", newBillow);
-//			layer4.add("Billow", new Map::t_BillowParams());
-//			layer4["Billow"]->frequency				= 0.25f;
+//			Noise::t_Billow *newBillow = new Noise::t_Billow();
+//			Noise::t_Billow &layer4 = noise["Terrain"]->add("Layer4", newBillow);
+//			layer4.add("Billow", new Noise::t_BillowParams());
+//			layer4["Billow"]->seed					= 4096.0f;
+//			layer4["Billow"]->frequency				= 0.000025f;
 //			layer4["Billow"]->lacunarity			= 1.5f;
+//			layer4["Billow"]->persistence			= 1.5f;
 //			layer4["Billow"]->quality				= noise::QUALITY_BEST;
 //			layer4["Billow"]->octaves				= 3;
-//			layer4["Billow"]->power					= 3.0f;
-//			layer4["Billow"]->scale					= 5000.0f;
-//			layer4["Billow"]->offset				= 1000.0f;
-//			layer4["Billow"]->funcHeightUpperValue 	= 12000;
-//			layer4["Billow"]->funcHeightLowerValue 	= 2500;
+//			layer4["Billow"]->AddFunction.Power(3.0f);
+//			layer4["Billow"]->AddFunction.Scale(100.0f);
+//			layer4["Billow"]->AddFunction.Offset(1000.0f);
 
 
 			chunkSettings["Terrain"]->set_iMax();
