@@ -95,6 +95,7 @@ namespace Core {
 
 		class _O2D {
 			private:
+				static t_UniformLocations uniforms;
 				Matrix_System 	* matrix;
 				Shader_System 	* shader;
 				_O2DData data;
@@ -112,12 +113,14 @@ namespace Core {
 			public:
 				_O2D(Matrix_System &m, Shader_System &s);
 				~_O2D();
-				bool init();
+				bool init(Core::_Lights &lights);
 				bool load();
 				bool calc();
-				void draw(SHADER_PROGRAMS iShader, Core::_Lights &lights, bool bBB, bool bSort);
+				//void draw(SHADER_PROGRAMS iShader, Core::_Lights &lights, bool bBB, bool bSort);
+				void draw(Core::_Lights &lights, bool bBB, bool bSort);
 				//O2D_BASE(Atmosphere &a): atmosphere(a) {}
 		};
+		t_UniformLocations _O2D::uniforms;
 
 		_O2D::_O2D(Matrix_System &m, Shader_System &s) {
 			matrix = &m;
@@ -132,8 +135,9 @@ namespace Core {
 			Core::debug.print("}\n");
 		}
 
-		bool _O2D::init() {
+		bool _O2D::init(Core::_Lights &lights) {
 			Core::debug.log("Init O2D {");
+			if(!uniforms.bInit) shader->getUniform(GLS_PHONG_O2D, lights, uniforms);
 			Core::debug.print(" Done ", Core::debug().GREEN);
 			Core::debug.print("}\n");
 			return true;
@@ -498,10 +502,11 @@ namespace Core {
 		}
 		*/
 
-		void _O2D::draw(SHADER_PROGRAMS iShader, Core::_Lights &lights, bool bBB=true, bool bSort=false) {
+		void _O2D::draw(Core::_Lights &lights, bool bBB=true, bool bSort=false) {
 			//bool bInstance = true;
 			glDisable(GL_CULL_FACE);
-			shader->use(iShader);
+			shader->use(GLS_PHONG_O2D);
+//			shader->getUniform(GLS_PHONG_O2D, &lights, 2, vObjPos, vCamPos);
 
 			Vector3f	vCamPos;
 			vCamPos[0] = -Core::gameVars->player.active->transform.pos[0];
@@ -590,6 +595,8 @@ namespace Core {
 	//				for (int x=0; x<Core::gameVars->screen.iTerrainGrid; x++) {
 	//					for (int z=0; z<Core::gameVars->screen.iTerrainGrid; z++) {
 							//std::sort();
+
+							glActiveTexture(0);
 							for (int count=0; count <= data.idcount; count++) {
 									matrix->Push();
 
@@ -607,8 +614,10 @@ namespace Core {
 																float(data.z[count])*Core::gameVars->screen.fScale
 															  };
 
-										shader->getUniform(iShader, &lights, 2, vObjPos, vCamPos);
-										glActiveTexture(0);
+//										shader->getUniform(GLS_PHONG_O2D, &lights, 2, vObjPos, vCamPos);
+										shader->vars.GLS_PHONG_O2D.vObjPos = vObjPos;
+										shader->vars.GLS_PHONG_O2D.vCamPos = vCamPos;
+										shader->setUniform(GLS_PHONG_O2D, lights, uniforms);
 										data.texture[count].Set(data.image[count]);
 										data.vao[count].Draw();
 

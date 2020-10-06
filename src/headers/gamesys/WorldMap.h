@@ -260,7 +260,8 @@ namespace Core {
 			layer1["Peaks"]->frequency				= 0.00001f;
 			layer1["Peaks"]->lacunarity				= 1.5f;
 //			layer1["Peaks"]->quality				= noise::QUALITY_BEST;
-			layer1["Peaks"]->quality				= noise::QUALITY_STD;
+//			layer1["Peaks"]->quality				= noise::QUALITY_STD;
+			layer1["Peaks"]->quality				= noise::QUALITY_FAST;
 			layer1["Peaks"]->octaves				= 3;
 			layer1["Peaks"]->seed					= 1024.0f;
 			layer1["Peaks"]->AddFunction.Power(2.0f);
@@ -279,8 +280,8 @@ namespace Core {
 			layer2["Continent"]->mode					= Noise::MODE_MULTIPLY;
 			layer2["Continent"]->seed					= 4096.0f;
 			layer2["Continent"]->frequency				= 0.000001f;
-			layer2["Continent"]->lacunarity				= 1.5f;
-			layer2["Continent"]->persistence			= 1.5f;
+			layer2["Continent"]->lacunarity				= 2.5f;
+			layer2["Continent"]->persistence			= 0.5f;
 			layer2["Continent"]->quality				= noise::QUALITY_FAST;
 			layer2["Continent"]->octaves				= 1;
 //			layer2["Continent"]->AddFunction.Offset(-0.5f);
@@ -536,8 +537,8 @@ namespace Core {
 			Core::sysTex->set(Core::sysTex->TEX_WATER);
 
 			shader->use(Core::GLS_PHONG);
-			shader->getUniform(Core::GLS_PHONG, &lights, data["Terrain"]->uniforms);
-			shader->getUniform(Core::GLS_WATER, &lights, data["Water"]->uniforms);
+			shader->getUniform(Core::GLS_PHONG, lights, *data["Terrain"]->uniforms);
+			shader->getUniform(Core::GLS_WATER, lights, *data["Water"]->uniforms);
 
 			glDisable(GL_CULL_FACE);
 			Core::matrix->Push();
@@ -556,7 +557,7 @@ namespace Core {
 //				shader->use(Core::GLS_PHONG);
 //				shader->getUniform(Core::GLS_PHONG, &lights);
 
-				for ( auto chunk : map ) {
+				for ( auto const &chunk : map ) {
 //					if(chunk.second->bDraw) {	// Will hide terrain outside view range
 						Core::matrix->Push();
 
@@ -571,7 +572,7 @@ namespace Core {
 							matrix->SetTransform();
 //							shader->use(Core::GLS_PHONG);
 //							shader->getUniform(Core::GLS_PHONG, &lights);
-							shader->setUniform(Core::GLS_PHONG, &lights, data["Terrain"]->uniforms);
+							shader->setUniform(Core::GLS_PHONG, lights, *data["Terrain"]->uniforms);
 							chunk.second->drawTerrain();
 
 							// Draw vertex normals (~6fps drop)
@@ -589,7 +590,7 @@ namespace Core {
 //				shader->use(Core::GLS_WATER);
 //				shader->getUniform(Core::GLS_WATER, &lights);
 
-				for ( auto chunk : map ) {
+				for ( auto const &chunk : map ) {
 						Core::matrix->Push();
 							int iX = chunk.second->x-32768;
 							int iZ = chunk.second->z-32768;
@@ -600,7 +601,7 @@ namespace Core {
 							matrix->SetTransform();
 //							shader->use(Core::GLS_WATER);
 //							shader->getUniform(Core::GLS_WATER, &lights);
-							shader->setUniform(Core::GLS_WATER, &lights, data["Water"]->uniforms);
+							shader->setUniform(Core::GLS_WATER, lights, *data["Water"]->uniforms);
 							chunk.second->drawWater();
 						Core::matrix->Pop();
 				}

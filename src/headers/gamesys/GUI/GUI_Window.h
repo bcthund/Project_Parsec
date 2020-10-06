@@ -431,29 +431,29 @@ namespace Core {
 
 							matrix->SetTransform();
 							//shader->data.GLS_MENU.vPos				= con->getPos();
-							shader->data.GLS_MENU.vPos				= vPos;
-							shader->data.GLS_MENU.vSize				= con->getSize();
-							shader->data.GLS_MENU.iRadius			= con->getRadius();
-							shader->data.GLS_MENU.iBorder			= border;
-							shader->data.GLS_MENU.bRoundBorder		= con->getRoundBorder();
-							shader->data.GLS_MENU.bEnableStipple	= con->bEnableStipple;
+							shader->vars.GLS_MENU.vPos				= vPos;
+							shader->vars.GLS_MENU.vSize				= con->getSize();
+							shader->vars.GLS_MENU.iRadius			= con->getRadius();
+							shader->vars.GLS_MENU.iBorder			= border;
+							shader->vars.GLS_MENU.bRoundBorder		= con->getRoundBorder();
+							shader->vars.GLS_MENU.bEnableStipple	= con->bEnableStipple;
 
-							shader->data.GLS_MENU.bTextured		= (con->bTextured && con->tex != nullptr);
+							shader->vars.GLS_MENU.bTextured		= (con->bTextured && con->tex != nullptr);
 							if(con->bTextured) {
-								shader->data.GLS_MENU.fScroll	= (con->getScrollPos().y/vSize.y)*con->fTextureScrollRate;
+								shader->vars.GLS_MENU.fScroll	= (con->getScrollPos().y/vSize.y)*con->fTextureScrollRate;
 							}
-							else shader->data.GLS_MENU.fScroll	= 0.0f;
+							else shader->vars.GLS_MENU.fScroll	= 0.0f;
 
 							if(con->bEnableStipple) {
-								shader->data.GLS_MENU.stipple = con->stipple;
+								shader->vars.GLS_MENU.stipple = con->stipple;
 
 								if(eObjectState&STATE_DISABLED) {
-									if(eObjectState&STATE_HOVER)	shader->data.GLS_MENU.stippleColor = &gameVars->pallette.gui.disabled.stipple.hover;
-									else							shader->data.GLS_MENU.stippleColor = &gameVars->pallette.gui.disabled.stipple.base;
+									if(eObjectState&STATE_HOVER)	shader->vars.GLS_MENU.stippleColor = &gameVars->pallette.gui.disabled.stipple.hover;
+									else							shader->vars.GLS_MENU.stippleColor = &gameVars->pallette.gui.disabled.stipple.base;
 								}
-								else if(eObjectState&STATE_ACTIVE) shader->data.GLS_MENU.stippleColor = con->stippleColor.active;
-								else if(eObjectState&STATE_HOVER) shader->data.GLS_MENU.stippleColor = con->stippleColor.highlight;
-								else shader->data.GLS_MENU.stippleColor = con->stippleColor.base;
+								else if(eObjectState&STATE_ACTIVE) shader->vars.GLS_MENU.stippleColor = con->stippleColor.active;
+								else if(eObjectState&STATE_HOVER) shader->vars.GLS_MENU.stippleColor = con->stippleColor.highlight;
+								else shader->vars.GLS_MENU.stippleColor = con->stippleColor.base;
 							}
 							shader->getUniform(GLS_MENU);
 							vao.Draw();

@@ -614,10 +614,10 @@ namespace Core {
 							matrix->Translate( vPos.x, vPos.y, 0.0 );
 							matrix->Scale(vSize.x, vSize.y, 1);
 
-							shader->data.GLS_MENU.vPos				= vPos;
-							shader->data.GLS_MENU.vSize				= con->getSize();
-							shader->data.GLS_MENU.iRadius			= con->getRadius();
-							shader->data.GLS_MENU.bRoundBorder		= con->getRoundBorder();
+							shader->vars.GLS_MENU.vPos				= vPos;
+							shader->vars.GLS_MENU.vSize				= con->getSize();
+							shader->vars.GLS_MENU.iRadius			= con->getRadius();
+							shader->vars.GLS_MENU.bRoundBorder		= con->getRoundBorder();
 
 							int index = 0;	// Current item index
 							int pre = 0;	// Total from previous item
@@ -629,21 +629,21 @@ namespace Core {
 									if(bBlinkState && ((items[index]->base->eObjectState&STATE_HOVER) || (items[index]->base->eObjectState&STATE_ACTIVE)) ) {
 										colors.PushFront(items[index]->colorBox->con->colorBack.highlight);
 										colors.PushBack(items[index]->colorBox->con->colorBorder.highlight);
-										shader->data.GLS_MENU.stippleColor = items[index]->colorBox->con->stippleColor.highlight;
+										shader->vars.GLS_MENU.stippleColor = items[index]->colorBox->con->stippleColor.highlight;
 										border = con->borderHover;
 									}
 									else {
 										colors.PushFront(items[index]->colorBox->con->colorBack.base);
 										colors.PushBack(items[index]->colorBox->con->colorBorder.base);
-										shader->data.GLS_MENU.stippleColor = items[index]->colorBox->con->stippleColor.base;
+										shader->vars.GLS_MENU.stippleColor = items[index]->colorBox->con->stippleColor.base;
 										border = con->borderNormal;
 									}
 
-									shader->data.GLS_MENU.iBorder = border;
+									shader->vars.GLS_MENU.iBorder = border;
 //									if(items[index]->colorBox->con->bEnableStipple) {
-										shader->data.GLS_MENU.bEnableStipple = items[index]->colorBox->con->bEnableStipple;
-										shader->data.GLS_MENU.stipple = items[index]->colorBox->con->stipple;
-//										shader->data.GLS_MENU.stippleColor = items["Undefined"]->colorBox->con->stippleColor.base;
+										shader->vars.GLS_MENU.bEnableStipple = items[index]->colorBox->con->bEnableStipple;
+										shader->vars.GLS_MENU.stipple = items[index]->colorBox->con->stipple;
+//										shader->vars.GLS_MENU.stippleColor = items["Undefined"]->colorBox->con->stippleColor.base;
 //									}
 //
 									// Prep for next item
@@ -658,20 +658,20 @@ namespace Core {
 									if(bBlinkState && ((items["Undefined"]->base->eObjectState&STATE_HOVER) || (items["Undefined"]->base->eObjectState&STATE_ACTIVE)) ) {
 										colors.PushFront(items["Undefined"]->colorBox->con->colorBack.highlight);
 										colors.PushBack(items["Undefined"]->colorBox->con->colorBorder.highlight);
-										shader->data.GLS_MENU.stippleColor = items["Undefined"]->colorBox->con->stippleColor.highlight;
+										shader->vars.GLS_MENU.stippleColor = items["Undefined"]->colorBox->con->stippleColor.highlight;
 										border = con->borderHover;
 									}
 									else {
 										colors.PushFront(items["Undefined"]->colorBox->con->colorBack.base);
 										colors.PushBack(items["Undefined"]->colorBox->con->colorBorder.base);
-										shader->data.GLS_MENU.stippleColor = items["Undefined"]->colorBox->con->stippleColor.base;
+										shader->vars.GLS_MENU.stippleColor = items["Undefined"]->colorBox->con->stippleColor.base;
 										border = con->borderNormal;
 									}
 
-									shader->data.GLS_MENU.iBorder = border;
+									shader->vars.GLS_MENU.iBorder = border;
 //									if(items["Undefined"]->colorBox->con->bEnableStipple) {
-										shader->data.GLS_MENU.bEnableStipple = items["Undefined"]->colorBox->con->bEnableStipple;
-										shader->data.GLS_MENU.stipple = items["Undefined"]->colorBox->con->stipple;
+										shader->vars.GLS_MENU.bEnableStipple = items["Undefined"]->colorBox->con->bEnableStipple;
+										shader->vars.GLS_MENU.stipple = items["Undefined"]->colorBox->con->stipple;
 //									}
 								}
 
