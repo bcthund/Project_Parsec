@@ -15,8 +15,9 @@ namespace Core {
 		protected:
 			GLuint	uiVertexSize;		//Core::Data3f or Core::Data4f?
 			GLuint	uiNormalSize;
-			GLuint	uiExtraSize;
+			GLuint	uiInstanceSize;
 			GLuint	uiPositionSize;
+			GLuint	uiDataSize;
 
 			GLuint	uiVertexOffset;
 			GLuint	uiNormalOffset;
@@ -24,7 +25,8 @@ namespace Core {
 			GLuint	uiIndexOffset;
 			GLuint	uiTextureOffset;
 			GLuint	uiPositionOffset;
-			GLuint	uiExtraOffset;
+			GLuint	uiInstanceOffset;
+			GLuint	uiDataOffset;
 
 			GLuint	uiMaxInstances;
 
@@ -33,7 +35,8 @@ namespace Core {
 					uiColorLength,
 					uiIndexLength,
 					uiPositionLength,
-					uiExtraLength,
+					uiInstanceLength,
+					uiDataLength,
 					uiTextureLength;
 
 			long	uiNumDrawVerts;			// Number of verticies drawn
@@ -52,7 +55,8 @@ namespace Core {
 			GLuint	uiIndexArray;
 			GLuint	*uiTextureArray;
 			GLuint  uiPositionArray;
-			GLuint  uiExtraArray;
+			GLuint  uiInstanceArray;
+			GLuint  uiDataArray;
 
 			VAO();
 			~VAO();

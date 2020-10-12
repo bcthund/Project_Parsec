@@ -33,6 +33,7 @@ CPP_SRCS += \
 ../src/headers/core/skeleton.cpp \
 ../src/headers/core/state.cpp \
 ../src/headers/core/texture.cpp \
+../src/headers/core/texture3d.cpp \
 ../src/headers/core/timer.cpp \
 ../src/headers/core/vao.cpp 
 
@@ -66,6 +67,7 @@ OBJS += \
 ./src/headers/core/skeleton.o \
 ./src/headers/core/state.o \
 ./src/headers/core/texture.o \
+./src/headers/core/texture3d.o \
 ./src/headers/core/timer.o \
 ./src/headers/core/vao.o 
 
@@ -99,6 +101,7 @@ CPP_DEPS += \
 ./src/headers/core/skeleton.d \
 ./src/headers/core/state.d \
 ./src/headers/core/texture.d \
+./src/headers/core/texture3d.d \
 ./src/headers/core/timer.d \
 ./src/headers/core/vao.d 
 

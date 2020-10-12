@@ -20,6 +20,7 @@ namespace Core {
 
 		namespace Map {
 			struct Data {
+				// Generic Data (used with load() method)
 				Data3f * vVerts;
 				Data3f * vNorms;
 				Data2f * vCoords;
@@ -31,12 +32,17 @@ namespace Core {
 				VAO vao;
 				float lowestHeight;
 
+				// Additional Data (used with loadData() method)
+				// Data3f provides 3 floats per vertex
+				Data3f * vData;
+
 				Data() {
 					numVerts = 0;
 					numFaces = 0;
 					numDrawVerts = 0;
 					lowestHeight = 9999.0f;
 
+					vData = nullptr;
 					vVerts  = nullptr;
 					vNorms  = nullptr;
 					vCoords = nullptr;

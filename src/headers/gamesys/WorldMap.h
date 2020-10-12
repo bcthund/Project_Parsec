@@ -82,6 +82,14 @@
  *			- Create a uniform struct that holds ids
  *			- Set the location ids in the struct by passing to getUniform()
  *			- Set the data with a setUniform() method that only makes calls to glUniform{1|2|3|4}{f|i|ui}v
+ *
+ *	- Moisture
+ *		- Create 3-6 3D textures for levels of dry to wet
+ *		- Moisture data translates into moisture level
+ *			- Scale by number of levels
+ *			- Value determines the current biome as well as fade to other biomes
+ *			- ex: 3.5 would be biome 3, 3.8 would be biome 3 fading into biome 4
+ *			- Each 3D texture for a biome is an array of textures for elevation
  */
 
 
@@ -180,6 +188,18 @@ namespace Core {
 				data["Terrain"]->chunkSettings->chunk_height_offset = CONST_SIMPLEX.TERRAIN.HEIGHT_OFFSET;
 				data["Terrain"]->chunkSettings->set_iMax();
 			}
+
+			{
+				t_LayerData *newData = new t_LayerData(data["Terrain"]->chunkSettings);
+				data.add("Moisture", newData);
+//				data["Moisture"]->chunkSettings->iViewDistance = CONST_SIMPLEX.TERRAIN.VIEW_DISTANCE;
+//				data["Moisture"]->chunkSettings->chunk_resolution = CONST_SIMPLEX.TERRAIN.CHUNK_RESOLUTION;
+//				data["Moisture"]->chunkSettings->chunk_size = CONST_SIMPLEX.TERRAIN.CHUNK_SIZE;
+//				data["Moisture"]->chunkSettings->tex_scale = CONST_SIMPLEX.TERRAIN.TEXTURE_SCALE;
+//				data["Moisture"]->chunkSettings->delta = CONST_SIMPLEX.TERRAIN.DELTA;
+//				data["Moisture"]->chunkSettings->chunk_height_offset = CONST_SIMPLEX.TERRAIN.HEIGHT_OFFSET;
+//				data["Moisture"]->chunkSettings->set_iMax();
+			}
 //			chunkSettings.add("Terrain", new Map::t_ChunkData);
 //			chunkSettings["Terrain"]->iViewDistance = CONST_SIMPLEX.TERRAIN.VIEW_DISTANCE;
 //			chunkSettings["Terrain"]->chunk_resolution = CONST_SIMPLEX.TERRAIN.CHUNK_RESOLUTION;
@@ -238,19 +258,20 @@ namespace Core {
 			// Ocean would be generated as flat only where world has ANY points below sea level.
 
 			// [YES] Fractal Borwnian: Mountains/Continents [Simplex Test - Good Continents + Mountains in one shot (Actually Fractal Brownian Noise)]
-			Noise::t_Fractal *newFractal = new Noise::t_Fractal();
-			Noise::t_Fractal &layer0 = data["Terrain"]->noise->add("Layer0", newFractal);
+			Noise::t_Fractal *newFractal0 = new Noise::t_Fractal();
+			Noise::t_Fractal &layer0 = data["Terrain"]->noise->add("Layer0", newFractal0);
 			layer0.add("Mountains", new Noise::t_FractalParams());
 			layer0["Mountains"]->frequency			= 0.000001f;
-			layer0["Mountains"]->amplitude			= 10.0f;
+			layer0["Mountains"]->amplitude			= 1.0f;
 			layer0["Mountains"]->lacunarity			= 2.5f;
-			layer0["Mountains"]->persistance		= 0.50f;
+			layer0["Mountains"]->persistence		= 0.50f;
 			layer0["Mountains"]->octaves			= 12;
-//			layer0["Mountains"]->octaves			= 1;
+//			layer0["Mountains"]->octaves			= 1;layer0["Mountains"]->octaves			= 12;
+			layer0["Mountains"]->seed				= 100;
 			layer0["Mountains"]->AddFunction.Power(2.0f);
 			layer0["Mountains"]->AddFunction.RemapBelow(0.0f, -10.0f, 0.0f, -1.0f, 0.0f);				// Underwater terrain gets scaled to offset multiply layer
 			layer0["Mountains"]->AddFunction.RemapBelow(-0.5f, -2.5f, -0.5f, -10.0f, -0.5f);		// Underwater terrain gets scaled to offset multiply layer
-			layer0["Mountains"]->AddFunction.Scale(150000.0f);
+			layer0["Mountains"]->AddFunction.Scale(250000.0f);
 			layer0["Mountains"]->AddFunction.Offset(5000.0f);
 
 			// [YES] Ridged-Multi: Peaks
@@ -271,9 +292,6 @@ namespace Core {
 			layer1["Peaks"]->AddFunction.Scale(10000.0f);
 
 			// [YES] Multiply by layer, but do not touch underwater layer
-//			Noise::t_Billow *newBillow = new Noise::t_Billow();
-//			Noise::t_Billow &layer2 = data["Terrain"]->noise->add("Layer2", newBillow);
-//			layer2.add("Continent", new Noise::t_BillowParams());
 			Noise::t_Perlin *newPerlin = new Noise::t_Perlin();
 			Noise::t_Perlin &layer2 = data["Terrain"]->noise->add("Layer2", newPerlin);
 			layer2.add("Continent", new Noise::t_PerlinParams());
@@ -284,27 +302,44 @@ namespace Core {
 			layer2["Continent"]->persistence			= 0.5f;
 			layer2["Continent"]->quality				= noise::QUALITY_FAST;
 			layer2["Continent"]->octaves				= 1;
-//			layer2["Continent"]->AddFunction.Offset(-0.5f);
-//			layer2["Continent"]->AddFunction.Remap(0.25f, 1.0f, -1.0f, 1.0f);	// Modify previous layers by 25-100%
 			layer2["Continent"]->AddFunction.Remap(0.0f, 1.0f, -1.0f, 1.0f);	// Modify previous layers by 25-100%
-//			layer2["Continent"]->AddFunction.Remap(-0.25f, 1.0f, -1.0f, 1.0f);	// Modify previous layers by 25-100%
-//			layer2["Continent"]->AddFunction.Offset(-0.25f);
 //			layer2["Continent"]->AddFunction.Scale(1000.0f);	// For visualization only
 //			layer2["Continent"]->AddFunction.Scale(10.0f);	// For visualization only
 
 			// [YES] Ridged-Multi: Lakes
 //			Noise::t_RidgedPerlin *newRidgedPerlin4 = new Noise::t_RidgedPerlin();
-//			Noise::t_RidgedPerlin &layer4 = noise["Terrain"]->add("Layer4", newRidgedPerlin4);
-//			layer4.add("Underwater", new Noise::t_RidgedPerlinParams());
-//			layer4["Underwater"]->frequency				= 0.00002f;
-//			layer4["Underwater"]->lacunarity			= 2.5f;
-////			layer4["Underwater"]->quality				= noise::QUALITY_BEST;
-//			layer4["Underwater"]->quality				= noise::QUALITY_STD;
-//			layer4["Underwater"]->octaves				= 3;
-//			layer4["Underwater"]->seed					= 911.0f;
-//			layer4["Underwater"]->AddFunction.Power(2.0f);
-//			layer4["Underwater"]->AddFunction.FadeAbove(-1000.0f, 2500.0f, 1.0f, true);
-//			layer4["Underwater"]->AddFunction.Scale(-10000.0f);
+//			Noise::t_RidgedPerlin &layer3 = noise["Terrain"]->add("Layer3", newRidgedPerlin4);
+//			layer3.add("Underwater", new Noise::t_RidgedPerlinParams());
+//			layer3["Underwater"]->frequency				= 0.00002f;
+//			layer3["Underwater"]->lacunarity			= 2.5f;
+////			layer3["Underwater"]->quality				= noise::QUALITY_BEST;
+//			layer3["Underwater"]->quality				= noise::QUALITY_STD;
+//			layer3["Underwater"]->octaves				= 3;
+//			layer3["Underwater"]->seed					= 911.0f;
+//			layer3["Underwater"]->AddFunction.Power(2.0f);
+//			layer3["Underwater"]->AddFunction.FadeAbove(-1000.0f, 2500.0f, 1.0f, true);
+//			layer3["Underwater"]->AddFunction.Scale(-10000.0f);
+
+			// Moisture
+			Noise::t_Fractal *newFractal1 = new Noise::t_Fractal();
+			Noise::t_Fractal &layer4 = data["Moisture"]->noise->add("Layer4", newFractal1);
+			layer4.add("General", new Noise::t_FractalParams());
+			layer4["General"]->frequency		= 0.0000001f;
+			layer4["General"]->amplitude		= 1.0f;
+			layer4["General"]->lacunarity		= 3.5f;
+			layer4["General"]->persistence		= 0.75f;
+			layer4["General"]->octaves			= 3;
+			layer4["General"]->seed				= 256;
+			//layer4["General"]->AddFunction.Power(2.0f);
+			//layer4["General"]->AddFunction.Scale(2.0f);
+			layer4["General"]->AddFunction.Scale(7.0f);
+//			layer4["General"]->AddFunction.Offset(0.5f);		// Shift towards higher moisture
+
+
+
+
+
+
 
 
 			// [NO] Ridged-Multi: Rivers (Still needs work)
@@ -380,7 +415,7 @@ namespace Core {
 
 						t_MapInstance *newMap = new t_MapInstance(mapName);		// NOTE: mapName translates into the map offset here
 						map.add(mapName, newMap);
-						map[mapName]->load(data["Terrain"]->noise, data["Water"]->noise);
+						map[mapName]->load(data["Terrain"]->noise, data["Water"]->noise, data["Moisture"]->noise);
 					}
 				}
 			}
@@ -456,7 +491,7 @@ namespace Core {
 							// Load new chunk
 							t_MapInstance *newMap = new t_MapInstance(mapName);		// NOTE: mapName translates into the map offset here
 							map.add(mapName, newMap);
-							map[mapName]->load(data["Terrain"]->noise, data["Water"]->noise);
+							map[mapName]->load(data["Terrain"]->noise, data["Water"]->noise, data["Moisture"]->noise);
 						}
 					}
 				}
@@ -532,6 +567,12 @@ namespace Core {
 
 			glActiveTexture(GL_TEXTURE15);
 			Core::sysTex->set(Core::sysTex->TEX_SAND2);
+
+			glActiveTexture(GL_TEXTURE29);
+			Core::sysTex->set(Core::sysTex->TEX_ATLAS_00);
+
+			glActiveTexture(GL_TEXTURE30);
+			Core::sysTex->set(Core::sysTex->TEX_MOISTURE2);
 
 			glActiveTexture(GL_TEXTURE31);
 			Core::sysTex->set(Core::sysTex->TEX_WATER);

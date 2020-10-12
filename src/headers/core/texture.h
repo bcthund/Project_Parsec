@@ -26,6 +26,39 @@ namespace Core {
 
 	 */
 
+	enum e_TEXTURE_FILTER {
+		TEXTURE_FILTER_NEAREST,
+		TEXTURE_FILTER_LINEAR,
+		TEXTURE_FILTER_NEAREST_MIPMAP_NEAREST,
+		TEXTURE_FILTER_LINEAR_MIPMAP_NEAREST,
+		TEXTURE_FILTER_NEAREST_MIPMAP_LINEAR,
+		TEXTURE_FILTER_LINEAR_MIPMAP_LINEAR
+
+	};
+//	GLenum gleTextureFilter[] = {	GL_NEAREST,
+//									GL_LINEAR,
+//									GL_NEAREST_MIPMAP_NEAREST,
+//									GL_LINEAR_MIPMAP_NEAREST,
+//									GL_NEAREST_MIPMAP_LINEAR,
+//									GL_LINEAR_MIPMAP_LINEAR };
+//
+//
+	enum e_TEXTURE_CLAMP {
+		TEXTURE_CLAMP_REPEAT,
+		TEXTURE_CLAMP_MIRRORED,
+		TEXTURE_CLAMP_EDGE,
+		TEXTURE_CLAMP_BORDER
+	};
+//
+//	GLenum gleTextureClamp[] = {	GL_REPEAT,
+//									GL_MIRRORED_REPEAT,
+//									GL_CLAMP_TO_EDGE,
+//									GL_CLAMP_TO_BORDER };
+
+//	struct s_TEXTURE_CLAMP {
+//
+//	};
+
 	/*
 	* Usage:
 	*	Texture <name>;
@@ -73,6 +106,8 @@ namespace Core {
 //			bool Add(std::string cDir, std::string cFile, int uiLayer, bool bAnisotropy=false, GLenum eFilter=GL_LINEAR, GLenum eWrap=GL_REPEAT);
 //			bool Load(std::string cDir, std::string cFile, GLuint uiLayer, bool bAnisotropy=false, GLenum eFilter=GL_LINEAR, GLenum eWrap=GL_CLAMP_TO_EDGE);
 			bool Load(std::string cDir, std::string cFile, int uiLayer, bool bAnisotropy=false, GLenum eFilter=GL_LINEAR, GLenum eWrap=GL_REPEAT);
+			bool Load(std::string cDir, std::string cFile, int uiLayer, bool bAnisotropy, e_TEXTURE_FILTER eFilterIndex, e_TEXTURE_CLAMP eWrapIndex);
+			bool Load3D(std::string cDir, std::string cFile, int uiLayer, bool bAnisotropy, e_TEXTURE_FILTER eFilterIndex, e_TEXTURE_CLAMP eWrapIndex);
 //			void CreateAtlas(int iWidth, int iHeight);
 			Texture() {
 				fLargest = 0.0f;

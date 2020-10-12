@@ -307,6 +307,39 @@ namespace Core {
 				//GLS_PARTICLE,
 			} vars;
 
+//			struct t_GL_Attributes {
+//				bool bSet;
+//				enum {	NONE		= 0,
+//						VERTEX,
+////						COLOR,
+////						NORMAL,
+//						VERTEX_NORMAL,
+//						VERTEX_TEXTURE0,
+//						VERTEX_COLOR,
+//						VERTEX_NORMAL_TEXTURE0
+////						POSITION,
+////						LAST
+//					 };
+//
+//			} GLASet;
+
+			struct t_GL_Attributes {
+				bool bSet;
+				enum {	NONE		= 0,
+						VERTEX		= 1,
+						COLOR		= 2,
+						NORMAL		= 4,
+						TEXTURE0	= 8,
+						POSITION	= 16,
+						DATA1		= 32,
+						DATA2		= 64,
+						DATA3		= 128,
+						INDEX		= 256,
+						LAST
+					 };
+
+			} GLASet;
+
 //			struct ShaderData {
 //				float * fData;
 //				int * iData;
@@ -366,7 +399,8 @@ namespace Core {
 			void setUniform(SHADER_PROGRAMS eShader, _Lights &lights, t_UniformLocations &uniforms);	///< Read t_UniformLocations and set uniform shader values
 
 			GLuint loadShader2(const char *vertSrc, const char *fragSrc, ...);
-			GLuint loadShader(const char *vertSrc, const char *geoSrc, const char *fragSrc, ...);
+//			GLuint loadShader(const char *vertSrc, const char *geoSrc, const char *fragSrc, ...);
+			GLuint loadShader(const char *vertSrc, const char *geoSrc, const char *fragSrc, uint uiGLA);
 			std::string readShaderFile(std::string filePath, std::string filename, uint type);
 	};
 }

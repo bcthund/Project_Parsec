@@ -51,6 +51,7 @@ namespace Core {
 				noise::module::RidgedMulti genRidged;
 				noise::module::Voronoi genVoronoi;
 				noise::module::Billow genBillow;
+				SimplexNoise genSimplex;
 //				noise::module::Perlin gen2;
 //				noise::module::Perlin gen3;
 //				double RidgedNoise(double nx, double ny) {
@@ -136,6 +137,8 @@ namespace Core {
 				bool init();
 //				void load(int x, int z, Map::Data &chunk, Map::t_VariantNoise noise);
 				void load(int x, int z, Map::Data &chunk, Core::Noise::t_Noise *noise);
+//				void loadData(int x, int z, Data3f &chunkData, int index, Core::Noise::t_Noise *noise);
+				void load(int x, int z, Map::Data &chunk, int index, Core::Noise::t_Noise *noise);
 				void calc(Map::Data &ref);
 //				void update(int x, int z, Map::Data &chunk, Map::t_VariantNoise noise);
 				void update(int x, int z, Map::Data &chunk, Core::Noise::t_Noise *noise);
@@ -343,7 +346,84 @@ namespace Core {
 //			}
 //		}
 
+		// TODO: Load additional data (i.e. moisture)
+		// Data3f provides 3 floats per vertex
+		//void MapSys::loadData(int x, int z, Data3f *chunkData, int index, Core::Noise::t_Noise *noise) {
+		void MapSys::load(int x, int z, Map::Data &chunk, int index, Core::Noise::t_Noise *noise) {
+			x = (x-32768) * noise->parent->chunk_size;
+			z = (z-32768) * noise->parent->chunk_size;
+
+			float SIZE			= noise->parent->chunk_size;
+			int VERTEX_COUNT	= noise->parent->chunk_resolution+1;
+//			int iTexScale		= noise->parent->tex_scale;
+//			float fHeightOffset	= noise->parent->chunk_height_offset;
+//			float DELTA			= noise->parent->delta;
+//			chunk.vData = new Data3f[VERTEX_COUNT * VERTEX_COUNT];
+
+//			debug.log("Loading Moisture...\n");
+
+			long vertexPointer = 0;
+			for(int i=0;i<VERTEX_COUNT;i++){
+				for(int j=0;j<VERTEX_COUNT;j++){
+
+//					if(i==0 && j==0) {
+
+					// Vertex
+//					chunkData[vertexPointer][0] = ((float)j/((float)VERTEX_COUNT - 1) * SIZE);
+//					chunkData[vertexPointer][2] = ((float)i/((float)VERTEX_COUNT - 1) * SIZE);
+
+//					chunk.vVerts[vertexPointer][0] = ((float)j/((float)VERTEX_COUNT - 1) * SIZE);
+//					chunk.vVerts[vertexPointer][2] = ((float)i/((float)VERTEX_COUNT - 1) * SIZE);
+//					chunk.vVerts[vertexPointer][1] = getElevation(chunk.vVerts[vertexPointer][0]+x, chunk.vVerts[vertexPointer][2]+z, noise) + fHeightOffset;
+
+//					float fX = ((float)j/((float)VERTEX_COUNT - 1) * SIZE);
+//					float fZ = ((float)i/((float)VERTEX_COUNT - 1) * SIZE);
+//					chunk.vData[vertexPointer][index] = getElevation(fX+x, fZ+z, noise) + fHeightOffset;
+
+					// vVerts should already have been defined by this point
+					//chunk.vData[vertexPointer][index] = getElevation(chunk.vVerts[vertexPointer][0]+x, chunk.vVerts[vertexPointer][2]+z, noise) + fHeightOffset;
+					chunk.vData[vertexPointer][index] = getElevation(chunk.vVerts[vertexPointer][0]+x, chunk.vVerts[vertexPointer][2]+z, noise);
+
+//					chunk.vData[vertexPointer][index] /= 150000;
+//					chunk.vData[vertexPointer][index] = (chunk.vData[vertexPointer][index] / 2.0f) + 0.5f;
+//					debug.log("("+std::to_string(i)+", "+std::to_string(j)+") = "+std::to_string(chunk.vData[vertexPointer][index])+"\n");
+//					}
+					vertexPointer++;
+				}
+			}
+
+//			long vertexPointer = 0;
+//			for(int i=0;i<VERTEX_COUNT;i++){
+//				for(int j=0;j<VERTEX_COUNT;j++){
+//
+//					// Vertex
+//					chunkData[vertexPointer][0] = ((float)j/((float)VERTEX_COUNT - 1) * SIZE);
+//					chunkData[vertexPointer][2] = ((float)i/((float)VERTEX_COUNT - 1) * SIZE);
+//					chunkData[vertexPointer][1] = getElevation(chunkData[vertexPointer][0]+x, chunkData[vertexPointer][2]+z, noise) + fHeightOffset;
+//
+//					vertexPointer++;
+//				}
+//			}
+//			long pointer = 0;
+//			for(uint gz=0;gz<VERTEX_COUNT-1;gz++){
+//				for(uint gx=0;gx<VERTEX_COUNT-1;gx++){
+//					uint topLeft = (gz*VERTEX_COUNT)+gx;
+//					uint topRight = topLeft + 1;
+//					uint bottomLeft = ((gz+1)*VERTEX_COUNT)+gx;
+//					uint bottomRight = bottomLeft + 1;
+//					chunkData[pointer++] = topLeft;
+//					chunkData[pointer++] = bottomLeft;
+//					chunkData[pointer++] = topRight;
+//					chunkData[pointer++] = topRight;
+//					chunkData[pointer++] = bottomLeft;
+//					chunkData[pointer++] = bottomRight;
+//				}
+//			}
+
+		}
+
 		void MapSys::load(int x, int z, Map::Data &chunk, Core::Noise::t_Noise *noise) {
+
 			x = (x-32768) * noise->parent->chunk_size;
 			z = (z-32768) * noise->parent->chunk_size;
 
@@ -359,6 +439,7 @@ namespace Core {
 			chunk.vNorms = new Data3f[chunk.numVerts];
 			chunk.vCoords = new Data2f[chunk.numVerts];
 			chunk.vIndex = new GLuint[chunk.numDrawVerts];
+			chunk.vData = new Data3f[chunk.numVerts];
 
 			long vertexPointer = 0;
 			for(int i=0;i<VERTEX_COUNT;i++){
@@ -369,7 +450,15 @@ namespace Core {
 					chunk.vVerts[vertexPointer][2] = ((float)i/((float)VERTEX_COUNT - 1) * SIZE);
 					chunk.vVerts[vertexPointer][1] = getElevation(chunk.vVerts[vertexPointer][0]+x, chunk.vVerts[vertexPointer][2]+z, noise) + fHeightOffset;
 
+					// Clear extra data
+					chunk.vData[vertexPointer][0] = 0.0f;
+					chunk.vData[vertexPointer][1] = 0.0f;
+					chunk.vData[vertexPointer][2] = 0.0f;
+					chunk.vData[vertexPointer][2] = chunk.vVerts[vertexPointer][1] - fHeightOffset;
+
 					// Determine normal using Delta points
+					// TODO: Update this to use less lookups
+					//			- In the building loop, use the already calculated points to determine normal from geometry instead of noise
 					Vector3f modelXOffset,
 							 modelYOffset,
 							 modelXGrad,
@@ -400,15 +489,28 @@ namespace Core {
 					chunk.vCoords[vertexPointer][0] = (float)j/((float)VERTEX_COUNT - 1) * (float)iTexScale;
 					chunk.vCoords[vertexPointer][1] = (float)i/((float)VERTEX_COUNT - 1) * (float)iTexScale;
 
+//					float s,
+//						  t;
+//					if(j%2==0) s = 0.0f;
+//					else s = 1.0f;
+//
+//					if(i%2==0) t = 0.0f;
+//					else t = 1.0f;
+//					chunk.vCoords[vertexPointer][0] = s;
+//					chunk.vCoords[vertexPointer][1] = t;
+
 					// Update the lowest point on the chunk
 					chunk.lowestHeight = fmin(chunk.lowestHeight, fmin(chunk.vVerts[vertexPointer][1], fmin(B.y, C.y)));
 
 					vertexPointer++;
 				}
 			}
+
 			long pointer = 0;
 			for(uint gz=0;gz<VERTEX_COUNT-1;gz++){
 				for(uint gx=0;gx<VERTEX_COUNT-1;gx++){
+
+					// TODO: Calculate Normals Here, per triangle (2-triangles here per quad)
 					uint topLeft = (gz*VERTEX_COUNT)+gx;
 					uint topRight = topLeft + 1;
 					uint bottomLeft = ((gz+1)*VERTEX_COUNT)+gx;
@@ -444,6 +546,7 @@ namespace Core {
 			ref.vao.CopyData(GLA_NORMAL, ref.vNorms);
 			ref.vao.CopyData(GLA_TEXTURE, ref.vCoords, 0);
 			ref.vao.CopyData(GLA_INDEX, ref.vIndex, ref.numDrawVerts);
+			ref.vao.CopyData(GLA_DATA1, ref.vData);
 			ref.vao.End();
 
 //			Core::debug.print(" Done ", Core::debug().GREEN);
@@ -469,6 +572,7 @@ namespace Core {
 			ref.vao.CopyData(GLA_NORMAL, ref.vNorms);
 			ref.vao.CopyData(GLA_TEXTURE, ref.vCoords, 0);
 			ref.vao.CopyData(GLA_INDEX, ref.vIndex, ref.numDrawVerts);
+			ref.vao.CopyData(GLA_DATA1, ref.vData);
 			ref.vao.End();
 		}
 
@@ -542,7 +646,7 @@ namespace Core {
 //									e2 = 0.0f;
 //
 ////							SimplexNoise simNoise1 = SimplexNoise( param->frequency, param->amplitude, param->lacunarity, param->persistance );
-//							SimplexNoise simNoise1 = SimplexNoise( 0.0001f, 1.0f, 1.0f, 1.0f );
+//							SimplevTexCoordsxNoise simNoise1 = SimplexNoise( 0.0001f, 1.0f, 1.0f, 1.0f );
 ////							SimplexNoise simNoise1;
 //							e1 = simNoise1.noise(x, z);
 //							e2 = Core::Noise::applyFunctions(e1, dHeight, *param);
@@ -589,8 +693,15 @@ namespace Core {
 						for( auto const &param : *noise->fractal[index] ) {
 							double e1 = 0.0f;
 							double e2 = 0.0f;
-							SimplexNoise simNoise1 = SimplexNoise( param->frequency, param->amplitude, param->lacunarity, param->persistance );
-							e1 = simNoise1.fractal( param->octaves, x, z, 0);
+//							SimplexNoise simNoise1 = SimplexNoise( param->frequency, param->amplitude, param->lacunarity, param->persistance );
+
+							genSimplex.setAmplitude(param->amplitude);
+							genSimplex.setFrequency(param->frequency);
+							genSimplex.setLacunarity(param->lacunarity);
+							genSimplex.setPersiistence(param->persistence);
+							genSimplex.setSeed(param->seed);
+							e1 = genSimplex.fractal( param->octaves, x, z, 0);
+							//e1 = simNoise1.fractal( param->octaves, x, z, 0);
 							e2 = Core::Noise::applyFunctions(e1, dHeight, *param);
 							dHeight = Core::Noise::applyMode(e2, dHeight, param->mode);
 						}

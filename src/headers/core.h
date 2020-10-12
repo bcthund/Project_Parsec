@@ -543,6 +543,7 @@
 	#include "./core/glinit.h"
 	#include "./core/matrix.h"
 	#include "./core/texture.h"
+	#include "./core/texture3d.h"
 	#include "./core/TextureAtlas.h"
 	#include "./core/SystemTextures.h"
 //	namespace Core {	_SystemTextures		*	sysTex		= new _SystemTextures();	}

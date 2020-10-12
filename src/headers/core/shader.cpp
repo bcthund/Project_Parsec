@@ -152,34 +152,379 @@ namespace Core {
 		//            .................................................................Done
 		GLenum setShader = newShader;
 
-		std::string	sFileName	= "",
-				sShaderFile		= "",
-				sVertShader		= "",
-				sFragShader		= "",
-				sGeoShader		= "";
+		std::string	sFileName		= "",
+					sShaderFile		= "",
+					sVertShader		= "",
+					sFragShader		= "",
+					sGeoShader		= "";
 
-		struct {
-			bool bSet;
-			enum {	NONE = 0,
-					VERTEX,
-					VERTEX_COLOR,
-					VERTEX_NORMAL,
-					VERTEX_TEXTURE0,
-					VERTEX_NORMAL_TEXTURE0,
-					VERTEX_NORMAL_POSITION_EXTRA,
-					VERTEX_POSITION_EXTRA_TEXTURE0,
-					LAST
-				 };
-		} GLASet;
 		if (!GLASet.bSet) { GLASet.bSet = true; }		// This line just gets rid of the "Set but not used warning" for the above struct
 
 		uint	uiGLA = GLASet.NONE;	// What attributes are lodaded?
+
+//		switch(newShader) {
+//			case(Core::GLS_FONT):
+//				sFileName	= "font";
+////				std::cout << sOffset << "[" << sFileName << "]";
+//				uiGLA		= GLASet.VERTEX_TEXTURE0;
+//				//if (debug2) cout << "Loading Shader '" << sFileName << "'" << endl;
+//				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
+//				//sGeoShader	= readShaderFile("./shaders/", sFileName, TYPE.GEOMETRY_SHADER);
+//				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
+//				break;
+//			case(Core::GLS_MENU):
+//				sFileName	= "menu";
+////				std::cout << sOffset << "[" << sFileName << "]";
+//				uiGLA		= GLASet.VERTEX_TEXTURE0;
+//				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
+//				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
+//				break;
+//			case(Core::GLS_BOUNDINGVOLUME_OBB):
+//				sFileName	= "bounding_volume_obb";
+////				std::cout << sOffset << "[" << sFileName << "]";
+//				uiGLA		= GLASet.VERTEX;
+//				//cout << "Loading Shader '" << sFileName << "'" << endl;
+//				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
+//				//sGeoShader	= readShaderFile("./shaders/", sFileName, TYPE.GEOMETRY_SHADER);
+//				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
+//				break;
+//			case(Core::GLS_BOUNDINGVOLUME_AABB):
+//				sFileName	= "bounding_volume_aabb";
+////				std::cout << sOffset << "[" << sFileName << "]";
+//				uiGLA		= GLASet.VERTEX;
+//				//cout << "Loading Shader '" << sFileName << "'" << endl;
+//				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
+//				//sGeoShader	= readShaderFile("./shaders/", sFileName, TYPE.GEOMETRY_SHADER);
+//				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
+//				break;
+//			case(Core::GLS_BOUNDINGVOLUME_SPHERE):
+//				sFileName	= "bounding_volume_sphere";
+////				std::cout << sOffset << "[" << sFileName << "]";
+//				uiGLA		= GLASet.VERTEX;
+//				//cout << "Loading Shader '" << sFileName << "'" << endl;
+//				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
+//				//sGeoShader	= readShaderFile("./shaders/", sFileName, TYPE.GEOMETRY_SHADER);
+//				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
+//				break;
+//			case(Core::GLS_BOUNDINGVOLUME_CYLINDER):
+//				sFileName	= "bounding_volume_cylinder";
+////				std::cout << sOffset << "[" << sFileName << "]";
+//				uiGLA		= GLASet.VERTEX;
+//				//cout << "Loading Shader '" << sFileName << "'" << endl;
+//				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
+//				//sGeoShader	= readShaderFile("./shaders/", sFileName, TYPE.GEOMETRY_SHADER);
+//				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
+//				break;
+////			case(Core::GLS_PP_UNDERWATER):
+////				sFileName	= "pp_underwater";
+////				uiGLA		= GLASet.VERTEX_TEXTURE0;
+//
+////				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
+////				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
+////				break;
+//			case(Core::GLS_ICON):
+//				sFileName	= "icon";
+////				std::cout << sOffset << "[" << sFileName << "]";
+//				uiGLA		= GLASet.VERTEX_TEXTURE0;
+//				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
+//				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
+//				break;
+//			case(Core::GLS_MOUSERAY):
+//				sFileName	= "mouseray";
+////				std::cout << sOffset << "[" << sFileName << "]";
+//				uiGLA		= GLASet.VERTEX_COLOR;
+//				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
+//				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
+//				break;
+//			case(Core::GLS_LINES):
+//				sFileName	= "lines";
+////				std::cout << sOffset << "[" << sFileName << "]";
+//				uiGLA		= GLASet.VERTEX_COLOR;
+//				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
+//				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
+//				break;
+//			case(Core::GLS_POINTS):
+//				sFileName	= "points";
+////				std::cout << sOffset << "[" << sFileName << "]";
+//				uiGLA		= GLASet.VERTEX;
+//				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
+//				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
+//				break;
+//			case(Core::GLS_SUN):
+//				sFileName	= "sun";
+////				std::cout << sOffset << "[" << sFileName << "]";
+//				uiGLA		= GLASet.VERTEX_TEXTURE0;
+//				//cout << "Loading Shader '" << sFileName << "'" << endl;
+//				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
+//				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
+//				break;
+//			case(Core::GLS_FLAT):
+//				sFileName	= "flat";
+////				std::cout << sOffset << "[" << sFileName << "]";
+//				uiGLA		= GLASet.VERTEX_NORMAL_TEXTURE0;
+//				//if (debug2) cout << "Loading Shader '" << sFileName << "'" << endl;
+//				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
+//				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
+//				break;
+//			case(Core::GLS_PHONG):
+//				sFileName	= "phong";
+////				std::cout << sOffset << "[" << sFileName << "]";
+//				uiGLA		= GLASet.VERTEX_NORMAL_TEXTURE0;
+//				//if (debug2) cout << "Loading Shader '" << sFileName << "'" << endl;
+//				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
+//				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
+//				break;
+//			case(Core::GLS_WATER):
+//				sFileName	= "phong";
+////				std::cout << sOffset << "[" << sFileName << "]";
+//				uiGLA		= GLASet.VERTEX_NORMAL_TEXTURE0;
+//				//if (debug2) cout << "Loading Shader '" << sFileName << "'" << endl;
+//				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
+//				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
+//				break;
+//			case(Core::GLS_PHONG_O2D):
+//				sFileName	= "phongO2D";
+////				std::cout << sOffset << "[" << sFileName << "]";
+//				uiGLA		= GLASet.VERTEX_NORMAL_TEXTURE0;
+//				//if (debug2) cout << "Loading Shader '" << sFileName << "'" << endl;
+//				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
+//				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
+//				break;
+////			case(Core::GLS_FLAT_FOG):
+////				sFileName	= "flat_fog";
+////				uiGLA		= GLASet.VERTEX_TEXTURE0;
+////				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
+////				sGeoShader	= readShaderFile("./shaders/", sFileName, TYPE.GEOMETRY_SHADER);
+////				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
+////				break;
+////			case(Core::GLS_FLAT_FOG_SHEAR):
+////				sFileName	= "flat_fog_shear";
+////				uiGLA		= GLASet.VERTEX_TEXTURE0;
+////				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
+////				sGeoShader	= readShaderFile("./shaders/", sFileName, TYPE.GEOMETRY_SHADER);
+////				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
+////				break;
+////			case(Core::GLS_FLAT_FOG_INSTANCE):
+////				sFileName	= "flat_fog_instance";
+////				uiGLA		= GLASet.VERTEX_POSITION_EXTRA_TEXTURE0;
+////				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
+////				sGeoShader	= readShaderFile("./shaders/", sFileName, TYPE.GEOMETRY_SHADER);
+////				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
+////				break;
+//			case(Core::GLS_NORMAL_LINE2):
+//				sFileName	= "normal_line2";
+//				uiGLA		= GLASet.VERTEX_NORMAL;
+//				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
+//				sGeoShader	= readShaderFile("./shaders/", sFileName, TYPE.GEOMETRY_SHADER);
+//				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
+//				break;
+////			case(Core::GLS_SHADED_TEX):
+////				sFileName	= "shaded_tex";
+////				uiGLA		= GLASet.VERTEX_TEXTURE0;
+////				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
+////				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
+////				break;
+////			case(Core::GLS_SHADED_TEX_ALPHA):
+////				sFileName	= "shaded_tex_alpha";
+////				uiGLA		= GLASet.VERTEX_TEXTURE0;
+////				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
+////				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
+////				break;
+////			case(Core::GLS_DIRECTIONAL_TERRAIN):
+////				sFileName	= "directional_terrain";
+////				uiGLA		= GLASet.VERTEX_NORMAL_TEXTURE0;
+////				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
+////				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
+////				break;
+////			case(Core::GLS_DIRECTIONAL):
+////				sFileName	= "directional";
+////				uiGLA		= GLASet.VERTEX_NORMAL_TEXTURE0;
+////				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
+////				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
+////				break;
+////			case(Core::GLS_DIRECTIONAL_WATER):
+////				sFileName	= "directional_water";
+////				uiGLA		= GLASet.VERTEX_NORMAL_TEXTURE0;
+////				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
+////				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
+////				break;
+//			case(Core::GLS_TROPOSPHERE):
+//				sFileName	= "troposphere";
+//				uiGLA		= GLASet.VERTEX_NORMAL_TEXTURE0;
+//				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
+//				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
+//				break;
+//			case(Core::GLS_STRATOSPHERE):
+//				sFileName	= "stratosphere";
+//				uiGLA		= GLASet.VERTEX_NORMAL_TEXTURE0;
+//				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
+//				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
+//				break;
+//			case(Core::GLS_THERMOSPHERE):
+//				sFileName	= "thermosphere";
+//				uiGLA		= GLASet.VERTEX_NORMAL_TEXTURE0;
+//				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
+//				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
+//				break;
+//			case(Core::GLS_EXOSPHERE):
+//				sFileName	= "exosphere";
+////				std::cout << sOffset << "[" << sFileName << "]";
+//				uiGLA		= GLASet.VERTEX_TEXTURE0;
+//
+//				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
+//				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
+//				break;
+//			case(Core::GLS_SNOW):
+//				sFileName	= "snow";
+////				std::cout << sOffset << "[" << sFileName << "]";
+//				uiGLA		= GLASet.VERTEX;
+//				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
+//				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
+//				break;
+//			case(Core::GLS_SNOW_3D):
+//				sFileName	= "snow_3d";
+////				std::cout << sOffset << "[" << sFileName << "]";
+//				uiGLA		= GLASet.VERTEX;
+//				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
+//				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
+//				break;
+//			case(Core::GLS_POINT_SPRITE):
+//				sFileName	= "point_sprite";
+////				std::cout << sOffset << "[" << sFileName << "]";
+//				uiGLA		= GLASet.VERTEX;
+//				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
+//				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
+//				break;
+//			case(Core::GLS_PARTICLE_SPRITE):
+//				sFileName	= "particle_sprite";
+////				std::cout << sOffset << "[" << sFileName << "]";
+//				uiGLA		= GLASet.VERTEX;
+//				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
+//				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
+//				break;
+////			case(Core::GLS_HAIL):
+////				sFileName	= "hail";
+////				uiGLA		= GLASet.VERTEX;
+////				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
+////				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
+////				break;
+////			case(Core::GLS_RAIN):
+////				sFileName	= "rain";
+////				uiGLA		= GLASet.VERTEX;
+////				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
+////				sGeoShader	= readShaderFile("./shaders/", sFileName, TYPE.GEOMETRY_SHADER);
+////				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
+////				break;
+//			case(Core::GLS_FLORA):
+//				sFileName	= "flora";
+////				std::cout << sOffset << "[" << sFileName << "]";
+//				uiGLA		= GLASet.VERTEX_NORMAL;
+//				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
+//				sGeoShader	= readShaderFile("./shaders/", sFileName, TYPE.GEOMETRY_SHADER);
+//				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
+//				break;
+////			case(Core::GLS_UWFLORA):
+////				sFileName	= "uwflora";
+////				uiGLA		= GLASet.VERTEX_NORMAL;
+////				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
+////				sGeoShader	= readShaderFile("./shaders/", sFileName, TYPE.GEOMETRY_SHADER);
+////				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
+////				break;
+////			case(Core::GLS_GRASS_TRI):
+////				sFileName	= "grass_tri";
+////				uiGLA		= GLASet.VERTEX_NORMAL_POSITION_EXTRA;
+////				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
+////				sGeoShader	= readShaderFile("./shaders/", sFileName, TYPE.GEOMETRY_SHADER);
+////				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
+////				break;
+////			case(Core::GLS_GRASS_LINE):
+////				sFileName	= "grass_line";
+////				uiGLA		= GLASet.VERTEX_NORMAL_POSITION_EXTRA;
+////				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
+////				sGeoShader	= readShaderFile("./shaders/", sFileName, TYPE.GEOMETRY_SHADER);
+////				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
+////				break;
+//			case(Core::GLS_PP_CONTRAST):
+//				sFileName	= "pp_contrast";
+////				std::cout << sOffset << "[" << sFileName << "]";
+//				uiGLA		= GLASet.VERTEX_TEXTURE0;
+//				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
+//				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
+//				break;
+//			case(Core::GLS_PP_BRIGHTNESS):
+//				sFileName	= "pp_brightness";
+////				std::cout << sOffset << "[" << sFileName << "]";
+//				uiGLA		= GLASet.VERTEX_TEXTURE0;
+//				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
+//				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
+//				break;
+//			case(Core::GLS_PP_BRIGHTNESS_FILTER):
+//				sFileName	= "pp_brightness_filter";
+////				std::cout << sOffset << "[" << sFileName << "]";
+//				uiGLA		= GLASet.VERTEX_TEXTURE0;
+//				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
+//				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
+//				break;
+//			case(Core::GLS_PP_RADIALBLUR):
+//				sFileName	= "pp_radial_blur";
+////				std::cout << sOffset << "[" << sFileName << "]";
+//				uiGLA		= GLASet.VERTEX_TEXTURE0;
+//				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
+//				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
+//				break;
+//			case(Core::GLS_PP_HBLUR):
+//				sFileName	= "pp_hblur";
+////				std::cout << sOffset << "[" << sFileName << "]";
+//				uiGLA		= GLASet.VERTEX_TEXTURE0;
+//				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
+//				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
+//				break;
+//			case(Core::GLS_PP_VBLUR):
+//				sFileName	= "pp_vblur";
+////				std::cout << sOffset << "[" << sFileName << "]";
+//				uiGLA		= GLASet.VERTEX_TEXTURE0;
+//				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
+//				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
+//				break;
+//			case(Core::GLS_PP_COMBINE):
+//				sFileName	= "pp_combine";
+////				std::cout << sOffset << "[" << sFileName << "]";
+//				uiGLA		= GLASet.VERTEX_TEXTURE0;
+//				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
+//				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
+//				break;
+////			case(Core::GLS_PP_LENSFLARE):
+////				sFileName	= "pp_lensflare";
+////				uiGLA		= GLASet.VERTEX_TEXTURE0;
+////				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
+////				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
+////				break;
+////			case(Core::GLS_PP_DEPTHOFFIELD):
+////				sFileName	= "pp_dof";
+////				uiGLA		= GLASet.VERTEX_TEXTURE0;
+//
+////				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
+////				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
+////				break;
+////			case(Core::GLS_PP_CARTOON):
+////				sFileName	= "pp_cartoon";
+////				uiGLA		= GLASet.VERTEX_TEXTURE0;
+////				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
+////				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
+////				break;
+//			default:
+////				std::cout << sOffset << "[" << newShader << "] Not Defined";
+//				//sFileName = '\''+newShader+"' Not Defined";
+////				sFileName = "'";
+////				sFileName.append(newShader+"' Not Defined");
+//				sFileName = "Not Defined";
+//		}
 
 		switch(newShader) {
 			case(Core::GLS_FONT):
 				sFileName	= "font";
 //				std::cout << sOffset << "[" << sFileName << "]";
-				uiGLA		= GLASet.VERTEX_TEXTURE0;
+				uiGLA		= GLASet.VERTEX | GLASet.TEXTURE0;
 				//if (debug2) cout << "Loading Shader '" << sFileName << "'" << endl;
 				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
 				//sGeoShader	= readShaderFile("./shaders/", sFileName, TYPE.GEOMETRY_SHADER);
@@ -188,7 +533,7 @@ namespace Core {
 			case(Core::GLS_MENU):
 				sFileName	= "menu";
 //				std::cout << sOffset << "[" << sFileName << "]";
-				uiGLA		= GLASet.VERTEX_TEXTURE0;
+				uiGLA		= GLASet.VERTEX | GLASet.TEXTURE0;
 				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
 				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
 				break;
@@ -238,21 +583,21 @@ namespace Core {
 			case(Core::GLS_ICON):
 				sFileName	= "icon";
 //				std::cout << sOffset << "[" << sFileName << "]";
-				uiGLA		= GLASet.VERTEX_TEXTURE0;
+				uiGLA		= GLASet.VERTEX | GLASet.TEXTURE0;
 				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
 				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
 				break;
 			case(Core::GLS_MOUSERAY):
 				sFileName	= "mouseray";
 //				std::cout << sOffset << "[" << sFileName << "]";
-				uiGLA		= GLASet.VERTEX_COLOR;
+				uiGLA		= GLASet.VERTEX | GLASet.COLOR;
 				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
 				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
 				break;
 			case(Core::GLS_LINES):
 				sFileName	= "lines";
 //				std::cout << sOffset << "[" << sFileName << "]";
-				uiGLA		= GLASet.VERTEX_COLOR;
+				uiGLA		= GLASet.VERTEX | GLASet.COLOR;
 				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
 				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
 				break;
@@ -266,7 +611,7 @@ namespace Core {
 			case(Core::GLS_SUN):
 				sFileName	= "sun";
 //				std::cout << sOffset << "[" << sFileName << "]";
-				uiGLA		= GLASet.VERTEX_TEXTURE0;
+				uiGLA		= GLASet.VERTEX | GLASet.TEXTURE0;
 				//cout << "Loading Shader '" << sFileName << "'" << endl;
 				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
 				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
@@ -274,7 +619,7 @@ namespace Core {
 			case(Core::GLS_FLAT):
 				sFileName	= "flat";
 //				std::cout << sOffset << "[" << sFileName << "]";
-				uiGLA		= GLASet.VERTEX_NORMAL_TEXTURE0;
+				uiGLA		= GLASet.VERTEX | GLASet.NORMAL | GLASet.TEXTURE0;
 				//if (debug2) cout << "Loading Shader '" << sFileName << "'" << endl;
 				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
 				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
@@ -282,7 +627,7 @@ namespace Core {
 			case(Core::GLS_PHONG):
 				sFileName	= "phong";
 //				std::cout << sOffset << "[" << sFileName << "]";
-				uiGLA		= GLASet.VERTEX_NORMAL_TEXTURE0;
+				uiGLA		= GLASet.VERTEX | GLASet.NORMAL | GLASet.TEXTURE0 | GLASet.DATA1;
 				//if (debug2) cout << "Loading Shader '" << sFileName << "'" << endl;
 				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
 				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
@@ -290,7 +635,7 @@ namespace Core {
 			case(Core::GLS_WATER):
 				sFileName	= "phong";
 //				std::cout << sOffset << "[" << sFileName << "]";
-				uiGLA		= GLASet.VERTEX_NORMAL_TEXTURE0;
+				uiGLA		= GLASet.VERTEX | GLASet.NORMAL | GLASet.TEXTURE0;
 				//if (debug2) cout << "Loading Shader '" << sFileName << "'" << endl;
 				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
 				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
@@ -298,7 +643,7 @@ namespace Core {
 			case(Core::GLS_PHONG_O2D):
 				sFileName	= "phongO2D";
 //				std::cout << sOffset << "[" << sFileName << "]";
-				uiGLA		= GLASet.VERTEX_NORMAL_TEXTURE0;
+				uiGLA		= GLASet.VERTEX | GLASet.NORMAL | GLASet.TEXTURE0;
 				//if (debug2) cout << "Loading Shader '" << sFileName << "'" << endl;
 				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
 				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
@@ -326,7 +671,7 @@ namespace Core {
 //				break;
 			case(Core::GLS_NORMAL_LINE2):
 				sFileName	= "normal_line2";
-				uiGLA		= GLASet.VERTEX_NORMAL;
+				uiGLA		= GLASet.VERTEX | GLASet.NORMAL;
 				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
 				sGeoShader	= readShaderFile("./shaders/", sFileName, TYPE.GEOMETRY_SHADER);
 				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
@@ -363,26 +708,26 @@ namespace Core {
 //				break;
 			case(Core::GLS_TROPOSPHERE):
 				sFileName	= "troposphere";
-				uiGLA		= GLASet.VERTEX_NORMAL_TEXTURE0;
+				uiGLA		= GLASet.VERTEX | GLASet.NORMAL | GLASet.TEXTURE0;
 				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
 				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
 				break;
 			case(Core::GLS_STRATOSPHERE):
 				sFileName	= "stratosphere";
-				uiGLA		= GLASet.VERTEX_NORMAL_TEXTURE0;
+				uiGLA		= GLASet.VERTEX | GLASet.NORMAL | GLASet.TEXTURE0;
 				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
 				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
 				break;
 			case(Core::GLS_THERMOSPHERE):
 				sFileName	= "thermosphere";
-				uiGLA		= GLASet.VERTEX_NORMAL_TEXTURE0;
+				uiGLA		= GLASet.VERTEX | GLASet.NORMAL | GLASet.TEXTURE0;
 				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
 				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
 				break;
 			case(Core::GLS_EXOSPHERE):
 				sFileName	= "exosphere";
 //				std::cout << sOffset << "[" << sFileName << "]";
-				uiGLA		= GLASet.VERTEX_TEXTURE0;
+				uiGLA		= GLASet.VERTEX | GLASet.TEXTURE0;
 
 				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
 				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
@@ -431,7 +776,7 @@ namespace Core {
 			case(Core::GLS_FLORA):
 				sFileName	= "flora";
 //				std::cout << sOffset << "[" << sFileName << "]";
-				uiGLA		= GLASet.VERTEX_NORMAL;
+				uiGLA		= GLASet.VERTEX | GLASet.NORMAL;
 				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
 				sGeoShader	= readShaderFile("./shaders/", sFileName, TYPE.GEOMETRY_SHADER);
 				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
@@ -460,49 +805,49 @@ namespace Core {
 			case(Core::GLS_PP_CONTRAST):
 				sFileName	= "pp_contrast";
 //				std::cout << sOffset << "[" << sFileName << "]";
-				uiGLA		= GLASet.VERTEX_TEXTURE0;
+				uiGLA		= GLASet.VERTEX | GLASet.TEXTURE0;
 				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
 				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
 				break;
 			case(Core::GLS_PP_BRIGHTNESS):
 				sFileName	= "pp_brightness";
 //				std::cout << sOffset << "[" << sFileName << "]";
-				uiGLA		= GLASet.VERTEX_TEXTURE0;
+				uiGLA		= GLASet.VERTEX | GLASet.TEXTURE0;
 				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
 				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
 				break;
 			case(Core::GLS_PP_BRIGHTNESS_FILTER):
 				sFileName	= "pp_brightness_filter";
 //				std::cout << sOffset << "[" << sFileName << "]";
-				uiGLA		= GLASet.VERTEX_TEXTURE0;
+				uiGLA		= GLASet.VERTEX | GLASet.TEXTURE0;
 				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
 				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
 				break;
 			case(Core::GLS_PP_RADIALBLUR):
 				sFileName	= "pp_radial_blur";
 //				std::cout << sOffset << "[" << sFileName << "]";
-				uiGLA		= GLASet.VERTEX_TEXTURE0;
+				uiGLA		= GLASet.VERTEX | GLASet.TEXTURE0;
 				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
 				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
 				break;
 			case(Core::GLS_PP_HBLUR):
 				sFileName	= "pp_hblur";
 //				std::cout << sOffset << "[" << sFileName << "]";
-				uiGLA		= GLASet.VERTEX_TEXTURE0;
+				uiGLA		= GLASet.VERTEX | GLASet.TEXTURE0;
 				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
 				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
 				break;
 			case(Core::GLS_PP_VBLUR):
 				sFileName	= "pp_vblur";
 //				std::cout << sOffset << "[" << sFileName << "]";
-				uiGLA		= GLASet.VERTEX_TEXTURE0;
+				uiGLA		= GLASet.VERTEX | GLASet.TEXTURE0;
 				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
 				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
 				break;
 			case(Core::GLS_PP_COMBINE):
 				sFileName	= "pp_combine";
 //				std::cout << sOffset << "[" << sFileName << "]";
-				uiGLA		= GLASet.VERTEX_TEXTURE0;
+				uiGLA		= GLASet.VERTEX | GLASet.TEXTURE0;
 				sVertShader	= readShaderFile("./shaders/", sFileName, TYPE.VERTEX_SHADER);
 				sFragShader	= readShaderFile("./shaders/", sFileName, TYPE.FRAGMENT_SHADER);
 				break;
@@ -542,60 +887,67 @@ namespace Core {
 		 * 	skipped if it is equal to "".
 		 * 	(first char equal to \0)
 		 */
-		if(uiGLA == GLASet.VERTEX) {
-			uiShaders[setShader] = loadShader(	sVertShader.c_str(),
-												sGeoShader.c_str(),
-												sFragShader.c_str(),
-												1,
-												GLA_VERTEX,		"vVertex");
-		} else if(uiGLA == GLASet.VERTEX_COLOR) {
-			uiShaders[setShader] = loadShader(	sVertShader.c_str(),
-												sGeoShader.c_str(),
-												sFragShader.c_str(),
-												2,
-												GLA_VERTEX,		"vVertex",
-												GLA_COLOR,		"vColor");
-		} else if(uiGLA == GLASet.VERTEX_NORMAL) {
-			uiShaders[setShader] = loadShader(	sVertShader.c_str(),
-												sGeoShader.c_str(),
-												sFragShader.c_str(),
-												2,
-												GLA_VERTEX,		"vVertex",
-												GLA_NORMAL,		"vNormal");
-		} else if(uiGLA == GLASet.VERTEX_TEXTURE0) {
-			uiShaders[setShader] = loadShader(	sVertShader.c_str(),
-												sGeoShader.c_str(),
-												sFragShader.c_str(),
-												2,
-												GLA_VERTEX,		"vVertex",
-												GLA_TEXTURE0,	"vTexCoords");
-		} else if(uiGLA == GLASet.VERTEX_NORMAL_TEXTURE0) {
-			uiShaders[setShader] = loadShader(	sVertShader.c_str(),
-												sGeoShader.c_str(),
-												sFragShader.c_str(),
-												3,
-												GLA_VERTEX,		"vVertex",
-												GLA_NORMAL,		"vNormal",
-												GLA_TEXTURE0,	"vTexCoords");
-		} else if(uiGLA == GLASet.VERTEX_POSITION_EXTRA_TEXTURE0) {
-			uiShaders[setShader] = loadShader(	sVertShader.c_str(),
-												sGeoShader.c_str(),
-												sFragShader.c_str(),
-												4,
-												GLA_VERTEX,		"vVertex",
-												GLA_POSITION,	"vOffset",
-												GLA_EXTRA,		"vExtra",
-												GLA_TEXTURE0,	"vTexCoords");
-		} else if(uiGLA == GLASet.VERTEX_NORMAL_POSITION_EXTRA) {
-			uiShaders[setShader] = loadShader(	sVertShader.c_str(),
-												sGeoShader.c_str(),
-												sFragShader.c_str(),
-												4,
-												GLA_VERTEX,		"vVertex",
-												GLA_NORMAL,		"vNormal",
-												GLA_POSITION,	"vOffset",
-												GLA_EXTRA,		"vExtra");
-		}
+
+//		if(uiGLA == GLASet.VERTEX) {
+//			uiShaders[setShader] = loadShader(	sVertShader.c_str(),
+//												sGeoShader.c_str(),
+//												sFragShader.c_str(),
+//												1,
+//												GLA_VERTEX,		"vVertex");
+//		} else if(uiGLA == GLASet.VERTEX_COLOR) {
+//			uiShaders[setShader] = loadShader(	sVertShader.c_str(),
+//												sGeoShader.c_str(),
+//												sFragShader.c_str(),
+//												2,
+//												GLA_VERTEX,		"vVertex",
+//												GLA_COLOR,		"vColor");
+//		} else if(uiGLA == GLASet.VERTEX_NORMAL) {
+//			uiShaders[setShader] = loadShader(	sVertShader.c_str(),
+//												sGeoShader.c_str(),
+//												sFragShader.c_str(),
+//												2,
+//												GLA_VERTEX,		"vVertex",
+//												GLA_NORMAL,		"vNormal");
+//		} else if(uiGLA == GLASet.VERTEX_TEXTURE0) {
+//			uiShaders[setShader] = loadShader(	sVertShader.c_str(),
+//												sGeoShader.c_str(),
+//												sFragShader.c_str(),
+//												2,
+//												GLA_VERTEX,		"vVertex",
+//												GLA_TEXTURE0,	"vTexCoords");
+//		} else if(uiGLA == GLASet.VERTEX_NORMAL_TEXTURE0) {
+//			uiShaders[setShader] = loadShader(	sVertShader.c_str(),
+//												sGeoShader.c_str(),
+//												sFragShader.c_str(),
+//												3,
+//												GLA_VERTEX,		"vVertex",
+//												GLA_NORMAL,		"vNormal",
+//												GLA_TEXTURE0,	"vTexCoords");
+//		}
+////		} else if(uiGLA == GLASet.VERTEX_POSITION_EXTRA_TEXTURE0) {
+////			uiShaders[setShader] = loadShader(	sVertShader.c_str(),
+////												sGeoShader.c_str(),
+////												sFragShader.c_str(),
+////												4,
+////												GLA_VERTEX,		"vVertex",
+////												GLA_POSITION,	"vOffset",
+////												GLA_EXTRA,		"vExtra",
+////												GLA_TEXTURE0,	"vTexCoords");
+////		} else if(uiGLA == GLASet.VERTEX_NORMAL_POSITION_EXTRA) {
+////			uiShaders[setShader] = loadShader(	sVertShader.c_str(),
+////												sGeoShader.c_str(),
+////												sFragShader.c_str(),
+////												4,
+////												GLA_VERTEX,		"vVertex",
+////												GLA_NORMAL,		"vNormal",
+////												GLA_POSITION,	"vOffset",
+////												GLA_EXTRA,		"vExtra");
+////		}
+
+		uiShaders[setShader] = loadShader(	sVertShader.c_str(),
+											sGeoShader.c_str(),
+											sFragShader.c_str(),
+											uiGLA);
 
 		//std::cout << "Done" << std::endl;
 //		std::cout << std::endl;
@@ -1347,6 +1699,8 @@ namespace Core {
 			data.locTexture[13]	= glGetUniformLocation(uiShaders[eShader], "texBeach2");
 			data.locTexture[14]	= glGetUniformLocation(uiShaders[eShader], "texSand1");
 			data.locTexture[15]	= glGetUniformLocation(uiShaders[eShader], "texSand2");
+			data.locTexture[29]	= glGetUniformLocation(uiShaders[eShader], "texAtlas");
+			data.locTexture[30]	= glGetUniformLocation(uiShaders[eShader], "texMoisture");
 			data.locTexture[31]	= glGetUniformLocation(uiShaders[eShader], "texWater");
 			data.locMVP			= glGetUniformLocation(uiShaders[eShader], "mvpMatrix");
 			data.locMV			= glGetUniformLocation(uiShaders[eShader], "mvMatrix");
@@ -1429,6 +1783,8 @@ namespace Core {
 				glUniform1i(data.locTexture[13],	13);
 				glUniform1i(data.locTexture[14],	14);
 				glUniform1i(data.locTexture[15],	15);
+				glUniform1i(data.locTexture[29],	29);
+				glUniform1i(data.locTexture[30],	30);
 				glUniform1i(data.locTexture[31],	31);
 
 				// Matrix
@@ -2226,7 +2582,123 @@ namespace Core {
 		return uiReturn;
 	}
 
-	GLuint Shader_System::loadShader(const char *vertSrc, const char *geoSrc, const char *fragSrc, ...) {
+//	GLuint Shader_System::loadShader(const char *vertSrc, const char *geoSrc, const char *fragSrc, ...) {
+//		GLuint uiVertShader = 0;
+//		GLuint uiGeoShader	= 0;
+//		GLuint uiFragShader = 0;
+//		GLuint uiReturn		= 0;
+//		GLint iTestVal		= 0;
+//
+//		if (debug) printf("\tCreating Shaders...\t\t\t");
+//		uiVertShader = glCreateShader(GL_VERTEX_SHADER);
+//		if(geoSrc[0] != '\0') {
+//			uiGeoShader = glCreateShader(GL_GEOMETRY_SHADER);
+//		}
+//		uiFragShader = glCreateShader(GL_FRAGMENT_SHADER);
+//		if (debug) printf("[Done]\n");
+//
+//		if (debug) printf("\tLoading Vertex Core.shader...\t\t");
+//		readSrc((const char *)vertSrc, uiVertShader);
+//		if (debug) printf("[Done]\n");
+//
+//		if (debug) printf("\tLoading Geometry Core.shader...\t\t");
+//		if(geoSrc[0] != '\0') readSrc((const char *)geoSrc, uiGeoShader);
+//		if (debug) printf("[Done]\n");
+//
+//		if (debug) printf("\tLoading Fragment Core.shader...\t\t");
+//		readSrc((const char *)fragSrc, uiFragShader);
+//		if (debug) printf("[Done]\n");
+//
+//		if (debug) printf("\tCompiling Shaders...\t\t\t");
+//		glCompileShader(uiVertShader);
+//		if(geoSrc[0] != '\0') glCompileShader(uiGeoShader);
+//		glCompileShader(uiFragShader);
+//		if (debug) printf("[Done]\n");
+//
+//		if (debug) printf("\tCheck Vertex Shader for Errors...\t");
+//		glGetShaderiv(uiVertShader, GL_COMPILE_STATUS, &iTestVal);
+//		if (!iTestVal) {
+//			char infoLog[1024];
+//
+//			glGetShaderInfoLog(uiVertShader, 4096, NULL, infoLog);
+//			if (debug2) printf("Failed:\n\nSource:\n%s\n\nLog:\n'%s'\n\n", vertSrc, infoLog);
+//			abort();
+//		}
+//		else if (debug) printf("[No Errors]\n");
+//
+//		if(geoSrc[0] != '\0') {
+//			if (debug) printf("\tCheck Geometry Shader for Errors...\t");
+//			glGetShaderiv(uiGeoShader, GL_COMPILE_STATUS, &iTestVal);
+//			if (!iTestVal) {
+//				char infoLog[1024];
+//				glGetShaderInfoLog(uiGeoShader, 4096, NULL, infoLog);
+//				if (debug2) printf("Failed:\n\nSource:\n%s\n\nLog:\n'%s'\n\n", geoSrc, infoLog);
+//				abort();
+//			}
+//			else if (debug) printf("[No Errors]\n");
+//		}
+//
+//		if (debug) printf("\tCheck Fragment Shader for Errors...\t");
+//		glGetShaderiv(uiFragShader, GL_COMPILE_STATUS, &iTestVal);
+//		if (!iTestVal) {
+//			char infoLog[1024];
+//			glGetShaderInfoLog(uiFragShader, 4096, NULL, infoLog);
+//			if (debug2) printf("Failed:\n\nSource:\n%s\n\nLog:\n'%s'\n\n", fragSrc, infoLog);
+//			abort();
+//		}
+//		else if (debug) printf("[No Errors]\n");
+//
+//		if (debug) printf("\tAttaching Shaders...\t\t\t");
+//		uiReturn = glCreateProgram();
+//		glAttachShader(uiReturn, uiVertShader);
+//		if(geoSrc[0] != '\0') glAttachShader(uiReturn, uiGeoShader);
+//		glAttachShader(uiReturn, uiFragShader);
+//		if (debug) printf("[Done]\n");
+//
+//		if (debug) printf("\tCreate Fragment Argument List...\t");
+//		va_list attributeList;
+//
+//		try {
+//			va_start(attributeList, fragSrc);
+//			char *szNextArg;
+//			int iArgCount = va_arg(attributeList, int);
+//			for (int i=0; i < iArgCount; i++) {
+//				int index = va_arg(attributeList, int);
+//				szNextArg = va_arg(attributeList, char*);
+//				glBindAttribLocation(uiReturn, index, szNextArg);
+//				if (debug) printf("(%i:%s)", index, szNextArg);
+//			}
+//			va_end(attributeList);
+//			if (debug) printf("[Done]\n");
+//		}
+//		catch( char * str ) {
+//			if (debug) printf("[Failed]: %s\n", str);
+//		}
+//
+//		if (debug) printf("\tLink Program...\t\t\t\t");
+//		glLinkProgram(uiReturn);
+//		if (debug) printf("[Done]\n");
+//
+//		if (debug) printf("\tDelete Local Shaders...\t\t\t");
+//		glDeleteShader(uiVertShader);
+//		if(geoSrc[0] != '\0') glDeleteShader(uiGeoShader);
+//		glDeleteShader(uiFragShader);
+//		if (debug) printf("[Done]\n");
+//
+//		if (debug) printf("\tCheck Shader Links...\t\t\t");
+//		glGetProgramiv(uiReturn, GL_LINK_STATUS, &iTestVal);
+//		if (iTestVal) {
+//			if (debug) printf("[Done]\n");
+//		}
+//		else {
+//			if (debug) printf("Failed\n");
+//		}
+//		if (debug) printf("Success!\n\n");
+//
+//		return uiReturn;
+//	}
+
+	GLuint Shader_System::loadShader(const char *vertSrc, const char *geoSrc, const char *fragSrc, uint uiGLA) {
 		GLuint uiVertShader = 0;
 		GLuint uiGeoShader	= 0;
 		GLuint uiFragShader = 0;
@@ -2293,30 +2765,50 @@ namespace Core {
 		else if (debug) printf("[No Errors]\n");
 
 		if (debug) printf("\tAttaching Shaders...\t\t\t");
-		uiReturn = glCreateProgram();
-		glAttachShader(uiReturn, uiVertShader);
-		if(geoSrc[0] != '\0') glAttachShader(uiReturn, uiGeoShader);
-		glAttachShader(uiReturn, uiFragShader);
+			uiReturn = glCreateProgram();
+			glAttachShader(uiReturn, uiVertShader);
+			if(geoSrc[0] != '\0') glAttachShader(uiReturn, uiGeoShader);
+			glAttachShader(uiReturn, uiFragShader);
 		if (debug) printf("[Done]\n");
 
 		if (debug) printf("\tCreate Fragment Argument List...\t");
-		va_list attributeList;
-
-		try {
-			va_start(attributeList, fragSrc);
-			char *szNextArg;
-			int iArgCount = va_arg(attributeList, int);
-			for (int i=0; i < iArgCount; i++) {
-				int index = va_arg(attributeList, int);
-				szNextArg = va_arg(attributeList, char*);
-				glBindAttribLocation(uiReturn, index, szNextArg);
+			if(uiGLA&GLASet.VERTEX) {
+				glBindAttribLocation(uiReturn, GLA_VERTEX, "vVertex");
+				if (debug) printf("(1:vVertex)");
 			}
-			va_end(attributeList);
-			if (debug) printf("[Done]\n");
-		}
-		catch( char * str ) {
-			if (debug) printf("[Failed]: %s\n", str);
-		}
+			if(uiGLA&GLASet.COLOR) {
+				glBindAttribLocation(uiReturn, GLA_COLOR, "vColor");
+				if (debug) printf("(2:vColor)");
+			}
+			if(uiGLA&GLASet.NORMAL) {
+				glBindAttribLocation(uiReturn, GLA_NORMAL, "vNormal");
+				if (debug) printf("(3:vNormal)");
+			}
+			if(uiGLA&GLASet.TEXTURE0) {
+				glBindAttribLocation(uiReturn, GLA_TEXTURE0, "vTexCoords");
+				if (debug) printf("(4:vTexCoords)");
+			}
+			if(uiGLA&GLASet.POSITION) {
+				glBindAttribLocation(uiReturn, GLA_POSITION, "vOffset");
+				if (debug) printf("(5:vOffset)");
+			}
+			if(uiGLA&GLASet.DATA1) {
+				glBindAttribLocation(uiReturn, GLA_DATA1, "vData1");
+				if (debug) printf("(6:vData1)");
+			}
+			if(uiGLA&GLASet.DATA2) {
+				glBindAttribLocation(uiReturn, GLA_DATA2, "vData2");
+				if (debug) printf("(7:vData2)");
+			}
+			if(uiGLA&GLASet.DATA3) {
+				glBindAttribLocation(uiReturn, GLA_DATA3, "vData3");
+				if (debug) printf("(8:vData3)");
+			}
+			if(uiGLA&GLASet.INDEX) {
+				glBindAttribLocation(uiReturn, GLA_INDEX, "vIndex");
+				if (debug) printf("(5:vOffset)");
+			}
+		if (debug) printf("[Done]\n");
 
 		if (debug) printf("\tLink Program...\t\t\t\t");
 		glLinkProgram(uiReturn);
@@ -2340,4 +2832,13 @@ namespace Core {
 
 		return uiReturn;
 	}
+
+
+
+
+
+
+
+
+
 }

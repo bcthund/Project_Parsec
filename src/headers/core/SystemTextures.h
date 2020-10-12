@@ -11,6 +11,7 @@
 #include <cstdlib>
 #include <iostream>
 #include "texture.h"
+#include "texture3d.h"
 #include "core_functions.h"
 
 namespace Core {
@@ -43,6 +44,9 @@ namespace Core {
 				TEX_BEACH2,
 				TEX_SAND1,
 				TEX_SAND2,
+				TEX_MOISTURE1,
+				TEX_MOISTURE2,
+				TEX_ATLAS_00,
 				TEX_LAST
 				};
 
@@ -55,6 +59,7 @@ namespace Core {
 
 		private:
 			Texture		texture;
+//			Texture3D	texture;
 			uint		uiNumTextures;
 			uint		uiRecordSize;
 			std::string sFilename;

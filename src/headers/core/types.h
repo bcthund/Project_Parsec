@@ -54,7 +54,9 @@ namespace Core {
 								GLA_TEXTURE2,		//
 								GLA_TEXTURE3,		//
 								GLA_POSITION,		// Position data for instanced arrays
-								GLA_EXTRA,			// Extra data for instaced arrays
+								GLA_DATA1,			// Extra data for instaced arrays
+								GLA_DATA2,			// Extra data for instaced arrays
+								GLA_DATA3,			// Extra data for instaced arrays
 								GLA_LAST};
 
 

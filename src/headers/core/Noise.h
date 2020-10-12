@@ -389,15 +389,17 @@ namespace Core {
 		};
 
 		struct t_FractalParams : virtual public t_BaseParams {
-			float frequency, amplitude, lacunarity, persistance;
+			float frequency, amplitude, lacunarity, persistence;
 			int octaves;
+			unsigned seed;
 
 			t_FractalParams() {
 				frequency			= 0.00025f;
 				amplitude			= 1.0f;
 				lacunarity			= 2.9f;
-				persistance			= 0.33f;
+				persistence			= 0.33f;
 				octaves				= 3;
+				seed				= 0;
 			}
 		};
 
