@@ -1,4 +1,4 @@
-#version 330 core
+#version 440 core
 uniform mat4 mvpMatrix;
 uniform mat4 mvMatrix;
 uniform int  iNumLights;
@@ -16,50 +16,39 @@ uniform bool bWater = false;
 //uniform sampler2D colorMap;
 
 // Multi-Texture
-uniform sampler2D texDirt1;
-uniform sampler2D texDirt2;
-uniform sampler2D texGrass1;
-uniform sampler2D texGrass2;
-uniform sampler2D texRocky1;
-uniform sampler2D texRocky2;
-uniform sampler2D texCliff1;
-uniform sampler2D texCliff2;
-uniform sampler2D texMud1;
-uniform sampler2D texMud2;
-uniform sampler2D texSnow1;
-uniform sampler2D texSnow2;
-uniform sampler2D texBeach1;
-uniform sampler2D texBeach2;
-uniform sampler2D texSand1;
-uniform sampler2D texSand2;
-uniform sampler2D texAtlas;
-uniform sampler2D texMoisture;
+// uniform sampler2D texDirt1;
+// uniform sampler2D texDirt2;
+// uniform sampler2D texGrass1;
+// uniform sampler2D texGrass2;
+// uniform sampler2D texRocky1;
+// uniform sampler2D texRocky2;
+// uniform sampler2D texCliff1;
+// uniform sampler2D texCliff2;
+// uniform sampler2D texMud1;
+// uniform sampler2D texMud2;
+// uniform sampler2D texSnow1;
+// uniform sampler2D texSnow2;
+// uniform sampler2D texBeach1;
+// uniform sampler2D texBeach2;
+// uniform sampler2D texSand1;
+// uniform sampler2D texSand2;
+//layout (binding=20) uniform sampler2DArray tex3D;
+//layout (binding=20) uniform sampler3D tex3D;
+layout (binding=0) uniform sampler3D tex3D_0;
+layout (binding=1) uniform sampler3D tex3D_1;
+layout (binding=2) uniform sampler3D tex3D_2;
+layout (binding=3) uniform sampler3D tex3D_3;
+layout (binding=4) uniform sampler3D tex3D_4;
+// uniform sampler2D texAtlas;
+// uniform sampler2D texMoisture;
 uniform sampler2D texWater;
-
-float fOffset       =    0.0f;
-float f7_Snow       =  30000.0f + fOffset;
-float f6_Cliff      =  25000.0f + fOffset;
-float f5_Rocky      =  15000.0f + fOffset;
-float f4_Grass      =   8000.0f + fOffset;
-float f3_Dirt       =   1000.0f + fOffset;
-float f2_Sand       =    500.0f + fOffset;
-float f1_Beach      =      0.0f + fOffset;
-float f0_Mud        =  -1000.0f + fOffset;
-
-float fade6_CliffToSnow  =   5000.0f;//8.0f;
-float fade5_RockyToCliff =   5000.0f;//8.0f;
-float fade4_GrassToRocky =   5000.0f;//8.0f;
-float fade3_DirtToGrass  =   1000.0f;//8.0f;
-float fade2_SandToDirt   =    250.0f;//8.0f;
-float fade1_BeachToSand  =    250.0f;//8.0f;
-float fade0_MudToBeach   =    500.0f;//8.0f;
 
 layout (location = 0) out vec4 fragmentColor;
 in Data {
  in vec3 vVert;
  in vec3 vNormal;
  in vec2 vTexCoords;
- in vec3 vData1;        // [0] = Moisture, [1] = undefined, [2] = undefined
+ in vec3 vData1;        // [0] = Moisture, [1] = Altitude Offset, [2] = undefined
  in vec2 vMoistureCoords;
 } data;
 
@@ -106,135 +95,72 @@ return vReturnDiffuse;
 }
 
 void main(void) {
-
-    // Standard single texture2D
-	vec4 texColor;// = texture2D(colorMap, data.vTexCoords);
-	vec3 diffuse = vec3(0);
+    vec4 texColor;
+	vec3 finalColor;
+    vec3 diffuse = vec3(0);
 	vec3 ambient = vec3(0);
-	float fMaxDarkness = 0.0;
+	float fMaxDarkness = 0.05;
 	float fAlpha = 1.0f;
+	//vec3 gamma = vec3(1.0/2.2);
+	vec3 gamma = vec3(1.0/1.25);
 	
-	// Get atlas texture coords
-// 	vec2 atlasBaseCoords = vec2(data.vTexCoords)/7.0f;
-//     vec2 vMoistureCoords = vec2(data.vData1.b, ((data.vVert.y-240000))/20000.0f);            // Calculate moisture coordinates
-// 	atlasBaseCoords.s += 1-(int(vMoistureCoords.s) * 0.142857f);
-// 	atlasBaseCoords.t += 1-(int(vMoistureCoords.t) * 0.142857f);
-
-	// Calculate all lights
-	for(int light=0; light<iNumLights; light++) {
+    for(int light=0; light<iNumLights; light++) {
 		diffuse += AddLight(iType[light], vLightDir[light], vLightPos[light], vDiffuseColor[light], vAmbientColor[light], vSpecularColor[light], vAttenuation[light], fMaxDarkness);
 		ambient += vAmbientColor[light].rgb;
 	}
-	vec3 gamma = vec3(1.0/2.2);
-	
-	vec3 finalColor;
-	
+
 	if(bWater) {
         texColor = texture2D(texWater, data.vTexCoords);
         finalColor = texColor.rgb * (ambient.rgb + diffuse.rgb);
-        fAlpha = 0.5f;
+        fAlpha = 0.65f;
 	}
 	else {
-        //MULTI TEXTURE HANDLING
-        float t7=0.0f;
-        float t6=0.0f;
-        float t5=0.0f;
-        float t4=0.0f;
-        float t3=0.0f;
-        float t2=0.0f;
-        float t1=0.0f;
+        // Testing of 3D Layers
+    //     vec4 vNewColor0 = texture(tex3D_0, vec3(data.vTexCoords.s, data.vTexCoords.t, data.vMoistureCoords.t));
+    //     vec4 vNewColor0 = texture(tex3D_1, vec3(data.vTexCoords.s, data.vTexCoords.t, data.vMoistureCoords.t));
+    //     vec4 vNewColor0 = texture(tex3D_2, vec3(data.vTexCoords.s, data.vTexCoords.t, data.vMoistureCoords.t));
+    //     vec4 vNewColor0 = texture(tex3D_3, vec3(data.vTexCoords.s, data.vTexCoords.t, data.vMoistureCoords.t));
+    //     vec4 vNewColor0 = texture(tex3D_4, vec3(data.vTexCoords.s, data.vTexCoords.t, data.vMoistureCoords.t));
+
+        // Setup
         float t0=0.0f;
-        
-        // Calculate texture influence based on height
-        if (data.vVert.y >= f7_Snow) { t7=1.0f; }
-        else if ((data.vVert.y <= f7_Snow)  && (data.vVert.y > f6_Cliff))   { t7=clamp((data.vVert.y-f6_Cliff)/fade6_CliffToSnow,   0.0, 1.0); t6=1-t7; }
-        else if ((data.vVert.y <= f6_Cliff) && (data.vVert.y > f5_Rocky))   { t6=clamp((data.vVert.y-f5_Rocky)/fade5_RockyToCliff,  0.0, 1.0); t5=1-t6; }
-        else if ((data.vVert.y <= f5_Rocky) && (data.vVert.y > f4_Grass))   { t5=clamp((data.vVert.y-f4_Grass)/fade4_GrassToRocky,  0.0, 1.0); t4=1-t5; }
-        else if ((data.vVert.y <= f4_Grass) && (data.vVert.y > f3_Dirt))    { t4=clamp((data.vVert.y-f3_Dirt)/fade3_DirtToGrass,    0.0, 1.0); t3=1-t4; }
-        else if ((data.vVert.y <= f3_Dirt)  && (data.vVert.y > f2_Sand))    { t3=clamp((data.vVert.y-f2_Sand)/fade2_SandToDirt,     0.0, 1.0); t2=1-t3; }
-        else if ((data.vVert.y <= f2_Sand)  && (data.vVert.y > f1_Beach))   { t2=clamp((data.vVert.y-f1_Beach)/fade1_BeachToSand,   0.0, 1.0); t1=1-t2; }
-        else if ((data.vVert.y <= f1_Beach) && (data.vVert.y > f0_Mud))     { t1=clamp((data.vVert.y-f0_Mud)/fade0_MudToBeach,      0.0, 1.0); t0=1-t1; }
-        else if (data.vVert.y <= f0_Mud) { t0=1.0f; } 
-
-        // Declare variables for texture colors
+        float t1=0.0f;
+        float t2=0.0f;
+        float t3=0.0f;
+        float t4=0.0f;
+        float fade=0.75f;
         vec4 vNewColor0 = vec4(0.0f),
-             vNewColor1 = vec4(0.0f),
-             vNewColor2 = vec4(0.0f),
-             vNewColor3 = vec4(0.0f),
-             vNewColor4 = vec4(0.0f),
-             vNewColor5 = vec4(0.0f),
-             vNewColor6 = vec4(0.0f),
-             vNewColor7 = vec4(0.0f);
-             
-        // Steep Textures v0
-//         if(t0>0.0f) vNewColor0 = mix( texture2D(texMud1,   data.vTexCoords), texture2D(texMud2,   data.vTexCoords), 1.00-(data.vNormal.y+1.0)) * t0;
-//         if(t1>0.0f) vNewColor1 = mix( texture2D(texBeach1, data.vTexCoords), texture2D(texBeach2, data.vTexCoords), 1.00-(data.vNormal.y+1.0)) * t1;
-//         if(t2>0.0f) vNewColor2 = mix( texture2D(texSand1,  data.vTexCoords), texture2D(texSand2,  data.vTexCoords), 1.00-(data.vNormal.y+1.0)) * t2;
-//         if(t3>0.0f) vNewColor3 = mix( texture2D(texDirt1,  data.vTexCoords), texture2D(texDirt2,  data.vTexCoords), 1.00-(data.vNormal.y+1.0)) * t3;
-//         if(t4>0.0f) vNewColor4 = mix( texture2D(texGrass1, data.vTexCoords), texture2D(texGrass2, data.vTexCoords), 1.00-(data.vNormal.y+1.0)) * t4;
-//         if(t5>0.0f) vNewColor5 = mix( texture2D(texRocky1, data.vTexCoords), texture2D(texRocky2, data.vTexCoords), 1.00-(data.vNormal.y+1.0)) * t5;
-//         if(t6>0.0f) vNewColor6 = mix( texture2D(texCliff1, data.vTexCoords), texture2D(texCliff2, data.vTexCoords), 1.00-(data.vNormal.y+1.0)) * t6;
-//         if(t7>0.0f) vNewColor7 = mix( texture2D(texSnow1,  data.vTexCoords), texture2D(texSnow2,  data.vTexCoords), 1.00-(data.vNormal.y+1.0)) * t7;
-
-        // Steep Textures v1
-//         if(t0>0.0f) vNewColor0 = mix( texture2D(texMud1,   data.vTexCoords), texture2D(texMud2,   data.vTexCoords), 1.00-( ((data.vNormal.y)/2.0)+0.5 ) ) * t0;
-//         if(t1>0.0f) vNewColor1 = mix( texture2D(texBeach1, data.vTexCoords), texture2D(texBeach2, data.vTexCoords), 1.00-( ((data.vNormal.y)/2.0)+0.5 ) ) * t1;
-//         if(t2>0.0f) vNewColor2 = mix( texture2D(texSand1,  data.vTexCoords), texture2D(texSand2,  data.vTexCoords), 1.00-( ((data.vNormal.y)/2.0)+0.5 ) ) * t2;
-//         if(t3>0.0f) vNewColor3 = mix( texture2D(texDirt1,  data.vTexCoords), texture2D(texDirt2,  data.vTexCoords), 1.00-( ((data.vNormal.y)/2.0)+0.5 ) ) * t3;
-//         if(t4>0.0f) vNewColor4 = mix( texture2D(texGrass1, data.vTexCoords), texture2D(texGrass2, data.vTexCoords), 1.00-( ((data.vNormal.y)/2.0)+0.5 ) ) * t4;
-//         if(t5>0.0f) vNewColor5 = mix( texture2D(texRocky1, data.vTexCoords), texture2D(texRocky2, data.vTexCoords), 1.00-( ((data.vNormal.y)/2.0)+0.5 ) ) * t5;
-//         if(t6>0.0f) vNewColor6 = mix( texture2D(texCliff1, data.vTexCoords), texture2D(texCliff2, data.vTexCoords), 1.00-( ((data.vNormal.y)/2.0)+0.5 ) ) * t6;
-//         if(t7>0.0f) vNewColor7 = mix( texture2D(texSnow1,  data.vTexCoords), texture2D(texSnow2,  data.vTexCoords), 1.00-( ((data.vNormal.y)/2.0)+0.5 ) ) * t7;
+            vNewColor1 = vec4(0.0f),
+            vNewColor2 = vec4(0.0f),
+            vNewColor3 = vec4(0.0f),
+            vNewColor4 = vec4(0.0f);
         
-        // Steep Textures v2
-//         if(t0>0.0f) vNewColor0 = mix( texture2D(texMud1,   data.vTexCoords), texture2D(texMud2,   data.vTexCoords), 1.00-( ((data.vNormal.y)) ) ) * t0;
-//         if(t1>0.0f) vNewColor1 = mix( texture2D(texBeach1, data.vTexCoords), texture2D(texBeach2, data.vTexCoords), 1.00-( ((data.vNormal.y)) ) ) * t1;
-//         if(t2>0.0f) vNewColor2 = mix( texture2D(texSand1,  data.vTexCoords), texture2D(texSand2,  data.vTexCoords), 1.00-( ((data.vNormal.y)) ) ) * t2;
-//         if(t3>0.0f) vNewColor3 = mix( texture2D(texDirt1,  data.vTexCoords), texture2D(texDirt2,  data.vTexCoords), 1.00-( ((data.vNormal.y)) ) ) * t3;
-//         if(t4>0.0f) vNewColor4 = mix( texture2D(texGrass1, data.vTexCoords), texture2D(texGrass2, data.vTexCoords), 1.00-( ((data.vNormal.y)) ) ) * t4;
-//         if(t5>0.0f) vNewColor5 = mix( texture2D(texRocky1, data.vTexCoords), texture2D(texRocky2, data.vTexCoords), 1.00-( ((data.vNormal.y)) ) ) * t5;
-//         if(t6>0.0f) vNewColor6 = mix( texture2D(texCliff1, data.vTexCoords), texture2D(texCliff2, data.vTexCoords), 1.00-( ((data.vNormal.y)) ) ) * t6;
-//         if(t7>0.0f) vNewColor7 = mix( texture2D(texSnow1,  data.vTexCoords), texture2D(texSnow2,  data.vTexCoords), 1.00-( ((data.vNormal.y)) ) ) * t7;
-
-        if(t0>0.0f) vNewColor0 = texture2D(texMud1,   data.vTexCoords) * t0;
-        if(t1>0.0f) vNewColor1 = texture2D(texBeach1, data.vTexCoords) * t1;
-        if(t2>0.0f) vNewColor2 = texture2D(texSand1,  data.vTexCoords) * t2;
-        if(t3>0.0f) vNewColor3 = texture2D(texDirt1,  data.vTexCoords) * t3;
-        if(t4>0.0f) vNewColor4 = texture2D(texGrass1, data.vTexCoords) * t4;
-        if(t5>0.0f) vNewColor5 = texture2D(texRocky1, data.vTexCoords) * t5;
-        if(t6>0.0f) vNewColor6 = texture2D(texCliff1, data.vTexCoords) * t6;
-        if(t7>0.0f) vNewColor7 = texture2D(texSnow1,  data.vTexCoords) * t7;
-        texColor = (vNewColor0 + vNewColor1 + vNewColor2 + vNewColor3 + vNewColor4 + vNewColor5 + vNewColor6 + vNewColor7);
-
-
-        // Get texture color from atlas
-//         vec4 vNewColor0 = vec4(0.0f);
-//         vNewColor0 = texture2D(texAtlas, atlasBaseCoords);
-//         texColor = vNewColor0;
-
-        // Combine texture with lighting
-        finalColor = texColor.rgb * (ambient.rgb + diffuse.rgb);
+        // Moisture Levels
+        float f4_Wet    = 5.0f,
+            f3_Moist  = 4.0f,
+            f2_Mud    = 3.0f,
+            f1_Dry    = 2.0f,
+            f0_Barren = 1.0f;
         
-        // Convert to greyscale
-//         vec3 c2 = vec3(0.3f, 0.59f, 0.11f);
-//         finalColor = vec3(dot(finalColor, c2));
+        // Calculate Moisture Influence
+        if (data.vMoistureCoords.s >= f4_Wet) { t4=1.0f; }
+        else if ((data.vMoistureCoords.s <= f4_Wet)   && (data.vMoistureCoords.s > f3_Moist))   { t4=clamp((data.vMoistureCoords.s-f3_Moist)/fade,  0.0, 1.0); t3=1-t4; }
+        else if ((data.vMoistureCoords.s <= f3_Moist) && (data.vMoistureCoords.s > f2_Mud))     { t3=clamp((data.vMoistureCoords.s-f2_Mud)/fade,    0.0, 1.0); t2=1-t3; }
+        else if ((data.vMoistureCoords.s <= f2_Mud)   && (data.vMoistureCoords.s > f1_Dry))     { t2=clamp((data.vMoistureCoords.s-f1_Dry)/fade,    0.0, 1.0); t1=1-t2; }
+        else if ((data.vMoistureCoords.s <= f1_Dry)   && (data.vMoistureCoords.s > f0_Barren))  { t1=clamp((data.vMoistureCoords.s-f0_Barren)/fade, 0.0, 1.0); t0=1-t1; }
+        else if (data.vMoistureCoords.s  <= f0_Barren) { t0=1.0f; } 
+
+        // Apply Influence
+        if(t0>0.0f) vNewColor0 = texture(tex3D_0, vec3(data.vTexCoords.s, data.vTexCoords.t, data.vMoistureCoords.t)) * t0;
+        if(t1>0.0f) vNewColor1 = texture(tex3D_1, vec3(data.vTexCoords.s, data.vTexCoords.t, data.vMoistureCoords.t)) * t1;
+        if(t2>0.0f) vNewColor2 = texture(tex3D_2, vec3(data.vTexCoords.s, data.vTexCoords.t, data.vMoistureCoords.t)) * t2;
+        if(t3>0.0f) vNewColor3 = texture(tex3D_3, vec3(data.vTexCoords.s, data.vTexCoords.t, data.vMoistureCoords.t)) * t3;
+        if(t4>0.0f) vNewColor4 = texture(tex3D_4, vec3(data.vTexCoords.s, data.vTexCoords.t, data.vMoistureCoords.t)) * t4;
+        texColor = (vNewColor0 + vNewColor1 + vNewColor2 + vNewColor3 + vNewColor4);
     }
     
-    // Moisture Texture
-//     vec2 vMoistureCoords = vec2(data.vData1.b, 1.0-((data.vVert.y+5000)/50000));            // Calculate moisture coordinates
-//     vec3 vMoisture = mix(vec3(1.0f, 0.0f, 0.0f), vec3(0.0f, 0.0f, 1.0f), data.vData1.b);  // Visualize Moisture
-//     vec4 vMoistureColor = texture2D(texMoisture, vMoistureCoords);                          // Get moisture color from texture using fragment coords
-    vec4 vMoistureColor = texture2D(texMoisture, data.vMoistureCoords);                     // Get moisture color from texture using vertex coords
-//     vec3 vMoisture = mix(finalColor.rgb, vMoistureColor.rgb, 0.5f) * 2.0f;                  // Mix moisture by percentage
-//     vec3 vMoisture = (finalColor.rgb * (vMoistureColor.rgb*2.0f)) * 2.0f;                   // Multiply by moisture
-    vec3 vMoisture = (finalColor.rgb * (vMoistureColor.rgb*2)) * 2.0f;                           // Apply moisture to greyscale
-
-    // TODO: vMoistureCoords should be used to select texture
-    // TODO: A fade will need to be implemented for between biomes
-    // TODO: Possibly use texture atlas?
-    
-    // Apply texture
-//     fragmentColor = vec4(pow(finalColor, gamma), fAlpha);               // View Textures only
-//     fragmentColor = vec4(pow(vMoistureColor.rgb, gamma), fAlpha);       // View moisture layer only
-    fragmentColor = vec4(pow(vMoisture, gamma), fAlpha);                // View Moisture and Textures
+    //vec3 texColor = vNewColor0.rgb + vec3(0.1f);
+    finalColor = texColor.rgb * (ambient.rgb + diffuse.rgb);
+    fragmentColor = vec4(pow(finalColor, gamma), fAlpha);
+//     fragmentColor = vec4(finalColor, fAlpha);
 }

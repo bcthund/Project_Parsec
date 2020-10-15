@@ -11,7 +11,6 @@
 #include <cstdlib>
 #include <iostream>
 #include "texture.h"
-#include "texture3d.h"
 #include "core_functions.h"
 
 namespace Core {
@@ -47,14 +46,15 @@ namespace Core {
 				TEX_MOISTURE1,
 				TEX_MOISTURE2,
 				TEX_ATLAS_00,
-				TEX_LAST
+				TEX_NULL,
+				TEX_3D	// TESTING: TEX_3D + n used for 3d layers
 				};
 
 			bool load();
 			bool calc();
 //			void set(uint id);
 //			void set(std::string s);
-			void set(eTexList e);
+			void set(int e);
 			Texture& get();
 
 		private:

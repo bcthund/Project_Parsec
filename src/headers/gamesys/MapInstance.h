@@ -37,7 +37,11 @@ namespace Core {
 //				void load(Map::t_Perlin *noise);
 //				void load(Map::t_Fractal *noise);
 //				void load(Map::t_Ridged *noise);
-				void load(Core::Noise::t_Noise *terrainNoise, Core::Noise::t_Noise *waterNoise, Core::Noise::t_Noise *moistureNoise);
+				void load(Core::Noise::t_Noise *terrainNoise,
+						  Core::Noise::t_Noise *waterNoise,
+						  Core::Noise::t_Noise *moistureNoise,
+						  Core::Noise::t_Noise *altitudeNoise,
+						  Core::Noise::t_Noise *extraNoise);
 				void setOffset(std::string offset);
 				float update(Vector3f a=Vector3f(0.0f), int terrain_size=1);	///< Perform updates to chunk data and return current chunk distance
 //				void load(std::string offset, Map::Simplex *simplex, Map::Simplex *simplexWater);
@@ -45,7 +49,12 @@ namespace Core {
 //				void load(std::string offset, Map::t_Perlin  *noise);
 //				void load(std::string offset, Map::t_Fractal *noise);
 //				void load(std::string offset, Map::t_Ridged  *noise);
-				void load(std::string offset, Core::Noise::t_Noise *terrainNoise, Core::Noise::t_Noise *waterNoise, Core::Noise::t_Noise *moistureNoise);
+				void load(	std::string offset,
+							Core::Noise::t_Noise *terrainNoise,
+							Core::Noise::t_Noise *waterNoise,
+							Core::Noise::t_Noise *moistureNoise,
+							Core::Noise::t_Noise *altitudeNoise,
+							Core::Noise::t_Noise *extraNoise);
 				void drawTerrain();
 				void drawWater();
 
@@ -149,10 +158,17 @@ namespace Core {
 //			// TODO: O3D
 //		}
 
-		// TODO: make waterNoise the moisture layer
-		void t_MapInstance::load(Core::Noise::t_Noise *terrainNoise, Core::Noise::t_Noise *waterNoise, Core::Noise::t_Noise *moistureNoise) {
+		// TODO: Make load() function take only 1 noise, and an enum to specify what the noise is for (Terrain, Water, Moisture, Altitude, etc)
+		void t_MapInstance::load(	Core::Noise::t_Noise *terrainNoise,
+									Core::Noise::t_Noise *waterNoise,
+									Core::Noise::t_Noise *moistureNoise,
+									Core::Noise::t_Noise *altitudeNoise,
+									Core::Noise::t_Noise *extraNoise)
+		{
 			Sys::mapSys.load(x, z, Terrain.data, terrainNoise);
-			Sys::mapSys.load(x, z, Terrain.data, 2, moistureNoise);
+			Sys::mapSys.load(x, z, Terrain.data, 0, moistureNoise);
+			Sys::mapSys.load(x, z, Terrain.data, 1, altitudeNoise);
+//			Sys::mapSys.load(x, z, Terrain.data, 2, extraNoise);
 			Sys::mapSys.calc(Terrain.data);
 
 			if(Terrain.data.lowestHeight <= waterNoise->parent->chunk_height_offset) {
@@ -161,9 +177,15 @@ namespace Core {
 			}
 		}
 
-		void t_MapInstance::load(std::string offset, Core::Noise::t_Noise *terrainNoise, Core::Noise::t_Noise *waterNoise, Core::Noise::t_Noise *moistureNoise) {
+		void t_MapInstance::load(	std::string offset,
+									Core::Noise::t_Noise *terrainNoise,
+									Core::Noise::t_Noise *waterNoise,
+									Core::Noise::t_Noise *moistureNoise,
+									Core::Noise::t_Noise *altitudeNoise,
+									Core::Noise::t_Noise *extraNoise)
+		{
 			setOffset(offset);
-			load(terrainNoise, waterNoise, moistureNoise);
+			load(terrainNoise, waterNoise, moistureNoise, altitudeNoise, extraNoise);
 		}
 
 //		void t_MapInstance::update() {

@@ -109,7 +109,7 @@ namespace Core {
 
 			struct : public s_COMMON {
 				const int CHUNK_RESOLUTION	= 8 * SCALE_POWER;
-				const float TEXTURE_SCALE	= 10.0f * SCALE_POWER;
+				const float TEXTURE_SCALE	= 20.0f * SCALE_POWER;
 				//const float HEIGHT_OFFSET	= -2500.0f;
 				const float HEIGHT_OFFSET	= -500.0f;
 //				const float DELTA			= 32.0f * SCALE;
@@ -118,7 +118,7 @@ namespace Core {
 
 			struct : public s_COMMON {
 				const int CHUNK_RESOLUTION	= 1;
-				const float TEXTURE_SCALE	= 1.0f * SCALE_POWER;
+				const float TEXTURE_SCALE	= 10.0f * SCALE_POWER;
 				const float HEIGHT_OFFSET	= 0.0f;
 				//const float DELTA			= 32.0f * SCALE;
 				const float DELTA			= CHUNK_SIZE / CHUNK_RESOLUTION;
@@ -188,30 +188,14 @@ namespace Core {
 				data["Terrain"]->chunkSettings->chunk_height_offset = CONST_SIMPLEX.TERRAIN.HEIGHT_OFFSET;
 				data["Terrain"]->chunkSettings->set_iMax();
 			}
-
 			{
 				t_LayerData *newData = new t_LayerData(data["Terrain"]->chunkSettings);
 				data.add("Moisture", newData);
-//				data["Moisture"]->chunkSettings->iViewDistance = CONST_SIMPLEX.TERRAIN.VIEW_DISTANCE;
-//				data["Moisture"]->chunkSettings->chunk_resolution = CONST_SIMPLEX.TERRAIN.CHUNK_RESOLUTION;
-//				data["Moisture"]->chunkSettings->chunk_size = CONST_SIMPLEX.TERRAIN.CHUNK_SIZE;
-//				data["Moisture"]->chunkSettings->tex_scale = CONST_SIMPLEX.TERRAIN.TEXTURE_SCALE;
-//				data["Moisture"]->chunkSettings->delta = CONST_SIMPLEX.TERRAIN.DELTA;
-//				data["Moisture"]->chunkSettings->chunk_height_offset = CONST_SIMPLEX.TERRAIN.HEIGHT_OFFSET;
-//				data["Moisture"]->chunkSettings->set_iMax();
 			}
-//			chunkSettings.add("Terrain", new Map::t_ChunkData);
-//			chunkSettings["Terrain"]->iViewDistance = CONST_SIMPLEX.TERRAIN.VIEW_DISTANCE;
-//			chunkSettings["Terrain"]->chunk_resolution = CONST_SIMPLEX.TERRAIN.CHUNK_RESOLUTION;
-//			chunkSettings["Terrain"]->chunk_size = CONST_SIMPLEX.TERRAIN.CHUNK_SIZE;
-//			chunkSettings["Terrain"]->tex_scale = CONST_SIMPLEX.TERRAIN.TEXTURE_SCALE;
-//			chunkSettings["Terrain"]->delta = CONST_SIMPLEX.TERRAIN.DELTA;
-//			chunkSettings["Terrain"]->chunk_height_offset = CONST_SIMPLEX.TERRAIN.HEIGHT_OFFSET;
-//			chunkSettings["Terrain"]->set_iMax();
-
-//			Noise::t_Noise *newTerrainNoise = new Noise::t_Noise(chunkSettings["Terrain"]);
-//			noise.add("Terrain", newTerrainNoise);
-
+			{
+				t_LayerData *newData = new t_LayerData(data["Terrain"]->chunkSettings);
+				data.add("Altitude", newData);
+			}
 			{
 				t_LayerData *newData = new t_LayerData();
 				data.add("Water", newData);
@@ -223,17 +207,6 @@ namespace Core {
 				data["Water"]->chunkSettings->chunk_height_offset = CONST_SIMPLEX.WATER.HEIGHT_OFFSET;
 				data["Water"]->chunkSettings->set_iMax();
 			}
-//			chunkSettings.add("Water", new Map::t_ChunkData);
-//			chunkSettings["Water"]->iViewDistance = CONST_SIMPLEX.WATER.VIEW_DISTANCE;
-//			chunkSettings["Water"]->chunk_resolution = CONST_SIMPLEX.WATER.CHUNK_RESOLUTION;
-//			chunkSettings["Water"]->chunk_size = CONST_SIMPLEX.WATER.CHUNK_SIZE;
-//			chunkSettings["Water"]->tex_scale = CONST_SIMPLEX.WATER.TEXTURE_SCALE;
-//			chunkSettings["Water"]->delta = CONST_SIMPLEX.WATER.DELTA;
-//			chunkSettings["Water"]->chunk_height_offset = CONST_SIMPLEX.WATER.HEIGHT_OFFSET;
-//			chunkSettings["Water"]->set_iMax();
-
-//			Noise::t_Noise *newWaterNoise = new Noise::t_Noise(chunkSettings["Water"]);
-//			noise.add("Water", newWaterNoise);
 		}
 
 		_World::~_World() {
@@ -247,10 +220,14 @@ namespace Core {
 
 		void _World::load() {
 			atmosphere.load();
+			Core::debug.glErrorCheck("WorldMap", 250);
 			atmosphere.calc();
+			Core::debug.glErrorCheck("WorldMap", 252);
 
 			lights.load();
+			Core::debug.glErrorCheck("WorldMap", 255);
 			lights.calc(Core::gameVars->screen.fScale);
+			Core::debug.glErrorCheck("WorldMap", 257);
 
 			// River Idea: Create a copy of the world, shift down by a certain amount and draw with water texture
 			// Then apply the river layer (ridged noise) to map to expose rivers
@@ -268,10 +245,10 @@ namespace Core {
 			layer0["Mountains"]->octaves			= 12;
 //			layer0["Mountains"]->octaves			= 1;layer0["Mountains"]->octaves			= 12;
 			layer0["Mountains"]->seed				= 100;
-			layer0["Mountains"]->AddFunction.Power(2.0f);
+			layer0["Mountains"]->AddFunction.Power(2.5f);
 			layer0["Mountains"]->AddFunction.RemapBelow(0.0f, -10.0f, 0.0f, -1.0f, 0.0f);				// Underwater terrain gets scaled to offset multiply layer
 			layer0["Mountains"]->AddFunction.RemapBelow(-0.5f, -2.5f, -0.5f, -10.0f, -0.5f);		// Underwater terrain gets scaled to offset multiply layer
-			layer0["Mountains"]->AddFunction.Scale(250000.0f);
+			layer0["Mountains"]->AddFunction.Scale(300000.0f);
 			layer0["Mountains"]->AddFunction.Offset(5000.0f);
 
 			// [YES] Ridged-Multi: Peaks
@@ -281,8 +258,8 @@ namespace Core {
 			layer1["Peaks"]->frequency				= 0.00001f;
 			layer1["Peaks"]->lacunarity				= 1.5f;
 //			layer1["Peaks"]->quality				= noise::QUALITY_BEST;
-//			layer1["Peaks"]->quality				= noise::QUALITY_STD;
-			layer1["Peaks"]->quality				= noise::QUALITY_FAST;
+			layer1["Peaks"]->quality				= noise::QUALITY_STD;
+//			layer1["Peaks"]->quality				= noise::QUALITY_FAST;
 			layer1["Peaks"]->octaves				= 3;
 			layer1["Peaks"]->seed					= 1024.0f;
 			layer1["Peaks"]->AddFunction.Power(2.0f);
@@ -303,10 +280,8 @@ namespace Core {
 			layer2["Continent"]->quality				= noise::QUALITY_FAST;
 			layer2["Continent"]->octaves				= 1;
 			layer2["Continent"]->AddFunction.Remap(0.0f, 1.0f, -1.0f, 1.0f);	// Modify previous layers by 25-100%
-//			layer2["Continent"]->AddFunction.Scale(1000.0f);	// For visualization only
-//			layer2["Continent"]->AddFunction.Scale(10.0f);	// For visualization only
 
-			// [YES] Ridged-Multi: Lakes
+			// [NO] Ridged-Multi: Lakes
 //			Noise::t_RidgedPerlin *newRidgedPerlin4 = new Noise::t_RidgedPerlin();
 //			Noise::t_RidgedPerlin &layer3 = noise["Terrain"]->add("Layer3", newRidgedPerlin4);
 //			layer3.add("Underwater", new Noise::t_RidgedPerlinParams());
@@ -323,20 +298,29 @@ namespace Core {
 			// Moisture
 			Noise::t_Fractal *newFractal1 = new Noise::t_Fractal();
 			Noise::t_Fractal &layer4 = data["Moisture"]->noise->add("Layer4", newFractal1);
-			layer4.add("General", new Noise::t_FractalParams());
-			layer4["General"]->frequency		= 0.0000001f;
-			layer4["General"]->amplitude		= 1.0f;
-			layer4["General"]->lacunarity		= 3.5f;
-			layer4["General"]->persistence		= 0.75f;
-			layer4["General"]->octaves			= 3;
-			layer4["General"]->seed				= 256;
-			//layer4["General"]->AddFunction.Power(2.0f);
-			//layer4["General"]->AddFunction.Scale(2.0f);
-			layer4["General"]->AddFunction.Scale(7.0f);
-//			layer4["General"]->AddFunction.Offset(0.5f);		// Shift towards higher moisture
+			layer4.add("Moisture", new Noise::t_FractalParams());
+			layer4["Moisture"]->frequency		= 0.000001f;
+			layer4["Moisture"]->amplitude		= 1.0f;
+			layer4["Moisture"]->lacunarity		= 1.5f;
+			layer4["Moisture"]->persistence		= 0.250f;
+			layer4["Moisture"]->octaves			= 2;
+			layer4["Moisture"]->seed				= 1;
+			layer4["Moisture"]->AddFunction.Remap(-0.125f, 1.0f, -1.0f, 1.0f);
+			layer4["Moisture"]->AddFunction.Scale(5.0f);
 
-
-
+			// TODO: Altitude Offset Layer for Texturing
+			Noise::t_RidgedPerlin *newAltitude = new Noise::t_RidgedPerlin();
+			Noise::t_RidgedPerlin &layer5 = data["Altitude"]->noise->add("Layer5", newAltitude);
+			layer5.add("Altitude", new Noise::t_RidgedPerlinParams());
+			layer5["Altitude"]->frequency		= 0.00001f;
+			layer5["Altitude"]->lacunarity		= 2.5f;
+			layer5["Altitude"]->quality			= noise::QUALITY_STD;
+			layer5["Altitude"]->octaves			= 4;
+			layer5["Altitude"]->seed			= 222;
+			layer5["Altitude"]->AddFunction.Power(2.0f);
+			layer5["Altitude"]->AddFunction.Remap(0.0f, 0.5f, -1.0f, 1.0f);
+//			layer5["Altitude"]->AddFunction.Remap(0.0f, 1.0f, -1.0f, 1.0f);
+//			layer5["Altitude"]->AddFunction.Scale(5.0f);
 
 
 
@@ -415,7 +399,7 @@ namespace Core {
 
 						t_MapInstance *newMap = new t_MapInstance(mapName);		// NOTE: mapName translates into the map offset here
 						map.add(mapName, newMap);
-						map[mapName]->load(data["Terrain"]->noise, data["Water"]->noise, data["Moisture"]->noise);
+						map[mapName]->load(data["Terrain"]->noise, data["Water"]->noise, data["Moisture"]->noise, data["Altitude"]->noise, nullptr);
 					}
 				}
 			}
@@ -491,7 +475,7 @@ namespace Core {
 							// Load new chunk
 							t_MapInstance *newMap = new t_MapInstance(mapName);		// NOTE: mapName translates into the map offset here
 							map.add(mapName, newMap);
-							map[mapName]->load(data["Terrain"]->noise, data["Water"]->noise, data["Moisture"]->noise);
+							map[mapName]->load(data["Terrain"]->noise, data["Water"]->noise, data["Moisture"]->noise, data["Altitude"]->noise, nullptr);
 						}
 					}
 				}
@@ -517,63 +501,78 @@ namespace Core {
 				atmosphere.draw(atmosphere.MODE_SATELLITE, "Moon");	// TODO: [Atmosphere] Add a target setting for satellites? Pointer to any existing object (Vector3f) or create new pointer for fixed position
 			}
 
-
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+			glEnable(GL_TEXTURE_3D);
+
+//			glActiveTexture(GL_TEXTURE0);
+//			Core::sysTex->set(Core::sysTex->TEX_DIRT1);
+//
+//			glActiveTexture(GL_TEXTURE1);
+//			Core::sysTex->set(Core::sysTex->TEX_DIRT2);
+//
+//			glActiveTexture(GL_TEXTURE2);
+//			Core::sysTex->set(Core::sysTex->TEX_GRASS1);
+//
+//			glActiveTexture(GL_TEXTURE3);
+//			Core::sysTex->set(Core::sysTex->TEX_GRASS2);
+//
+//			glActiveTexture(GL_TEXTURE4);
+//			Core::sysTex->set(Core::sysTex->TEX_ROCKY1);
+//
+//			glActiveTexture(GL_TEXTURE5);
+//			Core::sysTex->set(Core::sysTex->TEX_ROCKY2);
+//
+//			glActiveTexture(GL_TEXTURE6);
+//			Core::sysTex->set(Core::sysTex->TEX_CLIFF1);
+//
+//			glActiveTexture(GL_TEXTURE7);
+//			Core::sysTex->set(Core::sysTex->TEX_CLIFF2);
+//
+//			glActiveTexture(GL_TEXTURE8);
+//			Core::sysTex->set(Core::sysTex->TEX_MUD1);
+//
+//			glActiveTexture(GL_TEXTURE9);
+//			Core::sysTex->set(Core::sysTex->TEX_MUD2);
+//
+//			glActiveTexture(GL_TEXTURE10);
+//			Core::sysTex->set(Core::sysTex->TEX_SNOW1);
+//
+//			glActiveTexture(GL_TEXTURE11);
+//			Core::sysTex->set(Core::sysTex->TEX_SNOW2);
+//
+//			glActiveTexture(GL_TEXTURE12);
+//			Core::sysTex->set(Core::sysTex->TEX_BEACH1);
+//
+//			glActiveTexture(GL_TEXTURE13);
+//			Core::sysTex->set(Core::sysTex->TEX_BEACH2);
+//
+//			glActiveTexture(GL_TEXTURE14);
+//			Core::sysTex->set(Core::sysTex->TEX_SAND1);
+//
+//			glActiveTexture(GL_TEXTURE15);
+//			Core::sysTex->set(Core::sysTex->TEX_SAND2);
 
 			glActiveTexture(GL_TEXTURE0);
-			Core::sysTex->set(Core::sysTex->TEX_DIRT1);
+			Core::sysTex->set(Core::sysTex->TEX_3D);
 
 			glActiveTexture(GL_TEXTURE1);
-			Core::sysTex->set(Core::sysTex->TEX_DIRT2);
+			Core::sysTex->set(Core::sysTex->TEX_3D+1);
 
 			glActiveTexture(GL_TEXTURE2);
-			Core::sysTex->set(Core::sysTex->TEX_GRASS1);
+			Core::sysTex->set(Core::sysTex->TEX_3D+2);
 
 			glActiveTexture(GL_TEXTURE3);
-			Core::sysTex->set(Core::sysTex->TEX_GRASS2);
+			Core::sysTex->set(Core::sysTex->TEX_3D+3);
 
 			glActiveTexture(GL_TEXTURE4);
-			Core::sysTex->set(Core::sysTex->TEX_ROCKY1);
+			Core::sysTex->set(Core::sysTex->TEX_3D+4);
 
-			glActiveTexture(GL_TEXTURE5);
-			Core::sysTex->set(Core::sysTex->TEX_ROCKY2);
-
-			glActiveTexture(GL_TEXTURE6);
-			Core::sysTex->set(Core::sysTex->TEX_CLIFF1);
-
-			glActiveTexture(GL_TEXTURE7);
-			Core::sysTex->set(Core::sysTex->TEX_CLIFF2);
-
-			glActiveTexture(GL_TEXTURE8);
-			Core::sysTex->set(Core::sysTex->TEX_MUD1);
-
-			glActiveTexture(GL_TEXTURE9);
-			Core::sysTex->set(Core::sysTex->TEX_MUD2);
-
-			glActiveTexture(GL_TEXTURE10);
-			Core::sysTex->set(Core::sysTex->TEX_SNOW1);
-
-			glActiveTexture(GL_TEXTURE11);
-			Core::sysTex->set(Core::sysTex->TEX_SNOW2);
-
-			glActiveTexture(GL_TEXTURE12);
-			Core::sysTex->set(Core::sysTex->TEX_BEACH1);
-
-			glActiveTexture(GL_TEXTURE13);
-			Core::sysTex->set(Core::sysTex->TEX_BEACH2);
-
-			glActiveTexture(GL_TEXTURE14);
-			Core::sysTex->set(Core::sysTex->TEX_SAND1);
-
-			glActiveTexture(GL_TEXTURE15);
-			Core::sysTex->set(Core::sysTex->TEX_SAND2);
-
-			glActiveTexture(GL_TEXTURE29);
-			Core::sysTex->set(Core::sysTex->TEX_ATLAS_00);
-
-			glActiveTexture(GL_TEXTURE30);
-			Core::sysTex->set(Core::sysTex->TEX_MOISTURE2);
-
+//			glActiveTexture(GL_TEXTURE29);
+//			Core::sysTex->set(Core::sysTex->TEX_ATLAS_00);
+//
+//			glActiveTexture(GL_TEXTURE30);
+//			Core::sysTex->set(Core::sysTex->TEX_MOISTURE2);
+//
 			glActiveTexture(GL_TEXTURE31);
 			Core::sysTex->set(Core::sysTex->TEX_WATER);
 
@@ -648,6 +647,7 @@ namespace Core {
 				}
 			Core::matrix->Pop();
 			glEnable(GL_CULL_FACE);
+			glDisable(GL_TEXTURE_3D);
 		}
 
 

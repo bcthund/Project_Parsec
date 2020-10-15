@@ -13,6 +13,7 @@
 
 #include "gl4_5/glcorearb.h"
 #include "types.h"
+#include "Debug.h"
 
 namespace Core {
 
@@ -78,12 +79,24 @@ namespace Core {
 	*/
 	class Texture {
 		private:
+			_Debug		localDebug;
+
 			GLfloat		fLargest;			// Maximum ANISOTROPY
 			GLuint		uiNumLayers;		// Maximum textures that can be loaded
 			GLuint		* glImage;			// OpenGL image id
 			t_VectorMap<int> mapImage;
 			bool		* bFinished;		// Array confirming loaded textures
 			bool		bBeginCalled;		// If begin hasn't been called, then abort destruction
+
+			struct t_Settings3d {
+				GLsizei width,
+						height,
+						layerCount,
+						mipLevelCount;
+				bool bInit,
+					 bStarted;
+			} settings3d;
+
 //			struct _AtlasData {
 //				bool bEnable;
 //				int iWidth;
@@ -107,7 +120,11 @@ namespace Core {
 //			bool Load(std::string cDir, std::string cFile, GLuint uiLayer, bool bAnisotropy=false, GLenum eFilter=GL_LINEAR, GLenum eWrap=GL_CLAMP_TO_EDGE);
 			bool Load(std::string cDir, std::string cFile, int uiLayer, bool bAnisotropy=false, GLenum eFilter=GL_LINEAR, GLenum eWrap=GL_REPEAT);
 			bool Load(std::string cDir, std::string cFile, int uiLayer, bool bAnisotropy, e_TEXTURE_FILTER eFilterIndex, e_TEXTURE_CLAMP eWrapIndex);
-			bool Load3D(std::string cDir, std::string cFile, int uiLayer, bool bAnisotropy, e_TEXTURE_FILTER eFilterIndex, e_TEXTURE_CLAMP eWrapIndex);
+
+			bool Init3D(int uiLayer, GLsizei width, GLsizei height, GLsizei layerCount, GLsizei mipLevelCount );
+			bool Load3D(int uiLayer, std::string cDir, std::string cFile, GLsizei uiDepth, bool bAnisotropy, e_TEXTURE_FILTER eFilterIndex, e_TEXTURE_CLAMP eWrapIndex);
+//			bool Load3D(std::string cDir, std::string cFile, int uiLayer, bool bAnisotropy, e_TEXTURE_FILTER eFilterIndex, e_TEXTURE_CLAMP eWrapIndex);
+
 //			void CreateAtlas(int iWidth, int iHeight);
 			Texture() {
 				fLargest = 0.0f;
@@ -137,12 +154,25 @@ namespace Core {
 //			inline int			Get(std::string cName)	{	return mapImage[cName];	}
 			inline void			Set(std::variant<int, std::string> ref)		{
 				if(ref.index()==0) {
-
 					glBindTexture(GL_TEXTURE_2D, glImage[std::get<int>(ref)]);
 				}
 				else {
 					glBindTexture(GL_TEXTURE_2D, glImage[mapImage[std::get<std::string>(ref)]]);
 				}
+			}
+
+//			inline void			Set3D(std::variant<int, std::string> ref)		{
+//				if(ref.index()==0) {
+//					glBindTexture(GL_TEXTURE_3D, glImage[std::get<int>(ref)]);
+//				}
+//				else {
+//					glBindTexture(GL_TEXTURE_3D, glImage[mapImage[std::get<std::string>(ref)]]);
+//				}
+//			}
+
+			inline void			Set3D(int ref)		{
+				std::cout <<  "Binding 3D Texture [" << glImage[ref] << "]\n";
+				glBindTexture(GL_TEXTURE_3D, glImage[ref]);
 			}
 
 //			inline void			Set(int uiLayer)		{	glBindTexture(GL_TEXTURE_2D, glImage[uiLayer]);	}

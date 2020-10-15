@@ -138,6 +138,7 @@ namespace Core {
 			std::string theImage;
 			Core::MemBlock memBlock;
 
+			Core::debug.glErrorCheck("TextSys", 141);
 			//if (Core::gameVars->debug.load) cout << endl;
 			texture.Begin(uiNumTextures);
 
@@ -155,7 +156,8 @@ namespace Core {
 
 				Core::debug.log("["+std::to_string(theId)+"] "+theImage+"\n", Core::debug().YELLOW);
 
-				texture.Load(sTexDir, theImage, theId, false, GL_LINEAR_MIPMAP_LINEAR, GL_CLAMP_TO_EDGE);		// This filtering works best, especially for odd font sizes
+				texture.Load(sTexDir, theImage, theId, false, GL_LINEAR, GL_CLAMP_TO_EDGE);		// This filtering works best, especially for odd font sizes
+				Core::debug.glErrorCheck("TextSys", 162);
 			}
 
 			Core::debug.logDecreaseIndent();
@@ -1838,7 +1840,7 @@ namespace Core {
 					vPos.y += con->scroll.getY();
 				}
 				matrix->Translate(int(vPos.x+vAnchor.x), int(vPos.y+vAnchor.y), 0.0f);
-				glActiveTexture(0);
+				glActiveTexture(GL_TEXTURE0);
 				texture.Set(Core::gameVars->font.iTexNum);
 				colors.SetActive(Core::_Colors::COLOR_FRONT);
 

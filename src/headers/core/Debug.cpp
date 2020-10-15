@@ -51,8 +51,8 @@ namespace Core {
 			bDrawLog = true;
 			bDrawPrint = true;
 			if(bClear) std::cout << "\033[2J\033[1;1H";	// 2J=clear from top(J) to bottom(2); Position cursor at row 1, column 1
-			if(!bLogEnable) exec(consoleColors.colors[consoleColors.RED]+"LOG SUPPRESSED\n"+consoleColors.colors[consoleColors.NC]);
-			if(!bPrintEnable) exec(consoleColors.colors[consoleColors.RED]+"PRINT SUPPRESSED\n"+consoleColors.colors[consoleColors.NC]);
+			if(!bLogEnable) exec(consoleColors.colors[consoleColors.RED]+"LOG SUPPRESSED\n"+consoleColors.colors[consoleColors.white]);
+			if(!bPrintEnable) exec(consoleColors.colors[consoleColors.RED]+"PRINT SUPPRESSED\n"+consoleColors.colors[consoleColors.white]);
 			timerLog.split();
 		}
 		else {
@@ -85,7 +85,7 @@ namespace Core {
 
 			std::ostringstream out;
 //			out << consoleColors.colors[color] << timeStamp << sLogIndent << buffer << consoleColors.colors[consoleColors.NC] << std::endl;
-			out << consoleColors.colors[consoleColors.GREY] << timeStamp.str() << sLogIndent << consoleColors.colors[color] << buffer << consoleColors.colors[consoleColors.NC];
+			out << consoleColors.colors[consoleColors.GREY] << timeStamp.str() << sLogIndent << consoleColors.colors[color] << buffer << consoleColors.colors[consoleColors.white];
 			//std::cout << consoleColors.colors[color] << timeStamp << sLogIndent << buffer << consoleColors.colors[consoleColors.NC] << std::endl;
 			exec(out.str());
 		}
@@ -99,7 +99,7 @@ namespace Core {
 	void _Debug::print(std::string buffer, ConsoleColors::eCOLOR color) {
 		if (bDrawPrint && bPrintEnable) {
 			std::ostringstream out;
-			out << consoleColors.colors[color] << sPrintIndent << buffer << consoleColors.colors[consoleColors.NC];
+			out << consoleColors.colors[color] << sPrintIndent << buffer << consoleColors.colors[consoleColors.white];
 			exec(out.str());
 //			std::cout << consoleColors.colors[color] << sPrintIndent << buffer << consoleColors.colors[consoleColors.NC];
 		}
@@ -107,6 +107,49 @@ namespace Core {
 
 	void _Debug::exec(std::string buffer) {
 		std::cout << buffer;
+		//std::printf(buffer);
+	}
+
+	void _Debug::glErrorCheck(std::string location, int line) {
+		GLenum err;
+		bool bGLError = false;
+		while((err = glGetError()) != GL_NO_ERROR) {
+			std::string errText = "Undefined";
+			switch(err) {
+				case GL_INVALID_ENUM:
+					errText = "GL_INVALID_ENUM";
+					break;
+				case GL_INVALID_VALUE:
+					errText = "GL_INVALID_VALUE";
+					break;
+				case GL_INVALID_OPERATION:
+					errText = "GL_INVALID_OPERATION";
+					break;
+				case GL_STACK_OVERFLOW:
+					errText = "GL_STACK_OVERFLOW";
+					break;
+				case GL_STACK_UNDERFLOW:
+					errText = "GL_STACK_UNDERFLOW";
+					break;
+				case GL_OUT_OF_MEMORY:
+					errText = "GL_OUT_OF_MEMORY";
+					break;
+				case GL_INVALID_FRAMEBUFFER_OPERATION:
+					errText = "GL_INVALID_FRAMEBUFFER_OPERATION";
+					break;
+			}
+
+			std::stringstream ss;
+			ss << "[glGetError]" << location << " @ " << line << ": 0x" << std::hex << err << std::dec << " (" << errText << ")\n";
+			log(ss.str(), consoleColors.RED);
+			bGLError = true;
+		}
+
+	//	sleep(0.25f);
+		if(bGLError) {
+			print("\n");
+			throw std::runtime_error("glGetError: One or more OpenGL errors were detected.");
+		}
 	}
 
 } /* namespace Core */

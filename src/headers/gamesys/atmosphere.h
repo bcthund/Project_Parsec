@@ -1228,16 +1228,19 @@ namespace Core {
 
 			Core::debug.log("Textures {\n");
 			Core::debug.logIncreaseIndent();
+			Core::debug.glErrorCheck("Atmosphere", 1231);
 
 			MemBlock memBlock;
 			std::string theImage;
 			skybox.tex.Begin(NUM_TEXTURES);
+			Core::debug.glErrorCheck("Atmosphere", 1237);
 
 			std::string	sDirectory		= "./texture/atmosphere/";
 			char * cFilename			= (char*)"./system/skybox.bin";
 			int	iRecordSize				= 32;
 
 			readFile(cFilename, memBlock); //Read the data file into memory
+			Core::debug.glErrorCheck("Atmosphere", 1243);
 
 			// Iterate through each record in the file
 			for (int d=0; d<memBlock.size; d+=iRecordSize) {
@@ -1248,10 +1251,11 @@ namespace Core {
 				//if (gameVars->debug.load)
 				//std::cout << " [" << theId << "] " <<  theImage << std::endl;
 				//skybox.tex.Load(sDirectory, theImage, theId, true, (GLenum)GL_NEAREST, (GLenum)GL_REPEAT);
-				skybox.tex.Load(sDirectory, theImage, theId, true, (GLenum)GL_NONE, (GLenum)GL_REPEAT);
+				skybox.tex.Load(sDirectory, theImage, theId, true, GL_NEAREST, GL_REPEAT);
 
 				Core::debug.log("["+std::to_string(theId)+"] "+theImage+"\n", Core::debug().YELLOW);
 			}
+			Core::debug.glErrorCheck("Atmosphere", 1258);
 
 			Core::debug.logDecreaseIndent();
 			Core::debug.log("}\n");
@@ -1280,6 +1284,7 @@ namespace Core {
 				skybox.troposphere.vao.End();
 				//std::cout << "Done" << std::endl;
 			}
+			Core::debug.glErrorCheck("Atmosphere", 1287);
 
 			Core::debug.log("Stratosphere\n", Core::debug().YELLOW);
 			{
@@ -1305,6 +1310,7 @@ namespace Core {
 				skybox.stratosphere.vao.End();
 				//std::cout << "Done" << std::endl;
 			}
+			Core::debug.glErrorCheck("Atmosphere", 1313);
 
 			Core::debug.log("Thermosphere\n", Core::debug().YELLOW);
 			{
@@ -1330,6 +1336,7 @@ namespace Core {
 				skybox.thermosphere.vao.End();
 				//std::cout << "Done" << std::endl;
 			}
+			Core::debug.glErrorCheck("Atmosphere", 1339);
 
 			Core::debug.log("Exosphere\n", Core::debug().YELLOW);
 			{
@@ -1356,6 +1363,7 @@ namespace Core {
 				skybox.exosphere.vao.End();
 				//std::cout << "Done" << std::endl;
 			}
+			Core::debug.glErrorCheck("Atmosphere", 1366);
 
 			Core::debug.log("Sun (Incomplete Loader)\n", Core::debug().RED);
 			// Satellite
@@ -1450,6 +1458,7 @@ namespace Core {
 
 				satellite->add(data);
 			}
+			Core::debug.glErrorCheck("Atmosphere", 1461);
 
 			Core::debug.log("Moon (Incomplete Loader)\n", Core::debug().RED);
 			{
@@ -1519,6 +1528,7 @@ namespace Core {
 
 				satellite->add(data);
 			}
+			Core::debug.glErrorCheck("Atmosphere", 1531);
 
 			Core::debug.log("Flora (Incomplete/Outdated)\n", Core::debug().RED);
 			// Flora
@@ -1575,6 +1585,7 @@ namespace Core {
 //					std::cout << "       String = " << Core::sOffset << std::endl;
 				//Core::sOffset = "    ";
 			}
+			Core::debug.glErrorCheck("Atmosphere", 1588);
 
 //					else if(mode == FOG) {
 //						if (gameVars->debug.load) cout << "## LOAD FOG ##" << endl;
