@@ -93,6 +93,37 @@ namespace Core {
 			}
 		};
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		/*
+		 * TODO: Rework the _O2D class to be like the MapSys class
+		 *
+		 * 	- The load() method should load into a given chunk reference according to a given noise pattern
+		 * 	- The noise elevation method from MapSys needs to be moved to noise class
+		 * 	- draw() should remain here if possible to keep WorldMap simple
+		 * 	- Need to have threshold settings for noise, possibly based on another noise function such as the terrain moisture and altitude
+		 * 	- As a side note, billboarding doesn't change affect normal causing lighting issues that need to be addressed
+		 *
+		 */
+
 		class _O2D {
 			private:
 				static t_UniformLocations uniforms;
