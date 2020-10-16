@@ -699,6 +699,7 @@
 
 		namespace Sys {
 			MapSys				mapSys;
+			O2DSys				o2dSys;
 		}
 		_IconSys			*	iconSys		= new _IconSys();
 		_SpriteSys			*	spriteSys	= new _SpriteSys();

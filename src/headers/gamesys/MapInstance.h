@@ -58,6 +58,7 @@ namespace Core {
 							Core::Noise::t_Noise *treeNoise);
 				void drawTerrain();
 				void drawWater();
+				void drawO2D(Vector3f &vCamPos, _Lights &lights, t_UniformLocations &uniforms);
 
 				struct t_TerrainInterface {
 					t_MapInstance * parent;
@@ -77,7 +78,7 @@ namespace Core {
 
 				struct t_O2DInterface {
 					t_MapInstance * parent;
-					O2D::Data data;
+					O2D::Data data;		// TODO: Delete pointers
 					t_O2DInterface(t_MapInstance * p) { parent = p; }
 				};
 				t_O2DInterface O2D = t_O2DInterface(this);
@@ -166,6 +167,9 @@ namespace Core {
 									Core::Noise::t_Noise *altitudeNoise,
 									Core::Noise::t_Noise *treeNoise)
 		{
+//			x = (x-32768) * noise->parent->chunk_size;
+//			z = (z-32768) * noise->parent->chunk_size;
+
 			Sys::mapSys.load(x, z, Terrain.data, terrainNoise);
 			Sys::mapSys.load(x, z, Terrain.data, 0, moistureNoise);
 			Sys::mapSys.load(x, z, Terrain.data, 1, altitudeNoise);
@@ -174,7 +178,9 @@ namespace Core {
 
 			// TODO: Load O2D Objects (Trees/Flora)
 			//treeNoise
-
+			//Sys::o2dSys.load(x, z, Terrain.data, O2D.data, treeNoise);
+			Sys::o2dSys.load(x, z, terrainNoise, O2D.data, treeNoise);
+			Sys::o2dSys.calc(O2D.data);
 
 			if(Terrain.data.lowestHeight <= waterNoise->parent->chunk_height_offset) {
 				Sys::mapSys.load(x, z, Water.data, waterNoise);
@@ -204,11 +210,138 @@ namespace Core {
 			Water.data.vao.Draw(GLM_DRAW_ELEMENTS);
 		}
 
+		void t_MapInstance::drawO2D(Vector3f &vCamPos, _Lights &lights, t_UniformLocations &uniforms) {
+//			Vector3f	vCamPos;
+//			vCamPos[0] = -Core::gameVars->player.active->transform.pos[0];
+//			vCamPos[1] = 0.0f;
+//			vCamPos[2] = -Core::gameVars->player.active->transform.pos[2];
+//			vCamPos[0] = 0.0f;
+//			vCamPos[1] = 0.0f;
+//			vCamPos[2] = 0.0f;
+
+			for ( auto const &item : O2D.data ) {
+//				debug.log("DRAW: Tree at ("+std::to_string(item->x)+", "+std::to_string(item->y)+", "+std::to_string(item->z)+") with dimensions ("+std::to_string(item->w)+", "+std::to_string(item->h)+")\n", debug().purple);
+				// TODO: Translate
+				Core::matrix->Push();
+
+//					matrix->Translate(	item->x,
+//										item->y,
+//										item->z	);
+
+//					matrix->Rotate(Core::gameVars->player.active->transform.rot[0], 1.0, 0.0, 0.0);
+//					matrix->Rotate(Core::gameVars->player.active->transform.rot[1], 0.0, 1.0, 0.0);
+//					matrix->Translate(Core::gameVars->player.active->transform.pos[0], Core::gameVars->player.active->transform.pos[1], Core::gameVars->player.active->transform.pos[2]);
+//
+//					matrix->SetTransform();
+
+//					Data2f vCoords[] = { {0.0, 0.0},
+//										 {0.0, 1.0},
+//										 {1.0, 0.0},
+//										 {1.0, 1.0} };
+//
+//					float fW = item->w/2.0f;
+//					float fH = item->h/2.0f;
+//
+//					Data4f vVerts[]	=	{	{	-fW,	fH,		0.0,	0.0f	},
+//											{	-fW,	0.0f,	0.0,	0.0f	},
+//											{	 fW,	fH,		0.0,	0.0f	},
+//											{	 fW,	0.0f,	0.0,	0.0f	}	};
+//
+//					item->vao.Begin(GL_TRIANGLE_STRIP, 4, 4, 1);
+//					item->vao.CopyData(GLA_VERTEX, vVerts);
+//					item->vao.CopyData(GLA_TEXTURE, vCoords, 0);
+//					item->vao.End();
+
+					Vector3f	vObjPos = { float(item->x)*Core::gameVars->screen.fScale,
+											float(item->y)*Core::gameVars->screen.fScale,
+											float(item->z)*Core::gameVars->screen.fScale
+										  };
+
+					Core::shader->vars.GLS_PHONG_O2D.vObjPos = vObjPos;
+					Core::shader->vars.GLS_PHONG_O2D.vCamPos = vCamPos;
+					Core::shader->setUniform(GLS_PHONG_O2D, lights, uniforms);
+//					data.texture[count].Set(data.image[count]);
+
+//					item->vao.Draw(GLM_DRAW_ELEMENTS);
+					item->vao.Draw();
+				Core::matrix->Pop();
+			}
+		}
+
 //		void t_MapInstance::t_TerrainInterface::draw(Core::SHADER_PROGRAMS iShader) {
 //		}
 //
 //		void t_MapInstance::t_WaterInterface::draw(Core::SHADER_PROGRAMS iShader) {
 //		}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

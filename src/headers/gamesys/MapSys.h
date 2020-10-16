@@ -39,19 +39,19 @@ namespace Core {
 
 				// TODO: Noise handler should be its own global class
 				// Setup Perlin Noise
-				unsigned seed1 = 42;
-				unsigned seed2 = 1024;
-				unsigned seed3 = 420;
-				unsigned seed4 = 4096;
-				std::minstd_rand0 rng1;
-				std::minstd_rand0 rng2;
-				std::minstd_rand0 rng3;
-				std::minstd_rand0 rng4;
-				noise::module::Perlin genPerlin;
-				noise::module::RidgedMulti genRidged;
-				noise::module::Voronoi genVoronoi;
-				noise::module::Billow genBillow;
-				SimplexNoise genSimplex;
+//				unsigned seed1 = 42;
+//				unsigned seed2 = 1024;
+//				unsigned seed3 = 420;
+//				unsigned seed4 = 4096;
+//				std::minstd_rand0 rng1;
+//				std::minstd_rand0 rng2;
+//				std::minstd_rand0 rng3;
+//				std::minstd_rand0 rng4;
+//				noise::module::Perlin genPerlin;
+//				noise::module::RidgedMulti genRidged;
+//				noise::module::Voronoi genVoronoi;
+//				noise::module::Billow genBillow;
+//				SimplexNoise genSimplex;
 //				noise::module::Perlin gen2;
 //				noise::module::Perlin gen3;
 //				double RidgedNoise(double nx, double ny) {
@@ -143,22 +143,22 @@ namespace Core {
 //				void update(int x, int z, Map::Data &chunk, Map::t_VariantNoise noise);
 				void update(int x, int z, Map::Data &chunk, Core::Noise::t_Noise *noise);
 //				double getElevation(float x, float z, Map::t_VariantNoise noise);
-				double getElevation(float x, float z, Core::Noise::t_Noise *noise);
+//				double getElevation(float x, float z, Core::Noise::t_Noise *noise);
 		};
 
 		bool MapSys::init() {
 			Core::debug.log("Init MapSys {");
 
 			if(!bInit) {
-				rng1 = std::minstd_rand0(seed1);
-				rng2 = std::minstd_rand0(seed2);
-				rng3 = std::minstd_rand0(seed3);
-				rng4 = std::minstd_rand0(seed4);
-
-				genPerlin.SetSeed(rng1());
-				genRidged.SetSeed(rng2());
-				genVoronoi.SetSeed(rng3());
-				genBillow.SetSeed(rng4());
+//				rng1 = std::minstd_rand0(seed1);
+//				rng2 = std::minstd_rand0(seed2);
+//				rng3 = std::minstd_rand0(seed3);
+//				rng4 = std::minstd_rand0(seed4);
+//
+//				genPerlin.SetSeed(rng1());
+//				genRidged.SetSeed(rng2());
+//				genVoronoi.SetSeed(rng3());
+//				genBillow.SetSeed(rng4());
 //				gen2.SetSeed(rng2());
 //				gen3.SetSeed(rng3());
 				bInit = true;
@@ -385,7 +385,7 @@ namespace Core {
 
 //					chunk.vData[vertexPointer][0]
 
-					chunk.vData[vertexPointer][index] = getElevation(chunk.vVerts[vertexPointer][0]+x, chunk.vVerts[vertexPointer][2]+z, noise);
+					chunk.vData[vertexPointer][index] = Core::Noise::getNoise(chunk.vVerts[vertexPointer][0]+x, chunk.vVerts[vertexPointer][2]+z, noise);
 
 //					chunk.vData[vertexPointer][index] /= 150000;
 //					chunk.vData[vertexPointer][index] = (chunk.vData[vertexPointer][index] / 2.0f) + 0.5f;
@@ -451,7 +451,7 @@ namespace Core {
 					// Vertex
 					chunk.vVerts[vertexPointer][0] = ((float)j/((float)VERTEX_COUNT - 1) * SIZE);
 					chunk.vVerts[vertexPointer][2] = ((float)i/((float)VERTEX_COUNT - 1) * SIZE);
-					chunk.vVerts[vertexPointer][1] = getElevation(chunk.vVerts[vertexPointer][0]+x, chunk.vVerts[vertexPointer][2]+z, noise) + fHeightOffset;
+					chunk.vVerts[vertexPointer][1] = Core::Noise::getNoise(chunk.vVerts[vertexPointer][0]+x, chunk.vVerts[vertexPointer][2]+z, noise) + fHeightOffset;
 
 					// Clear extra data
 					chunk.vData[vertexPointer][0] = 0.0f;
@@ -472,11 +472,11 @@ namespace Core {
 
 							B.x = A.x+DELTA;
 							B.z = A.z+DELTA;
-							B.y = getElevation(B.x+x, B.z+z, noise) + fHeightOffset;
+							B.y = Core::Noise::getNoise(B.x+x, B.z+z, noise) + fHeightOffset;
 
 							C.x = A.x+DELTA;
 							C.z = A.z-DELTA;
-							C.y = getElevation(C.x+x, C.z+z, noise) + fHeightOffset;
+							C.y = Core::Noise::getNoise(C.x+x, C.z+z, noise) + fHeightOffset;
 
 							BA = B - A;
 							CA = C - A;
@@ -634,196 +634,196 @@ namespace Core {
 //		}
 
 		// TODO: This should be in the noise class as a getNoise() method. We will need this for O2D and Flora eventually
-		double MapSys::getElevation(float x, float z, Core::Noise::t_Noise *noise) {
-			double dHeight = 0.0f;
-
-
-			for ( auto layer : noise->layers ) {
-				Core::Noise::eNoiseType type	= layer.first;
-				int index				= layer.second;
-
-				switch(type) {
-//					case Core::Noise::NOISE_SIMPLEX:
+//		double MapSys::getElevation(float x, float z, Core::Noise::t_Noise *noise) {
+//			double dHeight = 0.0f;
+//
+//
+//			for ( auto layer : noise->layers ) {
+//				Core::Noise::eNoiseType type	= layer.first;
+//				int index				= layer.second;
+//
+//				switch(type) {
+////					case Core::Noise::NOISE_SIMPLEX:
+////					{
+////						for( auto const &param : *noise->simplex[index] ) {
+////							double  e1 = 0.0f,
+////									e2 = 0.0f;
+////
+//////							SimplexNoise simNoise1 = SimplexNoise( param->frequency, param->amplitude, param->lacunarity, param->persistance );
+////							SimplevTexCoordsxNoise simNoise1 = SimplexNoise( 0.0001f, 1.0f, 1.0f, 1.0f );
+//////							SimplexNoise simNoise1;
+////							e1 = simNoise1.noise(x, z);
+////							e2 = Core::Noise::applyFunctions(e1, dHeight, *param);
+////							dHeight = Core::Noise::applyMode(e2, dHeight, param->mode);
+////
+//////							// Octaves
+//////							// TODO: Fix octave implementation (octaves and frequency built in to getPerlin())
+//////							float amplitudeTotal = 0.0f;
+//////							for(int n=0; n<param->octaves(); n++) {
+//////								e1 = param->octaveData[n].amplitude * genPerlin.GetValue(x, z, 0) / 2.0 + 0.5;
+//////								amplitudeTotal += param->octaveData[n].amplitude;
+//////							}
+//////							e2 /= amplitudeTotal;
+//////
+//////							e2 = Core::Noise::applyFunctions(e1, dHeight, *param);
+//////							dHeight = Core::Noise::applyMode(e2, dHeight, param->mode);
+////						}
+////						break;
+////					}
+//					case Core::Noise::NOISE_PERLIN:
 //					{
-//						for( auto const &param : *noise->simplex[index] ) {
+//						// Layers
+//						for( auto const &param : *noise->perlin[index] ) {
+//
 //							double  e1 = 0.0f,
 //									e2 = 0.0f;
 //
+//							rng1 = std::minstd_rand0(param->seed);
+//							genPerlin.SetSeed(rng1());
+//							genPerlin.SetFrequency(param->frequency);
+//							genPerlin.SetLacunarity(param->lacunarity);
+//							genPerlin.SetNoiseQuality(param->quality);
+//							genPerlin.SetOctaveCount(param->octaves);
+//							genPerlin.SetPersistence(param->persistence);
+//
+//							e1 = genPerlin.GetValue(x, z, 0);
+//							e2 = Core::Noise::applyFunctions(e1, dHeight, *param);
+//							dHeight = Core::Noise::applyMode(e2, dHeight, param->mode);
+//						}
+//						break;
+//					}
+//					case Core::Noise::NOISE_FRACTAL:
+//					{
+//						for( auto const &param : *noise->fractal[index] ) {
+//							double e1 = 0.0f;
+//							double e2 = 0.0f;
 ////							SimplexNoise simNoise1 = SimplexNoise( param->frequency, param->amplitude, param->lacunarity, param->persistance );
-//							SimplevTexCoordsxNoise simNoise1 = SimplexNoise( 0.0001f, 1.0f, 1.0f, 1.0f );
-////							SimplexNoise simNoise1;
-//							e1 = simNoise1.noise(x, z);
+//
+//							genSimplex.setAmplitude(param->amplitude);
+//							genSimplex.setFrequency(param->frequency);
+//							genSimplex.setLacunarity(param->lacunarity);
+//							genSimplex.setPersiistence(param->persistence);
+//							genSimplex.setSeed(param->seed);
+////							e1 = genSimplex.fractal( param->octaves, x, z, dHeight);
+//							e1 = genSimplex.fractal( param->octaves, x, z, 0);
+//							//e1 = simNoise1.fractal( param->octaves, x, z, 0);
+//							e2 = Core::Noise::applyFunctions(e1, dHeight, *param);
+//							dHeight = Core::Noise::applyMode(e2, dHeight, param->mode);
+//						}
+//						break;
+//					}
+//
+////					case Core::Noise::NOISE_RIDGED_SIMPLEX:
+////					{
+////						double nx = x/(noise->parent->chunk_size*2) - 0.5, ny = z/(noise->parent->chunk_size*2) - 0.5;
+////						for( auto const &param : *noise->ridgedSimplex[index] ) {
+////							double e1 = 0.0f;
+////							double e2 = 0.0f;
+////							double e3 = 0.0f;
+////							SimplexNoise simNoise1 = SimplexNoise( param->frequency, param->amplitude, param->lacunarity, param->persistance );
+//////							e1 = (param->threshold - abs(simNoise1.fractal( x, z, dHeight)));
+//////							e1 = (param->threshold - abs(simNoise1.fractal( param->octaves, x, z, dHeight/20000.0f)));
+//////							e1 = (param->threshold - abs(simNoise1.fractal( param->octaves, x, z)));
+////							e1 = (param->threshold - abs(simNoise1.fractal( param->octaves, nx, ny)));
+////
+////							int sign = 1;
+////							if(e1<0) sign = -1;
+////							e2 = e1;
+////							e3 += sign * ((std::pow(abs(e2), param->power)*param->scale));
+////
+////							if(param->funcHeightEnable) {
+////								if(dHeight<(param->funcHeightLowerValue)) {
+////									dHeight += e3 * fmax(fmin((dHeight/param->funcHeightLowerValue), 1.0f), 0.0f);
+////								}
+////								else if(dHeight>(param->funcHeightUpperValue)) {
+////									dHeight += e3 * fmax(fmin((1.0f-(dHeight/(param->funcHeightUpperValue*2.0f))), 1.0f), 0.0f);
+////								}
+////								else dHeight += e3;
+////							}
+////							else dHeight += e3;
+////
+////						}
+////						break;
+////					}
+//
+//					case Core::Noise::NOISE_RIDGED_PERLIN:
+//					{
+//						// Layers
+//						for( auto const &param : *noise->ridgedPerlin[index] ) {
+//
+//							double  e1 = 0.0f,
+//									e2 = 0.0f,
+//									e3 = 0.0f;
+//
+//							rng2 = std::minstd_rand0(param->seed);
+//							genRidged.SetSeed(rng2());
+//							genRidged.SetFrequency(param->frequency);
+//							genRidged.SetLacunarity(param->lacunarity);
+//							genRidged.SetNoiseQuality(param->quality);
+//							genRidged.SetOctaveCount(param->octaves);
+//
+//							e1 = genRidged.GetValue(x, z, 0);
+//							e2 = Core::Noise::applyFunctions(e1, dHeight, *param);
+//							dHeight = Core::Noise::applyMode(e2, dHeight, param->mode);
+//						}
+//						break;
+//					}
+//
+//					case Core::Noise::NOISE_VORONOI:
+//					{
+//						// Layers
+//						for( auto const &param : *noise->voronoi[index] ) {
+//
+//							double  e1 = 0.0f,
+//									e2 = 0.0f,
+//									e3 = 0.0f;
+//
+//							rng3 = std::minstd_rand0(param->seed);
+//							genVoronoi.SetSeed(rng3());
+//							genVoronoi.SetFrequency(param->frequency);
+//							genVoronoi.SetDisplacement(param->displacement);
+//							genVoronoi.EnableDistance(param->bDistance);
+//
+//							e1 = genVoronoi.GetValue(x, z, 0);
 //							e2 = Core::Noise::applyFunctions(e1, dHeight, *param);
 //							dHeight = Core::Noise::applyMode(e2, dHeight, param->mode);
 //
-////							// Octaves
-////							// TODO: Fix octave implementation (octaves and frequency built in to getPerlin())
-////							float amplitudeTotal = 0.0f;
-////							for(int n=0; n<param->octaves(); n++) {
-////								e1 = param->octaveData[n].amplitude * genPerlin.GetValue(x, z, 0) / 2.0 + 0.5;
-////								amplitudeTotal += param->octaveData[n].amplitude;
-////							}
-////							e2 /= amplitudeTotal;
-////
-////							e2 = Core::Noise::applyFunctions(e1, dHeight, *param);
-////							dHeight = Core::Noise::applyMode(e2, dHeight, param->mode);
 //						}
 //						break;
 //					}
-					case Core::Noise::NOISE_PERLIN:
-					{
-						// Layers
-						for( auto const &param : *noise->perlin[index] ) {
-
-							double  e1 = 0.0f,
-									e2 = 0.0f;
-
-							rng1 = std::minstd_rand0(param->seed);
-							genPerlin.SetSeed(rng1());
-							genPerlin.SetFrequency(param->frequency);
-							genPerlin.SetLacunarity(param->lacunarity);
-							genPerlin.SetNoiseQuality(param->quality);
-							genPerlin.SetOctaveCount(param->octaves);
-							genPerlin.SetPersistence(param->persistence);
-
-							e1 = genPerlin.GetValue(x, z, 0);
-							e2 = Core::Noise::applyFunctions(e1, dHeight, *param);
-							dHeight = Core::Noise::applyMode(e2, dHeight, param->mode);
-						}
-						break;
-					}
-					case Core::Noise::NOISE_FRACTAL:
-					{
-						for( auto const &param : *noise->fractal[index] ) {
-							double e1 = 0.0f;
-							double e2 = 0.0f;
-//							SimplexNoise simNoise1 = SimplexNoise( param->frequency, param->amplitude, param->lacunarity, param->persistance );
-
-							genSimplex.setAmplitude(param->amplitude);
-							genSimplex.setFrequency(param->frequency);
-							genSimplex.setLacunarity(param->lacunarity);
-							genSimplex.setPersiistence(param->persistence);
-							genSimplex.setSeed(param->seed);
-//							e1 = genSimplex.fractal( param->octaves, x, z, dHeight);
-							e1 = genSimplex.fractal( param->octaves, x, z, 0);
-							//e1 = simNoise1.fractal( param->octaves, x, z, 0);
-							e2 = Core::Noise::applyFunctions(e1, dHeight, *param);
-							dHeight = Core::Noise::applyMode(e2, dHeight, param->mode);
-						}
-						break;
-					}
-
-//					case Core::Noise::NOISE_RIDGED_SIMPLEX:
+//
+//					case Core::Noise::NOISE_BILLOW:
 //					{
-//						double nx = x/(noise->parent->chunk_size*2) - 0.5, ny = z/(noise->parent->chunk_size*2) - 0.5;
-//						for( auto const &param : *noise->ridgedSimplex[index] ) {
-//							double e1 = 0.0f;
-//							double e2 = 0.0f;
-//							double e3 = 0.0f;
-//							SimplexNoise simNoise1 = SimplexNoise( param->frequency, param->amplitude, param->lacunarity, param->persistance );
-////							e1 = (param->threshold - abs(simNoise1.fractal( x, z, dHeight)));
-////							e1 = (param->threshold - abs(simNoise1.fractal( param->octaves, x, z, dHeight/20000.0f)));
-////							e1 = (param->threshold - abs(simNoise1.fractal( param->octaves, x, z)));
-//							e1 = (param->threshold - abs(simNoise1.fractal( param->octaves, nx, ny)));
+//						// Layers
+//						for( auto const &param : *noise->billow[index] ) {
 //
-//							int sign = 1;
-//							if(e1<0) sign = -1;
-//							e2 = e1;
-//							e3 += sign * ((std::pow(abs(e2), param->power)*param->scale));
+//							double  e1 = 0.0f,
+//									e2 = 0.0f,
+//									e3 = 0.0f;
 //
-//							if(param->funcHeightEnable) {
-//								if(dHeight<(param->funcHeightLowerValue)) {
-//									dHeight += e3 * fmax(fmin((dHeight/param->funcHeightLowerValue), 1.0f), 0.0f);
-//								}
-//								else if(dHeight>(param->funcHeightUpperValue)) {
-//									dHeight += e3 * fmax(fmin((1.0f-(dHeight/(param->funcHeightUpperValue*2.0f))), 1.0f), 0.0f);
-//								}
-//								else dHeight += e3;
-//							}
-//							else dHeight += e3;
+//							rng4 = std::minstd_rand0(param->seed);
+//							genBillow.SetSeed(rng4());
+//							genBillow.SetFrequency(param->frequency);
+//							genBillow.SetLacunarity(param->lacunarity);
+//							genBillow.SetPersistence(param->persistence);
+//							genBillow.SetNoiseQuality(param->quality);
+//							genBillow.SetOctaveCount(param->octaves);
 //
+//							e1 = genBillow.GetValue(x, z, 0);
+//							e2 = Core::Noise::applyFunctions(e1, dHeight, *param);
+//							dHeight = Core::Noise::applyMode(e2, dHeight, param->mode);
 //						}
 //						break;
 //					}
-
-					case Core::Noise::NOISE_RIDGED_PERLIN:
-					{
-						// Layers
-						for( auto const &param : *noise->ridgedPerlin[index] ) {
-
-							double  e1 = 0.0f,
-									e2 = 0.0f,
-									e3 = 0.0f;
-
-							rng2 = std::minstd_rand0(param->seed);
-							genRidged.SetSeed(rng2());
-							genRidged.SetFrequency(param->frequency);
-							genRidged.SetLacunarity(param->lacunarity);
-							genRidged.SetNoiseQuality(param->quality);
-							genRidged.SetOctaveCount(param->octaves);
-
-							e1 = genRidged.GetValue(x, z, 0);
-							e2 = Core::Noise::applyFunctions(e1, dHeight, *param);
-							dHeight = Core::Noise::applyMode(e2, dHeight, param->mode);
-						}
-						break;
-					}
-
-					case Core::Noise::NOISE_VORONOI:
-					{
-						// Layers
-						for( auto const &param : *noise->voronoi[index] ) {
-
-							double  e1 = 0.0f,
-									e2 = 0.0f,
-									e3 = 0.0f;
-
-							rng3 = std::minstd_rand0(param->seed);
-							genVoronoi.SetSeed(rng3());
-							genVoronoi.SetFrequency(param->frequency);
-							genVoronoi.SetDisplacement(param->displacement);
-							genVoronoi.EnableDistance(param->bDistance);
-
-							e1 = genVoronoi.GetValue(x, z, 0);
-							e2 = Core::Noise::applyFunctions(e1, dHeight, *param);
-							dHeight = Core::Noise::applyMode(e2, dHeight, param->mode);
-
-						}
-						break;
-					}
-
-					case Core::Noise::NOISE_BILLOW:
-					{
-						// Layers
-						for( auto const &param : *noise->billow[index] ) {
-
-							double  e1 = 0.0f,
-									e2 = 0.0f,
-									e3 = 0.0f;
-
-							rng4 = std::minstd_rand0(param->seed);
-							genBillow.SetSeed(rng4());
-							genBillow.SetFrequency(param->frequency);
-							genBillow.SetLacunarity(param->lacunarity);
-							genBillow.SetPersistence(param->persistence);
-							genBillow.SetNoiseQuality(param->quality);
-							genBillow.SetOctaveCount(param->octaves);
-
-							e1 = genBillow.GetValue(x, z, 0);
-							e2 = Core::Noise::applyFunctions(e1, dHeight, *param);
-							dHeight = Core::Noise::applyMode(e2, dHeight, param->mode);
-						}
-						break;
-					}
-
-					default:	// NOISE_NONE
-						debug.log("Load NONE");
-				}
-
-			}
-
-			return dHeight;
-		}
+//
+//					default:	// NOISE_NONE
+//						debug.log("Load NONE");
+//				}
+//
+//			}
+//
+//			return dHeight;
+//		}
 
 
 

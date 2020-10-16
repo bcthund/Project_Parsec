@@ -1638,13 +1638,37 @@ namespace Core {
 			if(eShader==Core::GLS_PHONG_O2D) {
 				t_UniformLocations::u_Type::t_PHONG_O2D &data = uniforms.shaders.phongO2D;
 
-				data.locTexture[0]	= glGetUniformLocation(uiShaders[eShader], "colorMap");
+				// Get location pointers for lights ready
+				uint uiNumLights = lights.GetNumLights();
+				if (uiNumLights>0) {
+					data.locLightPos			= new GLint[uiNumLights];
+					data.locLightDir			= new GLint[uiNumLights];
+					data.locLightDiffuse		= new GLint[uiNumLights];
+					data.locLightAmbient		= new GLint[uiNumLights];
+					data.locLightSpecular		= new GLint[uiNumLights];
+					data.locLightAttenuation	= new GLint[uiNumLights];
+					data.locLightType			= new GLint[uiNumLights];
+				}
+				else {
+					data.locLightPos			= nullptr;
+					data.locLightDir			= nullptr;
+					data.locLightDiffuse		= nullptr;
+					data.locLightAmbient		= nullptr;
+					data.locLightSpecular		= nullptr;
+					data.locLightAttenuation	= nullptr;
+					data.locLightType			= nullptr;
+				}
+
+				data.locTexture[30]	= glGetUniformLocation(uiShaders[eShader], "colorMap");
 				data.locMVP			= glGetUniformLocation(uiShaders[eShader], "mvpMatrix");
 				data.locMV			= glGetUniformLocation(uiShaders[eShader], "mvMatrix");
 				data.locMP			= glGetUniformLocation(uiShaders[eShader], "mpMatrix");
 				data.locObjPos		= glGetUniformLocation(uiShaders[eShader], "vObjPos");
 				data.locCamPos		= glGetUniformLocation(uiShaders[eShader], "vCamPos");
+
 				data.locNumLights	= glGetUniformLocation(uiShaders[eShader], "iNumLights");
+
+				std::cout << lights.GetNumLights() << "\n";
 
 				for(int light=0; light<lights.GetNumLights(); light++) {
 					std::string sLight = std::to_string(light);
@@ -1783,7 +1807,7 @@ namespace Core {
 				t_UniformLocations::u_Type::t_PHONG_O2D &data = uniforms.shaders.phongO2D;
 
 				// Textures
-				glUniform1i(data.locTexture[0],	0);
+				glUniform1i(data.locTexture[30],	30);
 
 				// Matrix
 				glUniformMatrix4fv(data.locMVP,	1,	GL_FALSE,	matrix->GetModelViewProjection().data);

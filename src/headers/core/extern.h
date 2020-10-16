@@ -12,6 +12,8 @@
 #include <SDL2/SDL.h>
 //#include "matrix.h"
 
+// TODO: Get rid of pointers, no reason to be using them here.
+
 namespace Core {
 	extern std::string sOffset;
 //	extern class Matrix_System		*	matrix;

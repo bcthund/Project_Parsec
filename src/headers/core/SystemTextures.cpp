@@ -81,7 +81,7 @@ namespace Core {
 				// Texture ID
 				int iData0 = (unsigned char)memBlock.buffer[0+d];
 
-				if(iData0!=TEX_NULL) {
+//				if(iData0!=TEX_NULL) {
 					// Filter type (only applies to min filter)
 					e_TEXTURE_FILTER iData1 = (e_TEXTURE_FILTER)memBlock.buffer[1+d];
 
@@ -92,7 +92,7 @@ namespace Core {
 					int iData3 = (unsigned char)memBlock.buffer[3+d];
 
 					// Check that ID matches Enumeration
-					if(iData0<TEX_NULL) {
+					if(iData0<TEX_3D) {
 						if (iData0 != iIDVerify) throw  std::runtime_error("Texture ID Mismatch [" + std::to_string(iData0) + "!=" + std::to_string(iIDVerify) + "] @ SystemTextures.cpp Line 42");
 					}
 
@@ -113,7 +113,7 @@ namespace Core {
 	//				else texture.Load(sTexDir, theImage, iData0, true, iData1, iData2);
 
 					iIDVerify++;
-				}
+//				}
 			}
 
 

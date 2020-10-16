@@ -29,52 +29,112 @@ namespace Core {
 
 
 		namespace O2D {
-			struct Data {
-				int   * blend;   		// The depth offset of the object
-				float * r;   			// Rotation for static objects (events)
-				float * x;   			// X Position of the object on the map (coord)
-				float * y;    			// Y Calculated height
-				float * z;    			// Z Position of the object on the map (coord)
-				int   * id;    			// ID number, unique to this object (not used for tiles)
-				float * imgW;			// Image width for the image this object uses
-				float * imgH;			// Image height for the image this object uses
-				float * distance;  		// The most current distance from this object
-				std::string * image;	// Image name this object requests (texture)
-				int idcount;   			// Actual objects loaded
-				VAO * vao;
-				Texture * texture;
 
-				Data() {
-					blend 		= new int[1024];
-					r 			= new float[1024];
-					x 			= new float[1024];
-					y 			= new float[1024];
-					z 			= new float[1024];
-					id 			= new int[1024];
-					imgW 		= new float[1024];
-					imgH 		= new float[1024];
-					distance 	= new float[1024];
-					image 		= new std::string[1024];
-					idcount 	= -1;
-					vao 		= new VAO[1024];
-					texture		= new Texture[1024];
+			struct t_O2D_Item {
+//				int   blend;   		// The depth offset of the object
+//				float r;   			// Rotation for static objects (events)
+				float x;   			// X Position of the object on the map (coord)
+				float y;    		// Y Calculated height
+				float z;    		// Z Position of the object on the map (coord)
+				float w;
+				float h;
+//				int   id;    		// ID number, unique to this object (not used for tiles)
+//				float imgW;			// Image width for the image this object uses
+//				float imgH;			// Image height for the image this object uses
+//				float distance;  		// The most current distance from this object
+//				std::string image;	// Image name this object requests (texture)
+//				int idcount;   			// Actual objects loaded
+				VAO vao;
+//				Texture texture;
+
+				t_O2D_Item() {
+					x	= 0.0f;
+					y	= 0.0f;
+					z	= 0.0f;
+					w	= 0.0f;
+					h	= 0.0f;
+//					blend 		= new int[1024];
+//					r 			= new float[1024];
+//					x 			= new float[1024];
+//					y 			= new float[1024];
+//					z 			= new float[1024];
+//					id 			= new int[1024];
+//					imgW 		= new float[1024];
+//					imgH 		= new float[1024];
+//					distance 	= new float[1024];
+//					image 		= new std::string[1024];
+//					idcount 	= -1;
+//					vao 		= new VAO[1024];
+//					texture		= new Texture[1024];
 				}
 
-				~Data() {
-					delete[] blend;
-					delete[] r;
-					delete[] x;
-					delete[] y;
-					delete[] z;
-					delete[] id;
-					delete[] imgW;
-					delete[] imgH;
-					delete[] distance;
-					delete[] image;
-					delete[] vao;
-					delete[] texture;
+				~t_O2D_Item() {
+//					delete[] blend;
+//					delete[] r;
+//					delete[] x;
+//					delete[] y;
+//					delete[] z;
+//					delete[] id;
+//					delete[] imgW;
+//					delete[] imgH;
+//					delete[] distance;
+//					delete[] image;
+//					delete[] vao;
+//					delete[] texture;
 				}
 			};
+
+			using Data = t_Vector1T<t_O2D_Item*>;
+
+
+
+
+//			struct Data {
+//				int   * blend;   		// The depth offset of the object
+//				float * r;   			// Rotation for static objects (events)
+//				float * x;   			// X Position of the object on the map (coord)
+//				float * y;    			// Y Calculated height
+//				float * z;    			// Z Position of the object on the map (coord)
+//				int   * id;    			// ID number, unique to this object (not used for tiles)
+//				float * imgW;			// Image width for the image this object uses
+//				float * imgH;			// Image height for the image this object uses
+//				float * distance;  		// The most current distance from this object
+//				std::string * image;	// Image name this object requests (texture)
+//				int idcount;   			// Actual objects loaded
+//				VAO * vao;
+//				Texture * texture;
+//
+//				Data() {
+//					blend 		= new int[1024];
+//					r 			= new float[1024];
+//					x 			= new float[1024];
+//					y 			= new float[1024];
+//					z 			= new float[1024];
+//					id 			= new int[1024];
+//					imgW 		= new float[1024];
+//					imgH 		= new float[1024];
+//					distance 	= new float[1024];
+//					image 		= new std::string[1024];
+//					idcount 	= -1;
+//					vao 		= new VAO[1024];
+//					texture		= new Texture[1024];
+//				}
+//
+//				~Data() {
+//					delete[] blend;
+//					delete[] r;
+//					delete[] x;
+//					delete[] y;
+//					delete[] z;
+//					delete[] id;
+//					delete[] imgW;
+//					delete[] imgH;
+//					delete[] distance;
+//					delete[] image;
+//					delete[] vao;
+//					delete[] texture;
+//				}
+//			};
 
 //			struct _O2DGroup {
 //				int iGroups;	// Number of groups

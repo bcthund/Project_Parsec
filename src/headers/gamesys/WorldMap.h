@@ -104,11 +104,11 @@ namespace Core {
 				const int CHUNK_SIZE		= 1024 * SCALE; //32768;//65536; //1024 * SCALE;
 //				const int CHUNK_SIZE		= 2048 * SCALE; //32768;//65536; //1024 * SCALE;
 //				const int VIEW_DISTANCE		= CHUNK_SIZE*16;
-				const int VIEW_DISTANCE		= CHUNK_SIZE*8;
+				const int VIEW_DISTANCE		= CHUNK_SIZE*4;
 			} GENERIC;
 
-			struct : public s_COMMON {
-				const int CHUNK_RESOLUTION	= 8 * SCALE_POWER;
+			struct s_TERRAIN : public s_COMMON {
+				const int CHUNK_RESOLUTION	= 16 * SCALE_POWER;
 				const float TEXTURE_SCALE	= 20.0f * SCALE_POWER;
 				//const float HEIGHT_OFFSET	= -2500.0f;
 				const float HEIGHT_OFFSET	= -500.0f;
@@ -116,7 +116,7 @@ namespace Core {
 				const float DELTA			= CHUNK_SIZE / CHUNK_RESOLUTION;
 			} TERRAIN;
 
-			struct : public s_COMMON {
+			struct s_WATER : public s_COMMON {
 				const int CHUNK_RESOLUTION	= 1;
 				const float TEXTURE_SCALE	= 10.0f * SCALE_POWER;
 				const float HEIGHT_OFFSET	= 0.0f;
@@ -124,12 +124,8 @@ namespace Core {
 				const float DELTA			= CHUNK_SIZE / CHUNK_RESOLUTION;
 			} WATER;
 
-			struct : public s_COMMON {
-				const int CHUNK_RESOLUTION	= 64 * SCALE_POWER;
-				const float TEXTURE_SCALE	= 1.0f * SCALE_POWER;
-				const float HEIGHT_OFFSET	= 0.0f;
-//				const float DELTA			= 32.0f * SCALE;
-				const float DELTA			= CHUNK_SIZE / CHUNK_RESOLUTION;
+			struct : public s_TERRAIN {
+				const int CHUNK_RESOLUTION	= 16 * SCALE_POWER;
 			} TREES;
 		} CONST_SIMPLEX;
 
@@ -198,7 +194,7 @@ namespace Core {
 
 				data.add("Moisture", new t_LayerData(data["Terrain"]->chunkSettings));
 				data.add("Altitude", new t_LayerData(data["Terrain"]->chunkSettings));
-//				data.add("Trees", new t_LayerData(data["Terrain"]->chunkSettings));
+				data.add("Trees", new t_LayerData(data["Terrain"]->chunkSettings));
 			}
 //			{
 //				t_LayerData *newData = new t_LayerData(data["Terrain"]->chunkSettings);
@@ -212,17 +208,17 @@ namespace Core {
 //				t_LayerData *newData = new t_LayerData(data["Terrain"]->chunkSettings);
 //				data.add("Trees", newData);
 //			}
-			{
-				t_LayerData *newData = new t_LayerData();
-				data.add("Trees", newData);
-				data["Trees"]->chunkSettings->iViewDistance = CONST_SIMPLEX.TREES.VIEW_DISTANCE;
-				data["Trees"]->chunkSettings->chunk_resolution = CONST_SIMPLEX.TREES.CHUNK_RESOLUTION;
-				data["Trees"]->chunkSettings->chunk_size = CONST_SIMPLEX.TREES.CHUNK_SIZE;
-				data["Trees"]->chunkSettings->tex_scale = CONST_SIMPLEX.TREES.TEXTURE_SCALE;
-				data["Trees"]->chunkSettings->delta = CONST_SIMPLEX.TREES.DELTA;
-				data["Trees"]->chunkSettings->chunk_height_offset = CONST_SIMPLEX.TREES.HEIGHT_OFFSET;
-				data["Trees"]->chunkSettings->set_iMax();
-			}
+//			{
+//				t_LayerData *newData = new t_LayerData();
+//				data.add("Trees", newData);
+//				data["Trees"]->chunkSettings->iViewDistance = CONST_SIMPLEX.TREES.VIEW_DISTANCE;
+//				data["Trees"]->chunkSettings->chunk_resolution = CONST_SIMPLEX.TREES.CHUNK_RESOLUTION;
+//				data["Trees"]->chunkSettings->chunk_size = CONST_SIMPLEX.TREES.CHUNK_SIZE;
+//				data["Trees"]->chunkSettings->tex_scale = CONST_SIMPLEX.TREES.TEXTURE_SCALE;
+//				data["Trees"]->chunkSettings->delta = CONST_SIMPLEX.TREES.DELTA;
+//				data["Trees"]->chunkSettings->chunk_height_offset = CONST_SIMPLEX.TREES.HEIGHT_OFFSET;
+//				data["Trees"]->chunkSettings->set_iMax();
+//			}
 			{
 				t_LayerData *newData = new t_LayerData();
 				data.add("Water", newData);
@@ -527,6 +523,8 @@ namespace Core {
 		}
 
 		void _World::draw() {
+			Core::debug.glErrorCheck("WorldMap", 530);
+
 			atmosphere.skybox.exosphere.draw();
 
 
@@ -610,9 +608,11 @@ namespace Core {
 //			glActiveTexture(GL_TEXTURE29);
 //			Core::sysTex->set(Core::sysTex->TEX_ATLAS_00);
 //
-//			glActiveTexture(GL_TEXTURE30);
-//			Core::sysTex->set(Core::sysTex->TEX_MOISTURE2);
-//
+			glActiveTexture(GL_TEXTURE30);
+//			Core::sysTex->set(Core::sysTex->TEX_TESTPATTERN);
+			Core::sysTex->set(Core::sysTex->TEX_TREE);
+			Core::debug.glErrorCheck("WorldMap", 616);
+
 			glActiveTexture(GL_TEXTURE31);
 			Core::sysTex->set(Core::sysTex->TEX_WATER);
 
@@ -621,13 +621,22 @@ namespace Core {
 			shader->getUniform(Core::GLS_WATER, lights, *data["Water"]->uniforms);
 
 			glDisable(GL_CULL_FACE);
+
 			Core::matrix->Push();
 				// Move chunk according to player
 				matrix->Rotate(Core::gameVars->player.active->transform.rot[0], 1.0, 0.0, 0.0);
 				matrix->Rotate(Core::gameVars->player.active->transform.rot[1], 0.0, 1.0, 0.0);
-				matrix->Translate(Core::gameVars->player.active->transform.pos[0]-(data["Terrain"]->chunkSettings->chunk_size/2),
-								  Core::gameVars->player.active->transform.pos[1],
-								  Core::gameVars->player.active->transform.pos[2]-(data["Terrain"]->chunkSettings->chunk_size/2));
+//				matrix->Translate(Core::gameVars->player.active->transform.pos[0]-(data["Terrain"]->chunkSettings->chunk_size/2),
+//								  Core::gameVars->player.active->transform.pos[1],
+//								  Core::gameVars->player.active->transform.pos[2]-(data["Terrain"]->chunkSettings->chunk_size/2));
+
+				matrix->Translate(	Core::gameVars->player.active->transform.pos[0],
+									Core::gameVars->player.active->transform.pos[1],
+									Core::gameVars->player.active->transform.pos[2]);
+
+				matrix->Translate(	-(data["Terrain"]->chunkSettings->chunk_size/2.0f),
+									0.0f,
+									-(data["Terrain"]->chunkSettings->chunk_size/2.0f)	);
 
 				// Move chunk into place (Do in loader so lighting works easily)
 				Core::matrix->Scale(1*Core::gameVars->screen.fScale, 1*Core::gameVars->screen.fScale, 1*Core::gameVars->screen.fScale);
@@ -685,10 +694,109 @@ namespace Core {
 							chunk.second->drawWater();
 						Core::matrix->Pop();
 				}
+
+				shader->use(Core::GLS_PHONG_O2D);
+				shader->getUniform(Core::GLS_PHONG_O2D, lights, *data["Trees"]->uniforms);
+				matrix->SetTransform();
+
+				Vector3f vCamPos;
+				vCamPos[0] = -Core::gameVars->player.active->transform.pos[0]+(data["Terrain"]->chunkSettings->chunk_size/2.0f);
+				vCamPos[1] = 0.0f;
+				vCamPos[2] = -Core::gameVars->player.active->transform.pos[2]+(data["Terrain"]->chunkSettings->chunk_size/2.0f);
+
+				// TODO: Make O2D distance a customization
+				for ( auto const &chunk : map ) {
+					if(chunk.second->distance <= 2) {
+						chunk.second->drawO2D(vCamPos, lights, *data["Trees"]->uniforms);
+					}
+				}
+
+
+
 			Core::matrix->Pop();
+
+
+//			shader->use(Core::GLS_PHONG_O2D);
+//			shader->getUniform(Core::GLS_PHONG_O2D, lights, *data["Trees"]->uniforms);
+//
+//			for ( auto const &chunk : map ) {
+////				Core::matrix->Push();
+////					int iX = chunk.second->x-32768;
+////					int iZ = chunk.second->z-32768;
+////					matrix->Translate(	iX*fPreScale,
+////										0.0f,
+////										iZ*fPreScale);
+//
+////					matrix->SetTransform();
+//
+////					if(chunk.second->distance < data["Terrain"]->chunkSettings->chunk_size*2) {
+////					if(chunk.second->distance < data["Terrain"]->chunkSettings->chunk_size) {
+//					if(chunk.second->distance <= 2) {
+//						chunk.second->drawO2D(lights, *data["Trees"]->uniforms);
+//					}
+////				Core::matrix->Pop();
+//			}
+
+
+
+
+
+
 			glEnable(GL_CULL_FACE);
 			glDisable(GL_TEXTURE_3D);
 		}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//			glDisable(GL_CULL_FACE);
+//			shader->use(GLS_PHONGO2DSys);
+//
+//			Vector3f	vCamPos;
+//			vCamPos[0] = -Core::gameVars->player.active->transform.pos[0];
+//			vCamPos[1] = 0.0f;
+//			vCamPos[2] = -Core::gameVars->player.active->transform.pos[2];
+//
+//			Vector3f	vUp = { 0.0, 1.0, 0.0};
+//			Vector3f	vLook, vRight;
+//
+//			// TODO: Distance sorting
+//
+//			glActiveTexture(0);
+//			for (int count=0; count <= data.idcount; count++) {
+//				matrix->Push();
+//					matrix->Rotate(Core::gameVars->player.active->transform.rot[0], 1.0, 0.0, 0.0);
+//					matrix->Rotate(Core::gameVars->player.active->transform.rot[1], 0.0, 1.0, 0.0);
+//					matrix->Translate(Core::gameVars->player.active->transform.pos[0], Core::gameVars->player.active->transform.pos[1], Core::gameVars->player.active->transform.pos[2]);
+//					matrix->SetTransform();
+//
+//					Vector3f	vObjPos = { float(data.x[count])*Core::gameVars->screen.fScale,
+//											(float(data.blend[count])+float(data.y[count]))*Core::gameVars->screen.fScale,
+//											float(data.z[count])*Core::gameVars->screen.fScale
+//										  };
+//
+//					shader->vars.GLS_PHONGO2DSys.vObjPos = vObjPos;
+//					shader->vars.GLS_PHONGO2DSys.vCamPos = vCamPos;
+//					shader->setUniform(GLS_PHONGO2DSys, lights, uniforms);
+//					data.texture[count].Set(data.image[count]);
+//					data.vao[count].Draw();
+//
+//				matrix->Pop();
+//			}
+//			glEnable(GL_CULL_FACE);
 
 
 

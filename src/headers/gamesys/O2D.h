@@ -113,6 +113,7 @@ namespace Core {
 				//		 gridCoord[64];
 //				uint uiRecordSize;
 //				std::string sTexDir;
+				bool bInit;
 
 			protected:
 
@@ -122,7 +123,8 @@ namespace Core {
 				~O2DSys();
 				bool init(Core::_Lights &lights);
 				void load(int x, int z, Map::Data &chunk, O2D::Data &o2d, Core::Noise::t_Noise *noise);
-				void calc();
+				void load(int x, int z, Core::Noise::t_Noise *heightNoise, O2D::Data &o2d, Core::Noise::t_Noise *noise);
+				void calc(O2D::Data &o2d);
 				//void draw(SHADER_PROGRAMS iShader, Core::_Lights &lights, bool bBB, bool bSort);
 				void draw(Core::_Lights &lights, bool bBB, bool bSort);
 				//O2D_BASE(Atmosphere &a): atmosphere(a) {}
@@ -131,20 +133,20 @@ namespace Core {
 
 //		O2DSys::O2DSys(Matrix_System &m, Shader_System &s) {
 		O2DSys::O2DSys() {
-//			matrix = &m;
-//			shader = &s;
-//			uiRecordSize	= 60;
-//			sTexDir			= "./texture/o2d/";
+			Core::debug.log("Construct O2DSys {");
+			bInit = false;
+			Core::debug.print(" Done ", Core::debug().GREEN);
+			Core::debug.print("}\n");
 		}
 
 		O2DSys::~O2DSys() {
-			Core::debug.log("Destroy O2D {");
-			Core::debug.print(" Not Implemented ", Core::debug().RED);
+			Core::debug.log("Destroy O2DSys {");
+			Core::debug.print(" Done ", Core::debug().GREEN);
 			Core::debug.print("}\n");
 		}
 
 		bool O2DSys::init(Core::_Lights &lights) {
-			Core::debug.log("Init O2D {");
+			Core::debug.log("Init O2DSys {");
 //			if(!uniforms.bInit) shader->getUniform(GLS_PHONGO2DSys, lights, uniforms);
 			Core::debug.print(" Done ", Core::debug().GREEN);
 			Core::debug.print("}\n");
@@ -160,9 +162,10 @@ namespace Core {
 		 *	- o2d is a reference to the chunk data to be returned
 		 *	- noise is the noise generator for this chunk
 		 */
-		void O2DSys::load(int x, int z, Map::Data &chunk, O2D::Data &o2d, Core::Noise::t_Noise *noise) {
-			Core::debug.log("Load O2D {\n");
-			Core::debug.logIncreaseIndent();
+//		void O2DSys::load(int x, int z, Map::Data &chunk, O2D::Data &o2d, Core::Noise::t_Noise *noise) {
+		void O2DSys::load(int x, int z, Core::Noise::t_Noise *heightNoise, O2D::Data &o2d, Core::Noise::t_Noise *noise) {
+//			Core::debug.log("Load O2D {\n");
+//			Core::debug.logIncreaseIndent();
 
 			x = (x-32768) * noise->parent->chunk_size;
 			z = (z-32768) * noise->parent->chunk_size;
@@ -188,9 +191,46 @@ namespace Core {
 //				parent.vIndex = new GLuint[parent.numDrawVerts];
 //				parent.vData = new Data3f[parent.numVerts];
 
+			/*
+			 * TODO: Process to Implement
+			 * 	Preliminary:
+			 * 		[X] Rework O2DData for VectorMap use
+			 * 		[X] Move getElevation() from MapSys to getNoise() in Noise class
+			 * 		[ ] Use random value based on x/z seed for width/height. Seed should allow repeatability.
+			 * 		[X] Sample noise at vertex positions
+			 * 		[X] Check if value above threshold
+			 * 		[X] Add O2D object
+			 * 		[X] Get height from heightNoise (this might be expensive)
+			 * 		[ ] Ignore objects below 0.0 + chunk_height_offset (water level)
+			 * 		[ ] Check moisture noise
+			 * 		[ ] Use moisture to determine threshold (treeNoise > 1-(moistureNoise/10))
+			 * 		[ ] Add randomization to x/z coordinates
+			 * 		[ ]
+			 */
+
 			long vertexPointer = 0;
 			for(int i=0;i<VERTEX_COUNT;i++){
 				for(int j=0;j<VERTEX_COUNT;j++){
+
+					float fX = ((float)j/((float)VERTEX_COUNT - 1) * SIZE) + x;
+					float fZ = ((float)i/((float)VERTEX_COUNT - 1) * SIZE) + z;
+					float noiseVal = Core::Noise::getNoise(fX, fZ, noise);
+
+//					if(noiseVal>0.90f) debug.log("TREE @ ("+std::to_string(fX)+", "+std::to_string(fZ)+")\n");
+					if(noiseVal>0.25f) {
+//						debug.log("TREE @ ("+std::to_string(fX)+", "+std::to_string(fZ)+") ["+std::to_string(noiseVal)+"]\n");
+						O2D::t_O2D_Item *newItem = new O2D::t_O2D_Item();
+						newItem->x = fX;
+						newItem->z = fZ;
+						newItem->y = Core::Noise::getNoise(fX, fZ, heightNoise) + noise->parent->chunk_height_offset;
+//						newItem->y = Core::Noise::getNoise(fX, fZ, heightNoise);
+						newItem->w = 500.0f;
+						newItem->h = 1500.0f;
+						o2d.add(newItem);
+					}
+					//debug.print("["+std::to_string(noiseVal)+"]");
+
+//					getElevation(chunk.vVerts[vertexPointer][0]+x, chunk.vVerts[vertexPointer][2]+z, noise) + fHeightOffset;
 
 //					// Vertex
 //					chunk.vVerts[vertexPointer][0] = ((float)j/((float)VERTEX_COUNT - 1) * SIZE);
@@ -241,6 +281,7 @@ namespace Core {
 
 					vertexPointer++;
 				}
+//				debug.print("\n\n");
 			}
 
 //			long pointer = 0;
@@ -327,20 +368,41 @@ namespace Core {
 //				idcount++;
 //			}
 
-			Core::debug.logDecreaseIndent();
-			Core::debug.log("}\n");
+//			Core::debug.logDecreaseIndent();
+//			Core::debug.log("}\n");
 		}
 
-		void O2DSys::calc() {
-//			Core::debug.log("Calc O2D {");
-//
+		void O2DSys::calc(O2D::Data &o2d) {
+//			Core::debug.log("Calc O2D {\n");
+//			Core::debug.logIncreaseIndent();
+
+			Data2f vCoords[] = { {0.0, 0.0},
+								 {0.0, 1.0},
+								 {1.0, 0.0},
+								 {1.0, 1.0} };
+
+			for(auto &item : o2d ) {
+//				debug.log("CALC: Tree at ("+std::to_string(item->x)+", "+std::to_string(item->y)+", "+std::to_string(item->z)+") with dimensions ("+std::to_string(item->w)+", "+std::to_string(item->h)+")\n", debug().purple);
+
+				float fW = item->w/2.0f;
+				float fH = item->h/2.0f;
+
+				// FIXME: What is this and is it still used? (Fourth field used for randomization offset)
+				Data4f vVerts[]	=	{	{	-fW,	fH,		0.0,	1.0f	},
+										{	-fW,	0.0f,	0.0,	1.0f	},
+										{	 fW,	fH,		0.0,	1.0f	},
+										{	 fW,	0.0f,	0.0,	1.0f	}	};
+
+				item->vao.Begin(GL_TRIANGLE_STRIP, 4, 4, 1);
+				item->vao.CopyData(GLA_VERTEX, vVerts);
+				item->vao.CopyData(GLA_TEXTURE, vCoords, 0);
+				item->vao.End();
+			}
+
 //			/*
 //			 * Texture coordinates
 //			 */
-//			Data2f vCoords[] = { {0.0, 0.0},
-//								 {0.0, 1.0},
-//								 {1.0, 0.0},
-//								 {1.0, 1.0} };
+
 //
 //			for (int count=0; count <= data.idcount; count++) {
 //				float fW = (data.imgW[count]/2)*Core::gameVars->screen.fScale;
@@ -348,10 +410,6 @@ namespace Core {
 //				float fT = 0.0f;				// Get mapHeight here when a world is present
 //
 //				// Fourth field used for randomization offset
-//				Data4f vVerts[]	=	{	{	-fW,	fH,		0.0, (float)(count+1)	},
-//										{	-fW,	0.0f,	0.0, (float)(count+1)	},
-//										{	 fW,	fH,		0.0, (float)(count+1)	},
-//										{	 fW,	0.0f,	0.0, (float)(count+1)	}	};
 //
 //				data.y[count] = fT*Core::gameVars->screen.fScale;
 //
@@ -362,6 +420,7 @@ namespace Core {
 //			}
 //
 //			Core::debug.print(" Done ", Core::debug().GREEN);
+//			Core::debug.logDecreaseIndent();
 //			Core::debug.print("}\n");
 //			return true;
 		}
