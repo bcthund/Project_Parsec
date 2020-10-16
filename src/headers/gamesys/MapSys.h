@@ -382,6 +382,9 @@ namespace Core {
 
 					// vVerts should already have been defined by this point
 					//chunk.vData[vertexPointer][index] = getElevation(chunk.vVerts[vertexPointer][0]+x, chunk.vVerts[vertexPointer][2]+z, noise) + fHeightOffset;
+
+//					chunk.vData[vertexPointer][0]
+
 					chunk.vData[vertexPointer][index] = getElevation(chunk.vVerts[vertexPointer][0]+x, chunk.vVerts[vertexPointer][2]+z, noise);
 
 //					chunk.vData[vertexPointer][index] /= 150000;
@@ -630,6 +633,7 @@ namespace Core {
 //			return e1;
 //		}
 
+		// TODO: This should be in the noise class as a getNoise() method. We will need this for O2D and Flora eventually
 		double MapSys::getElevation(float x, float z, Core::Noise::t_Noise *noise) {
 			double dHeight = 0.0f;
 
@@ -700,7 +704,7 @@ namespace Core {
 							genSimplex.setLacunarity(param->lacunarity);
 							genSimplex.setPersiistence(param->persistence);
 							genSimplex.setSeed(param->seed);
-							e1 = genSimplex.fractal( param->octaves, x, z, 0);
+							e1 = genSimplex.fractal( param->octaves, x, z, dHeight);
 							//e1 = simNoise1.fractal( param->octaves, x, z, 0);
 							e2 = Core::Noise::applyFunctions(e1, dHeight, *param);
 							dHeight = Core::Noise::applyMode(e2, dHeight, param->mode);

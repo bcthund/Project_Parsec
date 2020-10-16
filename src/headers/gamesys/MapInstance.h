@@ -41,7 +41,7 @@ namespace Core {
 						  Core::Noise::t_Noise *waterNoise,
 						  Core::Noise::t_Noise *moistureNoise,
 						  Core::Noise::t_Noise *altitudeNoise,
-						  Core::Noise::t_Noise *extraNoise);
+						  Core::Noise::t_Noise *treeNoise);
 				void setOffset(std::string offset);
 				float update(Vector3f a=Vector3f(0.0f), int terrain_size=1);	///< Perform updates to chunk data and return current chunk distance
 //				void load(std::string offset, Map::Simplex *simplex, Map::Simplex *simplexWater);
@@ -54,7 +54,7 @@ namespace Core {
 							Core::Noise::t_Noise *waterNoise,
 							Core::Noise::t_Noise *moistureNoise,
 							Core::Noise::t_Noise *altitudeNoise,
-							Core::Noise::t_Noise *extraNoise);
+							Core::Noise::t_Noise *treeNoise);
 				void drawTerrain();
 				void drawWater();
 
@@ -163,13 +163,17 @@ namespace Core {
 									Core::Noise::t_Noise *waterNoise,
 									Core::Noise::t_Noise *moistureNoise,
 									Core::Noise::t_Noise *altitudeNoise,
-									Core::Noise::t_Noise *extraNoise)
+									Core::Noise::t_Noise *treeNoise)
 		{
 			Sys::mapSys.load(x, z, Terrain.data, terrainNoise);
 			Sys::mapSys.load(x, z, Terrain.data, 0, moistureNoise);
 			Sys::mapSys.load(x, z, Terrain.data, 1, altitudeNoise);
-//			Sys::mapSys.load(x, z, Terrain.data, 2, extraNoise);
+//			Sys::mapSys.load(x, z, Terrain.data, 2, undefinedNoise);
 			Sys::mapSys.calc(Terrain.data);
+
+			// TODO: Load O2D Objects (Trees/Flora)
+			//treeNoise
+
 
 			if(Terrain.data.lowestHeight <= waterNoise->parent->chunk_height_offset) {
 				Sys::mapSys.load(x, z, Water.data, waterNoise);
@@ -182,10 +186,10 @@ namespace Core {
 									Core::Noise::t_Noise *waterNoise,
 									Core::Noise::t_Noise *moistureNoise,
 									Core::Noise::t_Noise *altitudeNoise,
-									Core::Noise::t_Noise *extraNoise)
+									Core::Noise::t_Noise *treeNoise)
 		{
 			setOffset(offset);
-			load(terrainNoise, waterNoise, moistureNoise, altitudeNoise, extraNoise);
+			load(terrainNoise, waterNoise, moistureNoise, altitudeNoise, treeNoise);
 		}
 
 //		void t_MapInstance::update() {

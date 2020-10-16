@@ -28,7 +28,9 @@ void main(void) {
  
 //  data.vMoistureCoords   = vec2(vData1.b, 1.0-((vVertex.y+5000)/50000));
 //     data.vMoistureCoords   = vec2(vData1.b, ((vVertex.y+5000)/50000));
-    data.vMoistureCoords   = vec2(vData1.r, ((vVertex.y+2500)/50000)+vData1.g );
+    data.vMoistureCoords   = vec2(vData1.r, ((vVertex.y+2500)/50000)+vData1.g );    // VISUALIZE MOISTURE
+//     data.vMoistureCoords   = vec2(vData1.g, ((vVertex.y+2500)/50000)+vData1.g );    // VISUALIZE ALTITUDE OFFSET
+//     data.vMoistureCoords   = vec2((vData1.b>1-(vData1.r/10)), ((vVertex.y+2500)/50000)+vData1.g );    // VISUALIZE TREES
 //     data.vMoistureCoords   = vec2(vData1.b, ((vVertex.y+10000)/50000));
  
  gl_Position = mvpMatrix * vVertex;

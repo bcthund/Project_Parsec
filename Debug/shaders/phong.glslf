@@ -121,6 +121,10 @@ void main(void) {
     //     vec4 vNewColor0 = texture(tex3D_2, vec3(data.vTexCoords.s, data.vTexCoords.t, data.vMoistureCoords.t));
     //     vec4 vNewColor0 = texture(tex3D_3, vec3(data.vTexCoords.s, data.vTexCoords.t, data.vMoistureCoords.t));
     //     vec4 vNewColor0 = texture(tex3D_4, vec3(data.vTexCoords.s, data.vTexCoords.t, data.vMoistureCoords.t));
+    
+        // Testing of Tree Noise
+//         if(data.vMoistureCoords.s>0.5f) texColor = vec4(1.0f, 0.0f, 0.0f, 1.0f);
+//         else texColor = vec4(0.0f, 1-(data.vData1.r/5.0f), (data.vData1.r/5.0f), 1.0f);
 
         // Setup
         float t0=0.0f;

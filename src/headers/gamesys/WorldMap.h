@@ -103,8 +103,8 @@ namespace Core {
 				const int SCALE				= pow(2, SCALE_POWER);
 				const int CHUNK_SIZE		= 1024 * SCALE; //32768;//65536; //1024 * SCALE;
 //				const int CHUNK_SIZE		= 2048 * SCALE; //32768;//65536; //1024 * SCALE;
-				const int VIEW_DISTANCE		= CHUNK_SIZE*16;
-//				const int VIEW_DISTANCE		= CHUNK_SIZE*4;
+//				const int VIEW_DISTANCE		= CHUNK_SIZE*16;
+				const int VIEW_DISTANCE		= CHUNK_SIZE*8;
 			} GENERIC;
 
 			struct : public s_COMMON {
@@ -123,6 +123,14 @@ namespace Core {
 				//const float DELTA			= 32.0f * SCALE;
 				const float DELTA			= CHUNK_SIZE / CHUNK_RESOLUTION;
 			} WATER;
+
+			struct : public s_COMMON {
+				const int CHUNK_RESOLUTION	= 64 * SCALE_POWER;
+				const float TEXTURE_SCALE	= 1.0f * SCALE_POWER;
+				const float HEIGHT_OFFSET	= 0.0f;
+//				const float DELTA			= 32.0f * SCALE;
+				const float DELTA			= CHUNK_SIZE / CHUNK_RESOLUTION;
+			} TREES;
 		} CONST_SIMPLEX;
 
 		/**
@@ -187,14 +195,33 @@ namespace Core {
 				data["Terrain"]->chunkSettings->delta = CONST_SIMPLEX.TERRAIN.DELTA;
 				data["Terrain"]->chunkSettings->chunk_height_offset = CONST_SIMPLEX.TERRAIN.HEIGHT_OFFSET;
 				data["Terrain"]->chunkSettings->set_iMax();
+
+				data.add("Moisture", new t_LayerData(data["Terrain"]->chunkSettings));
+				data.add("Altitude", new t_LayerData(data["Terrain"]->chunkSettings));
+//				data.add("Trees", new t_LayerData(data["Terrain"]->chunkSettings));
 			}
+//			{
+//				t_LayerData *newData = new t_LayerData(data["Terrain"]->chunkSettings);
+//				data.add("Moisture", newData);
+//			}
+//			{
+//				t_LayerData *newData = new t_LayerData(data["Terrain"]->chunkSettings);
+//				data.add("Altitude", newData);
+//			}
+//			{
+//				t_LayerData *newData = new t_LayerData(data["Terrain"]->chunkSettings);
+//				data.add("Trees", newData);
+//			}
 			{
-				t_LayerData *newData = new t_LayerData(data["Terrain"]->chunkSettings);
-				data.add("Moisture", newData);
-			}
-			{
-				t_LayerData *newData = new t_LayerData(data["Terrain"]->chunkSettings);
-				data.add("Altitude", newData);
+				t_LayerData *newData = new t_LayerData();
+				data.add("Trees", newData);
+				data["Trees"]->chunkSettings->iViewDistance = CONST_SIMPLEX.TREES.VIEW_DISTANCE;
+				data["Trees"]->chunkSettings->chunk_resolution = CONST_SIMPLEX.TREES.CHUNK_RESOLUTION;
+				data["Trees"]->chunkSettings->chunk_size = CONST_SIMPLEX.TREES.CHUNK_SIZE;
+				data["Trees"]->chunkSettings->tex_scale = CONST_SIMPLEX.TREES.TEXTURE_SCALE;
+				data["Trees"]->chunkSettings->delta = CONST_SIMPLEX.TREES.DELTA;
+				data["Trees"]->chunkSettings->chunk_height_offset = CONST_SIMPLEX.TREES.HEIGHT_OFFSET;
+				data["Trees"]->chunkSettings->set_iMax();
 			}
 			{
 				t_LayerData *newData = new t_LayerData();
@@ -300,6 +327,7 @@ namespace Core {
 			Noise::t_Fractal &layer4 = data["Moisture"]->noise->add("Layer4", newFractal1);
 			layer4.add("Moisture", new Noise::t_FractalParams());
 			layer4["Moisture"]->frequency		= 0.000001f;
+//			layer4["Moisture"]->frequency		= 0.0001f;
 			layer4["Moisture"]->amplitude		= 1.0f;
 			layer4["Moisture"]->lacunarity		= 1.5f;
 			layer4["Moisture"]->persistence		= 0.250f;
@@ -308,22 +336,32 @@ namespace Core {
 			layer4["Moisture"]->AddFunction.Remap(-0.125f, 1.0f, -1.0f, 1.0f);
 			layer4["Moisture"]->AddFunction.Scale(5.0f);
 
-			// TODO: Altitude Offset Layer for Texturing
-			Noise::t_RidgedPerlin *newAltitude = new Noise::t_RidgedPerlin();
-			Noise::t_RidgedPerlin &layer5 = data["Altitude"]->noise->add("Layer5", newAltitude);
-			layer5.add("Altitude", new Noise::t_RidgedPerlinParams());
-			layer5["Altitude"]->frequency		= 0.00001f;
-			layer5["Altitude"]->lacunarity		= 2.5f;
-			layer5["Altitude"]->quality			= noise::QUALITY_STD;
-			layer5["Altitude"]->octaves			= 4;
-			layer5["Altitude"]->seed			= 222;
-			layer5["Altitude"]->AddFunction.Power(2.0f);
-			layer5["Altitude"]->AddFunction.Remap(0.0f, 0.5f, -1.0f, 1.0f);
-//			layer5["Altitude"]->AddFunction.Remap(0.0f, 1.0f, -1.0f, 1.0f);
-//			layer5["Altitude"]->AddFunction.Scale(5.0f);
+			// Altitude Offset Layer for Texturing
+//			Noise::t_RidgedPerlin *newAltitude = new Noise::t_RidgedPerlin();
+//			Noise::t_RidgedPerlin &layer5 = data["Altitude"]->noise->add("Layer5", newAltitude);
+//			layer5.add("Altitude", new Noise::t_RidgedPerlinParams());
+//			layer5["Altitude"]->frequency		= 0.00001f;
+//			layer5["Altitude"]->lacunarity		= 2.5f;
+//			layer5["Altitude"]->quality			= noise::QUALITY_STD;
+//			layer5["Altitude"]->octaves			= 4;
+//			layer5["Altitude"]->seed			= 222;
+//			layer5["Altitude"]->AddFunction.Power(2.0f);
+//			layer5["Altitude"]->AddFunction.Remap(0.0f, 0.5f, -1.0f, 1.0f);
+////			layer5["Altitude"]->AddFunction.Remap(0.0f, 1.0f, -1.0f, 1.0f);
+////			layer5["Altitude"]->AddFunction.Scale(5.0f);
 
-
-
+			// TODO: Tree Placement
+			Noise::t_Fractal *newTreeNoise = new Noise::t_Fractal();
+			Noise::t_Fractal &layer6 = data["Trees"]->noise->add("Layer6", newTreeNoise);
+			layer6.add("Trees", new Noise::t_FractalParams());
+			layer6["Trees"]->frequency		= 0.01f;
+			layer6["Trees"]->amplitude		= 1.0f;
+			layer6["Trees"]->lacunarity		= 1.5f;
+			layer6["Trees"]->persistence	= 0.250f;
+			layer6["Trees"]->octaves		= 2;
+			layer6["Trees"]->seed			= 1;
+			//layer6["Trees"]->AddFunction.Remap(-0.125f, 1.0f, -1.0f, 1.0f);
+			//layer6["Trees"]->AddFunction.Scale(5.0f);
 
 
 			// [NO] Ridged-Multi: Rivers (Still needs work)
@@ -399,7 +437,8 @@ namespace Core {
 
 						t_MapInstance *newMap = new t_MapInstance(mapName);		// NOTE: mapName translates into the map offset here
 						map.add(mapName, newMap);
-						map[mapName]->load(data["Terrain"]->noise, data["Water"]->noise, data["Moisture"]->noise, data["Altitude"]->noise, nullptr);
+						map[mapName]->load(data["Terrain"]->noise, data["Water"]->noise, data["Moisture"]->noise, data["Altitude"]->noise, data["Trees"]->noise);
+//						map[mapName]->load(data["Terrain"]->noise, data["Water"]->noise, data["Moisture"]->noise, data["Altitude"]->noise, nullptr);
 					}
 				}
 			}
@@ -475,7 +514,8 @@ namespace Core {
 							// Load new chunk
 							t_MapInstance *newMap = new t_MapInstance(mapName);		// NOTE: mapName translates into the map offset here
 							map.add(mapName, newMap);
-							map[mapName]->load(data["Terrain"]->noise, data["Water"]->noise, data["Moisture"]->noise, data["Altitude"]->noise, nullptr);
+							map[mapName]->load(data["Terrain"]->noise, data["Water"]->noise, data["Moisture"]->noise, data["Altitude"]->noise, data["Trees"]->noise);
+//							map[mapName]->load(data["Terrain"]->noise, data["Water"]->noise, data["Moisture"]->noise, data["Altitude"]->noise, nullptr);
 						}
 					}
 				}
