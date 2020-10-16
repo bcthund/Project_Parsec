@@ -29,4 +29,5 @@ void main(void) {
  data.vNormal = vNormal.xyz;
  data.vTexCoords = vTexCoords;
  gl_Position = mvpMatrix * vObjBB;
+//  gl_Position = mvpMatrix * vVertex;
 }

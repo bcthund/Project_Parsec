@@ -12,6 +12,8 @@
 #include <SDL2/SDL.h>
 //#include "matrix.h"
 
+// TODO: Get rid of pointers, no reason to be using them here.
+
 namespace Core {
 	extern std::string sOffset;
 //	extern class Matrix_System		*	matrix;
@@ -51,6 +53,7 @@ namespace Core {
 	//namespace GameSys {
 	namespace Sys {
 		extern class MapSys				mapSys;
+		extern class O2DSys				o2dSys;
 	}
 
 	extern class _IconSys		*	iconSys;

@@ -126,7 +126,24 @@ namespace Core {
 		//localDebug.glErrorCheck("Texture", 146);
 
 		GLsizei border = 0;
-		glTexImage3D(GL_TEXTURE_3D, 0, GL_RGBA8, width, height, layerCount, border, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+
+		if(mipLevelCount>0) {
+//			for(int n=1; n<=mipLevelCount; n++) {
+//				glTexImage3D(GL_TEXTURE_3D, n, GL_RGBA8, width, height, layerCount, border, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+//			}
+
+			GLsizei mipWidth = width;
+			GLsizei mipHeight = height;
+
+			for (int n = 0; n < mipLevelCount; n++) {
+				//glTexImage3D(target, i, internalformat, width, height, depth, 0, format, type, NULL);
+				glTexImage3D(GL_TEXTURE_3D, n, GL_RGBA8, mipWidth, mipHeight, layerCount, border, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+				mipWidth = std::max(1, (mipWidth / 2));
+				mipHeight = std::max(1, (mipHeight / 2));
+			}
+		}
+		else glTexImage3D(GL_TEXTURE_3D, 0, GL_RGBA8, width, height, layerCount, border, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+
 //		glTexImage3D(GL_TEXTURE_3D, 0, GL_RGBA, 512, 512, 6, 0, texture_format, GL_UNSIGNED_BYTE, sdlImage->pixels);
 		localDebug.glErrorCheck("Texture", 150);
 
@@ -273,7 +290,11 @@ namespace Core {
 				glTexParameterf(GL_TEXTURE_3D, GL_TEXTURE_MAX_ANISOTROPY_EXT, fLargest);
 				localDebug.glErrorCheck("Texture", 269);
 
-				glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+				if(settings3d.mipLevelCount>0)
+					glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+				else
+					glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
 				localDebug.glErrorCheck("Texture", 272);
 
 				glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -288,23 +309,26 @@ namespace Core {
 				glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 				localDebug.glErrorCheck("Texture", 281);
 
-				//glTexImage3D(GL_TEXTURE_3D, 0, nOfColors, settings3d.width, settings3d.height/4, 4, 0, texture_format, GL_UNSIGNED_BYTE, sdlImage->pixels);
+				glTexParameterf(GL_TEXTURE_3D, GL_TEXTURE_MAX_ANISOTROPY_EXT, fLargest);
 
 				// WORKS with glTexImage3D in init(), but requires single texture array image
 //				glTexImage3D(GL_TEXTURE_3D, 0, GL_RGBA, settings3d.width, settings3d.height/4, 4, 0, texture_format, GL_UNSIGNED_BYTE, sdlImage->pixels);
-//				if(!settings3d.bStarted) {
-//				glTexImage3D(GL_TEXTURE_3D, 0, GL_RGBA, 512, 512, 6, 0, texture_format, GL_UNSIGNED_BYTE, sdlImage->pixels);
-//				settings3d.bStarted = true;
-//				}
-//				else {
 
-				// IN-PROGRESS - Doesn't work at all currently (Level 0 causes segfault)
-				//glTextureSubImage3D(GL_TEXTURE_3D, 0, 0, 0, 0, 512, 512, 0, texture_format, GL_UNSIGNED_BYTE, sdlImage->pixels);
-//				glTexSubImage3D(GL_TEXTURE_3D, 0, 0, 0, 0, 1024, 1024, 1, texture_format, GL_UNSIGNED_BYTE, sdlImage->pixels);
-//				glTexSubImage3D(GL_TEXTURE_3D, 1, 0, 0, uiDepth, 512, 512, 1, texture_format, GL_UNSIGNED_BYTE, sdlImage->pixels);
 				localDebug.log("["+std::to_string(uiLayer)+"] SubImage: "+std::to_string(uiDepth)+"/"+std::to_string(settings3d.layerCount)+"\n");
-				glTexSubImage3D(GL_TEXTURE_3D, 0, 0, 0, uiDepth, 512, 512, 1, texture_format, GL_UNSIGNED_BYTE, sdlImage->pixels);
-//				}
+
+				if(settings3d.mipLevelCount>0) {
+//					GLsizei mipWidth = settings3d.width;
+//					GLsizei mipHeight = settings3d.height;
+//
+//					for (int n = 0; n < settings3d.mipLevelCount; n++) {
+//						glTexSubImage3D(GL_TEXTURE_3D, n, 0, 0, uiDepth, mipWidth, mipHeight, 1, texture_format, GL_UNSIGNED_BYTE, sdlImage->pixels);
+//						mipWidth = std::max(1, (mipWidth / 2));
+//						mipHeight = std::max(1, (mipHeight / 2));
+//					}
+					glTexSubImage3D(GL_TEXTURE_3D, 0, 0, 0, uiDepth, settings3d.width, settings3d.height, 1, texture_format, GL_UNSIGNED_BYTE, sdlImage->pixels);
+					glGenerateMipmap(GL_TEXTURE_3D);
+				}
+				else glTexSubImage3D(GL_TEXTURE_3D, 0, 0, 0, uiDepth, settings3d.width, settings3d.height, 1, texture_format, GL_UNSIGNED_BYTE, sdlImage->pixels);
 				localDebug.glErrorCheck("Texture", 288);
 
 				glBindTexture(GL_TEXTURE_3D, 0 );

@@ -46,7 +46,7 @@ namespace Core {
 				TEX_MOISTURE1,
 				TEX_MOISTURE2,
 				TEX_ATLAS_00,
-				TEX_NULL,
+				TEX_TREE,
 				TEX_3D	// TESTING: TEX_3D + n used for 3d layers
 				};
 
