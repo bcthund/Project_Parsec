@@ -10,6 +10,7 @@
 
 #include "core_functions.h"
 #include "../gamesys/MapData.h"
+//#include "../gamesys/O2D_Data.h"
 #include "../core/SimplexNoise.h"
 #include <libnoise/noise.h>
 
@@ -493,6 +494,7 @@ namespace Core {
 		class t_Noise {
 			friend class Core::Sys::MapSys;
 			friend class Core::Sys::t_MapInstance;
+			friend class Core::Sys::O2DSys;
 			protected:
 				Sys::Map::t_ChunkData *parent;
 				t_Vector1T<t_None*> 			none;

@@ -10,7 +10,8 @@
 
 #include "../core/types.h"
 #include "../core/core_functions.h"
-#include "./O2D.h"
+//#include "./O2D.h"
+#include "./O2D_Data.h"
 #include "./O3D.h"
 #include "./MapData.h"
 #include "../core/Noise.h"
@@ -76,7 +77,7 @@ namespace Core {
 
 				struct t_O2DInterface {
 					t_MapInstance * parent;
-					_O2DData data;
+					O2D::Data data;
 					t_O2DInterface(t_MapInstance * p) { parent = p; }
 				};
 				t_O2DInterface O2D = t_O2DInterface(this);

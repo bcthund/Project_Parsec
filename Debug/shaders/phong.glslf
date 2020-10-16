@@ -141,10 +141,10 @@ void main(void) {
         
         // Moisture Levels
         float f4_Wet    = 5.0f,
-            f3_Moist  = 4.0f,
-            f2_Mud    = 3.0f,
-            f1_Dry    = 2.0f,
-            f0_Barren = 1.0f;
+              f3_Moist  = 4.0f,
+              f2_Mud    = 3.0f,
+              f1_Dry    = 2.0f,
+              f0_Barren = 1.0f;
         
         // Calculate Moisture Influence
         if (data.vMoistureCoords.s >= f4_Wet) { t4=1.0f; }

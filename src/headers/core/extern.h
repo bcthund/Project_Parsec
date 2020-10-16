@@ -51,6 +51,7 @@ namespace Core {
 	//namespace GameSys {
 	namespace Sys {
 		extern class MapSys				mapSys;
+		extern class O2DSys				o2dSys;
 	}
 
 	extern class _IconSys		*	iconSys;

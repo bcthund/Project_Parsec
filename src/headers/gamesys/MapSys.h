@@ -704,7 +704,8 @@ namespace Core {
 							genSimplex.setLacunarity(param->lacunarity);
 							genSimplex.setPersiistence(param->persistence);
 							genSimplex.setSeed(param->seed);
-							e1 = genSimplex.fractal( param->octaves, x, z, dHeight);
+//							e1 = genSimplex.fractal( param->octaves, x, z, dHeight);
+							e1 = genSimplex.fractal( param->octaves, x, z, 0);
 							//e1 = simNoise1.fractal( param->octaves, x, z, 0);
 							e2 = Core::Noise::applyFunctions(e1, dHeight, *param);
 							dHeight = Core::Noise::applyMode(e2, dHeight, param->mode);
