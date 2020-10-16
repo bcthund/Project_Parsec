@@ -375,7 +375,7 @@ namespace Core {
 						update();
 
 						if(con->bTextured && con->tex != nullptr) {
-							glActiveTexture(0);
+							glActiveTexture(GL_TEXTURE0);
 	//						sysTex->set(sysTex->TEX_GRASS);
 //							sysTex->set(sysTex->TEX_GRASSYROCK);
 							con->tex->Set(con->texRef);

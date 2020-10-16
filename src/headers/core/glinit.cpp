@@ -194,8 +194,9 @@ namespace Core {
 		//glEnable(GL_CLIP_DISTANCE0);		// Clipping plane for water Reflection/Refraction
 
 		//Were there any errors?
-		GLenum isError = glGetError();
-		if( isError != GL_NO_ERROR ) printf("OpenGL Failed to initialize properly. [Error: %i]\n", isError);
+//		GLenum isError = glGetError();
+//		if( isError != GL_NO_ERROR ) printf("OpenGL Failed to initialize properly. [Error: %i]\n", isError);
+		debug.glErrorCheck("glInit", 199);
 
 		SDL_Init(SDL_INIT_EVERYTHING);
 

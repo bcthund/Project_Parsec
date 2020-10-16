@@ -122,8 +122,9 @@ namespace Core {
 				O2DSys();
 				~O2DSys();
 				bool init(Core::_Lights &lights);
-				void load(int x, int z, Map::Data &chunk, O2D::Data &o2d, Core::Noise::t_Noise *noise);
-				void load(int x, int z, Core::Noise::t_Noise *heightNoise, O2D::Data &o2d, Core::Noise::t_Noise *noise);
+//				void load(int x, int z, Map::Data &chunk, O2D::Data &o2d, Core::Noise::t_Noise *noise);
+//				void load(int x, int z, O2D::Data &o2d, Core::Noise::t_Noise *noise, Core::Noise::t_Noise *heightNoise);
+				void load(int x, int z, O2D::Data &o2d, Core::Noise::t_Noise *noise, Core::Noise::t_Noise *heightNoise, Core::Noise::t_Noise *moistureNoise);
 				void calc(O2D::Data &o2d);
 				//void draw(SHADER_PROGRAMS iShader, Core::_Lights &lights, bool bBB, bool bSort);
 				void draw(Core::_Lights &lights, bool bBB, bool bSort);
@@ -163,7 +164,7 @@ namespace Core {
 		 *	- noise is the noise generator for this chunk
 		 */
 //		void O2DSys::load(int x, int z, Map::Data &chunk, O2D::Data &o2d, Core::Noise::t_Noise *noise) {
-		void O2DSys::load(int x, int z, Core::Noise::t_Noise *heightNoise, O2D::Data &o2d, Core::Noise::t_Noise *noise) {
+		void O2DSys::load(int x, int z, O2D::Data &o2d, Core::Noise::t_Noise *noise, Core::Noise::t_Noise *heightNoise, Core::Noise::t_Noise *moistureNoise) {
 //			Core::debug.log("Load O2D {\n");
 //			Core::debug.logIncreaseIndent();
 
@@ -201,11 +202,17 @@ namespace Core {
 			 * 		[X] Check if value above threshold
 			 * 		[X] Add O2D object
 			 * 		[X] Get height from heightNoise (this might be expensive)
-			 * 		[ ] Ignore objects below 0.0 + chunk_height_offset (water level)
-			 * 		[ ] Check moisture noise
-			 * 		[ ] Use moisture to determine threshold (treeNoise > 1-(moistureNoise/10))
+			 * 		[X] Ignore objects below 0.0 + chunk_height_offset (water level)
+			 * 		[X] Check moisture noise
+			 * 		[X] Use moisture to determine threshold (treeNoise > 1-(moistureNoise/10))
 			 * 		[ ] Add randomization to x/z coordinates
-			 * 		[ ]
+			 * 		[X] Height should modify the threshold as well, higher altitudes have less trees
+			 * 		[ ] Sea Level offset should be added (customizable)
+			 * 		[ ] Only load trees for chunks in range
+			 * 		[ ] Distance Sorting
+			 * 			[ ] only sort current to start
+			 * 			[ ] sort only objects in front of player
+			 * 			[ ] sort adacent chunks
 			 */
 
 			long vertexPointer = 0;
@@ -214,19 +221,25 @@ namespace Core {
 
 					float fX = ((float)j/((float)VERTEX_COUNT - 1) * SIZE) + x;
 					float fZ = ((float)i/((float)VERTEX_COUNT - 1) * SIZE) + z;
-					float noiseVal = Core::Noise::getNoise(fX, fZ, noise);
 
-//					if(noiseVal>0.90f) debug.log("TREE @ ("+std::to_string(fX)+", "+std::to_string(fZ)+")\n");
-					if(noiseVal>0.25f) {
-//						debug.log("TREE @ ("+std::to_string(fX)+", "+std::to_string(fZ)+") ["+std::to_string(noiseVal)+"]\n");
-						O2D::t_O2D_Item *newItem = new O2D::t_O2D_Item();
-						newItem->x = fX;
-						newItem->z = fZ;
-						newItem->y = Core::Noise::getNoise(fX, fZ, heightNoise) + noise->parent->chunk_height_offset;
-//						newItem->y = Core::Noise::getNoise(fX, fZ, heightNoise);
-						newItem->w = 500.0f;
-						newItem->h = 1500.0f;
-						o2d.add(newItem);
+					float fHeight = Core::Noise::getNoise(fX, fZ, heightNoise) + noise->parent->chunk_height_offset;
+					if(fHeight>500.0f) {
+						float fNoise = Core::Noise::getNoise(fX, fZ, noise);
+						float fMoisture = Core::Noise::getNoise(fX, fZ, moistureNoise);
+
+						// (vVertex.y+2500)/50000
+						float fHeightNorm = 1.0f-(fHeight+0.0f)/50000.0f;
+//						if(fNoise>((1.0f-(fMoisture/10.0f)*fHeightNorm) )) {
+						if(fNoise>((1.0f-((fMoisture/5.0f)-0.2f)*fHeightNorm) )) {
+//							debug.log("HeightNorm = "+std::to_string(fHeightNorm)+"\n");
+							O2D::t_O2D_Item *newItem = new O2D::t_O2D_Item();
+							newItem->x = fX;
+							newItem->z = fZ;
+							newItem->y = fHeight;
+							newItem->w = 1000.0f;
+							newItem->h = 3000.0f;
+							o2d.add(newItem);
+						}
 					}
 					//debug.print("["+std::to_string(noiseVal)+"]");
 

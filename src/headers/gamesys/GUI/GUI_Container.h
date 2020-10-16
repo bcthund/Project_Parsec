@@ -1025,7 +1025,9 @@ namespace Core {
 			if(bInit) {
 				if(con->visibility) {
 					c_Generic_Base::activeContainer = this->con;
+					Core::debug.glErrorCheck("GUI_Container::execObjects", 1028);
 					con->exec();
+					Core::debug.glErrorCheck("GUI_Container::execObjects", 1030);
 
 					if(con->bScissor) {
 						int padLR = con->vPadding.left+con->vPadding.right;
@@ -1038,36 +1040,76 @@ namespace Core {
 							y = ( (con->pos.y-(con->size.y/2)+con->vPadding.bottom )) + Core::gameVars->screen.activeProjection->half.y;
 
 						Core::scissor.push(x, y, w, h, false);
+						Core::debug.glErrorCheck("GUI_Container::execObjects", 1043);
 						Core::scissor.checkInput(Core::mouse->x, Core::mouse->y, Core::gameVars->screen.activeProjection->res);
+						Core::debug.glErrorCheck("GUI_Container::execObjects", 1045);
 					}
 
 					// Always disable scissor before drawing a container
 					Core::scissor.disable();
+					Core::debug.glErrorCheck("GUI_Container::execObjects", 1050);
 					Object::Window::exec();
 					if(con->bScissor) Core::scissor.enable();
 
 					for (auto & window		: Window.data)			window->exec();
+					Core::debug.glErrorCheck("GUI_Container::execObjects", 1055);
+
 					for (auto & label		: Label.data)			label->exec();
+					Core::debug.glErrorCheck("GUI_Container::execObjects", 1058);
+
 					for (auto & button		: Button.data)			button->exec();
+					Core::debug.glErrorCheck("GUI_Container::execObjects", 1061);
+
 					for (auto & slider		: Slider.data)			slider->exec();
+					Core::debug.glErrorCheck("GUI_Container::execObjects", 1064);
+
 					for (auto & field		: Field.data)			field->exec();
+					Core::debug.glErrorCheck("GUI_Container::execObjects", 1067);
+
 					for (auto & textArea	: TextArea.data)		textArea->exec();
+					Core::debug.glErrorCheck("GUI_Container::execObjects", 1070);
+
 					for (auto & textEdit	: TextEdit.data)		textEdit->exec();
+					Core::debug.glErrorCheck("GUI_Container::execObjects", 1073);
+
 					for (auto & colorSwatch	: ColorSwatch.data)		colorSwatch->exec();
+					Core::debug.glErrorCheck("GUI_Container::execObjects", 1076);
+
 					for (auto & checkBox	: CheckBox.data)		checkBox->exec();
+					Core::debug.glErrorCheck("GUI_Container::execObjects", 1079);
+
 					for (auto & icon		: Icon.data)			icon->exec();
+					Core::debug.glErrorCheck("GUI_Container::execObjects", 1082);
+
 					for (auto & sprite		: Sprite.data)			sprite->exec();
+					Core::debug.glErrorCheck("GUI_Container::execObjects", 1085);
+
 					for (auto & progressBar	: ProgressBar.data)		progressBar->exec();
+					Core::debug.glErrorCheck("GUI_Container::execObjects", 1088);
+
 					for (auto & comboBox	: ComboBox.data)		comboBox->exec();
+					Core::debug.glErrorCheck("GUI_Container::execObjects", 1091);
+
 					for (auto & slider2D	: Slider2Di.data)		slider2D->exec();
+					Core::debug.glErrorCheck("GUI_Container::execObjects", 1094);
+
 					for (auto & slider2D	: Slider2Df.data)		slider2D->exec();
+					Core::debug.glErrorCheck("GUI_Container::execObjects", 1097);
+
 					for (auto & pieChart	: PieChart.data)		pieChart->exec();
+					Core::debug.glErrorCheck("GUI_Container::execObjects", 1100);
+
 					for (auto & animation	: Animation.data)		animation->exec();
+					Core::debug.glErrorCheck("GUI_Container::execObjects", 1103);
 
 					// Simple Geometry last
 					for (auto & line		: Line.data)			line->exec();
+					Core::debug.glErrorCheck("GUI_Container::execObjects", 1107);
+
 
 					for (auto & container	: containers)			container->execObjects();
+					Core::debug.glErrorCheck("GUI_Container::execObjects", 1111);
+
 
 					if(con->bScissor) Core::scissor.pop();
 					Core::scissor.disable();

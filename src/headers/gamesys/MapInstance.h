@@ -179,7 +179,7 @@ namespace Core {
 			// TODO: Load O2D Objects (Trees/Flora)
 			//treeNoise
 			//Sys::o2dSys.load(x, z, Terrain.data, O2D.data, treeNoise);
-			Sys::o2dSys.load(x, z, terrainNoise, O2D.data, treeNoise);
+			Sys::o2dSys.load(x, z, O2D.data, treeNoise, terrainNoise, moistureNoise);
 			Sys::o2dSys.calc(O2D.data);
 
 			if(Terrain.data.lowestHeight <= waterNoise->parent->chunk_height_offset) {

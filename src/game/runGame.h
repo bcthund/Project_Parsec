@@ -385,10 +385,10 @@ void _Game::Update() {
 //	if(Core::gameVars->screen.MultiSample) Core::postProcess->RenderLayer("Multisample");
 //	else Core::postProcess->RenderLayer("Layer0");
 
-	GLenum err;
-	bool bGLError = false;
-	while((err = glGetError()) != GL_NO_ERROR) {	Core::debug.log("[glGetError: "+std::to_string(err)+"]\n");	bGLError = true;	}
-	if(bGLError) throw std::runtime_error("glGetError: One or more OpenGL errors were detected.");
+//	GLenum err;
+//	bool bGLError = false;
+//	while((err = glGetError()) != GL_NO_ERROR) {	Core::debug.log("[glGetError: "+std::to_string(err)+"]\n");	bGLError = true;	}
+//	if(bGLError) throw std::runtime_error("glGetError: One or more OpenGL errors were detected.");
 
 	glClear( Core::gameVars->screen.clear );
 //	glPolygonMode(GL_FRONT_AND_BACK, Core::gameVars->screen.iPolygonMode);
@@ -419,8 +419,8 @@ void _Game::Update() {
 	Core::profiles->runProfile(Core::profiles->builtIn.RunGame_DrawWorld, true);
 	world.draw();
 	Core::profiles->runProfile(Core::profiles->builtIn.RunGame_DrawWorld, false);
-	while((err = glGetError()) != GL_NO_ERROR) {	Core::debug.log("[glGetError 419: "+std::to_string(err)+"]\n");	bGLError = true;	}
-	if(bGLError) throw std::runtime_error("glGetError: One or more OpenGL errors were detected.");
+//	while((err = glGetError()) != GL_NO_ERROR) {	Core::debug.log("[glGetError 419: "+std::to_string(err)+"]\n");	bGLError = true;	}
+//	if(bGLError) throw std::runtime_error("glGetError: One or more OpenGL errors were detected.");
 
 	// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 	// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -438,8 +438,8 @@ void _Game::Update() {
 	Core::matrix->Push();
 		Core::helper->drawPosition(1.0f, 100.0f, Core::gameVars->player.active->transform.pos, Core::gameVars->player.active->transform.rot);
 	Core::matrix->Pop();
-	while((err = glGetError()) != GL_NO_ERROR) {	Core::debug.log("[glGetError 438: "+std::to_string(err)+"]\n");	bGLError = true;	}
-	if(bGLError) throw std::runtime_error("glGetError: One or more OpenGL errors were detected.");
+//	while((err = glGetError()) != GL_NO_ERROR) {	Core::debug.log("[glGetError 438: "+std::to_string(err)+"]\n");	bGLError = true;	}
+//	if(bGLError) throw std::runtime_error("glGetError: One or more OpenGL errors were detected.");
 
 
 		// Draw test Skeleton - This will draw the joint and all of its children
@@ -471,8 +471,8 @@ void _Game::Update() {
 	Core::matrix->Pop();
 	Core::profiles->runProfile(Core::profiles->builtIn.RunGame_Particles, false);
 
-	while((err = glGetError()) != GL_NO_ERROR) {	Core::debug.log("[glGetError 471: "+std::to_string(err)+"]\n");	bGLError = true;	}
-	if(bGLError) throw std::runtime_error("glGetError: One or more OpenGL errors were detected.");
+//	while((err = glGetError()) != GL_NO_ERROR) {	Core::debug.log("[glGetError 471: "+std::to_string(err)+"]\n");	bGLError = true;	}
+//	if(bGLError) throw std::runtime_error("glGetError: One or more OpenGL errors were detected.");
 
 	// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 	// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -552,8 +552,8 @@ void _Game::Update() {
 //	Core::GameSys::drawSprite(Core::gameVars->screen.half.x-16, Core::gameVars->screen.half.y-16, 32, 32, "crosshair.png", false, false, Core::colors[Core::colors().Green]);
 	Core::GameSys::drawSprite(0, 0, 32, 32, "crosshair.png", false, false, Core::colors[Core::colors().Green]);
 
-	while((err = glGetError()) != GL_NO_ERROR) {	Core::debug.log("[glGetError 552: "+std::to_string(err)+"]\n");	bGLError = true;	}
-	if(bGLError) throw std::runtime_error("glGetError: One or more OpenGL errors were detected.");
+//	while((err = glGetError()) != GL_NO_ERROR) {	Core::debug.log("[glGetError 552: "+std::to_string(err)+"]\n");	bGLError = true;	}
+//	if(bGLError) throw std::runtime_error("glGetError: One or more OpenGL errors were detected.");
 
 	// Start orthographic routines (Overlays)
 //	uint iX = 0,
@@ -588,8 +588,8 @@ void _Game::Update() {
 	Core::GameSys::checkIcon(iX+=20, iY, 20, 20, 6, "1800_icons_2.svg", true, false);
 	Core::GameSys::checkIcon(iX+=20, iY, 20, 20, 7, "1800_icons_2.svg", true, false);
 
-	while((err = glGetError()) != GL_NO_ERROR) {	Core::debug.log("[glGetError 588: "+std::to_string(err)+"]\n");	bGLError = true;	}
-	if(bGLError) throw std::runtime_error("glGetError: One or more OpenGL errors were detected.");
+//	while((err = glGetError()) != GL_NO_ERROR) {	Core::debug.log("[glGetError 588: "+std::to_string(err)+"]\n");	bGLError = true;	}
+//	if(bGLError) throw std::runtime_error("glGetError: One or more OpenGL errors were detected.");
 
 	// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 	// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -615,8 +615,8 @@ void _Game::Update() {
 
 	Core::profiles->runProfile(Core::profiles->builtIn.RunGame_DrawSprite, false);
 
-	while((err = glGetError()) != GL_NO_ERROR) {	Core::debug.log("[glGetError 615: "+std::to_string(err)+"]\n");	bGLError = true;	}
-	if(bGLError) throw std::runtime_error("glGetError: One or more OpenGL errors were detected.");
+//	while((err = glGetError()) != GL_NO_ERROR) {	Core::debug.log("[glGetError 615: "+std::to_string(err)+"]\n");	bGLError = true;	}
+//	if(bGLError) throw std::runtime_error("glGetError: One or more OpenGL errors were detected.");
 
 	iX=0;
 	iY=74;
@@ -729,8 +729,8 @@ void _Game::Update() {
 
 	Core::profiles->runProfile(Core::profiles->builtIn.RunGame_TextSys, false);
 
-	while((err = glGetError()) != GL_NO_ERROR) {	Core::debug.log("[glGetError 729: "+std::to_string(err)+"]\n");	bGLError = true;	}
-	if(bGLError) throw std::runtime_error("glGetError: One or more OpenGL errors were detected.");
+//	while((err = glGetError()) != GL_NO_ERROR) {	Core::debug.log("[glGetError 729: "+std::to_string(err)+"]\n");	bGLError = true;	}
+//	if(bGLError) throw std::runtime_error("glGetError: One or more OpenGL errors were detected.");
 
 	// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 	// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -810,8 +810,8 @@ void _Game::Update() {
 		//Core::helper->drawPoint(b, 5);	// Not implemented
 	}
 
-	while((err = glGetError()) != GL_NO_ERROR) {	Core::debug.log("[glGetError 810: "+std::to_string(err)+"]\n");	bGLError = true;	}
-	if(bGLError) throw std::runtime_error("glGetError: One or more OpenGL errors were detected.");
+//	while((err = glGetError()) != GL_NO_ERROR) {	Core::debug.log("[glGetError 810: "+std::to_string(err)+"]\n");	bGLError = true;	}
+//	if(bGLError) throw std::runtime_error("glGetError: One or more OpenGL errors were detected.");
 
 //	// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 //	// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -1158,8 +1158,8 @@ void _Game::Update() {
 	// Safety Catch, make sure we are in perspective mode by default
 	Core::matrix->setProjection(Core::matrix->MM_PERSPECTIVE, "standard");
 
-	while((err = glGetError()) != GL_NO_ERROR) {	Core::debug.log("[glGetError 1158: "+std::to_string(err)+"]\n");	bGLError = true;	}
-	if(bGLError) throw std::runtime_error("glGetError: One or more OpenGL errors were detected.");
+//	while((err = glGetError()) != GL_NO_ERROR) {	Core::debug.log("[glGetError 1158: "+std::to_string(err)+"]\n");	bGLError = true;	}
+//	if(bGLError) throw std::runtime_error("glGetError: One or more OpenGL errors were detected.");
 
 //	Core::colors->PopFront();
 }

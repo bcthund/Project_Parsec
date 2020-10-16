@@ -104,11 +104,11 @@ namespace Core {
 				const int CHUNK_SIZE		= 1024 * SCALE; //32768;//65536; //1024 * SCALE;
 //				const int CHUNK_SIZE		= 2048 * SCALE; //32768;//65536; //1024 * SCALE;
 //				const int VIEW_DISTANCE		= CHUNK_SIZE*16;
-				const int VIEW_DISTANCE		= CHUNK_SIZE*4;
+				const int VIEW_DISTANCE		= CHUNK_SIZE*16;
 			} GENERIC;
 
 			struct s_TERRAIN : public s_COMMON {
-				const int CHUNK_RESOLUTION	= 16 * SCALE_POWER;
+				const int CHUNK_RESOLUTION	= 8 * SCALE_POWER;
 				const float TEXTURE_SCALE	= 20.0f * SCALE_POWER;
 				//const float HEIGHT_OFFSET	= -2500.0f;
 				const float HEIGHT_OFFSET	= -500.0f;
@@ -329,8 +329,11 @@ namespace Core {
 			layer4["Moisture"]->persistence		= 0.250f;
 			layer4["Moisture"]->octaves			= 2;
 			layer4["Moisture"]->seed				= 1;
-			layer4["Moisture"]->AddFunction.Remap(-0.125f, 1.0f, -1.0f, 1.0f);
+//			layer4["Moisture"]->AddFunction.Remap(-0.125f, 1.0f, -1.0f, 1.0f);
+//			layer4["Moisture"]->AddFunction.Remap(-0.025f, 1.0f, -1.0f, 1.0f);
+			layer4["Moisture"]->AddFunction.Remap(0.125f, 1.0f, -1.0f, 1.0f);
 			layer4["Moisture"]->AddFunction.Scale(5.0f);
+//			layer4["Moisture"]->AddFunction.Offset(0.5f);
 
 			// Altitude Offset Layer for Texturing
 //			Noise::t_RidgedPerlin *newAltitude = new Noise::t_RidgedPerlin();
@@ -705,8 +708,10 @@ namespace Core {
 				vCamPos[2] = -Core::gameVars->player.active->transform.pos[2]+(data["Terrain"]->chunkSettings->chunk_size/2.0f);
 
 				// TODO: Make O2D distance a customization
+				// iMax is a function of view distance and chunk size and is the maximum chunk distance
+				int iMaxTreeDistance = 3;
 				for ( auto const &chunk : map ) {
-					if(chunk.second->distance <= 2) {
+					if(chunk.second->distance <= std::min(iMaxTreeDistance, data["Terrain"]->chunkSettings->iMax)) {
 						chunk.second->drawO2D(vCamPos, lights, *data["Trees"]->uniforms);
 					}
 				}

@@ -264,7 +264,11 @@ namespace Core {
 			void Line::exec(iState eExternState) {
 				if(bInit && con->visibility && ((parent!=nullptr && parent->visibility) || (parent==nullptr))) {
 
+					Core::debug.glErrorCheck("Line::exec", 267);
+
 					updateObjectState(eExternState);
+
+					Core::debug.glErrorCheck("Line::exec", 271);
 
 //					if(con->toolTip.bShow) toolTip.updateObjectState(eObjectState);
 //					else toolTip.updateObjectState(STATE_NONE);
@@ -278,8 +282,12 @@ namespace Core {
 						if(con->scroll.isScrollable() && (parent!=nullptr && parent->scroll.getEnabled())) vPos = con->getScrollPos();
 						else vPos = con->getPos();
 
+						Core::debug.glErrorCheck("Line::exec", 285);
+
 						Core::matrix->Translate( vPos.x, vPos.y, 0.0f );
 						Core::matrix->setProjection(Core::matrix->MM_ORTHO, "ortho");
+
+						Core::debug.glErrorCheck("Line::exec", 290);
 
 						if(eObjectState&STATE_DISABLED) {
 							if(eObjectState&STATE_HOVER)	Core::helper->drawLine(*pointA, *pointB, con->borderHover, 1.0f, gameVars->pallette.gui.disabled.text.hover, gameVars->pallette.gui.disabled.text.hover);
@@ -289,6 +297,8 @@ namespace Core {
 						else if(eObjectState&STATE_ACTIVE)	Core::helper->drawLine(*pointA, *pointB, con->borderNormal, 1.0f, con->colorA.active,	con->colorB.active);
 						else 								Core::helper->drawLine(*pointA, *pointB, con->borderNormal, 1.0f, con->colorA.base,		con->colorB.base);
 
+						Core::debug.glErrorCheck("Line::exec", 300);
+
 					Core::matrix->Pop();
 
 				}
@@ -297,6 +307,65 @@ namespace Core {
 //			void Line::execToolTip() {
 //				toolTip.exec();
 //			}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 		} /* namespace Object */

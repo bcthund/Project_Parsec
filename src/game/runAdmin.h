@@ -2177,6 +2177,8 @@ void _Admin::init() {
 	Core::debug.logDecreaseIndent();
 	Core::debug.log("}\n");
 
+	Core::debug.glErrorCheck("runAdmin", 2180);
+
 	bInit = true;
 }
 
@@ -2496,6 +2498,8 @@ void _Admin::run() {
 				Core::gui["GameMenu"]["Window 14-8"].hide();
 			}
 		}
+
+		Core::debug.glErrorCheck("runAdmin", 2502);
 	}
 	else {
 		bHasFocus = false;
