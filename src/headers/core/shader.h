@@ -29,7 +29,7 @@ namespace Core {
 							GLS_BOUNDINGVOLUME_SPHERE,
 							GLS_BOUNDINGVOLUME_CYLINDER,
 							GLS_FLAT,
-							GLS_PHONG,
+							GLS_PHONG,	GLS_WATER,	// SAME SHADER
 							GLS_PHONG_O2D,
 							GLS_POINT_SPRITE,
 							GLS_PARTICLE_SPRITE,
@@ -76,6 +76,102 @@ namespace Core {
 //							GLS_PARTICLE,
 							GLS_LAST };
 
+	struct t_UniformLocations {
+		bool bInit;
+		SHADER_PROGRAMS shader;
+
+		union u_Type {
+			struct t_PHONG {
+				GLint	locTexture[32],
+						locNumLights,
+						*locLightPos,
+						*locLightDir,
+						*locLightDiffuse,
+						*locLightAmbient,
+						*locLightSpecular,
+						*locLightAttenuation,
+						*locLightType;
+
+				GLint	locMVP,
+						locMV,
+						locMP,
+						locWater;
+			} phong;
+
+			struct t_PHONG_O2D {
+				GLint	locTexture[32],
+						locNumLights,
+						*locLightPos,
+						*locLightDir,
+						*locLightDiffuse,
+						*locLightAmbient,
+						*locLightSpecular,
+						*locLightAttenuation,
+						*locLightType;
+
+				GLint	locMVP,
+						locMV,
+						locMP,
+						locObjPos,
+						locCamPos;
+			} phongO2D;
+		} shaders;
+
+		void * operator[](SHADER_PROGRAMS getShader) {
+		switch(getShader) {
+			case GLS_PHONG:
+				return &shaders.phong;
+				break;
+			case GLS_PHONG_O2D:
+				return &shaders.phongO2D;
+				break;
+			default:
+				return nullptr;
+			}
+		}
+
+		t_UniformLocations(SHADER_PROGRAMS newShader=GLS_BASE) {
+			shader = newShader;
+			bInit = false;
+		}
+	};
+
+//	struct t_UniformLocation {
+//		SHADER_PROGRAMS shader;
+//
+//		union u_Type {
+//			struct t_PHONG {
+//				GLint	locTexture,
+//						locMVP,
+//						locMV,
+//						locMP,
+//						locWater,
+//						locNumLights,
+//						*locLightPos,
+//						*locLightDir,
+//						*locLightDiffuse,
+//						*locLightAmbient,
+//						*locLightSpecular,
+//						*locLightAttenuation,
+//						*locLightType;
+//			} phong;
+//		} shaders;
+//
+//		void * operator[](SHADER_PROGRAMS getShader) {
+//		switch(getShader) {
+//			case GLS_PHONG:
+//				return &shaders.phong;
+//				break;
+//			default:
+//				return nullptr;
+//			}
+//		}
+//
+//		t_UniformLocation(SHADER_PROGRAMS newShader) {
+//			shader = newShader;
+//		}
+//	};
+
 	class Shader_System {
 		private:
 			Matrix_System	* matrix;
@@ -86,6 +182,7 @@ namespace Core {
 			void readSrc(const char *shaderSrc, GLuint shaderNum);
 
 		public:
+
 			/*
 			 * Variable data for passing to shaders
 			 *
@@ -145,6 +242,8 @@ namespace Core {
 				struct {
 				} GLS_PHONG;
 				struct {
+					Core::Vector3f vObjPos;
+					Core::Vector3f vCamPos;
 				} GLS_PHONG_O2D;
 				struct {
 				} GLS_POINT_SPRITE;
@@ -206,7 +305,40 @@ namespace Core {
 				} GLS_PP_COMBINE;
 				//GLS_PP_PIXELATE,
 				//GLS_PARTICLE,
-			} data;
+			} vars;
+
+//			struct t_GL_Attributes {
+//				bool bSet;
+//				enum {	NONE		= 0,
+//						VERTEX,
+////						COLOR,
+////						NORMAL,
+//						VERTEX_NORMAL,
+//						VERTEX_TEXTURE0,
+//						VERTEX_COLOR,
+//						VERTEX_NORMAL_TEXTURE0
+////						POSITION,
+////						LAST
+//					 };
+//
+//			} GLASet;
+
+			struct t_GL_Attributes {
+				bool bSet;
+				enum {	NONE		= 0,
+						VERTEX		= 1,
+						COLOR		= 2,
+						NORMAL		= 4,
+						TEXTURE0	= 8,
+						POSITION	= 16,
+						DATA1		= 32,
+						DATA2		= 64,
+						DATA3		= 128,
+						INDEX		= 256,
+						LAST
+					 };
+
+			} GLASet;
 
 //			struct ShaderData {
 //				float * fData;
@@ -261,10 +393,14 @@ namespace Core {
 //			template <typename T>
 			void getUniform(SHADER_PROGRAMS eShader);
 			void getUniform(SHADER_PROGRAMS eShader, int iStyle, Color vColor, float fRotation, int iSpikes, float fThickness, float fBlend=0.0f, int iSize=1, Vector2f vTexCoord0=Vector2f(), Vector2f vTexCoord1=Vector2f());
-			void getUniform(SHADER_PROGRAMS eShader, _Lights *lightData, int n=0, ...);
+//			void getUniform(SHADER_PROGRAMS eShader, _Lights *lightData, int n=0, ...);
+
+			void getUniform(SHADER_PROGRAMS eShader, _Lights &lights, t_UniformLocations &uniforms);	///< Get uniform locations and store in t_UniformLocations
+			void setUniform(SHADER_PROGRAMS eShader, _Lights &lights, t_UniformLocations &uniforms);	///< Read t_UniformLocations and set uniform shader values
 
 			GLuint loadShader2(const char *vertSrc, const char *fragSrc, ...);
-			GLuint loadShader(const char *vertSrc, const char *geoSrc, const char *fragSrc, ...);
+//			GLuint loadShader(const char *vertSrc, const char *geoSrc, const char *fragSrc, ...);
+			GLuint loadShader(const char *vertSrc, const char *geoSrc, const char *fragSrc, uint uiGLA);
 			std::string readShaderFile(std::string filePath, std::string filename, uint type);
 	};
 }

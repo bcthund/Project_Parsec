@@ -175,7 +175,7 @@ namespace Core {
 			}
 			else if ( (iChannel==-1) || (iChannel>=0 && !Mix_Playing(iChannel) && bOverlap) ) {
 				if(iChannel>=0 && !bOverlap) Mix_HaltChannel(iChannel);
-				Mix_PlayChannel(iChannel, data[iSample]->chunk, iLoop);
+				Mix_PlayChannel(iChannel, data[map_id[iSample]]->chunk, iLoop);
 			}
 		}
 	}
@@ -218,11 +218,11 @@ namespace Core {
 				Mix_ResumeMusic();
 			}
 			else if(!Mix_PlayingMusic()) {										// If music isn't already playing
-				if(data[iSample]->bLoad) {										// If this sample was successfully loaded
+				if(data[map_id[iSample]]->bLoad) {										// If this sample was successfully loaded
 					if(iFade>0) {
-						Mix_FadeInMusic(data[iSample]->music, iLoop, iFade);
+						Mix_FadeInMusic(data[map_id[iSample]]->music, iLoop, iFade);
 					}
-					else Mix_PlayMusic(data[iSample]->music, iLoop);			// Play the music!
+					else Mix_PlayMusic(data[map_id[iSample]]->music, iLoop);			// Play the music!
 				}
 			}
 		}

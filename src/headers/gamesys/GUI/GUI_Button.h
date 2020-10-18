@@ -223,7 +223,7 @@ namespace Core {
 			void Button::init() {
 				this->id = IDs.create();
 
-				initSound(audio().CHANNEL_GUI_BUTTON, 1, 2, 0, 0, true, true);
+				initSound(audio.channel().CHANNEL_2_GUI_BUTTON, audio().AUDIO_0_GUI_CLICK_ON, audio().AUDIO_1_GUI_CLICK_OFF, 0, 0, true, true);
 
 				if(bHasParent) {
 					con->scroll.bind(*parent);
@@ -254,8 +254,8 @@ namespace Core {
 				else {
 					if(!(eExternState&STATE_UPDATE)) {
 						Vector2f vPos = con->getScrollPos();
-						mState = Core::mouse->checkInput(gameVars->screen.half.x+vPos.x, gameVars->screen.half.y-vPos.y, con->size.x, con->size.y);
-						//mState = Core::mouse->checkInput(gameVars->screen.half.x+con->pos.x, gameVars->screen.half.y-con->pos.y, con->size.x, con->size.y);
+						mState = Core::mouse->checkInput(gameVars->screen.activeProjection->half.x+vPos.x, gameVars->screen.activeProjection->half.y-vPos.y, con->size.x, con->size.y);
+						//mState = Core::mouse->checkInput(gameVars->screen.activeProjection->half.x+con->pos.x, gameVars->screen.activeProjection->half.y-con->pos.y, con->size.x, con->size.y);
 					}
 					else mState = Core::_Mouse::MOUSE_NONE;
 

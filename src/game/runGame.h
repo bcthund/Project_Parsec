@@ -22,6 +22,7 @@ class _Game {
 		//Core::GameSys::_O3D * o3d;
 //		Core::GameSys::_WorldMap	* world;
 //		Core::GameSys::AnimationSys * animation;
+		Core::Sys::_World world;
 		Core::t_AnimationInstance<Core::t_AnimationItem3D>	animation2;
 		//Core::GameSys::Atmosphere atmosphere;
 		//Core::OCCLUSION	occlusion;
@@ -54,6 +55,8 @@ class _Game {
 			//o3d = new Core::GameSys::_O3D(*Core::matrix, *Core::shader, *Core::collision, *Core::helper);
 			// Moved to Below light initialization until lights are moved to world class
 			//world	= new Core::GameSys::_WorldMap(*Core::matrix, *Core::shader, );
+
+			world.init();
 
 			fTest_fScaleOld = Core::gameVars->screen.fScale;
 
@@ -120,6 +123,10 @@ bool _Game::load() {
 //	world->load();
 //	world->calc();
 
+	Core::debug.glErrorCheck("runGame", 126);
+	world.load();
+	Core::debug.glErrorCheck("runGame", 128);
+
 	Core::mouse->init(0, Core::gameVars->player.active->transform.pos);
 	Core::mouse->init(1, Core::gameVars->player.active->transform.pos);
 
@@ -132,7 +139,6 @@ bool _Game::load() {
 //	animation2.add("World Animation Test", "slash_00.png", 128, 128, -1, 100, -1).setCameraTarget(&Core::gameVars->player.active->transform.pos, Core::Vector3f(100, 0, 100));
 	animation2.add("World Animation Test", "rotate.png", 128, 128, -1, 0, -1);
 	animation2.start("World Animation Test");
-
 
 	vDebugAttDelta.x = 0.0001;
 	vDebugAttDelta.y = 0.000001 * (1/Core::gameVars->screen.fScale);
@@ -220,6 +226,7 @@ bool _Game::load() {
 		Core::particles->create(data);
 		Core::particles->calc("Fire");
 	}
+	Core::debug.glErrorCheck("runGame", 228);
 
 	{
 		Core::_ParticleEmitterData *data = new Core::_ParticleEmitterData();
@@ -254,6 +261,7 @@ bool _Game::load() {
 		Core::particles->create(data);
 		Core::particles->calc("Smoke");
 	}
+	Core::debug.glErrorCheck("runGame", 263);
 
 //	{
 //		Core::_ParticleEmitterData *data = new Core::_ParticleEmitterData();
@@ -314,7 +322,7 @@ void _Game::Run() {
 	//Core::Vector3f mRay = Core::mouse->GetMouseRay();
 	//Core::mouse->mouseRay = Core::mouse->GetMouseRay();	// Update mouseRay, return not needed;
 	Core::profiles->runProfile(Core::profiles->builtIn.RunGame_GetMouseRay, true);
-	Core::mouse->GetMouseRay(Core::gameVars->screen.res.x, Core::gameVars->screen.res.y, Core::gameVars->player.active->transform.rot);	// Update mouseRay, return not needed;
+	Core::mouse->GetMouseRay(Core::gameVars->screen.activeProjection->res.x, Core::gameVars->screen.activeProjection->res.y, Core::gameVars->player.active->transform.rot);	// Update mouseRay, return not needed;
 	Core::profiles->runProfile(Core::profiles->builtIn.RunGame_GetMouseRay, false);
 	/*
 	 * TODO: If a movement was made, do a collision test on O3D's and if
@@ -363,6 +371,10 @@ void _Game::Run() {
 //	Core::particles->update("Water");
 	Core::particles->update();		// Update all with emitter sorting
 
+	// TODO: update timer
+	// FIXME: SEG FAULT
+	world.update();
+
 	Update();
 }
 
@@ -370,8 +382,13 @@ void _Game::Run() {
 void _Game::Update() {
 
 	// Start Post Processing
-	if(Core::gameVars->screen.MultiSample) Core::postProcess->RenderLayer("Multisample");
-	else Core::postProcess->RenderLayer("Layer0");
+//	if(Core::gameVars->screen.MultiSample) Core::postProcess->RenderLayer("Multisample");
+//	else Core::postProcess->RenderLayer("Layer0");
+
+//	GLenum err;
+//	bool bGLError = false;
+//	while((err = glGetError()) != GL_NO_ERROR) {	Core::debug.log("[glGetError: "+std::to_string(err)+"]\n");	bGLError = true;	}
+//	if(bGLError) throw std::runtime_error("glGetError: One or more OpenGL errors were detected.");
 
 	glClear( Core::gameVars->screen.clear );
 //	glPolygonMode(GL_FRONT_AND_BACK, Core::gameVars->screen.iPolygonMode);
@@ -398,9 +415,12 @@ void _Game::Update() {
 	// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 	// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 	glEnable(GL_DEPTH_TEST);
+
 	Core::profiles->runProfile(Core::profiles->builtIn.RunGame_DrawWorld, true);
-//	world->draw();
+	world.draw();
 	Core::profiles->runProfile(Core::profiles->builtIn.RunGame_DrawWorld, false);
+//	while((err = glGetError()) != GL_NO_ERROR) {	Core::debug.log("[glGetError 419: "+std::to_string(err)+"]\n");	bGLError = true;	}
+//	if(bGLError) throw std::runtime_error("glGetError: One or more OpenGL errors were detected.");
 
 	// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 	// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -418,7 +438,8 @@ void _Game::Update() {
 	Core::matrix->Push();
 		Core::helper->drawPosition(1.0f, 100.0f, Core::gameVars->player.active->transform.pos, Core::gameVars->player.active->transform.rot);
 	Core::matrix->Pop();
-
+//	while((err = glGetError()) != GL_NO_ERROR) {	Core::debug.log("[glGetError 438: "+std::to_string(err)+"]\n");	bGLError = true;	}
+//	if(bGLError) throw std::runtime_error("glGetError: One or more OpenGL errors were detected.");
 
 
 		// Draw test Skeleton - This will draw the joint and all of its children
@@ -450,6 +471,9 @@ void _Game::Update() {
 	Core::matrix->Pop();
 	Core::profiles->runProfile(Core::profiles->builtIn.RunGame_Particles, false);
 
+//	while((err = glGetError()) != GL_NO_ERROR) {	Core::debug.log("[glGetError 471: "+std::to_string(err)+"]\n");	bGLError = true;	}
+//	if(bGLError) throw std::runtime_error("glGetError: One or more OpenGL errors were detected.");
+
 	// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 	// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 	// 			Animations
@@ -480,52 +504,56 @@ void _Game::Update() {
 	// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 	// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 	Core::profiles->runProfile(Core::profiles->builtIn.RunGame_PostProcess, true);
-	GLuint ppWorld = Core::postProcess->EndRenderLayer();
-//	Core::postProcess->RenderToScreen();
-//	GLuint ppWorld = Core::postProcess->ApplyBrightness(Core::Vector3f(2.0, 2.0, 2.0));
-//	GLuint ppWashout = Core::postProcess->ApplyBrightness(world->atmosphere->satellite->getAlpha("Sun")/2.0f);		// TODO: [PP] Add a Screen Post Processing Effect
-	GLuint ppWashout = Core::postProcess->ApplyBrightness(1.0f);
-
-	GLuint ppContrast = Core::postProcess->ApplyContrast(2.0f);
-	//GLuint ppBrightness = Core::postProcess->ApplyBrightness(Core::Vector3f(2.0, 2.0, 2.0));
-	GLuint ppBrightnessFilter = Core::postProcess->ApplyBrightnessFilter(Core::Vector3f(0.75, 0.75, 0.75), 0.125);
-	Core::postProcess->ApplyHBlur();
-	GLuint ppBlur = Core::postProcess->ApplyVBlur();
-	GLuint ppBloom = Core::postProcess->ApplyCombine(ppWashout, 0.5f);
-
-	/*
-	 * Clear screen and draw objects for radial blur (scattering) effect
-	 *
-	 * NOTE: Atmosphere is drawn here for Lens effect ONLY, actual drawing occurs in world->draw() above
-	 */
-	Core::postProcess->RenderLayer("Multisample");
-	Core::postProcess->RenderLayer("Layer1");
-	glClearColor(0,0,0,1);
-	glClear( Core::gameVars->screen.clear );
-//	Core::colors.PushFront(Core::Color(1.0f, 1.0f, 1.0f, world->atmosphere->satellite->getAlpha("Sun")*1.5 ));
-	Core::colors.SetActive(Core::colors.COLOR_FRONT);
-//	world->atmosphere->draw(world->atmosphere->MODE_SATELLITE, "Moon");
-//	world->atmosphere->draw(world->atmosphere->MODE_SATELLITE, "Sun");
-	Core::colors.PopFront();
-//	world->atmosphere->draw(world->atmosphere->MODE_FLARES, "Sun");
-
-	GLuint ppRadialPrep = Core::postProcess->EndRenderLayer();
-	GLuint ppRadial = Core::postProcess->ApplyRadialBlur(ppRadialPrep);
-	GLuint ppScatter = Core::postProcess->ApplyCombine(ppBloom, 1.5f);
-	Core::glinit->RestoreClearColor();
-
-	Core::postProcess->RenderToScreen(ppScatter);
-	Core::postProcess->RenderToWindow(ppWorld, Core::Vector3f(-360, -200, 0), 0.25f);
-	Core::postProcess->RenderToWindow(ppRadial, Core::Vector3f( 360, -200, 0), 0.25f);
-
+//	GLuint ppWorld = Core::postProcess->EndRenderLayer();
+////	Core::postProcess->RenderToScreen();
+////	GLuint ppWorld = Core::postProcess->ApplyBrightness(Core::Vector3f(2.0, 2.0, 2.0));
+////	GLuint ppWashout = Core::postProcess->ApplyBrightness(world->atmosphere->satellite->getAlpha("Sun")/2.0f);		// TODO: [PP] Add a Screen Post Processing Effect
+//	GLuint ppWashout = Core::postProcess->ApplyBrightness(0.0f);
+//
+//	GLuint ppContrast = Core::postProcess->ApplyContrast(2.0f);
+//	//GLuint ppBrightness = Core::postProcess->ApplyBrightness(Core::Vector3f(2.0, 2.0, 2.0));
+//	GLuint ppBrightnessFilter = Core::postProcess->ApplyBrightnessFilter(Core::Vector3f(0.75, 0.75, 0.75), 0.125);
+//	Core::postProcess->ApplyHBlur();
+//	GLuint ppBlur = Core::postProcess->ApplyVBlur();
+//	GLuint ppBloom = Core::postProcess->ApplyCombine(ppWashout, 0.5f);
+//
+//	/*
+//	 * Clear screen and draw objects for radial blur (scattering) effect
+//	 *
+//	 * NOTE: Atmosphere is drawn here for Lens effect ONLY, actual drawing occurs in world->draw() above
+//	 */
+//	Core::postProcess->RenderLayer("Multisample");
+//	Core::postProcess->RenderLayer("Layer1");
+//	glClearColor(0,0,0,1);
+//	glClear( Core::gameVars->screen.clear );
+////	Core::colors.PushFront(Core::Color(1.0f, 1.0f, 1.0f, world->atmosphere->satellite->getAlpha("Sun")*1.5 ));
+//	Core::colors.SetActive(Core::colors.COLOR_FRONT);
+////	world->atmosphere->draw(world->atmosphere->MODE_SATELLITE, "Moon");
+////	world->atmosphere->draw(world->atmosphere->MODE_SATELLITE, "Sun");
+//	Core::colors.PopFront();
+////	world->atmosphere->draw(world->atmosphere->MODE_FLARES, "Sun");
+//
+//	GLuint ppRadialPrep = Core::postProcess->EndRenderLayer();
+//	GLuint ppRadial = Core::postProcess->ApplyRadialBlur(ppRadialPrep);
+//	GLuint ppScatter = Core::postProcess->ApplyCombine(ppBloom, 1.5f);
+//	Core::glinit->RestoreClearColor();
+//
+////	Core::postProcess->RenderToScreen(ppScatter);
 //	Core::postProcess->RenderToScreen(ppWorld);
-//	Core::postProcess->RenderToWindow(ppRadialPrep, Core::Vector3f(-360, -200, 0), 0.25f);
-//	Core::postProcess->RenderToWindow(ppRadial, Core::Vector3f( 360, -200, 0), 0.25f);
+////	Core::postProcess->RenderToWindow(ppWorld, Core::Vector3f(-360, -200, 0), 0.25f);
+////	Core::postProcess->RenderToWindow(ppRadial, Core::Vector3f( 360, -200, 0), 0.25f);
+//
+////	Core::postProcess->RenderToScreen(ppWorld);
+////	Core::postProcess->RenderToWindow(ppRadialPrep, Core::Vector3f(-360, -200, 0), 0.25f);
+////	Core::postProcess->RenderToWindow(ppRadial, Core::Vector3f( 360, -200, 0), 0.25f);
 	Core::profiles->runProfile(Core::profiles->builtIn.RunGame_PostProcess, false);
 
 	// FIXME: Crosshair
 //	Core::GameSys::drawSprite(Core::gameVars->screen.half.x-16, Core::gameVars->screen.half.y-16, 32, 32, "crosshair.png", false, false, Core::colors[Core::colors().Green]);
 	Core::GameSys::drawSprite(0, 0, 32, 32, "crosshair.png", false, false, Core::colors[Core::colors().Green]);
+
+//	while((err = glGetError()) != GL_NO_ERROR) {	Core::debug.log("[glGetError 552: "+std::to_string(err)+"]\n");	bGLError = true;	}
+//	if(bGLError) throw std::runtime_error("glGetError: One or more OpenGL errors were detected.");
 
 	// Start orthographic routines (Overlays)
 //	uint iX = 0,
@@ -560,6 +588,9 @@ void _Game::Update() {
 	Core::GameSys::checkIcon(iX+=20, iY, 20, 20, 6, "1800_icons_2.svg", true, false);
 	Core::GameSys::checkIcon(iX+=20, iY, 20, 20, 7, "1800_icons_2.svg", true, false);
 
+//	while((err = glGetError()) != GL_NO_ERROR) {	Core::debug.log("[glGetError 588: "+std::to_string(err)+"]\n");	bGLError = true;	}
+//	if(bGLError) throw std::runtime_error("glGetError: One or more OpenGL errors were detected.");
+
 	// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 	// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 	// 			2D Orthographic Sprites
@@ -568,7 +599,7 @@ void _Game::Update() {
 	Core::profiles->runProfile(Core::profiles->builtIn.RunGame_DrawSprite, true);
 
 	Core::GUI::Props prop;
-	prop.setPos(-Core::gameVars->screen.half.x-115+iX, Core::gameVars->screen.half.y-32);
+	prop.setPos(-Core::gameVars->screen.activeProjection->half.x-115+iX, Core::gameVars->screen.activeProjection->half.y-32);
 	prop.setWidth(64);
 	prop.setHeight(64);
 	prop.exec();
@@ -583,6 +614,9 @@ void _Game::Update() {
 	Core::spriteSys->draw(&prop, "TestPattern.png", Core::colors[Core::colors().White]);
 
 	Core::profiles->runProfile(Core::profiles->builtIn.RunGame_DrawSprite, false);
+
+//	while((err = glGetError()) != GL_NO_ERROR) {	Core::debug.log("[glGetError 615: "+std::to_string(err)+"]\n");	bGLError = true;	}
+//	if(bGLError) throw std::runtime_error("glGetError: One or more OpenGL errors were detected.");
 
 	iX=0;
 	iY=74;
@@ -635,7 +669,6 @@ void _Game::Update() {
 //		Core::textSys->draw(c, "Testing");
 //	}
 
-
 	Core::textSys->draw(1*Core::gameVars->font.vSize.x, -8*Core::gameVars->font.vSize.y, "This is a Test 0123456789", Core::GUI::CONSTRAIN_LEFT);
 //	Core::textSys->draw(100, -150, "CENTER", Core::GUI::CONSTRAIN_CENTER, Core::GUI::ORIGIN_TOP|Core::GUI::ORIGIN_LEFT);
 //	Core::textSys->draw(100, -150, "|--LEFT", Core::GUI::CONSTRAIN_LEFT, Core::GUI::ORIGIN_TOP|Core::GUI::ORIGIN_LEFT);
@@ -668,15 +701,13 @@ void _Game::Update() {
 	Core::textSys->drawVar2<float>(1,  -19, "mousePos: ", Core::mouse->x, 3, Core::GUI::CONSTRAIN_LEFT);
 	Core::textSys->drawVar2<float>(21, -19, "", Core::mouse->y, 3, Core::GUI::CONSTRAIN_LEFT);
 
-	Core::textSys->drawVar2<float>(1,  -20, "mousePos: ", Core::mouse->x-Core::gameVars->screen.half.x, 3, Core::GUI::CONSTRAIN_LEFT);
-	Core::textSys->drawVar2<float>(21, -20, "", -Core::mouse->y+Core::gameVars->screen.half.y, 3, Core::GUI::CONSTRAIN_LEFT);
+	Core::textSys->drawVar2<float>(1,  -20, "mousePos: ", Core::mouse->x-Core::gameVars->screen.activeProjection->half.x, 3, Core::GUI::CONSTRAIN_LEFT);
+	Core::textSys->drawVar2<float>(21, -20, "", -Core::mouse->y+Core::gameVars->screen.activeProjection->half.y, 3, Core::GUI::CONSTRAIN_LEFT);
 
 
-
-
-	Core::textSys->drawVar2<int>(1,  -21,   "Terrain Quads: ", std::pow(Core::gameVars->debug.noise.simplex[0].res, 2), 3, Core::GUI::CONSTRAIN_LEFT);
-	Core::textSys->drawVar2<int>(1,  -22,   " Terrain Tris: ", std::pow(Core::gameVars->debug.noise.simplex[0].res, 2) * 2, 3, Core::GUI::CONSTRAIN_LEFT);
-	Core::textSys->drawVar2<int>(1,  -23,   "Terrain Verts: ", std::pow(Core::gameVars->debug.noise.simplex[0].res, 2) * 6, 3, Core::GUI::CONSTRAIN_LEFT);
+//	Core::textSys->drawVar2<int>(1,  -21,   "Terrain Quads: ", std::pow(world.simplex.res, 2), 3, Core::GUI::CONSTRAIN_LEFT);
+//	Core::textSys->drawVar2<int>(1,  -22,   " Terrain Tris: ", std::pow(world.simplex.res, 2) * 2, 3, Core::GUI::CONSTRAIN_LEFT);
+//	Core::textSys->drawVar2<int>(1,  -23,   "Terrain Verts: ", std::pow(world.simplex.res, 2) * 6, 3, Core::GUI::CONSTRAIN_LEFT);
 
 //	Core::textSys->drawVar2<int>(1,  -21,   "Terrain Quads: ", Core::gameVars->debug.noise.simplex[0].res*2, 3, Core::GUI::CONSTRAIN_LEFT);
 //	Core::textSys->drawVar2<int>(1,  -22,   " Terrain Tris: ", Core::gameVars->debug.noise.simplex[0].res*2*2, 3, Core::GUI::CONSTRAIN_LEFT);
@@ -697,6 +728,9 @@ void _Game::Update() {
 //	Core::textSys->drawSpecial(111, 1, "±");			// TODO: Fix
 
 	Core::profiles->runProfile(Core::profiles->builtIn.RunGame_TextSys, false);
+
+//	while((err = glGetError()) != GL_NO_ERROR) {	Core::debug.log("[glGetError 729: "+std::to_string(err)+"]\n");	bGLError = true;	}
+//	if(bGLError) throw std::runtime_error("glGetError: One or more OpenGL errors were detected.");
 
 	// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 	// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -767,14 +801,17 @@ void _Game::Update() {
 	// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 	// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 	{
-		Core::matrix->SetProjection(Core::matrix->MM_ORTHO);
+		Core::matrix->setProjection(Core::matrix->MM_ORTHO, "ortho");
 		Core::Vector3f a = { 0, 0, 0 };
-		Core::Vector3f b = { -Core::gameVars->screen.half.x, -Core::gameVars->screen.half.y, 0 };
+		Core::Vector3f b = { -Core::gameVars->screen.activeProjection->half.x, -Core::gameVars->screen.activeProjection->half.y, 0 };
 		Core::Color colorA = { 1, 0, 0, 1};
 		Core::Color colorB = { 0, 1, 0, 1};
 		Core::helper->drawLine(a, b, 1, 1, colorA, colorB);
 		//Core::helper->drawPoint(b, 5);	// Not implemented
 	}
+
+//	while((err = glGetError()) != GL_NO_ERROR) {	Core::debug.log("[glGetError 810: "+std::to_string(err)+"]\n");	bGLError = true;	}
+//	if(bGLError) throw std::runtime_error("glGetError: One or more OpenGL errors were detected.");
 
 //	// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 //	// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -1119,14 +1156,17 @@ void _Game::Update() {
 //	if(Core::gui->isHiddenWindow("GameMenu", "Window 2") && !Core::gui->isHiddenWindow("GameMenu", "Window 1")) Core::gui->hideWindow("GameMenu", "Window 1");
 
 	// Safety Catch, make sure we are in perspective mode by default
-	Core::matrix->SetProjection(Core::matrix->MM_PERSPECTIVE);
+	Core::matrix->setProjection(Core::matrix->MM_PERSPECTIVE, "standard");
+
+//	while((err = glGetError()) != GL_NO_ERROR) {	Core::debug.log("[glGetError 1158: "+std::to_string(err)+"]\n");	bGLError = true;	}
+//	if(bGLError) throw std::runtime_error("glGetError: One or more OpenGL errors were detected.");
 
 //	Core::colors->PopFront();
 }
 
 void _Game::GetInput() {
 	SDL_PumpEvents();
-	Core::mouse->update(Core::gameVars->screen.half.x, Core::gameVars->screen.half.y);
+	Core::mouse->update(Core::gameVars->screen.activeProjection->half.x, Core::gameVars->screen.activeProjection->half.y);
 	//keyboard.event = SDL_GetKeyState(NULL);
 	keyboard.event = SDL_GetKeyboardState(NULL);
 	keyboard.update();
@@ -1219,7 +1259,7 @@ void _Game::ProcessInput() {
 //	if (keyboard.keys[SDLK_F7].bActive)		{	Core::gameVars->screen.iPolygonMode = GL_POINT;	}
 	if (keyboard.keys[SDLK_F8].bActive) 	{	Core::toggle(bDebugDrawMouseRay);	}
 	if (keyboard.keys[SDLK_F9].bActive) 	{	Core::mouse->SaveRay(Core::gameVars->player.active->transform.pos);	}
-	if (keyboard.keys[SDLK_F10].bActive)	{	SDL_WarpMouseInWindow(Core::glinit->window, Core::gameVars->screen.half.x, Core::gameVars->screen.half.y);	}
+	if (keyboard.keys[SDLK_F10].bActive)	{	SDL_WarpMouseInWindow(Core::glinit->window, Core::gameVars->screen.activeProjection->half.x, Core::gameVars->screen.activeProjection->half.y);	}
 	if (keyboard.keys[SDLK_F11].bActive)	{	Core::profiles->reset();	}
 	if (keyboard.keys[SDLK_F12].bActive)	{	SDL_SetWindowFullscreen(Core::glinit->window, SDL_WINDOW_FULLSCREEN);	}
 

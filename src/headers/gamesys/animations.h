@@ -405,7 +405,7 @@ namespace Core {
 			glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 			glDisable(GL_DEPTH_TEST);
 			glDisable(GL_CULL_FACE);
-			matrix->SetProjection(matrix->MM_ORTHO);
+			matrix->setProjection(matrix->MM_ORTHO, "ortho");
 
 			shader->use(GLS_FONT);
 			matrix->Push();
@@ -417,7 +417,7 @@ namespace Core {
 				animationSys[list[name]->id].vao[list[name]->currentFrame].Draw();
 			matrix->Pop();
 
-			matrix->SetProjection(matrix->MM_PERSPECTIVE);
+			matrix->setProjection(matrix->MM_PERSPECTIVE, "standard");
 			glEnable(GL_CULL_FACE);
 			glEnable(GL_DEPTH_TEST);
 		}
@@ -437,7 +437,7 @@ namespace Core {
 			glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 			glDisable(GL_DEPTH_TEST);
 			glDisable(GL_CULL_FACE);
-			matrix->SetProjection(matrix->MM_ORTHO);
+			matrix->setProjection(matrix->MM_ORTHO, "ortho");
 
 			shader->use(GLS_FONT);
 			matrix->Push();
@@ -458,7 +458,7 @@ namespace Core {
 				animationSys[list[name]->id].vao[list[name]->currentFrame].Draw();
 			matrix->Pop();
 
-			matrix->SetProjection(matrix->MM_PERSPECTIVE);
+			matrix->setProjection(matrix->MM_PERSPECTIVE, "standard");
 			glEnable(GL_CULL_FACE);
 			glEnable(GL_DEPTH_TEST);
 		}

@@ -576,6 +576,7 @@
 	#include "./core/path.h"
 	#include "./core/profile.h"
 	#include "./core/joint.h"
+	#include "./core/Noise.h"
 	//#include "./core/skeleton.h"
 
 	// State settings
@@ -616,7 +617,10 @@
 	#include "./gamesys/O3D.h"				// Draws perspective 3D objects to the world
 	#include "./gamesys/atmosphere.h"
 	#include "./gamesys/MenuSys.h"			// Draws interactable text to the screen. Can detect hover and clicks.
+
 	#include "./gamesys/MapSys.h"
+	#include "./gamesys/MapInstance.h"
+
 	#include "./gamesys/GUI/GUI.h"
 	//#include "./MenuSys/MenuClass.h"
 
@@ -693,6 +697,10 @@
 
 		GameVars			*	gameVars	= new GameVars();
 
+		namespace Sys {
+			MapSys				mapSys;
+			O2DSys				o2dSys;
+		}
 		_IconSys			*	iconSys		= new _IconSys();
 		_SpriteSys			*	spriteSys	= new _SpriteSys();
 		_TextSys			*	textSys		= new _TextSys();
@@ -708,35 +716,44 @@
 		void Setup(int argc, char* argv[]) {
 			//shader = new Shader_System;
 
+			// SETTINGS
 			Core::Setup_GameVars(argc, argv);
+			Core::debug.glErrorCheck("Core", 720);
 
 			// TODO: Get this info from settings file
 			std::string sCaption = "Project Parsec";
 			Core::glinit->init(	sCaption,
-								Core::gameVars->screen.res.x,
-								Core::gameVars->screen.res.y,
+								Core::gameVars->screen.activeProjection->res.x,
+								Core::gameVars->screen.activeProjection->res.y,
 								Core::gameVars->screen.bpp,
 								Core::gameVars->screen.MultiSample,
 								Core::gameVars->screen.vClearColorBase);
+			Core::debug.glErrorCheck("Core", 730);
 
 			// Colors
 			Core::colors.SetActive(Core::colors.COLOR_FRONT);
+			Core::debug.glErrorCheck("Core", 734);
 
 			// Init Occlusion Queries
 			Core::occlusion->Init();
+			Core::debug.glErrorCheck("Core", 738);
 
 			// Load global textures
 			Core::sysTex->load();
+			Core::debug.glErrorCheck("Core", 742);
 
 			// Init particles (load textures)
 			Core::particles->init();
+			Core::debug.glErrorCheck("Core", 745);
 
 			//Core::shader = new Core::Shader_System;
 //			Core::shader->init(&Core::gameVars->player.active->transform.pos, &Core::gameVars->font.vColor);	// Must be after GlInit.init
-			Core::shader->init(&Core::gameVars->screen.res, &Core::gameVars->player.active->transform.pos);	// Must be after GlInit.init
+			Core::shader->init(&Core::gameVars->screen.activeProjection->res, &Core::gameVars->player.active->transform.pos);	// Must be after GlInit.init
+			Core::debug.glErrorCheck("Core", 751);
 
 			// Must be after GlInit.init
 			Core::shader->load();	// Load ALL defined shaders
+			Core::debug.glErrorCheck("Core", 755);
 //			for (int n=0; n<GLS_LAST; n++) {
 //				Core::shader->load(SHADER_PROGRAMS(n));
 //			}
@@ -760,10 +777,12 @@
 //			Core::shader->load(Core::GLS_EXOSPHERE);
 
 			// Post Processing
-			Core::postProcess->init(Core::gameVars->screen.res.x, Core::gameVars->screen.res.y, Core::gameVars->screen.uiMultiSamples);
+			Core::postProcess->init(Core::gameVars->screen.activeProjection->res.x, Core::gameVars->screen.activeProjection->res.y, Core::gameVars->screen.uiMultiSamples);
+			Core::debug.glErrorCheck("Core", 780);
 
 			// Helper Objects
 			Core::helper->init();
+			Core::debug.glErrorCheck("Core", 784);
 
 			// Process timers
 			Core::gameVars->timer.frameRate.start();
@@ -788,6 +807,7 @@
 			skeleton->children[child].AddJoint(Vector3f(50.0f, 50.0f, -200.0f));
 			skeleton->children[child].AddJoint(Vector3f(-50.0f, 50.0f, -200.0f));
 			skeleton->children[child].AddJoint(Vector3f(0.0f, 150.0f, 0.0f));
+			Core::debug.glErrorCheck("Core", 809);
 
 			// Standard Z Depth
 //			matrix->SetPerspective(	Core::gameVars->screen.degFov,
@@ -798,48 +818,90 @@
 //			matrix->SetOrtho(Core::gameVars->screen.fHalfW, Core::gameVars->screen.fHalfH, 1.0f, 1000.0f);
 
 			// Reverse Z Depth
-			matrix->SetPerspective(	Core::gameVars->screen.degFov,
-									(float)Core::gameVars->screen.res.x/(float)Core::gameVars->screen.res.y,
-									Core::gameVars->screen.fNear,
-									Core::gameVars->screen.fFar);
-			matrix->SetOrtho(Core::gameVars->screen.half.x, Core::gameVars->screen.half.y, 100.0f, 0.0f);
+			matrix->addPerspective(	"standard",
+									Core::gameVars->screen.projectionData["standard"]->degFov,
+									Core::gameVars->screen.projectionData["standard"]->fScreenAspect,
+									Core::gameVars->screen.projectionData["standard"]->fNear,
+									Core::gameVars->screen.projectionData["standard"]->fFar);
+
+			matrix->addPerspective(	"atmosphere",
+									Core::gameVars->screen.projectionData["atmosphere"]->degFov,
+									Core::gameVars->screen.projectionData["atmosphere"]->fScreenAspect,
+									Core::gameVars->screen.projectionData["atmosphere"]->fNear,
+									Core::gameVars->screen.projectionData["atmosphere"]->fFar);
+
+			matrix->SetOrtho(Core::gameVars->screen.projectionData["standard"]->half.x, Core::gameVars->screen.projectionData["standard"]->half.y, 100.0f, 0.0f);
 
 			// Init/Load/Calc Core Systems
-			matrix->SetProjection(matrix->MM_PERSPECTIVE);
+			matrix->setProjection(matrix->MM_PERSPECTIVE, "standard");
 			//matrix->SetProjection(matrix->MM_ORTHO);
+			Core::debug.glErrorCheck("Core", 837);
 
 			audioSys.init();
+			Core::debug.glErrorCheck("Core", 840);
 			audioSys.load();
+			Core::debug.glErrorCheck("Core", 842);
 
 			textSys->init();
+			Core::debug.glErrorCheck("Core", 845);
 			textSys->load();
+			Core::debug.glErrorCheck("Core", 847);
 			//Core::textSys.calc();
 
 			//Core::GameSys::winSys.init();
 //			winSys->load();
 //			winSys->calc();
 
+			Core::Sys::mapSys.init();
+			Core::debug.glErrorCheck("Core", 855);
+			//mapSys.init();
+
 			//Core::iconSys.init();
 			iconSys->load();
+			Core::debug.glErrorCheck("Core", 860);
 			iconSys->calc();
+			Core::debug.glErrorCheck("Core", 862);
 
 			//Core::spriteSys.init();
 			spriteSys->load();
+			Core::debug.glErrorCheck("Core", 866);
 			spriteSys->calc();
+			Core::debug.glErrorCheck("Core", 868);
 
 			animationSys.init();
+			Core::debug.glErrorCheck("Core", 871);
 			animationSys.load();
+			Core::debug.glErrorCheck("Core", 873);
 			animationSys.calc();
+			Core::debug.glErrorCheck("Core", 875);
 
 			glClearColor(	Core::gameVars->screen.vClearColorCurrent[0],
 							Core::gameVars->screen.vClearColorCurrent[1],
 							Core::gameVars->screen.vClearColorCurrent[2],
 							Core::gameVars->screen.vClearColorCurrent[3]	);
+			Core::debug.glErrorCheck("Core", 881);
 
 			// Debug
 			//Core::occlusion.CreateQuery("TestQuery", GL_SAMPLES_PASSED);
 			//Core::occlusion.SetSamples("TestQuery", (255)*(255));
 		}
+
+//		void glErrorCheck(std::string location, int line) {
+//			GLenum err;
+//			bool bGLError = false;
+//			while((err = glGetError()) != GL_NO_ERROR) {
+//				std::stringstream ss;
+//				ss << "[glGetError]" << location << " @ " << line << ": 0x" << std::hex << err << std::dec << " (" << err << ")\n";
+//				Core::debug.log(ss.str(), Core::debug().RED);
+//				bGLError = true;
+//			}
+//
+//			sleep(0.25f);
+//			if(bGLError) {
+//				debug.print("\n");
+//				throw std::runtime_error("glGetError: One or more OpenGL errors were detected.");
+//			}
+//		}
 
 		void glReport() {
 			std::cout << std::endl;

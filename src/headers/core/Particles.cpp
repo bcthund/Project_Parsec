@@ -20,7 +20,7 @@ namespace Core {
 	const std::string	_Particles::TEXDIR				= "./texture/particles/";
 	int					_ParticleDataOld::iLoadedTextues	= 0;
 
-	_Particles::_Particles(GameSys::Atmosphere &f, float fScale) : parent(f), fWorldScale(fScale) {
+	_Particles::_Particles(Sys::Atmosphere &f, float fScale) : parent(f), fWorldScale(fScale) {
 		data.setSource("Particles");
 		iNumObjects = 0;
 		for (int n=0; n<32; n++) {

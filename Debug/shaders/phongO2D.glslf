@@ -65,19 +65,22 @@ return vReturnDiffuse;
 }
 
 void main(void) {
+    float fAlphaThreshold = 0.01;
 	//vec4 texColor, vBumpMap, vSpecMap, vAmboMap;
 	vec4 texColor = texture2D(colorMap, data.vTexCoords);
-	vec3 diffuse = vec3(0);
-	vec3 ambient = vec3(0);
-	float fMaxDarkness = 0.0;
-	//float fAlphaThreshold;
+	if(texColor.a < fAlphaThreshold) discard;
+	else {
+        vec3 diffuse = vec3(0);
+        vec3 ambient = vec3(0);
+        float fMaxDarkness = 0.0;
 
-	for(int light=0; light<iNumLights; light++) {
-		diffuse += AddLight(iType[light], vLightDir[light], vLightPos[light], vDiffuseColor[light], vAmbientColor[light], vSpecularColor[light], vAttenuation[light], fMaxDarkness);
-		//ambient += vAmbientColor[light].rgb * texColor.rgb;
-	}
-	//fragmentColor = vec4(ambient.rgb + (texColor.rgb * diffuse.rgb), texColor.a);
-	vec3 gamma = vec3(1.0/2.2);
-	vec3 finalColor = ambient.rgb + (texColor.rgb * diffuse.rgb);
-	fragmentColor = vec4(pow(finalColor, gamma), texColor.a);
+        for(int light=0; light<iNumLights; light++) {
+            diffuse += AddLight(iType[light], vLightDir[light], vLightPos[light], vDiffuseColor[light], vAmbientColor[light], vSpecularColor[light], vAttenuation[light], fMaxDarkness);
+            //ambient += vAmbientColor[light].rgb * texColor.rgb;
+        }
+        //fragmentColor = vec4(ambient.rgb + (texColor.rgb * diffuse.rgb), texColor.a);
+        vec3 gamma = vec3(1.0/2.2);
+        vec3 finalColor = ambient.rgb + (texColor.rgb * diffuse.rgb);
+        fragmentColor = vec4(pow(finalColor, gamma), texColor.a);
+    }
 }

@@ -138,6 +138,7 @@ namespace Core {
 			std::string theImage;
 			Core::MemBlock memBlock;
 
+			Core::debug.glErrorCheck("TextSys", 141);
 			//if (Core::gameVars->debug.load) cout << endl;
 			texture.Begin(uiNumTextures);
 
@@ -155,7 +156,8 @@ namespace Core {
 
 				Core::debug.log("["+std::to_string(theId)+"] "+theImage+"\n", Core::debug().YELLOW);
 
-				texture.Load(sTexDir, theImage, theId, false, GL_LINEAR_MIPMAP_LINEAR, GL_CLAMP_TO_EDGE);		// This filtering works best, especially for odd font sizes
+				texture.Load(sTexDir, theImage, theId, false, GL_LINEAR, GL_CLAMP_TO_EDGE);		// This filtering works best, especially for odd font sizes
+				Core::debug.glErrorCheck("TextSys", 162);
 			}
 
 			Core::debug.logDecreaseIndent();
@@ -1683,7 +1685,7 @@ namespace Core {
 		 * ****************************************************************************************************************************** */
 		void _TextSys::start(int x, int y, int fontNum, Core::_Colors::_ACTIVE_COLOR eColor) {
 			glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-			matrix->SetProjection(matrix->MM_ORTHO);
+			matrix->setProjection(matrix->MM_ORTHO, "ortho");
 			shader->use(GLS_FONT);
 			glDisable(GL_DEPTH_TEST);
 			matrix->Push();
@@ -1706,7 +1708,7 @@ namespace Core {
 		 * ****************************************************************************************************************************** */
 		void _TextSys::stop() {
 			matrix->Pop();
-			matrix->SetProjection(matrix->MM_PERSPECTIVE);
+			matrix->setProjection(matrix->MM_PERSPECTIVE, "standard");
 			glEnable(GL_DEPTH_TEST);
 		}
 
@@ -1807,7 +1809,7 @@ namespace Core {
 		 * ****************************************************************************************************************************** */
 		void _TextSys::draw(GUI::Props *con, std::string buffer, GUI::iConstrain anchor) {
 			glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-			matrix->SetProjection(matrix->MM_ORTHO);
+			matrix->setProjection(matrix->MM_ORTHO, "ortho");
 			shader->use(GLS_FONT);
 			glDisable(GL_DEPTH_TEST);
 			matrix->Push();
@@ -1838,7 +1840,7 @@ namespace Core {
 					vPos.y += con->scroll.getY();
 				}
 				matrix->Translate(int(vPos.x+vAnchor.x), int(vPos.y+vAnchor.y), 0.0f);
-				glActiveTexture(0);
+				glActiveTexture(GL_TEXTURE0);
 				texture.Set(Core::gameVars->font.iTexNum);
 				colors.SetActive(Core::_Colors::COLOR_FRONT);
 
@@ -1854,7 +1856,7 @@ namespace Core {
 
 			}
 			matrix->Pop();
-			matrix->SetProjection(matrix->MM_PERSPECTIVE);
+			matrix->setProjection(matrix->MM_PERSPECTIVE, "standard");
 			glEnable(GL_DEPTH_TEST);
 		}
 
@@ -1880,8 +1882,8 @@ namespace Core {
 					con->limit.y = (con->size.y-(con->vPadding.top+con->vPadding.bottom))/(Core::gameVars->font.vSize.y);
 				}
 				else {
-					con->limit.x = gameVars->screen.res.x;
-					con->limit.y = gameVars->screen.res.y;
+					con->limit.x = gameVars->screen.activeProjection->res.x;
+					con->limit.y = gameVars->screen.activeProjection->res.y;
 				}
 				//con->limit.y = con->size.y-(con->vPadding.top+con->vPadding.bottom);
 				//con->limit.y = con->size.y-con->vPadding.top; //+con->vPadding.bottom);

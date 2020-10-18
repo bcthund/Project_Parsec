@@ -8,6 +8,10 @@
 #ifndef HEADERS_CORE_DEBUG_H_
 #define HEADERS_CORE_DEBUG_H_
 
+#define GL_GLEXT_PROTOTYPES 1		// Enable core profile
+#include "gl4_5/glcorearb.h"
+#include "gl4_5/glext.h"
+
 #include <iostream>
 #include <sstream>
 #include "timer.h"
@@ -102,6 +106,7 @@ namespace Core {
 			void update(int rate=500, bool bClear=true/*, bool bEnable=true*/);
 			void log(std::string buffer, ConsoleColors::eCOLOR color=ConsoleColors::eCOLOR(consoleColors.WHITE));
 			void print(std::string buffer, ConsoleColors::eCOLOR color=ConsoleColors::eCOLOR(consoleColors.WHITE));
+			void glErrorCheck(std::string location, int line);
 			virtual ~_Debug();
 	};
 	//_Debug::consoleColors = 0;

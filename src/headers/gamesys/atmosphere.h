@@ -48,7 +48,7 @@
 #include "gl4_5/glcorearb.h"
 
 namespace Core {
-	namespace GameSys {
+	namespace Sys {
 //		struct Atmosphere_Data {
 //			struct _Satellite {
 //				Vector3f	vPosition;			// Rectangular coordinates of light
@@ -370,7 +370,7 @@ namespace Core {
 					//skybox.thermosphere.fScale	= skybox.mesosphere.fScale+1000;
 					//skybox.exosphere.fScale		= skybox.thermosphere.fScale+1000;
 
-					skybox.troposphere.fScale		= 50000;
+					skybox.troposphere.fScale		= 500000;
 					skybox.stratosphere.fScale		= skybox.troposphere.fScale;		//Divide by 2 because the stratosphere has a model twice as big
 					skybox.mesosphere.fScale		= skybox.stratosphere.fScale;
 					skybox.thermosphere.fScale		= skybox.mesosphere.fScale;
@@ -1228,16 +1228,19 @@ namespace Core {
 
 			Core::debug.log("Textures {\n");
 			Core::debug.logIncreaseIndent();
+			Core::debug.glErrorCheck("Atmosphere", 1231);
 
 			MemBlock memBlock;
 			std::string theImage;
 			skybox.tex.Begin(NUM_TEXTURES);
+			Core::debug.glErrorCheck("Atmosphere", 1237);
 
 			std::string	sDirectory		= "./texture/atmosphere/";
 			char * cFilename			= (char*)"./system/skybox.bin";
 			int	iRecordSize				= 32;
 
 			readFile(cFilename, memBlock); //Read the data file into memory
+			Core::debug.glErrorCheck("Atmosphere", 1243);
 
 			// Iterate through each record in the file
 			for (int d=0; d<memBlock.size; d+=iRecordSize) {
@@ -1248,10 +1251,11 @@ namespace Core {
 				//if (gameVars->debug.load)
 				//std::cout << " [" << theId << "] " <<  theImage << std::endl;
 				//skybox.tex.Load(sDirectory, theImage, theId, true, (GLenum)GL_NEAREST, (GLenum)GL_REPEAT);
-				skybox.tex.Load(sDirectory, theImage, theId, true, (GLenum)GL_NONE, (GLenum)GL_REPEAT);
+				skybox.tex.Load(sDirectory, theImage, theId, true, GL_NEAREST, GL_REPEAT);
 
 				Core::debug.log("["+std::to_string(theId)+"] "+theImage+"\n", Core::debug().YELLOW);
 			}
+			Core::debug.glErrorCheck("Atmosphere", 1258);
 
 			Core::debug.logDecreaseIndent();
 			Core::debug.log("}\n");
@@ -1280,6 +1284,7 @@ namespace Core {
 				skybox.troposphere.vao.End();
 				//std::cout << "Done" << std::endl;
 			}
+			Core::debug.glErrorCheck("Atmosphere", 1287);
 
 			Core::debug.log("Stratosphere\n", Core::debug().YELLOW);
 			{
@@ -1305,6 +1310,7 @@ namespace Core {
 				skybox.stratosphere.vao.End();
 				//std::cout << "Done" << std::endl;
 			}
+			Core::debug.glErrorCheck("Atmosphere", 1313);
 
 			Core::debug.log("Thermosphere\n", Core::debug().YELLOW);
 			{
@@ -1330,6 +1336,7 @@ namespace Core {
 				skybox.thermosphere.vao.End();
 				//std::cout << "Done" << std::endl;
 			}
+			Core::debug.glErrorCheck("Atmosphere", 1339);
 
 			Core::debug.log("Exosphere\n", Core::debug().YELLOW);
 			{
@@ -1348,7 +1355,7 @@ namespace Core {
 				loadPly.load(loadFile);
 				//if (gameVars->debug.load)
 				//std::cout << "[" <<  loadPly.numDrawVerts << "]...";
-				skybox.exosphere.vao.Begin(GL_TRIANGLES,	loadPly.numVerts,	loadPly.numDrawVerts, 1);
+				skybox.exosphere.vao.Begin(GL_TRIANGLES,		loadPly.numVerts,	loadPly.numDrawVerts, 1);
 				skybox.exosphere.vao.CopyData(GLA_VERTEX,		loadPly.vVerts);
 				skybox.exosphere.vao.CopyData(GLA_NORMAL,		loadPly.vNorms);
 				skybox.exosphere.vao.CopyData(GLA_TEXTURE,		loadPly.vCoords, 0);
@@ -1356,6 +1363,7 @@ namespace Core {
 				skybox.exosphere.vao.End();
 				//std::cout << "Done" << std::endl;
 			}
+			Core::debug.glErrorCheck("Atmosphere", 1366);
 
 			Core::debug.log("Sun (Incomplete Loader)\n", Core::debug().RED);
 			// Satellite
@@ -1450,6 +1458,7 @@ namespace Core {
 
 				satellite->add(data);
 			}
+			Core::debug.glErrorCheck("Atmosphere", 1461);
 
 			Core::debug.log("Moon (Incomplete Loader)\n", Core::debug().RED);
 			{
@@ -1519,6 +1528,7 @@ namespace Core {
 
 				satellite->add(data);
 			}
+			Core::debug.glErrorCheck("Atmosphere", 1531);
 
 			Core::debug.log("Flora (Incomplete/Outdated)\n", Core::debug().RED);
 			// Flora
@@ -1575,6 +1585,7 @@ namespace Core {
 //					std::cout << "       String = " << Core::sOffset << std::endl;
 				//Core::sOffset = "    ";
 			}
+			Core::debug.glErrorCheck("Atmosphere", 1588);
 
 //					else if(mode == FOG) {
 //						if (gameVars->debug.load) cout << "## LOAD FOG ##" << endl;
@@ -1903,6 +1914,7 @@ namespace Core {
 
 		void Atmosphere::draw(uint mode, ...) {
 			glDisable(GL_CULL_FACE);
+			glDisable(GL_DEPTH_TEST);
 
 //			if(mode == MODE_TROPOSPHERE) {
 //				glActiveTexture(GL_TEXTURE0);
@@ -1968,6 +1980,9 @@ namespace Core {
 //				//glActiveTexture(GL_TEXTURE0);
 //			}
 //			else if(mode == MODE_EXOSPHERE) {
+
+			matrix->setProjection(Core::Matrix_System::MM_PERSPECTIVE, "atmosphere");
+
 			if(mode == MODE_EXOSPHERE) {
 
 				matrix->Push();
@@ -2029,6 +2044,8 @@ namespace Core {
 					particlesOld->draw(sType);
 				matrix->Pop();
 			}
+
+			matrix->setProjection(Core::Matrix_System::MM_PERSPECTIVE, "standard");
 //	else if(mode == MOON) {
 //		glActiveTexture(GL_TEXTURE0);
 //		moon.tex.Set(moon.sImage);
@@ -2131,6 +2148,7 @@ namespace Core {
 //		}
 //		glEnable(GL_CULL_FACE);
 //	}
+			glEnable(GL_DEPTH_TEST);
 			glEnable(GL_CULL_FACE);
 		}
 	}

@@ -24,6 +24,8 @@ namespace Core {
 		LoadIdentity(mrvStack[iCurrentStack]);
 		LoadIdentity(mvpStack[iCurrentStack]);
 
+		mMatrix = nullptr;
+
 		Core::debug.print(" Done ", Core::debug().GREEN);
 		Core::debug.print("}\n");
 	}
@@ -379,7 +381,7 @@ namespace Core {
 //		return result;
 //	}
 
-	void Matrix_System::SetPerspective(Degrees degFov, float fAspect, float fNear, float fFar)
+	void Matrix_System::addPerspective(std::string name, Degrees degFov, float fAspect, float fNear, float fFar)
 	{
 //		float xmin, xmax, ymin, ymax;       // Dimensions of near clipping plane
 //
@@ -405,16 +407,18 @@ namespace Core {
 		right = top * fAspect;
 		left = -right;
 
-		// Matrix Center
-		perspectiveMatrix[0]  = 2*fNear/(right-left);
-		perspectiveMatrix[5]  = 2*fNear/(top-bottom);
-		perspectiveMatrix[10] = -(fFar+fNear)/(fFar-fNear);
-		perspectiveMatrix[15] = 0.0f;
+		perspectiveMatrix.add(name, new Matrix44f());
 
-		perspectiveMatrix[11] = -1.0f;
-		perspectiveMatrix[12] = -fNear*(right+left)/(right-left);
-		perspectiveMatrix[13] = -fNear*(top+bottom)/(top-bottom);
-		perspectiveMatrix[14] = 2*fFar*fNear/(fNear-fFar);
+		// Matrix Center
+		(*perspectiveMatrix[name])[0]  = 2*fNear/(right-left);
+		(*perspectiveMatrix[name])[5]  = 2*fNear/(top-bottom);
+		(*perspectiveMatrix[name])[10] = -(fFar+fNear)/(fFar-fNear);
+		(*perspectiveMatrix[name])[15] = 0.0f;
+
+		(*perspectiveMatrix[name])[11] = -1.0f;
+		(*perspectiveMatrix[name])[12] = -fNear*(right+left)/(right-left);
+		(*perspectiveMatrix[name])[13] = -fNear*(top+bottom)/(top-bottom);
+		(*perspectiveMatrix[name])[14] = 2*fFar*fNear/(fNear-fFar);
 
 		// Transpose
 //		perspectiveMatrix[14] = -1.0f;
@@ -460,20 +464,20 @@ namespace Core {
 		lightMatrix[15] =  1.0f;
 	}
 
-	void Matrix_System::SetProjection(GLenum eProj) {
-		if (eProj == MM_PERSPECTIVE) {
+	void Matrix_System::setProjection(GLenum eProj, std::string name) {
+		if (eProj == MM_ORTHO) {
+			//memcpy(projMatrix, orthographicMatrix, sizeof(Matrix44f));
+			projMatrix = orthographicMatrix;
+		}
+		else if (eProj >= MM_PERSPECTIVE) {
 			//memcpy(projMatrix, perspectiveMatrix, sizeof(Matrix44f));
-			projMatrix = perspectiveMatrix;
+			projMatrix = *perspectiveMatrix[name];
 //			#define defM projMatrix
 //			cout << defM[0]  << "\t" << defM[1]  << "\t" << defM[2]  << "\t" << defM[3]  << endl
 //				 << defM[4]  << "\t" << defM[5]  << "\t" << defM[6]  << "\t" << defM[7]  << endl
 //				 << defM[8]  << "\t" << defM[9]  << "\t" << defM[10] << "\t" << defM[11] << endl
 //				 << defM[12] << "\t" << defM[13] << "\t" << defM[14] << "\t" << defM[15] << endl << endl;
 //			#undef defM
-		}
-		if (eProj == MM_ORTHO) {
-			//memcpy(projMatrix, orthographicMatrix, sizeof(Matrix44f));
-			projMatrix = orthographicMatrix;
 		}
 		//if (eProj == MM_LIGHT) memcpy(projMatrix, lightMatrix, sizeof(Matrix44f));
 	}

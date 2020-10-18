@@ -404,16 +404,23 @@ namespace Core {
 	}
 
 	void _Helper::drawLine(Vector2f a, Vector2f b, float fWidth, float fScale, Color vColorA, Color vColorB) {
+		Core::debug.glErrorCheck("_Helper::drawLine", 407);
 		SetLine(a, b, fScale, vColorA, vColorB);
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		Core::debug.glErrorCheck("_Helper::drawLine", 410);
 		glLineWidth(fWidth);
+		Core::debug.glErrorCheck("_Helper::drawLine", 412);
 		matrix->Push();
 			matrix->SetTransform();
 			shader->use(GLS_LINES);
+			Core::debug.glErrorCheck("_Helper::drawLine", 416);
 			shader->getUniform(GLS_LINES);
+			Core::debug.glErrorCheck("_Helper::drawLine", 418);
 			vaoLine.Draw();
+			Core::debug.glErrorCheck("_Helper::drawLine", 420);
 		matrix->Pop();
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		Core::debug.glErrorCheck("_Helper::drawLine", 423);
 	}
 
 	void _Helper::drawLine(Vector3f a, Vector3f b, float fWidth, float fScale, Color vColorA, Color vColorB) {

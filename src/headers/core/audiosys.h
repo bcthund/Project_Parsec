@@ -113,13 +113,13 @@ namespace Core {
 
 			// Reserved Channels map (name as used)
 			struct s_Channels {
-				const int	CHANNEL_NONE			= -1,
-							CHANNEL_SYSTEM			= 0,
-							CHANNEL_GUI_ANIMATION	= 1,	///< Not currently used, multiple animations is possible so may not use
-							CHANNEL_GUI_BUTTON		= 2,
-							CHANNEL_GUI_SLIDER		= 3,
-							CHANNEL_GUI_ICON		= 4,
-							CHANNEL_GUI_CHECK		= 5,
+				const int	CHANNEL_NONE			= -1,	///< Selects next available channel not on reserved list
+							CHANNEL_0_SYSTEM		= 0,
+							CHANNEL_1_GUI_ANIMATION	= 1,	///< Not currently used, multiple animations is possible so may not use
+							CHANNEL_2_GUI_BUTTON	= 2,
+							CHANNEL_3_GUI_SLIDER	= 3,
+							CHANNEL_4_GUI_ICON		= 4,
+							CHANNEL_5_GUI_CHECK		= 5,
 							CHANNEL_6				= 6,
 							CHANNEL_7				= 7,
 							CHANNEL_8				= 8,
@@ -146,7 +146,97 @@ namespace Core {
 							CHANNEL_29				= 29,
 							CHANNEL_30				= 30,
 							CHANNEL_31				= 31;
-			} channels;
+			} CHANNEL;
+
+			// Default Audio Samples
+			struct s_Audio {
+				const int	AUDIO_0_GUI_CLICK_ON	= 0,
+							AUDIO_1_GUI_CLICK_OFF	= 1,
+							AUDIO_2_GUI_CHECK_ON	= 2,
+							AUDIO_3_GUI_CHECK_OFF	= 3,
+							AUDIO_4_GUI_ICON_ON		= 4,
+							AUDIO_5_GUI_ICON_OFF	= 5,
+							AUDIO_6_GUI_SLIDER_ON	= 6,
+							AUDIO_7_GUI_SLIDER_OFF	= 7,
+							AUDIO_8_GUI				= 8,
+							AUDIO_9_GUI				= 9,
+							AUDIO_10				= 10,
+							AUDIO_11				= 11,
+							AUDIO_12				= 12,
+							AUDIO_13				= 13,
+							AUDIO_14				= 14,
+							AUDIO_15				= 15,
+							AUDIO_16				= 16,
+							AUDIO_17				= 17,
+							AUDIO_18				= 18,
+							AUDIO_19				= 19,
+							AUDIO_20				= 20,
+							AUDIO_21				= 21,
+							AUDIO_22				= 22,
+							AUDIO_23				= 23,
+							AUDIO_24				= 24,
+							AUDIO_25				= 25,
+							AUDIO_26				= 26,
+							AUDIO_27				= 27,
+							AUDIO_28				= 28,
+							AUDIO_29				= 29,
+							AUDIO_30				= 30,
+							AUDIO_31				= 31;
+			} AUDIO;
+
+			// Default Music
+			struct s_Music {
+				const int	MUSIC_0_MainMenu				= 0,
+							MUSIC_1							= 1,
+							MUSIC_2							= 2,
+							MUSIC_3							= 3,
+							MUSIC_4							= 4,
+							MUSIC_5							= 5,
+							MUSIC_6							= 6,
+							MUSIC_7							= 7,
+							MUSIC_8							= 8,
+							MUSIC_9							= 9,
+							MUSIC_10_BattleLight			= 10,
+							MUSIC_11_BattleNormal			= 11,
+							MUSIC_12_BattleHeavy			= 12,
+							MUSIC_13_BattleBoss				= 13,
+							MUSIC_14_BattleSpecial			= 14,
+							MUSIC_15_BattleImpossible		= 15,
+							MUSIC_16_Battle_6				= 16,
+							MUSIC_17_Battle_7				= 17,
+							MUSIC_18_Battle_8				= 18,
+							MUSIC_19_Battle_9				= 19,
+							MUSIC_20_ExploreOcean			= 20,
+							MUSIC_21_ExploreWetland			= 21,
+							MUSIC_22_ExploreTemperateForest	= 22,
+							MUSIC_23_ExploreTropicalForest	= 23,
+							MUSIC_24_ExploreMountain		= 24,
+							MUSIC_25_ExploreGrassland		= 25,
+							MUSIC_26_ExploreDesert			= 26,
+							MUSIC_27_ExplorePolar			= 27,
+							MUSIC_28_Explore				= 28,
+							MUSIC_29_Explore				= 29,
+							MUSIC_30						= 30,
+							MUSIC_31						= 31,
+							MUSIC_32						= 32,
+							MUSIC_33						= 33,
+							MUSIC_34						= 34,
+							MUSIC_35						= 35,
+							MUSIC_36						= 36,
+							MUSIC_37						= 37,
+							MUSIC_38						= 38,
+							MUSIC_39						= 39,
+							MUSIC_40_Dungeon				= 40,
+							MUSIC_41_Dungeon				= 41,
+							MUSIC_42_Dungeon				= 42,
+							MUSIC_43_Dungeon				= 43,
+							MUSIC_44_Dungeon				= 44,
+							MUSIC_45_Dungeon				= 45,
+							MUSIC_46_Dungeon				= 46,
+							MUSIC_47_Dungeon				= 47,
+							MUSIC_48_Dungeon				= 48,
+							MUSIC_49_Dungeon				= 49;
+			} MUSIC;
 
 			class SoundInterface {
 					friend class AudioSys;
@@ -225,8 +315,9 @@ namespace Core {
 			void pause(std::string name);
 			void stop(std::string name);
 
-			AudioSys::s_Channels & operator()()				{	return parent->channels;	}
-			t_SoundItem& operator[](std::string name)		{	return *audio[name];		}
+			AudioSys::s_Audio & operator()()				{	return parent->AUDIO;	}		///< Get default audio index
+			AudioSys::s_Channels & channel()				{	return parent->CHANNEL;	}		///< Get reserved channel number
+			t_SoundItem& operator[](std::string name)		{	return *audio[name];	}		///< Get a sound item by name
 
 			t_SoundInstance();
 			~t_SoundInstance();
@@ -245,6 +336,7 @@ namespace Core {
 			void pause();
 			void stop();
 
+			AudioSys::s_Music & operator()()				{	return parent->MUSIC;	}		///< Get default music index
 			t_MusicItem& operator[](std::string name)		{	return *audio[name];		}
 
 			t_MusicInstance();

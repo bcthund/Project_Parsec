@@ -65,15 +65,22 @@ int main(int argc, char* argv[]) {
 //		bRun = false;
 //	}
 
+	Core::debug.glErrorCheck("Main", 68);
+
 	Core::Setup(argc, argv);
+	Core::debug.glErrorCheck("Main", 71);
+
 	_Game game;
 	game.load();
+	Core::debug.glErrorCheck("Main", 75);
 
 	_Admin admin = _Admin(&game);
 	admin.init();
+	Core::debug.glErrorCheck("Main", 79);
 
 	//std::cout << "<---------------------------" << Core::skeleton->vConnection[0]->x << ", " << Core::skeleton->vConnection[0]->y << ", " << Core::skeleton->vConnection[0]->z << std::endl;
 	Core::glReport();
+	Core::debug.glErrorCheck("Main", 83);
 
 	// Start timers
 	Core::timeSys->start();

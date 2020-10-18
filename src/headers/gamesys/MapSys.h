@@ -18,76 +18,90 @@
  */
 
 #include <chrono>	// Used for random Seed for Map perlin (temporary)
-#include <libnoise/noise.h>
+//#include "../core/types.h"
+#include "../core/Noise.h"
 #include "../core/core_functions.h"
 #include "../core/vao.h"
 #include "../core/texture.h"
-#include "../core/FractalNoise.h"
+#include "./MapData.h"
+#include <libnoise/noise.h>
+#include "../core/SimplexNoise.h"
+//#include "../core/FractalNoise.h"
 
 namespace Core {
-	namespace GameSys {
-
-		struct MapData {
-			Data3f * vVerts;
-			Data3f * vNorms;
-			Data2f * vCoords;
-			GLuint * vIndex;
-			Vector3ui * vGroups;
-			long numDrawVerts;
-			long numVerts;
-			long numFaces;
-			VAO vao;
-
-			MapData() {
-				numVerts = 0;
-				numFaces = 0;
-				numDrawVerts = 0;
-
-				vVerts  = nullptr;
-				vNorms  = nullptr;
-				vCoords = nullptr;
-				vIndex  = nullptr;
-				vGroups = nullptr;
-			}
-
-			~MapData() {
-				delete[] vVerts;
-				delete[] vNorms;
-				delete[] vCoords;
-				delete[] vIndex;
-				delete[] vGroups;
-			}
-
-		};
-
-
-
-
+	namespace Sys {
 		class MapSys {
 			private:
-				enum eTerrainType { TERRAIN_FLAT, TERRAIN_PERLIN, TERRAIN_SIMPLEX, TERRAIN_FRACTAL };
-				void generateTerrainChunk(MapData &map, float SIZE, int VERTEX_COUNT, eTerrainType eType=TERRAIN_PERLIN, int iTexScale=1, float fHeightOffset=0.0f);
 
+//				typedef std::variant<Map::t_Simplex*, Map::t_Perlin*, Map::t_Fractal*, Map::t_Ridged*> t_VariantNoise;
+//				void generateTerrainChunk(Map::Data &map, float SIZE, int VERTEX_COUNT, eTerrainType eType=TERRAIN_PERLIN, int iTexScale=1, float fHeightOffset=0.0f);
+				//void generateTerrainChunk(int x, int z, Map::Data &map, Map::Simplex *simplex);
+
+				// TODO: Noise handler should be its own global class
 				// Setup Perlin Noise
-				unsigned seed1 = 42;
-				unsigned seed2 = 1024;
-				unsigned seed3 = 420;
-				std::minstd_rand0 rng1;
-				std::minstd_rand0 rng2;
-				std::minstd_rand0 rng3;
-				noise::module::Perlin gen1;
-				noise::module::Perlin gen2;
-				noise::module::Perlin gen3;
-				double noise1(double nx, double ny) { return gen1.GetValue(nx, ny, 0) / 2.0 + 0.5; }
-				double noise2(double nx, double ny) { return gen2.GetValue(nx, ny, 0) / 2.0 + 0.5; }
-				double noise3(double nx, double ny) { return gen3.GetValue(nx, ny, 0) / 2.0 + 0.5; }
-				const eTerrainType TERRAIN_TYPE = TERRAIN_SIMPLEX;
+//				unsigned seed1 = 42;
+//				unsigned seed2 = 1024;
+//				unsigned seed3 = 420;
+//				unsigned seed4 = 4096;
+//				std::minstd_rand0 rng1;
+//				std::minstd_rand0 rng2;
+//				std::minstd_rand0 rng3;
+//				std::minstd_rand0 rng4;
+//				noise::module::Perlin genPerlin;
+//				noise::module::RidgedMulti genRidged;
+//				noise::module::Voronoi genVoronoi;
+//				noise::module::Billow genBillow;
+//				SimplexNoise genSimplex;
+//				noise::module::Perlin gen2;
+//				noise::module::Perlin gen3;
+//				double RidgedNoise(double nx, double ny) {
+//					//return 2 * (0.5f - abs(0.5f - PerlinNoise(nx, ny)));
+//					return genRidged.GetValue(nx, ny, 0) / 2.0 + 0.5;
+//				}
+
+//				double applyHeightFunction(double height, double e2, Map::t_SimplexFunctions *functions);
+//				double applyFunction(double height, double e2, Map::t_PerlinFunctions *functions);
+//				double applyFunction(double height, double e2, Map::t_FractalFunctions *functions);
+
+//				double noise1(double nx, double ny) { return gen1.GetValue(nx, ny, 0) / 2.0 + 0.5; }
+//				double noise2(double nx, double ny) { return gen2.GetValue(nx, ny, 0) / 2.0 + 0.5; }
+//				double noise3(double nx, double ny) { return gen3.GetValue(nx, ny, 0) / 2.0 + 0.5; }
 				bool bInit;
 
 
 			protected:
 
+
 			public:
+				struct _Simplex {
+					int res;
+					float tex_scale;
+					int terrain_size;
+					float terrain_height_offset;
+
+					Vector2f offset;
+					float frequency, amplitude, lacunarity, persistance;
+					int octaves;
+					float power;
+					float scale;
+					float delta;
+					_Simplex() {
+						res = 256;
+						tex_scale = 128.0f;
+						terrain_size = 16384;
+						terrain_height_offset = 0.0f;
+
+						delta		= 32.0f;
+						frequency	= 0.00025f; //0.0006; //0.000076; //0.00025f;
+						amplitude	= 1.0f;
+						lacunarity	= 2.9f; //6.553f; //6.004; //6.75325; //8.0f;
+						persistance	= 0.33f; //0.139f; //0.150; //0.175; //0.175f;
+						power		= 1.0f;
+						scale		= 875.0f; //500.0f; //275.0f; //1750; //2500;
+						octaves		= 3;
+					}
+				} simplex;
+
 				MapSys() {
 					Core::debug.log("Construct MapSys {");
 //					mapData = nullptr;
@@ -116,33 +130,37 @@ namespace Core {
 //					}
 //				} data;
 
-				std::string dir;			// Directory location for map
+				std::string dir;				// Directory location for map
 //				VAO ** mapData;
-//				MapData terrainChunk[4];		// Generic terrain chunk (TODO: LOD array)
-				Texture tex;				// Map specific textures
+//				Map::Data terrainChunk[4];		// Generic terrain chunk (TODO: LOD array)
+				Texture tex;					// TODO: Map specific textures
 				bool init();
-				bool load(MapData &ref);
-				bool calc(MapData &ref);
-				void update(MapData &ref);
-//				void draw(Core::SHADER_PROGRAMS iShader, Core::_Lights &lights);
-				double getPerlinElevation(float x, float z, float w, float h);
-				double getPerlinMoisture(float x, float z, float w, float h);
-				double getSimplexElevation(float x, float z);		// w and h for convenience, not used
-				double getSimplexElevation(float x, float z, float freq, float amp, float lac, float per, int oct);
-				double getFractalElevation(float x, float z);
+//				void load(int x, int z, Map::Data &chunk, Map::t_VariantNoise noise);
+				void load(int x, int z, Map::Data &chunk, Core::Noise::t_Noise *noise);
+//				void loadData(int x, int z, Data3f &chunkData, int index, Core::Noise::t_Noise *noise);
+				void load(int x, int z, Map::Data &chunk, int index, Core::Noise::t_Noise *noise);
+				void calc(Map::Data &ref);
+//				void update(int x, int z, Map::Data &chunk, Map::t_VariantNoise noise);
+				void update(int x, int z, Map::Data &chunk, Core::Noise::t_Noise *noise);
+//				double getElevation(float x, float z, Map::t_VariantNoise noise);
+//				double getElevation(float x, float z, Core::Noise::t_Noise *noise);
 		};
 
 		bool MapSys::init() {
 			Core::debug.log("Init MapSys {");
 
 			if(!bInit) {
-				rng1 = std::minstd_rand0(seed1);
-				rng2 = std::minstd_rand0(seed2);
-				rng3 = std::minstd_rand0(seed3);
-
-				gen1.SetSeed(rng1());
-				gen2.SetSeed(rng2());
-				gen3.SetSeed(rng3());
+//				rng1 = std::minstd_rand0(seed1);
+//				rng2 = std::minstd_rand0(seed2);
+//				rng3 = std::minstd_rand0(seed3);
+//				rng4 = std::minstd_rand0(seed4);
+//
+//				genPerlin.SetSeed(rng1());
+//				genRidged.SetSeed(rng2());
+//				genVoronoi.SetSeed(rng3());
+//				genBillow.SetSeed(rng4());
+//				gen2.SetSeed(rng2());
+//				gen3.SetSeed(rng3());
 				bInit = true;
 			}
 
@@ -207,45 +225,6 @@ namespace Core {
 			return true;
 		}
 
-		/*
-		 * Create generic terrain chunks
-		 */
-		bool MapSys::load(MapData &ref) {
-			Core::debug.log("Load MapSys {");
-
-			/*
-			 * Simulate loading entire world (first load essentially)
-			 */
-			Core::profiles->startProfile(Core::profiles->builtIn.MapSys_GeneratePerlin);
-
-				switch(TERRAIN_TYPE) {
-					case TERRAIN_PERLIN:
-						generateTerrainChunk(ref, 2048, 2048, TERRAIN_PERLIN, 1);
-						break;
-					case TERRAIN_SIMPLEX:
-						generateTerrainChunk(	ref,
-										Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].terrain_size,
-										Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].res+1,
-										TERRAIN_TYPE,
-										Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].tex_scale,
-										Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].terrain_height_offset);
-						break;
-					case TERRAIN_FRACTAL:
-						generateTerrainChunk(	ref,
-										Core::gameVars->debug.noise.fractal[Core::gameVars->debug.noise.iCurrentFractal].terrain_size,
-										Core::gameVars->debug.noise.fractal[Core::gameVars->debug.noise.iCurrentFractal].res+1,
-										TERRAIN_TYPE,
-										Core::gameVars->debug.noise.fractal[Core::gameVars->debug.noise.iCurrentFractal].tex_scale,
-										Core::gameVars->debug.noise.fractal[Core::gameVars->debug.noise.iCurrentFractal].terrain_height_offset);
-						break;
-				}
-
-			Core::profiles->stopProfile(Core::profiles->builtIn.MapSys_GeneratePerlin);
-
-			Core::debug.print(" Done, Generation time = "+std::to_string(Core::profiles->getTime(Core::profiles->builtIn.MapSys_GeneratePerlin))+" ", Core::debug().GREEN);
-			Core::debug.print("}\n");
-			return true;
-		}
 
 		/*
 		 * Original
@@ -253,18 +232,217 @@ namespace Core {
 		 * 		Title: OpenGL Game Tutorial 14: Simple Terrain
 		 * 		Address: https://www.dropbox.com/s/47qk4yrz5v9lb61/Terrain%20Generation%20Code.txt?dl=0
 		 * 		Modified: 2020-03-04
+		 * 		Description: Generate terrain grid of size, resolution, and texture scale.
+		 * 		Modified: Uses noise generators to change height values
 		 *
 		 * Size = physical size of chunk (1024 typical)
 		 * Vertex_Count = Number of vertices per side (can be used for LOD?)
 		 */
-		void MapSys::generateTerrainChunk(MapData &chunk, float SIZE, int VERTEX_COUNT, eTerrainType eType, int iTexScale, float fHeightOffset){
+//		void MapSys::load(int x, int z, Map::Data &chunk, Map::t_VariantNoise noise) {
+////		std::variant<Map::t_Simplex, Map::t_Perlin, Map::t_Fractal, Map::t_Ridged>
+//
+//			// Pointer to correct parent
+//			// Pointer to correct elevation function
+//
+////			double (*getNoiseElevation)(float, float, void *);
+////			getNoiseElevation = &getElevation;
+//
+////			double (*getNoiseElevation)(float x, float z, Map::t_Simplex *noise);
+////			getNoiseElevation = &getElevation;
+////			double (*getNoiseElevation)(float x, float z, Map::t_Perlin *noise);
+////			double (*getNoiseElevation)(float x, float z, Map::t_Fractal *noise);
+////			double (*getNoiseElevation)(float x, float z, Map::t_Ridged *noise);
+//
+//			Map::t_ChunkData *chunkData;
+//
+//			switch(noise.index()) {
+//				case Map::NOISE_SIMPLEX:
+//					chunkData = std::get<Map::t_Simplex*>(noise)->parent;
+//					break;
+//				case Map::NOISE_PERLIN:
+//					chunkData = std::get<Map::t_Perlin*>(noise)->parent;
+//					break;
+//				case Map::NOISE_FRACTAL:
+//					chunkData = std::get<Map::t_Fractal*>(noise)->parent;
+//					break;
+//				case Map::NOISE_RIDGED:
+//					chunkData = std::get<Map::t_Ridged*>(noise)->parent;
+//					break;
+//			}
+//
+//			float SIZE			= chunkData->chunk_size;
+//			int VERTEX_COUNT	= chunkData->chunk_resolution+1;
+//			int iTexScale		= chunkData->tex_scale;
+//			float fHeightOffset	= chunkData->chunk_height_offset;
+//			float DELTA			= chunkData->delta;
+//
+//			chunk.numVerts = VERTEX_COUNT * VERTEX_COUNT;
+//			chunk.numDrawVerts = 6*(VERTEX_COUNT-1)*(VERTEX_COUNT-1);
+//			chunk.vVerts = new Data3f[chunk.numVerts];
+//			chunk.vNorms = new Data3f[chunk.numVerts];
+//			chunk.vCoords = new Data2f[chunk.numVerts];
+//			chunk.vIndex = new GLuint[chunk.numDrawVerts];
+//
+//			long vertexPointer = 0;
+//			for(int i=0;i<VERTEX_COUNT;i++){
+//				for(int j=0;j<VERTEX_COUNT;j++){
+//
+//					// Vertex
+//					chunk.vVerts[vertexPointer][0] = ((float)j/((float)VERTEX_COUNT - 1) * SIZE);
+//					chunk.vVerts[vertexPointer][2] = ((float)i/((float)VERTEX_COUNT - 1) * SIZE);
+//					chunk.vVerts[vertexPointer][1] = getElevation(chunk.vVerts[vertexPointer][0]+x, chunk.vVerts[vertexPointer][2]+z, noise) + fHeightOffset;
+//
+//					Vector3f modelXOffset,
+//							 modelYOffset,
+//							 modelXGrad,
+//							 modelYGrad,
+//							 A, B, C, BA, CA, Dir, Norm;
+//
+//							A = chunk.vVerts[vertexPointer];
+//
+//							B.x = A.x+DELTA;
+//							B.z = A.z+DELTA;
+//							B.y = getElevation(B.x+x, B.z+z, noise) + fHeightOffset;
+//
+//							C.x = A.x+DELTA;
+//							C.z = A.z-DELTA;
+//							C.y = getElevation(C.x+x, C.z+z, noise) + fHeightOffset;
+//
+//							BA = B - A;
+//							CA = C - A;
+//							Dir = Core::gmath.Cross(BA, CA);
+//							Norm = Dir/Dir.length();
+//
+////						default:
+////							chunk.vNorms[vertexPointer][0] = 0;
+////							chunk.vNorms[vertexPointer][1] = 1;
+////							chunk.vNorms[vertexPointer][2] = 0;
+//
+//					// Normals - What is expected to work but DOES NOT
+//					chunk.vNorms[vertexPointer][0] = Norm.x;
+//					chunk.vNorms[vertexPointer][1] = Norm.y;
+//					chunk.vNorms[vertexPointer][2] = Norm.z;
+//
+//					// Texture
+//					chunk.vCoords[vertexPointer][0] = (float)j/((float)VERTEX_COUNT - 1) * (float)iTexScale;
+//					chunk.vCoords[vertexPointer][1] = (float)i/((float)VERTEX_COUNT - 1) * (float)iTexScale;
+//					vertexPointer++;
+//				}
+//			}
+//			long pointer = 0;
+//			for(uint gz=0;gz<VERTEX_COUNT-1;gz++){
+//				for(uint gx=0;gx<VERTEX_COUNT-1;gx++){
+//					uint topLeft = (gz*VERTEX_COUNT)+gx;
+//					uint topRight = topLeft + 1;
+//					uint bottomLeft = ((gz+1)*VERTEX_COUNT)+gx;
+//					uint bottomRight = bottomLeft + 1;
+//					chunk.vIndex[pointer++] = topLeft;			//std::cout << "[(" << chunk.vIndex[pointer-1];
+//					chunk.vIndex[pointer++] = bottomLeft;		//std::cout << ", " << chunk.vIndex[pointer-1];
+//					chunk.vIndex[pointer++] = topRight;			//std::cout << ", " << chunk.vIndex[pointer-1];
+//					chunk.vIndex[pointer++] = topRight;			//std::cout << ")(" << chunk.vIndex[pointer-1];
+//					chunk.vIndex[pointer++] = bottomLeft;		//std::cout << ", " << chunk.vIndex[pointer-1];
+//					chunk.vIndex[pointer++] = bottomRight;		//std::cout << ", " << chunk.vIndex[pointer-1] << ")]" << std::endl;
+//				}
+//			}
+//		}
+
+		// TODO: Load additional data (i.e. moisture)
+		// Data3f provides 3 floats per vertex
+		//void MapSys::loadData(int x, int z, Data3f *chunkData, int index, Core::Noise::t_Noise *noise) {
+		void MapSys::load(int x, int z, Map::Data &chunk, int index, Core::Noise::t_Noise *noise) {
+			x = (x-32768) * noise->parent->chunk_size;
+			z = (z-32768) * noise->parent->chunk_size;
+
+			float SIZE			= noise->parent->chunk_size;
+			int VERTEX_COUNT	= noise->parent->chunk_resolution+1;
+//			int iTexScale		= noise->parent->tex_scale;
+//			float fHeightOffset	= noise->parent->chunk_height_offset;
+//			float DELTA			= noise->parent->delta;
+//			chunk.vData = new Data3f[VERTEX_COUNT * VERTEX_COUNT];
+
+//			debug.log("Loading Moisture...\n");
+
+			long vertexPointer = 0;
+			for(int i=0;i<VERTEX_COUNT;i++){
+				for(int j=0;j<VERTEX_COUNT;j++){
+
+//					if(i==0 && j==0) {
+
+					// Vertex
+//					chunkData[vertexPointer][0] = ((float)j/((float)VERTEX_COUNT - 1) * SIZE);
+//					chunkData[vertexPointer][2] = ((float)i/((float)VERTEX_COUNT - 1) * SIZE);
+
+//					chunk.vVerts[vertexPointer][0] = ((float)j/((float)VERTEX_COUNT - 1) * SIZE);
+//					chunk.vVerts[vertexPointer][2] = ((float)i/((float)VERTEX_COUNT - 1) * SIZE);
+//					chunk.vVerts[vertexPointer][1] = getElevation(chunk.vVerts[vertexPointer][0]+x, chunk.vVerts[vertexPointer][2]+z, noise) + fHeightOffset;
+
+//					float fX = ((float)j/((float)VERTEX_COUNT - 1) * SIZE);
+//					float fZ = ((float)i/((float)VERTEX_COUNT - 1) * SIZE);
+//					chunk.vData[vertexPointer][index] = getElevation(fX+x, fZ+z, noise) + fHeightOffset;
+
+					// vVerts should already have been defined by this point
+					//chunk.vData[vertexPointer][index] = getElevation(chunk.vVerts[vertexPointer][0]+x, chunk.vVerts[vertexPointer][2]+z, noise) + fHeightOffset;
+
+//					chunk.vData[vertexPointer][0]
+
+					chunk.vData[vertexPointer][index] = Core::Noise::getNoise(chunk.vVerts[vertexPointer][0]+x, chunk.vVerts[vertexPointer][2]+z, noise);
+
+//					chunk.vData[vertexPointer][index] /= 150000;
+//					chunk.vData[vertexPointer][index] = (chunk.vData[vertexPointer][index] / 2.0f) + 0.5f;
+//					debug.log("("+std::to_string(i)+", "+std::to_string(j)+") = "+std::to_string(chunk.vData[vertexPointer][index])+"\n");
+//					}
+					vertexPointer++;
+				}
+			}
+
+//			long vertexPointer = 0;
+//			for(int i=0;i<VERTEX_COUNT;i++){
+//				for(int j=0;j<VERTEX_COUNT;j++){
+//
+//					// Vertex
+//					chunkData[vertexPointer][0] = ((float)j/((float)VERTEX_COUNT - 1) * SIZE);
+//					chunkData[vertexPointer][2] = ((float)i/((float)VERTEX_COUNT - 1) * SIZE);
+//					chunkData[vertexPointer][1] = getElevation(chunkData[vertexPointer][0]+x, chunkData[vertexPointer][2]+z, noise) + fHeightOffset;
+//
+//					vertexPointer++;
+//				}
+//			}
+//			long pointer = 0;
+//			for(uint gz=0;gz<VERTEX_COUNT-1;gz++){
+//				for(uint gx=0;gx<VERTEX_COUNT-1;gx++){
+//					uint topLeft = (gz*VERTEX_COUNT)+gx;
+//					uint topRight = topLeft + 1;
+//					uint bottomLeft = ((gz+1)*VERTEX_COUNT)+gx;
+//					uint bottomRight = bottomLeft + 1;
+//					chunkData[pointer++] = topLeft;
+//					chunkData[pointer++] = bottomLeft;
+//					chunkData[pointer++] = topRight;
+//					chunkData[pointer++] = topRight;
+//					chunkData[pointer++] = bottomLeft;
+//					chunkData[pointer++] = bottomRight;
+//				}
+//			}
+
+		}
+
+		void MapSys::load(int x, int z, Map::Data &chunk, Core::Noise::t_Noise *noise) {
+
+			x = (x-32768) * noise->parent->chunk_size;
+			z = (z-32768) * noise->parent->chunk_size;
+
+			float SIZE			= noise->parent->chunk_size;
+			int VERTEX_COUNT	= noise->parent->chunk_resolution+1;
+			int iTexScale		= noise->parent->tex_scale;
+			float fHeightOffset	= noise->parent->chunk_height_offset;
+			float DELTA			= noise->parent->delta;
+
 			chunk.numVerts = VERTEX_COUNT * VERTEX_COUNT;
 			chunk.numDrawVerts = 6*(VERTEX_COUNT-1)*(VERTEX_COUNT-1);
 			chunk.vVerts = new Data3f[chunk.numVerts];
 			chunk.vNorms = new Data3f[chunk.numVerts];
 			chunk.vCoords = new Data2f[chunk.numVerts];
 			chunk.vIndex = new GLuint[chunk.numDrawVerts];
-
+			chunk.vData = new Data3f[chunk.numVerts];
 
 			long vertexPointer = 0;
 			for(int i=0;i<VERTEX_COUNT;i++){
@@ -273,80 +451,37 @@ namespace Core {
 					// Vertex
 					chunk.vVerts[vertexPointer][0] = ((float)j/((float)VERTEX_COUNT - 1) * SIZE);
 					chunk.vVerts[vertexPointer][2] = ((float)i/((float)VERTEX_COUNT - 1) * SIZE);
-					switch(eType) {
-						case TERRAIN_PERLIN:
-							chunk.vVerts[vertexPointer][1] = getPerlinElevation(chunk.vVerts[vertexPointer][0], chunk.vVerts[vertexPointer][2], 1024, 1024) + fHeightOffset;
-							break;
-						case TERRAIN_SIMPLEX:
-							chunk.vVerts[vertexPointer][1] = getSimplexElevation(chunk.vVerts[vertexPointer][0], chunk.vVerts[vertexPointer][2]) + fHeightOffset;
-							break;
-						case TERRAIN_FRACTAL:
-							chunk.vVerts[vertexPointer][1] = getFractalElevation(chunk.vVerts[vertexPointer][0], chunk.vVerts[vertexPointer][2]) + fHeightOffset;
-							break;
-						default:
-							chunk.vVerts[vertexPointer][1] = fHeightOffset;
-					}
+					chunk.vVerts[vertexPointer][1] = Core::Noise::getNoise(chunk.vVerts[vertexPointer][0]+x, chunk.vVerts[vertexPointer][2]+z, noise) + fHeightOffset;
 
+					// Clear extra data
+					chunk.vData[vertexPointer][0] = 0.0f;
+					chunk.vData[vertexPointer][1] = 0.0f;
+					chunk.vData[vertexPointer][2] = 0.0f;
+					chunk.vData[vertexPointer][2] = chunk.vVerts[vertexPointer][1] - fHeightOffset;
+
+					// Determine normal using Delta points
+					// TODO: Update this to use less lookups
+					//			- In the building loop, use the already calculated points to determine normal from geometry instead of noise
 					Vector3f modelXOffset,
 							 modelYOffset,
 							 modelXGrad,
 							 modelYGrad,
 							 A, B, C, BA, CA, Dir, Norm;
 
-					switch(eType) {
-						case TERRAIN_PERLIN:
 							A = chunk.vVerts[vertexPointer];
 
-							B.x = A.x+Core::gameVars->debug.noise.simplex[0].delta;
-							B.z = A.z+Core::gameVars->debug.noise.simplex[0].delta;
-							B.y = getPerlinElevation(B.x, B.z, 1024, 1024) + fHeightOffset;
+							B.x = A.x+DELTA;
+							B.z = A.z+DELTA;
+							B.y = Core::Noise::getNoise(B.x+x, B.z+z, noise) + fHeightOffset;
 
-							C.x = A.x+Core::gameVars->debug.noise.simplex[0].delta;
-							C.z = A.z-Core::gameVars->debug.noise.simplex[0].delta;
-							C.y = getPerlinElevation(C.x, C.z, 1024, 1024) + fHeightOffset;
+							C.x = A.x+DELTA;
+							C.z = A.z-DELTA;
+							C.y = Core::Noise::getNoise(C.x+x, C.z+z, noise) + fHeightOffset;
 
 							BA = B - A;
 							CA = C - A;
 							Dir = Core::gmath.Cross(BA, CA);
 							Norm = Dir/Dir.length();
-							break;
-						case TERRAIN_SIMPLEX:
-							A = chunk.vVerts[vertexPointer];
-
-							B.x = A.x+Core::gameVars->debug.noise.simplex[0].delta;
-							B.z = A.z+Core::gameVars->debug.noise.simplex[0].delta;
-							B.y = getSimplexElevation(B.x, B.z) + fHeightOffset;
-
-							C.x = A.x+Core::gameVars->debug.noise.simplex[0].delta;
-							C.z = A.z-Core::gameVars->debug.noise.simplex[0].delta;
-							C.y = getSimplexElevation(C.x, C.z) + fHeightOffset;
-
-							BA = B - A;
-							CA = C - A;
-							Dir = Core::gmath.Cross(BA, CA);
-							Norm = Dir/Dir.length();
-							break;
-						case TERRAIN_FRACTAL:
-							A = chunk.vVerts[vertexPointer];
-
-							B.x = A.x+Core::gameVars->debug.noise.fractal[0].delta;
-							B.z = A.z+Core::gameVars->debug.noise.fractal[0].delta;
-							B.y = getFractalElevation(B.x, B.z) + fHeightOffset;
-
-							C.x = A.x+Core::gameVars->debug.noise.fractal[0].delta;
-							C.z = A.z-Core::gameVars->debug.noise.fractal[0].delta;
-							C.y = getFractalElevation(C.x, C.z) + fHeightOffset;
-
-							BA = B - A;
-							CA = C - A;
-							Dir = Core::gmath.Cross(BA, CA);
-							Norm = Dir/Dir.length();
-							break;
-						default:
-							chunk.vNorms[vertexPointer][0] = 0;
-							chunk.vNorms[vertexPointer][1] = 1;
-							chunk.vNorms[vertexPointer][2] = 0;
-					}
 
 					// Normals - What is expected to work but DOES NOT
 					chunk.vNorms[vertexPointer][0] = Norm.x;
@@ -356,12 +491,29 @@ namespace Core {
 					// Texture
 					chunk.vCoords[vertexPointer][0] = (float)j/((float)VERTEX_COUNT - 1) * (float)iTexScale;
 					chunk.vCoords[vertexPointer][1] = (float)i/((float)VERTEX_COUNT - 1) * (float)iTexScale;
+
+//					float s,
+//						  t;
+//					if(j%2==0) s = 0.0f;
+//					else s = 1.0f;
+//
+//					if(i%2==0) t = 0.0f;
+//					else t = 1.0f;
+//					chunk.vCoords[vertexPointer][0] = s;
+//					chunk.vCoords[vertexPointer][1] = t;
+
+					// Update the lowest point on the chunk
+					chunk.lowestHeight = fmin(chunk.lowestHeight, fmin(chunk.vVerts[vertexPointer][1], fmin(B.y, C.y)));
+
 					vertexPointer++;
 				}
 			}
+
 			long pointer = 0;
 			for(uint gz=0;gz<VERTEX_COUNT-1;gz++){
 				for(uint gx=0;gx<VERTEX_COUNT-1;gx++){
+
+					// TODO: Calculate Normals Here, per triangle (2-triangles here per quad)
 					uint topLeft = (gz*VERTEX_COUNT)+gx;
 					uint topRight = topLeft + 1;
 					uint bottomLeft = ((gz+1)*VERTEX_COUNT)+gx;
@@ -374,227 +526,350 @@ namespace Core {
 					chunk.vIndex[pointer++] = bottomRight;		//std::cout << ", " << chunk.vIndex[pointer-1] << ")]" << std::endl;
 				}
 			}
-
 		}
+
+//		void MapSys::load(int x, int z, Map::Data &chunk, Map::t_Perlin *noise) {
+//		}
+//
+//		void MapSys::load(int x, int z, Map::Data &chunk, Map::t_Fractal *noise) {
+//		}
+//
+//		void MapSys::load(int x, int z, Map::Data &chunk, Map::t_Ridged *noise) {
+//		}
 
 
 		/*
 		 * TODO: Calc(); Do general map calculations. (including LOD management?)
 		 */
-		bool MapSys::calc(MapData &ref) {
-			Core::debug.log("Calc Map {");
+		void MapSys::calc(Map::Data &ref) {
+//			Core::debug.log("Calc Map {");
 
 			ref.vao.Begin(GL_TRIANGLES, ref.numVerts, ref.numDrawVerts, 1);
 			ref.vao.CopyData(GLA_VERTEX, ref.vVerts);
 			ref.vao.CopyData(GLA_NORMAL, ref.vNorms);
 			ref.vao.CopyData(GLA_TEXTURE, ref.vCoords, 0);
 			ref.vao.CopyData(GLA_INDEX, ref.vIndex, ref.numDrawVerts);
+			ref.vao.CopyData(GLA_DATA1, ref.vData);
 			ref.vao.End();
 
-			Core::debug.print(" Done ", Core::debug().GREEN);
-			Core::debug.print("}\n");
-			return true;
+//			Core::debug.print(" Done ", Core::debug().GREEN);
+//			Core::debug.print("}\n");
 		}
 
-		void MapSys::update(MapData &ref) {
+//		void MapSys::update(int x, int z, Map::Data &ref, Map::t_VariantNoise noise) {
+//			load( x, z, ref, noise);
+//
+//			ref.vao.Begin(GL_TRIANGLES, ref.numVerts, ref.numDrawVerts, 1);
+//			ref.vao.CopyData(GLA_VERTEX, ref.vVerts);
+//			ref.vao.CopyData(GLA_NORMAL, ref.vNorms);
+//			ref.vao.CopyData(GLA_TEXTURE, ref.vCoords, 0);
+//			ref.vao.CopyData(GLA_INDEX, ref.vIndex, ref.numDrawVerts);
+//			ref.vao.End();
+//		}
 
-			switch(TERRAIN_TYPE) {
-				case TERRAIN_PERLIN:
-					generateTerrainChunk(ref, 2048, 2048, TERRAIN_PERLIN, 1);
-
-					break;
-				case TERRAIN_SIMPLEX:
-					generateTerrainChunk(	ref,
-											Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].terrain_size,
-											Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].res+1,
-											TERRAIN_TYPE,
-											Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].tex_scale,
-											Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].terrain_height_offset);
-					break;
-				case TERRAIN_FRACTAL:
-					generateTerrainChunk(	ref,
-											Core::gameVars->debug.noise.fractal[Core::gameVars->debug.noise.iCurrentFractal].terrain_size,
-											Core::gameVars->debug.noise.fractal[Core::gameVars->debug.noise.iCurrentFractal].res+1,
-											TERRAIN_TYPE,
-											Core::gameVars->debug.noise.fractal[Core::gameVars->debug.noise.iCurrentFractal].tex_scale,
-											Core::gameVars->debug.noise.fractal[Core::gameVars->debug.noise.iCurrentFractal].terrain_height_offset);
-					break;
-			}
+		void MapSys::update(int x, int z, Map::Data &ref, Core::Noise::t_Noise *noise) {
+			load( x, z, ref, noise);
 
 			ref.vao.Begin(GL_TRIANGLES, ref.numVerts, ref.numDrawVerts, 1);
 			ref.vao.CopyData(GLA_VERTEX, ref.vVerts);
 			ref.vao.CopyData(GLA_NORMAL, ref.vNorms);
 			ref.vao.CopyData(GLA_TEXTURE, ref.vCoords, 0);
 			ref.vao.CopyData(GLA_INDEX, ref.vIndex, ref.numDrawVerts);
+			ref.vao.CopyData(GLA_DATA1, ref.vData);
 			ref.vao.End();
-
 		}
 
-		double MapSys::getPerlinElevation(float x, float z, float w, float h) {
-			double nx = x/(w*2) - 0.5, ny = z/(h*2) - 0.5;
-			double e1 = (gameVars->debug.noise.perlin.octave1 * noise1( 1 * nx,  1 * ny)
-					   + gameVars->debug.noise.perlin.octave2 * noise1( 2 * nx,  2 * ny)
-					   + gameVars->debug.noise.perlin.octave3 * noise1( 4 * nx,  4 * ny)
-					   + gameVars->debug.noise.perlin.octave4 * noise1( 8 * nx,  8 * ny)
-					   + gameVars->debug.noise.perlin.octave5 * noise1(16 * nx, 16 * ny)
-					   + gameVars->debug.noise.perlin.octave6 * noise1(32 * nx, 32 * ny));
-			e1 /= ( gameVars->debug.noise.perlin.octave1+
-					gameVars->debug.noise.perlin.octave2+
-					gameVars->debug.noise.perlin.octave3+
-					gameVars->debug.noise.perlin.octave4+
-					gameVars->debug.noise.perlin.octave5+
-					gameVars->debug.noise.perlin.octave6 );
-			e1 = std::pow(e1, gameVars->debug.noise.perlin.power)*gameVars->debug.noise.perlin.scale;
-
-			return e1;
-		}
-
-		double MapSys::getPerlinMoisture(float x, float z, float w, float h) {
-			return 0.0f;
-		}
-
-		double MapSys::getSimplexElevation(float x, float z) {
-
-			SimplexNoise simNoise1 = SimplexNoise( gameVars->debug.noise.simplex[0].frequency,
-												   gameVars->debug.noise.simplex[0].amplitude,
-												   gameVars->debug.noise.simplex[0].lacunarity, //+((x+Core::gameVars->debug.noise.simplex.offset.x+z+Core::gameVars->debug.noise.simplex.offset.y)/1000.0f),
-												   gameVars->debug.noise.simplex[0].persistance );
-			double e1 = simNoise1.fractal(	gameVars->debug.noise.simplex[0].octaves,
-											x+Core::gameVars->debug.noise.simplex[0].offset.x,
-											z+Core::gameVars->debug.noise.simplex[0].offset.y);
-			e1 = std::pow(e1, gameVars->debug.noise.simplex[0].power)*gameVars->debug.noise.simplex[0].scale;
-
-			SimplexNoise simNoise2 = SimplexNoise( gameVars->debug.noise.simplex[1].frequency,
-												   gameVars->debug.noise.simplex[1].amplitude,
-												   gameVars->debug.noise.simplex[1].lacunarity, //+((x+Core::gameVars->debug.noise.simplex.offset.x+z+Core::gameVars->debug.noise.simplex.offset.y)/1000.0f),
-												   gameVars->debug.noise.simplex[1].persistance );
-			double e2 = simNoise2.fractal(	gameVars->debug.noise.simplex[1].octaves,
-											x+Core::gameVars->debug.noise.simplex[1].offset.x,
-											z+Core::gameVars->debug.noise.simplex[1].offset.y);
-			e2 = std::pow(e2, gameVars->debug.noise.simplex[1].power)*gameVars->debug.noise.simplex[1].scale;
-
-			double e3 = e1+e2;
-
-			return e3;
-		}
-
-		double MapSys::getFractalElevation(float x, float z) {
-
-			FractalNoise noise1;
-			double e1 = noise1.getNoise(x,
-										z,
-										gameVars->debug.noise.fractal[gameVars->debug.noise.iCurrentFractal].frequency,
-										gameVars->debug.noise.fractal[gameVars->debug.noise.iCurrentFractal].lacunarity,
-										gameVars->debug.noise.fractal[gameVars->debug.noise.iCurrentFractal].multiplier,
-										gameVars->debug.noise.fractal[gameVars->debug.noise.iCurrentFractal].layers);
-
-//			e1 = std::pow(e1, gameVars->debug.noise.fractal[0].power)*gameVars->debug.noise.simplex[0].scale;
-			e1 = e1*gameVars->debug.noise.fractal[gameVars->debug.noise.iCurrentFractal].scale;
-
-			return e1;
-		}
-
-
-//		void MapSys::draw(Core::SHADER_PROGRAMS iShader, Core::_Lights &lights) {
-//			glActiveTexture(GL_TEXTURE0);
-////			Core::sysTex->set(Core::sysTex->TEX_TESTPATTERN);
-//			Core::sysTex->set(Core::sysTex->TEX_DIRT);
-////			Core::sysTex->set(Core::sysTex->TEX_GRASS);
-////			gameVars->texture.terrain.Set("dirt1.png");
-////
-////			glActiveTexture(GL_TEXTURE1);
-////			gameVars->texture.terrain.Set("grass1.png");
-////
-////			glActiveTexture(GL_TEXTURE2);
-////			gameVars->texture.terrain.Set("rocky1.png");
-////
-////			glActiveTexture(GL_TEXTURE3);
-////			gameVars->texture.terrain.Set("cliff1.png");
-////
-////			glActiveTexture(GL_TEXTURE4);
-////			gameVars->texture.terrain.Set("dirt2.png");
-////
-////			glActiveTexture(GL_TEXTURE5);
-////			gameVars->texture.terrain.Set("grass2.png");
-////
-////			glActiveTexture(GL_TEXTURE6);
-////			gameVars->texture.terrain.Set("rocky2.png");
-////
-////			glActiveTexture(GL_TEXTURE7);
-////			gameVars->texture.terrain.Set("cliff2.png");
-////
-////			glActiveTexture(GL_TEXTURE8);
-////			atmosphere->water.tex.Set(atmosphere->water.sWorld);
-////
-////			glActiveTexture(GL_TEXTURE0);
-////
-////			Core.shader.use(iShader);
-////			std::cout << "Drawing Map...";
-////			for (int x=0; x<data.iSize; x++) {
-////				for (int z=0; z<data.iSize; z++) {
+//		double MapSys::getElevation(float x, float z, Map::t_VariantNoise noise) {
+//			double e1 = 0.0f;
+//			switch(noise.index()) {
+//				case Map::NOISE_SIMPLEX:
+//				{
+//					// TODO: Implement simplex modification functions
+//					for( auto const &layer : std::get<Map::t_Simplex*>(noise)->params ) {
+//						double e1a = 0.0f;
+//						double e1b = 0.0f;
+//						SimplexNoise simNoise1 = SimplexNoise( layer.frequency, layer.amplitude, layer.lacunarity, layer.persistance );
+//						e1a = simNoise1.fractal( layer.octaves, x, z);
+//						e1b += (std::pow(e1a, layer.power)*layer.scale);
+//						e1 += e1b;
+//					}
+//					break;
+//				}
+//				case Map::NOISE_PERLIN:
+//				{
+////					double nx = x/(w*2) - 0.5, ny = z/(h*2) - 0.5;
+////					double e1 = (gameVars->debug.noise.perlin.octave1 * noise1( 1 * nx,  1 * ny)
+////							   + gameVars->debug.noise.perlin.octave2 * noise1( 2 * nx,  2 * ny)
+////							   + gameVars->debug.noise.perlin.octave3 * noise1( 4 * nx,  4 * ny)
+////							   + gameVars->debug.noise.perlin.octave4 * noise1( 8 * nx,  8 * ny)
+////							   + gameVars->debug.noise.perlin.octave5 * noise1(16 * nx, 16 * ny)
+////							   + gameVars->debug.noise.perlin.octave6 * noise1(32 * nx, 32 * ny));
+////					e1 /= ( gameVars->debug.noise.perlin.octave1+
+////							gameVars->debug.noise.perlin.octave2+
+////							gameVars->debug.noise.perlin.octave3+
+////							gameVars->debug.noise.perlin.octave4+
+////							gameVars->debug.noise.perlin.octave5+
+////							gameVars->debug.noise.perlin.octave6 );
+////					e1 = std::pow(e1, gameVars->debug.noise.perlin.power)*gameVars->debug.noise.perlin.scale;
+//					break;
+//				}
+//				case Map::NOISE_FRACTAL:
+//				{
+//					FractalNoise noise1;
+//					e1 = noise1.getNoise(	x,
+//											z,
+//											gameVars->debug.noise.fractal[gameVars->debug.noise.iCurrentFractal].frequency,
+//											gameVars->debug.noise.fractal[gameVars->debug.noise.iCurrentFractal].lacunarity,
+//											gameVars->debug.noise.fractal[gameVars->debug.noise.iCurrentFractal].multiplier,
+//											gameVars->debug.noise.fractal[gameVars->debug.noise.iCurrentFractal].layers);
 //
-//			/*
-//			 * Temporary drawing routine
-//			 */
-//			int x=0, z=0;
-//					glEnable(GL_CULL_FACE);
-//					Core::matrix->Push();
-//						// Center World
+//					e1 = e1*gameVars->debug.noise.fractal[gameVars->debug.noise.iCurrentFractal].scale;
+//					break;
+//				}
+//				case Map::NOISE_RIDGED:
+//					break;
+//			}
 //
-//						// Move chunk according to player
-//						matrix->Rotate(Core::gameVars->player.active->transform.rot[0], 1.0, 0.0, 0.0);
-//						matrix->Rotate(Core::gameVars->player.active->transform.rot[1], 0.0, 1.0, 0.0);
-//						matrix->Translate(Core::gameVars->player.active->transform.pos[0], Core::gameVars->player.active->transform.pos[1], Core::gameVars->player.active->transform.pos[2]);
+//			return e1;
+//		}
+
+		// TODO: This should be in the noise class as a getNoise() method. We will need this for O2D and Flora eventually
+//		double MapSys::getElevation(float x, float z, Core::Noise::t_Noise *noise) {
+//			double dHeight = 0.0f;
 //
-//						// Move chunk into place (Do in loader so lighting works easily)
-//						Core::matrix->Scale(1*Core::gameVars->screen.fScale, 1*Core::gameVars->screen.fScale, 1*Core::gameVars->screen.fScale);
-//						matrix->Translate(x*1024*Core::gameVars->screen.fScale, 0.0f, z*1024*Core::gameVars->screen.fScale);
-//						matrix->SetTransform();
 //
-//						shader->use(iShader);
-//						shader->getUniform(iShader, &lights);
+//			for ( auto layer : noise->layers ) {
+//				Core::Noise::eNoiseType type	= layer.first;
+//				int index				= layer.second;
 //
-//						mapData[0][0].Draw(GLM_DRAW_ELEMENTS);
+//				switch(type) {
+////					case Core::Noise::NOISE_SIMPLEX:
+////					{
+////						for( auto const &param : *noise->simplex[index] ) {
+////							double  e1 = 0.0f,
+////									e2 = 0.0f;
+////
+//////							SimplexNoise simNoise1 = SimplexNoise( param->frequency, param->amplitude, param->lacunarity, param->persistance );
+////							SimplevTexCoordsxNoise simNoise1 = SimplexNoise( 0.0001f, 1.0f, 1.0f, 1.0f );
+//////							SimplexNoise simNoise1;
+////							e1 = simNoise1.noise(x, z);
+////							e2 = Core::Noise::applyFunctions(e1, dHeight, *param);
+////							dHeight = Core::Noise::applyMode(e2, dHeight, param->mode);
+////
+//////							// Octaves
+//////							// TODO: Fix octave implementation (octaves and frequency built in to getPerlin())
+//////							float amplitudeTotal = 0.0f;
+//////							for(int n=0; n<param->octaves(); n++) {
+//////								e1 = param->octaveData[n].amplitude * genPerlin.GetValue(x, z, 0) / 2.0 + 0.5;
+//////								amplitudeTotal += param->octaveData[n].amplitude;
+//////							}
+//////							e2 /= amplitudeTotal;
+//////
+//////							e2 = Core::Noise::applyFunctions(e1, dHeight, *param);
+//////							dHeight = Core::Noise::applyMode(e2, dHeight, param->mode);
+////						}
+////						break;
+////					}
+//					case Core::Noise::NOISE_PERLIN:
+//					{
+//						// Layers
+//						for( auto const &param : *noise->perlin[index] ) {
 //
-//						// Draw vertex normals (~6fps drop)
-//						if(Core::gameVars->debug.gui.b5) {
-//							glLineWidth(1.0f);
-//							shader->use(GLS_NORMAL_LINE2);
-//							shader->getUniform(GLS_NORMAL_LINE2);
-//							mapData[0][0].Draw(GLM_DRAW_ELEMENTS);
+//							double  e1 = 0.0f,
+//									e2 = 0.0f;
+//
+//							rng1 = std::minstd_rand0(param->seed);
+//							genPerlin.SetSeed(rng1());
+//							genPerlin.SetFrequency(param->frequency);
+//							genPerlin.SetLacunarity(param->lacunarity);
+//							genPerlin.SetNoiseQuality(param->quality);
+//							genPerlin.SetOctaveCount(param->octaves);
+//							genPerlin.SetPersistence(param->persistence);
+//
+//							e1 = genPerlin.GetValue(x, z, 0);
+//							e2 = Core::Noise::applyFunctions(e1, dHeight, *param);
+//							dHeight = Core::Noise::applyMode(e2, dHeight, param->mode);
 //						}
+//						break;
+//					}
+//					case Core::Noise::NOISE_FRACTAL:
+//					{
+//						for( auto const &param : *noise->fractal[index] ) {
+//							double e1 = 0.0f;
+//							double e2 = 0.0f;
+////							SimplexNoise simNoise1 = SimplexNoise( param->frequency, param->amplitude, param->lacunarity, param->persistance );
 //
-//						//glActiveTexture(GL_TEXTURE0);	Core::sysTex->set(Core::sysTex->TEX_WATER);
-//						//mapData[0][1].Draw(GLM_DRAW_ELEMENTS);
+//							genSimplex.setAmplitude(param->amplitude);
+//							genSimplex.setFrequency(param->frequency);
+//							genSimplex.setLacunarity(param->lacunarity);
+//							genSimplex.setPersiistence(param->persistence);
+//							genSimplex.setSeed(param->seed);
+////							e1 = genSimplex.fractal( param->octaves, x, z, dHeight);
+//							e1 = genSimplex.fractal( param->octaves, x, z, 0);
+//							//e1 = simNoise1.fractal( param->octaves, x, z, 0);
+//							e2 = Core::Noise::applyFunctions(e1, dHeight, *param);
+//							dHeight = Core::Noise::applyMode(e2, dHeight, param->mode);
+//						}
+//						break;
+//					}
 //
-//						//glActiveTexture(GL_TEXTURE0);	Core::sysTex->set(Core::sysTex->TEX_ROCK);
-//						//mapData[1][0].Draw(GLM_DRAW_ELEMENTS);
+////					case Core::Noise::NOISE_RIDGED_SIMPLEX:
+////					{
+////						double nx = x/(noise->parent->chunk_size*2) - 0.5, ny = z/(noise->parent->chunk_size*2) - 0.5;
+////						for( auto const &param : *noise->ridgedSimplex[index] ) {
+////							double e1 = 0.0f;
+////							double e2 = 0.0f;
+////							double e3 = 0.0f;
+////							SimplexNoise simNoise1 = SimplexNoise( param->frequency, param->amplitude, param->lacunarity, param->persistance );
+//////							e1 = (param->threshold - abs(simNoise1.fractal( x, z, dHeight)));
+//////							e1 = (param->threshold - abs(simNoise1.fractal( param->octaves, x, z, dHeight/20000.0f)));
+//////							e1 = (param->threshold - abs(simNoise1.fractal( param->octaves, x, z)));
+////							e1 = (param->threshold - abs(simNoise1.fractal( param->octaves, nx, ny)));
+////
+////							int sign = 1;
+////							if(e1<0) sign = -1;
+////							e2 = e1;
+////							e3 += sign * ((std::pow(abs(e2), param->power)*param->scale));
+////
+////							if(param->funcHeightEnable) {
+////								if(dHeight<(param->funcHeightLowerValue)) {
+////									dHeight += e3 * fmax(fmin((dHeight/param->funcHeightLowerValue), 1.0f), 0.0f);
+////								}
+////								else if(dHeight>(param->funcHeightUpperValue)) {
+////									dHeight += e3 * fmax(fmin((1.0f-(dHeight/(param->funcHeightUpperValue*2.0f))), 1.0f), 0.0f);
+////								}
+////								else dHeight += e3;
+////							}
+////							else dHeight += e3;
+////
+////						}
+////						break;
+////					}
 //
-//						//glActiveTexture(GL_TEXTURE0);	Core::sysTex->set(Core::sysTex->TEX_DIRT);
-//						//mapData[1][1].Draw(GLM_DRAW_ELEMENTS);
+//					case Core::Noise::NOISE_RIDGED_PERLIN:
+//					{
+//						// Layers
+//						for( auto const &param : *noise->ridgedPerlin[index] ) {
 //
-//						glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-//					Core::matrix->Pop();
-////					glEnable(GL_CULL_FACE);
-////					glDisable(GL_CULL_FACE);
-////				}
-////			}
+//							double  e1 = 0.0f,
+//									e2 = 0.0f,
+//									e3 = 0.0f;
 //
+//							rng2 = std::minstd_rand0(param->seed);
+//							genRidged.SetSeed(rng2());
+//							genRidged.SetFrequency(param->frequency);
+//							genRidged.SetLacunarity(param->lacunarity);
+//							genRidged.SetNoiseQuality(param->quality);
+//							genRidged.SetOctaveCount(param->octaves);
 //
+//							e1 = genRidged.GetValue(x, z, 0);
+//							e2 = Core::Noise::applyFunctions(e1, dHeight, *param);
+//							dHeight = Core::Noise::applyMode(e2, dHeight, param->mode);
+//						}
+//						break;
+//					}
 //
-////					Core.matrix.Push();
-////						Core.matrix.Translate(x*1024*gameVars->screen.iScale, 0, z*1024*gameVars->screen.iScale);
-////						Core.matrix.Scale(16*gameVars->screen.iScale, 16*gameVars->screen.iScale, 16*gameVars->screen.iScale);
-////						Core.matrix.SetTransform();
-////						Core.shader.getUniform(*atmosphere, iShader);
-////						//	if(bOcclude) occlusion.StartQuery("World Map", iNum);
-////								mapData[x][z].vao->Draw(GLM_DRAW_ELEMENTS);
-////						//	if(bOcclude) occlusion.EndQuery("World Map", iNum);
-////					Core.matrix.Pop();
-////				}
-////				std::cout << std::endl;
-////			}
-////			std::cout << "Done" << std::endl;
+//					case Core::Noise::NOISE_VORONOI:
+//					{
+//						// Layers
+//						for( auto const &param : *noise->voronoi[index] ) {
+//
+//							double  e1 = 0.0f,
+//									e2 = 0.0f,
+//									e3 = 0.0f;
+//
+//							rng3 = std::minstd_rand0(param->seed);
+//							genVoronoi.SetSeed(rng3());
+//							genVoronoi.SetFrequency(param->frequency);
+//							genVoronoi.SetDisplacement(param->displacement);
+//							genVoronoi.EnableDistance(param->bDistance);
+//
+//							e1 = genVoronoi.GetValue(x, z, 0);
+//							e2 = Core::Noise::applyFunctions(e1, dHeight, *param);
+//							dHeight = Core::Noise::applyMode(e2, dHeight, param->mode);
+//
+//						}
+//						break;
+//					}
+//
+//					case Core::Noise::NOISE_BILLOW:
+//					{
+//						// Layers
+//						for( auto const &param : *noise->billow[index] ) {
+//
+//							double  e1 = 0.0f,
+//									e2 = 0.0f,
+//									e3 = 0.0f;
+//
+//							rng4 = std::minstd_rand0(param->seed);
+//							genBillow.SetSeed(rng4());
+//							genBillow.SetFrequency(param->frequency);
+//							genBillow.SetLacunarity(param->lacunarity);
+//							genBillow.SetPersistence(param->persistence);
+//							genBillow.SetNoiseQuality(param->quality);
+//							genBillow.SetOctaveCount(param->octaves);
+//
+//							e1 = genBillow.GetValue(x, z, 0);
+//							e2 = Core::Noise::applyFunctions(e1, dHeight, *param);
+//							dHeight = Core::Noise::applyMode(e2, dHeight, param->mode);
+//						}
+//						break;
+//					}
+//
+//					default:	// NOISE_NONE
+//						debug.log("Load NONE");
+//				}
+//
+//			}
+//
+//			return dHeight;
+//		}
+
+
+
+//		double MapSys::applyFunction(float x, float y, double height, double e2, Map::t_SimplexFunctions *functions) {
+//			double rVal = 0.0f;
+//			double e3 = e2;
+//
+//			for( auto function : *functions ) {
+//				if(function.src == Map::SRC_HEIGHT) {
+//					switch(function.dst) {
+//						case Map::DST_SIMPLEX_AMPLITUDE:
+//							break;
+//						case Map::DST_SIMPLEX_FREQUENCY:
+//							break;
+//						case Map::DST_SIMPLEX_HEIGHT:
+//							break;
+//						case Map::DST_SIMPLEX_LACUNARITY:
+//							break;
+//						case Map::DST_SIMPLEX_OCTAVES:
+//							break;
+//						case Map::DST_SIMPLEX_PERSISTANCE:
+//							break;
+//						case Map::DST_SIMPLEX_POWER:
+//							break;
+//						case Map::DST_SIMPLEX_SCALE:
+//							break;
+//						//dst = function.apply(src, dst);
+//					}
+//				}
+//			}
+
+//			enum eFunctionSource {
+//				SRC_POSITION,
+//				SRC_HEIGHT
+//			};
+//
+//			enum eFunctionTargetSimplex {
+//				SIMPLEX_DST_FREQUENCY,
+//				SIMPLEX_DST_AMPLITUDE,
+//				SIMPLEX_DST_LACUNARITY,
+//				SIMPLEX_DST_PERSISTANCE,
+//				SIMPLEX_DST_POWER,
+//				SIMPLEX_DST_SCALE,
+//				SIMPLEX_DST_OCTAVES,
+//				SIMPLEX_DST_HEIGHT
+//			};
 //		}
 
 
@@ -605,53 +880,24 @@ namespace Core {
 
 
 
-		// TODO: Test Eclipse Branch 1
-		class t_MapInstance {
-			private:
-//				static MapSys mapSys;
 
-			public:
-				static MapSys mapSys;
 
-				struct t_TerrainInterface {
-					t_MapInstance * parent;
-					MapData	data;
-					void update();
-					void draw();
-					t_TerrainInterface(t_MapInstance * p) { parent = p; }
-				};
-				t_TerrainInterface Terrain = t_TerrainInterface(this);
 
-				struct t_O2DInterface {
-					t_MapInstance * parent;
-					_O2DData data;
-					void update();
-					void draw();
-					t_O2DInterface(t_MapInstance * p) { parent = p; }
-				};
-				t_O2DInterface O2D = t_O2DInterface(this);
 
-				struct t_O3DInterface {
-					t_MapInstance * parent;
-					_O3DData data;
-					void update();
-					void draw();
-					t_O3DInterface(t_MapInstance * p) { parent = p; }
-				};
-				t_O3DInterface O3D = t_O3DInterface(this);
 
-				t_MapInstance();
-				~t_MapInstance();
-		};
 
-		t_MapInstance::t_MapInstance() {
-			mapSys.init();
-		}
 
-		t_MapInstance::~t_MapInstance() {
-		}
 
-		MapSys t_MapInstance::mapSys;
+
+
+
+
+
+
+
+
+
+
 
 
 

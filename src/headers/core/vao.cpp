@@ -10,7 +10,8 @@
 namespace Core {
 	VAO::VAO():	uiVertexSize(0),
 				uiNormalSize(0),
-				uiExtraSize(0),
+				uiInstanceSize(0),
+				uiDataSize(0),
 				uiPositionSize(0),
 				uiVertexOffset(0),
 				uiNormalOffset(0),
@@ -18,14 +19,16 @@ namespace Core {
 				uiIndexOffset(0),
 				uiTextureOffset(0),
 				uiPositionOffset(0),
-				uiExtraOffset(0),
+				uiInstanceOffset(0),
+				uiDataOffset(0),
 				uiMaxInstances(0),
 				uiVertexLength(0),
 				uiNormalLength(0),
 				uiColorLength(0),
 				uiIndexLength(0),
 				uiPositionLength(0),
-				uiExtraLength(0),
+				uiInstanceLength(0),
+				uiDataLength(0),
 				uiTextureLength(0),
 				uiNumDrawVerts(0),
 				uiNumVerts(0),
@@ -39,7 +42,8 @@ namespace Core {
 				uiIndexArray(0),
 				uiTextureArray(nullptr),
 				uiPositionArray(0),
-				uiExtraArray(0),
+				uiInstanceArray(0),
+				uiDataArray(0),
 				bStarted(false)
 				 {
 		vaoPrime[0] = 0;
@@ -181,26 +185,82 @@ namespace Core {
 			}
 			else std::cout << "ERROR!!! CANNOT DO INSTANCING!!!" << std::endl;
 		}
-		else if (eAttrib==Core::GLA_EXTRA) {
-			if (uiMaxInstances > 0) {	//Are we allowed to do instancing?
-				if(uiExtraArray == 0)	//Has a buffer been created yet?
-				{
-					glGenBuffers(1, &uiExtraArray);
-					glBindBuffer(GL_ARRAY_BUFFER, uiExtraArray);
-					glBufferData(GL_ARRAY_BUFFER, sizeof(*vData) * uiMaxInstances, vData, GL_DYNAMIC_DRAW);
-					uiExtraSize = 3;
-					uiExtraLength = sizeof(*vData) * uiMaxInstances;
-					uiExtraOffset+=sizeof(GLfloat) * 3;
-				}
-				else	//Buffer exists, so lets assume we're overwriting the data
-				{
-					glBindBuffer(GL_ARRAY_BUFFER, uiExtraArray);
-					//glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(*vData) * uiMaxInstances, vData);
-					glBufferData(GL_ARRAY_BUFFER, sizeof(*vData) * uiMaxInstances, vData, GL_DYNAMIC_DRAW);
-				}
+		else if (eAttrib==Core::GLA_DATA1) {
+			if(uiDataArray == 0)	//Has a buffer been created yet?
+			{
+				glGenBuffers(1, &uiDataArray);
+				glBindBuffer(GL_ARRAY_BUFFER, uiDataArray);
+				glBufferData(GL_ARRAY_BUFFER, sizeof(*vData) * uiNumVerts, vData, GL_DYNAMIC_DRAW);
+				uiDataSize = 3;
+				uiDataLength = sizeof(*vData) * uiNumVerts;
+				//uiExtraOffset+=sizeof(GLfloat) * 3;
 			}
-			else std::cout << "ERROR!!! CANNOT DO INSTANCING!!!" << std::endl;
+			else	//Buffer exists, so lets assume we're overwriting the data
+			{
+				glBindBuffer(GL_ARRAY_BUFFER, uiDataArray);
+				//glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(*vData) * uiMaxInstances, vData);
+				glBufferData(GL_ARRAY_BUFFER, sizeof(*vData) * uiNumVerts, vData, GL_DYNAMIC_DRAW);
+			}
+
+//			if (uiMaxInstances > 0) {	//Are we allowed to do instancing?
+//				if(uiExtraArray == 0)	//Has a buffer been created yet?
+//				{
+//					glGenBuffers(1, &uiExtraArray);
+//					glBindBuffer(GL_ARRAY_BUFFER, uiExtraArray);
+//					glBufferData(GL_ARRAY_BUFFER, sizeof(*vData) * uiMaxInstances, vData, GL_DYNAMIC_DRAW);
+//					uiExtraSize = 3;
+//					uiExtraLength = sizeof(*vData) * uiMaxInstances;
+//					uiExtraOffset+=sizeof(GLfloat) * 3;
+//				}
+//				else	//Buffer exists, so lets assume we're overwriting the data
+//				{
+//					glBindBuffer(GL_ARRAY_BUFFER, uiExtraArray);
+//					//glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(*vData) * uiMaxInstances, vData);
+//					glBufferData(GL_ARRAY_BUFFER, sizeof(*vData) * uiMaxInstances, vData, GL_DYNAMIC_DRAW);
+//				}
+//			}
+//			else std::cout << "ERROR!!! CANNOT DO INSTANCING!!!" << std::endl;
 		}
+//		else if (eAttrib==Core::GLA_DATA1) {
+//			if (uiMaxInstances > 0) {	//Are we allowed to do instancing?
+//				if(uiExtraArray == 0)	//Has a buffer been created yet?
+//				{
+//					glGenBuffers(1, &uiExtraArray);
+//					glBindBuffer(GL_ARRAY_BUFFER, uiExtraArray);
+//					glBufferData(GL_ARRAY_BUFFER, sizeof(*vData) * uiMaxInstances, vData, GL_DYNAMIC_DRAW);
+//					uiExtraSize = 3;
+//					uiExtraLength = sizeof(*vData) * uiMaxInstances;
+//					uiExtraOffset+=sizeof(GLfloat) * 3;
+//				}
+//				else	//Buffer exists, so lets assume we're overwriting the data
+//				{
+//					glBindBuffer(GL_ARRAY_BUFFER, uiExtraArray);
+//					//glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(*vData) * uiMaxInstances, vData);
+//					glBufferData(GL_ARRAY_BUFFER, sizeof(*vData) * uiMaxInstances, vData, GL_DYNAMIC_DRAW);
+//				}
+//			}
+//			else std::cout << "ERROR!!! CANNOT DO INSTANCING!!!" << std::endl;
+//		}
+//		else if (eAttrib==Core::GLA_DATA1) {
+//			if (uiMaxInstances > 0) {	//Are we allowed to do instancing?
+//				if(uiExtraArray == 0)	//Has a buffer been created yet?
+//				{
+//					glGenBuffers(1, &uiExtraArray);
+//					glBindBuffer(GL_ARRAY_BUFFER, uiExtraArray);
+//					glBufferData(GL_ARRAY_BUFFER, sizeof(*vData) * uiMaxInstances, vData, GL_DYNAMIC_DRAW);
+//					uiExtraSize = 3;
+//					uiExtraLength = sizeof(*vData) * uiMaxInstances;
+//					uiExtraOffset+=sizeof(GLfloat) * 3;
+//				}
+//				else	//Buffer exists, so lets assume we're overwriting the data
+//				{
+//					glBindBuffer(GL_ARRAY_BUFFER, uiExtraArray);
+//					//glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(*vData) * uiMaxInstances, vData);
+//					glBufferData(GL_ARRAY_BUFFER, sizeof(*vData) * uiMaxInstances, vData, GL_DYNAMIC_DRAW);
+//				}
+//			}
+//			else std::cout << "ERROR!!! CANNOT DO INSTANCING!!!" << std::endl;
+//		}
 	}
 
 //	void VAO::CopyData(GLenum eAttrib, GLushort *uiIndex, long lNumIndex) {
@@ -333,31 +393,98 @@ namespace Core {
 			}
 			else std::cout << "ERROR!!! CANNOT DO INSTANCING!!!" << std::endl;
 		}
-		else if (eAttrib==Core::GLA_EXTRA) {
-			if (uiMaxInstances > 0) {	//Are we allowed to do instancing?
-				if(uiExtraArray == 0)	//Has a buffer been created yet?
-				{
-					glGenBuffers(1, &uiExtraArray);
-					glBindBuffer(GL_ARRAY_BUFFER, uiExtraArray);
-					glBufferData(GL_ARRAY_BUFFER, sizeof(*vData) * uiMaxInstances, vData, GL_DYNAMIC_DRAW);
-					uiExtraSize = 4;
-					uiExtraLength = sizeof(*vData) * uiMaxInstances;
-					//for (unsigned int y=0; y < 20; y++) {
-					//	printf("Item[%i]; (%f, %f)\n", y, vData[y][0], vData[y][2]);
-					//}
-					//uiPositionOffset = sizeof(vData);
-					uiExtraOffset+=sizeof(GLfloat) * 4;
-				}
-				else	//Buffer exists, so lets assume we're overwriting the data
-				{
-					//glGenBuffers(1, &uiPositionArray);
-					glBindBuffer(GL_ARRAY_BUFFER, uiExtraArray);
-					//glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(*vData) * uiMaxInstances, vData);
-					glBufferData(GL_ARRAY_BUFFER, sizeof(*vData) * uiMaxInstances, vData, GL_DYNAMIC_DRAW);
-				}
+		else if (eAttrib==Core::GLA_DATA1) {
+			if(uiDataArray == 0)	//Has a buffer been created yet?
+			{
+				glGenBuffers(1, &uiDataArray);
+				glBindBuffer(GL_ARRAY_BUFFER, uiDataArray);
+				glBufferData(GL_ARRAY_BUFFER, sizeof(*vData) * uiNumVerts, vData, GL_DYNAMIC_DRAW);
+				uiDataSize = 3;
+				uiDataLength = sizeof(*vData) * uiNumVerts;
+				//uiExtraOffset+=sizeof(GLfloat) * 3;
 			}
-			else std::cout << "ERROR!!! CANNOT DO INSTANCING!!!" << std::endl;
+			else	//Buffer exists, so lets assume we're overwriting the data
+			{
+				glBindBuffer(GL_ARRAY_BUFFER, uiDataArray);
+				//glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(*vData) * uiMaxInstances, vData);
+				glBufferData(GL_ARRAY_BUFFER, sizeof(*vData) * uiNumVerts, vData, GL_DYNAMIC_DRAW);
+			}
 		}
+//		else if (eAttrib==Core::GLA_DATA1) {
+//			if (uiMaxInstances > 0) {	//Are we allowed to do instancing?
+//				if(uiExtraArray == 0)	//Has a buffer been created yet?
+//				{
+//					glGenBuffers(1, &uiExtraArray);
+//					glBindBuffer(GL_ARRAY_BUFFER, uiExtraArray);
+//					glBufferData(GL_ARRAY_BUFFER, sizeof(*vData) * uiMaxInstances, vData, GL_DYNAMIC_DRAW);
+//					uiExtraSize = 4;
+//					uiExtraLength = sizeof(*vData) * uiMaxInstances;
+//					//for (unsigned int y=0; y < 20; y++) {
+//					//	printf("Item[%i]; (%f, %f)\n", y, vData[y][0], vData[y][2]);
+//					//}
+//					//uiPositionOffset = sizeof(vData);
+//					uiExtraOffset+=sizeof(GLfloat) * 4;
+//				}
+//				else	//Buffer exists, so lets assume we're overwriting the data
+//				{
+//					//glGenBuffers(1, &uiPositionArray);
+//					glBindBuffer(GL_ARRAY_BUFFER, uiExtraArray);
+//					//glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(*vData) * uiMaxInstances, vData);
+//					glBufferData(GL_ARRAY_BUFFER, sizeof(*vData) * uiMaxInstances, vData, GL_DYNAMIC_DRAW);
+//				}
+//			}
+//			else std::cout << "ERROR!!! CANNOT DO INSTANCING!!!" << std::endl;
+//		}
+//		else if (eAttrib==Core::GLA_DATA1) {
+//			if (uiMaxInstances > 0) {	//Are we allowed to do instancing?
+//				if(uiExtraArray == 0)	//Has a buffer been created yet?
+//				{
+//					glGenBuffers(1, &uiExtraArray);
+//					glBindBuffer(GL_ARRAY_BUFFER, uiExtraArray);
+//					glBufferData(GL_ARRAY_BUFFER, sizeof(*vData) * uiMaxInstances, vData, GL_DYNAMIC_DRAW);
+//					uiExtraSize = 4;
+//					uiExtraLength = sizeof(*vData) * uiMaxInstances;
+//					//for (unsigned int y=0; y < 20; y++) {
+//					//	printf("Item[%i]; (%f, %f)\n", y, vData[y][0], vData[y][2]);
+//					//}
+//					//uiPositionOffset = sizeof(vData);
+//					uiExtraOffset+=sizeof(GLfloat) * 4;
+//				}
+//				else	//Buffer exists, so lets assume we're overwriting the data
+//				{
+//					//glGenBuffers(1, &uiPositionArray);
+//					glBindBuffer(GL_ARRAY_BUFFER, uiExtraArray);
+//					//glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(*vData) * uiMaxInstances, vData);
+//					glBufferData(GL_ARRAY_BUFFER, sizeof(*vData) * uiMaxInstances, vData, GL_DYNAMIC_DRAW);
+//				}
+//			}
+//			else std::cout << "ERROR!!! CANNOT DO INSTANCING!!!" << std::endl;
+//		}
+//		else if (eAttrib==Core::GLA_DATA1) {
+//			if (uiMaxInstances > 0) {	//Are we allowed to do instancing?
+//				if(uiExtraArray == 0)	//Has a buffer been created yet?
+//				{
+//					glGenBuffers(1, &uiExtraArray);
+//					glBindBuffer(GL_ARRAY_BUFFER, uiExtraArray);
+//					glBufferData(GL_ARRAY_BUFFER, sizeof(*vData) * uiMaxInstances, vData, GL_DYNAMIC_DRAW);
+//					uiExtraSize = 4;
+//					uiExtraLength = sizeof(*vData) * uiMaxInstances;
+//					//for (unsigned int y=0; y < 20; y++) {
+//					//	printf("Item[%i]; (%f, %f)\n", y, vData[y][0], vData[y][2]);
+//					//}
+//					//uiPositionOffset = sizeof(vData);
+//					uiExtraOffset+=sizeof(GLfloat) * 4;
+//				}
+//				else	//Buffer exists, so lets assume we're overwriting the data
+//				{
+//					//glGenBuffers(1, &uiPositionArray);
+//					glBindBuffer(GL_ARRAY_BUFFER, uiExtraArray);
+//					//glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(*vData) * uiMaxInstances, vData);
+//					glBufferData(GL_ARRAY_BUFFER, sizeof(*vData) * uiMaxInstances, vData, GL_DYNAMIC_DRAW);
+//				}
+//			}
+//			else std::cout << "ERROR!!! CANNOT DO INSTANCING!!!" << std::endl;
+//		}
 	}
 
 	void VAO::ReplaceData(GLenum eAttrib, Core::Data3f *vData) {
@@ -448,6 +575,12 @@ namespace Core {
 		if(uiIndexArray != 0)	{
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uiIndexArray);
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, uiIndexLength, NULL, GL_DYNAMIC_DRAW);
+			//glDeleteBuffers(		1, &uiIndexArray);
+			//uiIndexArray = 0;
+		}
+		if(uiDataArray != 0)	{
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uiDataArray);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, uiDataLength, NULL, GL_DYNAMIC_DRAW);
 			//glDeleteBuffers(		1, &uiIndexArray);
 			//uiIndexArray = 0;
 		}
@@ -572,13 +705,36 @@ namespace Core {
 			glVertexAttribDivisor(Core::GLA_POSITION, 1);
 		}
 
-		if(uiExtraArray != 0) {
-			glEnableVertexAttribArray(Core::GLA_EXTRA);
-			glBindBuffer(GL_ARRAY_BUFFER, uiExtraArray);
+		if(uiDataArray != 0) {
+			glEnableVertexAttribArray(Core::GLA_DATA1);
+			glBindBuffer(GL_ARRAY_BUFFER, uiDataArray);
 			//glVertexAttribPointer(Core::GLA_POSITION, uiPositionSize, GL_FLOAT, GL_FALSE, 0, 0);
-			glVertexAttribPointer(Core::GLA_EXTRA, uiExtraSize, GL_FLOAT, GL_FALSE, uiExtraSize*sizeof(GLfloat), (GLvoid*)0);
-			glVertexAttribDivisor(Core::GLA_EXTRA, 1);
+//			glVertexAttribPointer(Core::GLA_DATA1, uiDataSize, GL_FLOAT, GL_FALSE, uiDataSize*sizeof(GLfloat), (GLvoid*)0);
+			glVertexAttribPointer(Core::GLA_DATA1, uiDataSize, GL_FLOAT, GL_FALSE, 0, 0);
+//			glVertexAttribDivisor(Core::GLA_DATA1, 1);
 		}
+
+//		if(uiInstanceArray != 0) {
+//			glEnableVertexAttribArray(Core::GLA_DATA1);
+//			glBindBuffer(GL_ARRAY_BUFFER, uiInstanceArray);
+//			//glVertexAttribPointer(Core::GLA_POSITION, uiPositionSize, GL_FLOAT, GL_FALSE, 0, 0);
+//			glVertexAttribPointer(Core::GLA_DATA1, uiInstanceSize, GL_FLOAT, GL_FALSE, uiInstanceSize*sizeof(GLfloat), (GLvoid*)0);
+//			glVertexAttribDivisor(Core::GLA_DATA1, 1);
+//		}
+//		if(uiExtraArray != 0) {
+//			glEnableVertexAttribArray(Core::GLA_DATA1);
+//			glBindBuffer(GL_ARRAY_BUFFER, uiExtraArray);
+//			//glVertexAttribPointer(Core::GLA_POSITION, uiPositionSize, GL_FLOAT, GL_FALSE, 0, 0);
+//			glVertexAttribPointer(Core::GLA_DATA1, uiExtraSize, GL_FLOAT, GL_FALSE, uiExtraSize*sizeof(GLfloat), (GLvoid*)0);
+//			glVertexAttribDivisor(Core::GLA_DATA1, 1);
+//		}
+//		if(uiExtraArray != 0) {
+//			glEnableVertexAttribArray(Core::GLA_DATA1);
+//			glBindBuffer(GL_ARRAY_BUFFER, uiExtraArray);
+//			//glVertexAttribPointer(Core::GLA_POSITION, uiPositionSize, GL_FLOAT, GL_FALSE, 0, 0);
+//			glVertexAttribPointer(Core::GLA_DATA1, uiExtraSize, GL_FLOAT, GL_FALSE, uiExtraSize*sizeof(GLfloat), (GLvoid*)0);
+//			glVertexAttribDivisor(Core::GLA_DATA1, 1);
+//		}
 
 		if(uiTextureUnits > 0) {
 			for(unsigned int i = 0; i < uiTextureUnits; i++) {
@@ -622,6 +778,7 @@ namespace Core {
 		glDisableVertexAttribArray(Core::GLA_COLOR);
 		glDisableVertexAttribArray(Core::GLA_INDEX);
 		glDisableVertexAttribArray(Core::GLA_POSITION);
+		glDisableVertexAttribArray(Core::GLA_DATA1);
 
 		if(uiTextureUnits > 0)
 			for(unsigned int i = 0; i < uiTextureUnits; i++)

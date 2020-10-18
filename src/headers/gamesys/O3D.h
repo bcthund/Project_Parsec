@@ -26,7 +26,7 @@
  */
 
 namespace Core {
-	namespace GameSys {
+	namespace Sys {
 		struct _O3DData {
 			int id;
 			Vector3f pos;
@@ -89,6 +89,7 @@ namespace Core {
 
 		class _O3D {
 			private:
+				static t_UniformLocations uniforms;
 				Matrix_System 	* matrix;
 				Shader_System 	* shader;
 				_Collision		* collision;
@@ -118,10 +119,10 @@ namespace Core {
 					}
 				} data;
 
-				bool init();
+				bool init(Core::_Lights &lights);
 				bool load();
 				bool calc();
-				void draw(SHADER_PROGRAMS iShader, Core::_Lights &lights);
+				void draw(Core::_Lights &lights);
 				_O3D(Matrix_System &m, Shader_System &s, _Collision &c, _Helper &h) {
 					Core::debug.log("Construct O3D {");
 					matrix = &m;
@@ -143,10 +144,12 @@ namespace Core {
 		};
 
 		int _O3D::_O3DCollection::idcount = -1;
+		t_UniformLocations _O3D::uniforms;
 
 
-		bool _O3D::init() {
+		bool _O3D::init(Core::_Lights &lights) {
 			Core::debug.log("Init O3D {");
+			if(!uniforms.bInit) shader->getUniform(GLS_PHONG, lights, uniforms);
 			Core::debug.print(" Done ", Core::debug().GREEN);
 			Core::debug.print("}\n");
 			return true;
@@ -363,13 +366,12 @@ namespace Core {
 			return true;
 		}
 
-		void _O3D::draw(SHADER_PROGRAMS iShader, Core::_Lights &lights) {
+		void _O3D::draw(Core::_Lights &lights) {
 			glDisable(GL_CULL_FACE);
+			glActiveTexture(GL_TEXTURE0);
+			shader->use(GLS_PHONG);
 			for (int item=0; item <= data.idcount; item++) {
-				shader->use(iShader);
 				matrix->Push();
-
-					glActiveTexture(GL_TEXTURE0);
 					data[item].texture.Set(data[item].image);
 
 					//glActiveTexture(GL_TEXTURE0);
@@ -420,7 +422,7 @@ namespace Core {
 
 						matrix->Scale(Core::gameVars->screen.fScale);
 						matrix->SetTransform();
-						shader->getUniform(iShader, &lights);
+						shader->setUniform(GLS_PHONG, lights, uniforms);
 						data[item].vao.Draw(GLM_DRAW_ELEMENTS);
 
 

@@ -332,7 +332,7 @@ namespace Core {
 				}
 				else con->exec();
 
-				initSound(audio().CHANNEL_GUI_SLIDER, 7, 8, -1, 0, true, true);
+				initSound(audio.channel().CHANNEL_3_GUI_SLIDER, audio().AUDIO_6_GUI_SLIDER_ON, audio().AUDIO_7_GUI_SLIDER_OFF, -1, 0, true, true);
 
 				update();
 				setValue(*this->valuePtr);
@@ -426,19 +426,19 @@ namespace Core {
 				if(this->con->orientation == Core::GUI::SLIDER_HORIZONTAL)	{
 					if(parent!=nullptr && parent->scroll.getEnabled()) f0 += con->scroll.getX();
 					if(this->con->minValue<this->con->maxValue) {
-						f1 = getNormalized(f0-Core::gameVars->screen.half.x, minPos, maxPos);
+						f1 = getNormalized(f0-Core::gameVars->screen.activeProjection->half.x, minPos, maxPos);
 					}
 					else {
-						f1 = getNormalized(f0-Core::gameVars->screen.half.x, maxPos, minPos);
+						f1 = getNormalized(f0-Core::gameVars->screen.activeProjection->half.x, maxPos, minPos);
 					}
 				}
 				else if(this->con->orientation == Core::GUI::SLIDER_VERTICAL)	{
 					if(parent!=nullptr && parent->scroll.getEnabled()) f0 += con->scroll.getY();
 					if(this->con->minValue<this->con->maxValue) {
-						f1 = getNormalized(f0-Core::gameVars->screen.half.y, minPos, maxPos);
+						f1 = getNormalized(f0-Core::gameVars->screen.activeProjection->half.y, minPos, maxPos);
 					}
 					else {
-						f1 = getNormalized(f0-Core::gameVars->screen.half.y, maxPos, minPos);
+						f1 = getNormalized(f0-Core::gameVars->screen.activeProjection->half.y, maxPos, minPos);
 					}
 				}
 
@@ -524,15 +524,15 @@ namespace Core {
 				else {
 					if(!(eExternState&STATE_UPDATE)) {
 						Vector2f vPos = slider.con->getScrollPos();
-						Core::_Mouse::iMouseState test1 = Core::mouse->checkInput(gameVars->screen.half.x+vPos.x, gameVars->screen.half.y-vPos.y, slider.con->size.x, slider.con->size.y);
+						Core::_Mouse::iMouseState test1 = Core::mouse->checkInput(gameVars->screen.activeProjection->half.x+vPos.x, gameVars->screen.activeProjection->half.y-vPos.y, slider.con->size.x, slider.con->size.y);
 
 						vPos = control.con->getScrollPos();
-						Core::_Mouse::iMouseState test2 = Core::mouse->checkInput(gameVars->screen.half.x+vPos.x, gameVars->screen.half.y-vPos.y, control.con->size.x, control.con->size.y);
+						Core::_Mouse::iMouseState test2 = Core::mouse->checkInput(gameVars->screen.activeProjection->half.x+vPos.x, gameVars->screen.activeProjection->half.y-vPos.y, control.con->size.x, control.con->size.y);
 						mState = test1 | test2;
 
 						//Vector2f vPos = this->con->getScrollPos();
-						//this->mState = Core::mouse->checkInput(gameVars->screen.half.x+vPos.x, gameVars->screen.half.y-vPos.y, this->con->size.x, this->con->size.y);
-						//this->mState = Core::mouse->checkInput(gameVars->screen.half.x+this->con->pos.x, gameVars->screen.half.y-this->con->pos.y, std::max(this->con->size.x, this->con->control.size.x), std::max(this->con->size.y, this->con->control.size.y));
+						//this->mState = Core::mouse->checkInput(gameVars->screen.activeProjection->half.x+vPos.x, gameVars->screen.activeProjection->half.y-vPos.y, this->con->size.x, this->con->size.y);
+						//this->mState = Core::mouse->checkInput(gameVars->screen.activeProjection->half.x+this->con->pos.x, gameVars->screen.activeProjection->half.y-this->con->pos.y, std::max(this->con->size.x, this->con->control.size.x), std::max(this->con->size.y, this->con->control.size.y));
 					}
 					else this->mState = Core::_Mouse::MOUSE_NONE;
 

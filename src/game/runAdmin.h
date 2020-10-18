@@ -224,9 +224,9 @@ void _Admin::init() {
 	Core::debug.logIncreaseIndent();
 
 	//audio.add("Sample Music", 0, -1)
-	audio.music.add("Sample Music 0", 0, -1, true, 0);
-	audio.music.add("Sample Music 1", 1, -1, true, 0);
-	audio.music.add("Sample Music 2", 2, -1, true, 0);
+	audio.music.add("Sample Music 0", audio.music().MUSIC_0_MainMenu, -1, true, 0);
+	audio.music.add("Sample Music 1", audio.music().MUSIC_11_BattleNormal, -1, true, 0);
+	audio.music.add("Sample Music 2", audio.music().MUSIC_25_ExploreGrassland, -1, true, 0);
 
 	if (!bOneShot[0]) {
 		Core::debug.log("[0] Master Container\n", Core::debug().YELLOW);
@@ -284,19 +284,19 @@ void _Admin::init() {
 
 		cMaster.enableScissor();
 		//cMaster.setTextured();
-		cMaster.setTexture(Core::sysTex->TEX_GRASSYROCK, Core::sysTex->get());
+		cMaster.setTexture(Core::sysTex->TEX_ROCKY_GRASS, Core::sysTex->get());
 		cMaster.setTextureScrollRate(2.0f);
 		cMaster.colorBack.base		= &Core::colors[Core::colors().White];
 		cMaster.colorBack.active	= &Core::colors[Core::colors().White];
 		cMaster.colorBack.highlight	= &Core::colors[Core::colors().White];
 		Core::gui["GameMenu"].add("Window 4", cMaster);
-		cMaster.setTexture(Core::sysTex->TEX_GRASS, Core::sysTex->get());
+		cMaster.setTexture(Core::sysTex->TEX_GRASS1, Core::sysTex->get());
 		cMaster.setTextureScrollRate(0.5f);
 		cMaster.colorBack.base		= &Core::colors[Core::colors().White];
 		cMaster.colorBack.active	= &Core::colors[Core::colors().White];
 		cMaster.colorBack.highlight	= &Core::colors[Core::colors().White];
 		Core::gui["GameMenu"].add("Window 21", cMaster);
-		cMaster.setTexture(Core::sysTex->TEX_GRASSYDIRT, Core::sysTex->get());
+		cMaster.setTexture(Core::sysTex->TEX_MUD1, Core::sysTex->get());
 		cMaster.setTextureScrollRate(-0.2f);
 		cMaster.colorBack.base		= &Core::colors[Core::colors().Gray50];
 		cMaster.colorBack.active	= &Core::colors[Core::colors().White];
@@ -565,76 +565,76 @@ void _Admin::init() {
 		Core::gui["GameMenu"]["Window 3"].Slider.add("Simplex Generator", &Core::gameVars->debug.noise.iCurrentSimplex, con);
 
 		//
-		con.setY(440);
-		con.setMinMax(8.0f, 2048.0f);
-		con.setStep(1.0f, 2.0f, 10.0f);
-		Core::gui["GameMenu"]["Window 3"].Slider.add("Resolution", &Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].res, con);
+//		con.setY(440);
+//		con.setMinMax(1.0f, 2048.0f);
+//		con.setStep(1.0f, 2.0f, 10.0f);
+//		Core::gui["GameMenu"]["Window 3"].Slider.add("Resolution", &game->world.simplex["Terrain"]->parent->chunk_resolution, con);
 
 		//
-		con.setY(410);
-		con.setMinMax(1.0f, 1000.0f);
-		con.setStep(1.0f, 2.0f, 10.0f);
-		Core::gui["GameMenu"]["Window 3"].Slider.add("Tex Scale", &Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].tex_scale, con);
+//		con.setY(410);
+//		con.setMinMax(1.0f, 1000.0f);
+//		con.setStep(1.0f, 2.0f, 10.0f);
+//		Core::gui["GameMenu"]["Window 3"].Slider.add("Tex Scale", &game->world.simplex["Terrain"]->parent->tex_scale, con);
 
 		//
-		con.setY(380);
-		con.setMinMax(1.0f, 100000.0f);
-		con.setStep(1.0f, 10.0f, 100.0f);
-		Core::gui["GameMenu"]["Window 3"].Slider.add("Terrain Size", &Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].terrain_size, con);
+//		con.setY(380);
+//		con.setMinMax(1.0f, 100000.0f);
+//		con.setStep(1.0f, 10.0f, 100.0f);
+//		Core::gui["GameMenu"]["Window 3"].Slider.add("Terrain Size", &game->world.simplex["Terrain"]->parent->chunk_size, con);
+
+//		// Offset X
+//		con.setY(350);
+//		con.setMinMax(-10000.0f, 10000.0f);
+//		con.setStep(1.0f, 10.0f, 100.0f);
+//		Core::gui["GameMenu"]["Window 3"].Slider.add("Terrain Height", &game->world.simplex["Terrain"]->parent->chunk_height_offset, con);
 
 		// Offset X
-		con.setY(350);
-		con.setMinMax(-10000.0f, 10000.0f);
-		con.setStep(1.0f, 10.0f, 100.0f);
-		Core::gui["GameMenu"]["Window 3"].Slider.add("Terrain Height", &Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].terrain_height_offset, con);
-
-		// Offset X
-		con.setY(300);
-		con.setMinMax(-10000.0f, 10000.0f);
-		con.setStep(1.0f, 10.0f, 100.0f);
-		Core::gui["GameMenu"]["Window 3"].Slider.add("Offset X", &Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].offset.x, con);
+//		con.setY(300);
+//		con.setMinMax(-10000.0f, 10000.0f);
+//		con.setStep(1.0f, 10.0f, 100.0f);
+//		Core::gui["GameMenu"]["Window 3"].Slider.add("Offset X", &game->world.simplex.offset.x, con);
 
 		// Offset Y
-		con.setY(270);
-		con.setMinMax(-10000.0f, 10000.0f);
-		con.setStep(1.0f, 10.0f, 100.0f);
-		Core::gui["GameMenu"]["Window 3"].Slider.add("Offset Y", &Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].offset.y, con);
+//		con.setY(270);
+//		con.setMinMax(-10000.0f, 10000.0f);
+//		con.setStep(1.0f, 10.0f, 100.0f);
+//		Core::gui["GameMenu"]["Window 3"].Slider.add("Offset Y", &game->world.simplex.offset.y, con);
 
 		// Delta
-		con.setY(240);
-		con.setMinMax(1.0f, 100.0f);
-		con.setStep(1.0f, 2.0f, 10.0f);
-		Core::gui["GameMenu"]["Window 3"].Slider.add("Delta", &Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].delta, con);
+//		con.setY(240);
+//		con.setMinMax(1.0f, 100.0f);
+//		con.setStep(1.0f, 2.0f, 10.0f);
+//		Core::gui["GameMenu"]["Window 3"].Slider.add("Delta", &game->world.simplex["Terrain"]->parent->delta, con);
 
 		// Frequency
-		con.setY(210);
-		con.setMinMax(-0.001f, 0.001f);
-		con.setStep(0.00001f, 0.00005f, 0.0001f);
-		Core::gui["GameMenu"]["Window 3"].Slider.add("Frequency", &Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].frequency, con);
+//		con.setY(210);
+//		con.setMinMax(-0.001f, 0.001f);
+//		con.setStep(0.00001f, 0.00005f, 0.0001f);
+//		Core::gui["GameMenu"]["Window 3"].Slider.add("Frequency", &game->world.simplex.frequency, con);
 
 		// Lacunarity
-		con.setY(180);
-		con.setMinMax(-10.0f, 10.0f);
-		con.setStep(0.01f, 0.1f, 1.0f);
-		Core::gui["GameMenu"]["Window 3"].Slider.add("Lacunarity", &Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].lacunarity, con);
+//		con.setY(180);
+//		con.setMinMax(-10.0f, 10.0f);
+//		con.setStep(0.01f, 0.1f, 1.0f);
+//		Core::gui["GameMenu"]["Window 3"].Slider.add("Lacunarity", &game->world.simplex.lacunarity, con);
 
 		// Persistance
-		con.setY(150);
-		con.setMinMax(-1.0f, 1.0f);
-		con.setStep(0.001f, 0.01f, 0.1f);
-		Core::gui["GameMenu"]["Window 3"].Slider.add("Persistance", &Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].persistance, con);
+//		con.setY(150);
+//		con.setMinMax(-1.0f, 1.0f);
+//		con.setStep(0.001f, 0.01f, 0.1f);
+//		Core::gui["GameMenu"]["Window 3"].Slider.add("Persistance", &game->world.simplex.persistance, con);
 
 		// Scale
-		con.setY(120);
-		con.setMinMax(0.1f, 5000.0f);
-		con.setStep(1.0f, 10.0f, 100.0f);
-		Core::gui["GameMenu"]["Window 3"].Slider.add("Scale", &Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].scale, con);
+//		con.setY(120);
+//		con.setMinMax(0.1f, 5000.0f);
+//		con.setStep(1.0f, 10.0f, 100.0f);
+//		Core::gui["GameMenu"]["Window 3"].Slider.add("Scale", &game->world.simplex.scale, con);
 
 		// Octaves
-		con.setY(90);
-		con.setMinMax(1.0f, 10.0f);
-		con.setStep(1.0f, 10.0f, 100.0f);
-		Core::gui["GameMenu"]["Window 3"].Slider.add("Octaves", &Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].octaves, con);
+//		con.setY(90);
+//		con.setMinMax(1.0f, 10.0f);
+//		con.setStep(1.0f, 10.0f, 100.0f);
+//		Core::gui["GameMenu"]["Window 3"].Slider.add("Octaves", &game->world.simplex.octaves, con);
 
 		// World Scale
 		con.setY(40);
@@ -2049,7 +2049,7 @@ void _Admin::init() {
 		prop.colorB.base		= &Core::colors[Core::colors().Red];
 		prop.colorB.active		= &Core::colors[Core::colors().Red];
 		prop.colorB.highlight	= &Core::colors[Core::colors().Red];
-//		Core::gui["GameMenu"]["Window 22"].Line.add("Line Test", Core::Vector2i(0, 0), Core::Vector2i((int)Core::gameVars->screen.half.x, (int)Core::gameVars->screen.half.y), prop);
+//		Core::gui["GameMenu"]["Window 22"].Line.add("Line Test", Core::Vector2i(0, 0), Core::Vector2i((int)Core::gameVars->screen.activeProjection->half.x, (int)Core::gameVars->screen.activeProjection->half.y), prop);
 		Core::gui["GameMenu"]["Window 22"].Line.add("Line Test 1", Core::Vector2f(0, 0), Core::Vector2f(400, 0), prop);
 
 		prop.colorA.base		= &Core::colors[Core::colors().White];
@@ -2105,7 +2105,7 @@ void _Admin::init() {
 		prop.setAnimation("slash_00.png");
 		prop.setUpdateRate(100);
 		prop.setLoops(1);
-		prop.setSample(0);
+		prop.setSample(32);
 		prop.startAnimation(false);
 		prop.showBackground();
 		prop.showLabel();
@@ -2176,6 +2176,8 @@ void _Admin::init() {
 
 	Core::debug.logDecreaseIndent();
 	Core::debug.log("}\n");
+
+	Core::debug.glErrorCheck("runAdmin", 2180);
 
 	bInit = true;
 }
@@ -2324,20 +2326,20 @@ void _Admin::run() {
 		/*
 		 * Update pointers for simplex noise generator selectionc
 		 */
-		if(Core::gui["GameMenu"]["Window 3"].Slider["Simplex Generator"].stateChanged()) {
-			Core::gui["GameMenu"]["Window 3"].Slider["Resolution"]		.setPointer(&Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].res);
-			Core::gui["GameMenu"]["Window 3"].Slider["Tex Scale"]		.setPointer(&Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].tex_scale);
-			Core::gui["GameMenu"]["Window 3"].Slider["Terrain Size"]	.setPointer(&Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].terrain_size);
-			Core::gui["GameMenu"]["Window 3"].Slider["Terrain Height"]	.setPointer(&Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].terrain_height_offset);
-			Core::gui["GameMenu"]["Window 3"].Slider["Offset X"]		.setPointer(&Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].offset.x);
-			Core::gui["GameMenu"]["Window 3"].Slider["Offset Y"]		.setPointer(&Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].offset.y);
-			Core::gui["GameMenu"]["Window 3"].Slider["Delta"]			.setPointer(&Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].delta);
-			Core::gui["GameMenu"]["Window 3"].Slider["Frequency"]		.setPointer(&Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].frequency);
-			Core::gui["GameMenu"]["Window 3"].Slider["Lacunarity"]		.setPointer(&Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].lacunarity);
-			Core::gui["GameMenu"]["Window 3"].Slider["Persistance"]		.setPointer(&Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].persistance);
-			Core::gui["GameMenu"]["Window 3"].Slider["Scale"]			.setPointer(&Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].scale);
-			Core::gui["GameMenu"]["Window 3"].Slider["Octaves"]			.setPointer(&Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].octaves);
-		}
+//		if(Core::gui["GameMenu"]["Window 3"].Slider["Simplex Generator"].stateChanged()) {
+//			Core::gui["GameMenu"]["Window 3"].Slider["Resolution"]		.setPointer(&Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].res);
+//			Core::gui["GameMenu"]["Window 3"].Slider["Tex Scale"]		.setPointer(&Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].tex_scale);
+//			Core::gui["GameMenu"]["Window 3"].Slider["Terrain Size"]	.setPointer(&Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].terrain_size);
+//			Core::gui["GameMenu"]["Window 3"].Slider["Terrain Height"]	.setPointer(&Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].terrain_height_offset);
+//			Core::gui["GameMenu"]["Window 3"].Slider["Offset X"]		.setPointer(&Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].offset.x);
+//			Core::gui["GameMenu"]["Window 3"].Slider["Offset Y"]		.setPointer(&Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].offset.y);
+//			Core::gui["GameMenu"]["Window 3"].Slider["Delta"]			.setPointer(&Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].delta);
+//			Core::gui["GameMenu"]["Window 3"].Slider["Frequency"]		.setPointer(&Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].frequency);
+//			Core::gui["GameMenu"]["Window 3"].Slider["Lacunarity"]		.setPointer(&Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].lacunarity);
+//			Core::gui["GameMenu"]["Window 3"].Slider["Persistance"]		.setPointer(&Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].persistance);
+//			Core::gui["GameMenu"]["Window 3"].Slider["Scale"]			.setPointer(&Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].scale);
+//			Core::gui["GameMenu"]["Window 3"].Slider["Octaves"]			.setPointer(&Core::gameVars->debug.noise.simplex[Core::gameVars->debug.noise.iCurrentSimplex].octaves);
+//		}
 
 		/*
 		 * Change slider pointers for lighting
@@ -2496,6 +2498,8 @@ void _Admin::run() {
 				Core::gui["GameMenu"]["Window 14-8"].hide();
 			}
 		}
+
+		Core::debug.glErrorCheck("runAdmin", 2502);
 	}
 	else {
 		bHasFocus = false;
@@ -2506,7 +2510,7 @@ void _Admin::run() {
 
 void _Admin::GetInput() {
 	SDL_PumpEvents();
-	Core::mouse->update(Core::gameVars->screen.half.x, Core::gameVars->screen.half.y);
+	Core::mouse->update(Core::gameVars->screen.activeProjection->half.x, Core::gameVars->screen.activeProjection->half.y);
 
 	// TODO: Add a ReturnFocus function, uses a timeout
 	keyboard.event = SDL_GetKeyboardState(NULL);
@@ -2582,7 +2586,7 @@ void _Admin::ProcessInput() {
 		Core::gameVars->runState.admin=false;
 //		bShowOneShot = false;
 		Core::mouse->ToggleMouse(SDL_TRUE);
-		//SDL_WarpMouseInWindow(Core::glinit->window, Core::gameVars->screen.fHalfW, Core::gameVars->screen.fHalfH);
+		//SDL_WarpMouseInWindow(Core::glinit->window, Core::gameVars->screen.activeProjection->fHalfW, Core::gameVars->screen.activeProjection->fHalfH);
 		//SDL_ShowCursor(SDL_DISABLE);
 	}
 	if (keyboard.keys[SDLK_F2].bActive) {

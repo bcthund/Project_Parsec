@@ -149,7 +149,7 @@ namespace Core {
 						if(con->text.size.isAutoSet()) {
 
 							// Update constraints according to quadrants
-							Vector2f pos = Vector2f(Core::mouse->x-Core::gameVars->screen.half.x, -Core::mouse->y+Core::gameVars->screen.half.y);
+							Vector2f pos = Vector2f(Core::mouse->x-Core::gameVars->screen.activeProjection->half.x, -Core::mouse->y+Core::gameVars->screen.activeProjection->half.y);
 							int iOrigin = CONSTRAIN_CENTER;
 							int iAnchor = CONSTRAIN_CENTER;
 
@@ -177,7 +177,7 @@ namespace Core {
 							}
 
 							// Follow mouse
-							//con->setPos(Core::mouse->x-Core::gameVars->screen.half.x, -Core::mouse->y+Core::gameVars->screen.half.y+2);
+							//con->setPos(Core::mouse->x-Core::gameVars->screen.activeProjection->half.x, -Core::mouse->y+Core::gameVars->screen.activeProjection->half.y+2);
 							con->setPos(pos);
 							con->setOrigin(iOrigin);
 							con->setAnchor(iAnchor);

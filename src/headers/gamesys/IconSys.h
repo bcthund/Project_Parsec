@@ -217,22 +217,20 @@ namespace Core {
 		}
 
 		void _IconSys::start(int x, int y, float w, float h, std::string sTex, bool textOffset, Core::_Colors::_ACTIVE_COLOR eColor) {
+			GLenum err;
 			glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-			glCullFace(false);
-			matrix->SetProjection(matrix->MM_ORTHO);
+			glDisable(GL_CULL_FACE);
+			matrix->setProjection(matrix->MM_ORTHO, "ortho");
 			shader->use(GLS_ICON);
-
 			glDisable(GL_DEPTH_TEST);
 			matrix->Push();
 
-			if (textOffset) matrix->Translate( (Core::gameVars->font.vSize[0]*x)-Core::gameVars->screen.half.x+(w/2), (-Core::gameVars->font.vSize[1]*y)+Core::gameVars->screen.half.y-(h/2), 0.0f );
-			else matrix->Translate( x+Core::gameVars->screen.origin[0]+(w/2), -y+Core::gameVars->screen.origin[1]-(h/2), 0.0f );
+			if (textOffset) matrix->Translate( (Core::gameVars->font.vSize[0]*x)-Core::gameVars->screen.activeProjection->half.x+(w/2), (-Core::gameVars->font.vSize[1]*y)+Core::gameVars->screen.activeProjection->half.y-(h/2), 0.0f );
+			else matrix->Translate( x+Core::gameVars->screen.activeProjection->origin[0]+(w/2), -y+Core::gameVars->screen.activeProjection->origin[1]-(h/2), 0.0f );
 
 			matrix->Scale(w/64,h/64,1);
-
-			glActiveTexture(0);
+			glActiveTexture(GL_TEXTURE0);
 			texture.Set(sTex);
-
 			colors.SetActive(eColor);
 		}
 
@@ -243,7 +241,7 @@ namespace Core {
 
 		void _IconSys::stop() {
 			matrix->Pop();
-			matrix->SetProjection(matrix->MM_PERSPECTIVE);
+			matrix->setProjection(matrix->MM_PERSPECTIVE, "standard");
 			glEnable(GL_DEPTH_TEST);
 		}
 
@@ -319,8 +317,9 @@ namespace Core {
 		 * ****************************************************************************************************************************** */
 		void _IconSys::draw(Core::GUI::Props *con, std::string sTex, uint id, uint scale) {
 			glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-			glCullFace(false);
-			matrix->SetProjection(matrix->MM_ORTHO);
+//			glCullFace(false);
+			glDisable(GL_CULL_FACE);
+			matrix->setProjection(matrix->MM_ORTHO, "ortho");
 			shader->use(GLS_ICON);
 
 			glDisable(GL_DEPTH_TEST);
@@ -334,15 +333,17 @@ namespace Core {
 //				matrix->Translate( con->pos.x, con->pos.y, 0.0f );
 				matrix->Scale(((con->size.x-(con->vPadding.left+con->vPadding.right))/64), ((con->size.y-(con->vPadding.top+con->vPadding.bottom))/64), 1);	// FIXME: Make VAO unit normal, get rid of "/64"
 
-				glActiveTexture(0);
+				glActiveTexture(GL_TEXTURE0);
+
 				texture.Set(sTex);
 				colors.SetActive(Core::colors.COLOR_FRONT);
 				matrix->SetTransform();
+
 				shader->getUniform(GLS_ICON);
 				vao[id].Draw();
 
 			matrix->Pop();
-			matrix->SetProjection(matrix->MM_PERSPECTIVE);
+			matrix->setProjection(matrix->MM_PERSPECTIVE, "standard");
 			glEnable(GL_DEPTH_TEST);
 		}
 //	}

@@ -58,21 +58,22 @@ namespace Core {
 
 		AddLight(	Core::Vector3f(0.0f),			// Position
 					Core::Vector3f(1, -1, -1),		// Direction
-					Core::Vector3f(0.5, 0.5, 0.1),	// Color
+//					Core::Vector3f(0.5, 0.5, 0.1),	// Color
+					Core::Vector3f(1.0, 1.0, 1.0),	// Color
 					1/fScale,	// attentuation scaling
 					LIGHT_DIRECTIONAL);
 
-		AddLight(	Core::Vector3f(100*fScale, 100*fScale, 100*fScale),	// Position
-					Core::Vector3f(0.0f),				// Direction
-					Core::Vector3f(0.8, 1.0, 0.6),	// Color
-					1/fScale,	// attentuation scaling
-					LIGHT_OMNI);
-
-		AddLight(	Core::Vector3f(400*fScale, 60*fScale, 250*fScale),	// Position
-					Core::Vector3f(0, 0, -1),		// Direction
-					Core::Vector3f(3.0, 3.0, 3.0),  //Core::Vector3f(0.7, 0.9, 0.5),	// Color
-					Core::Vector3f(0.1, 0.00018, 0.0000625),	// attentuation scaling
-					LIGHT_SPOT_SOFT);
+//		AddLight(	Core::Vector3f(100*fScale, 100*fScale, 100*fScale),	// Position
+//					Core::Vector3f(0.0f),				// Direction
+//					Core::Vector3f(0.8, 1.0, 0.6),	// Color
+//					1/fScale,	// attentuation scaling
+//					LIGHT_OMNI);
+//
+//		AddLight(	Core::Vector3f(400*fScale, 60*fScale, 250*fScale),	// Position
+//					Core::Vector3f(0, 0, -1),		// Direction
+//					Core::Vector3f(3.0, 3.0, 3.0),  //Core::Vector3f(0.7, 0.9, 0.5),	// Color
+//					Core::Vector3f(0.1, 0.00018, 0.0000625),	// attentuation scaling
+//					LIGHT_SPOT_SOFT);
 
 		Core::debug.print(" Done ", Core::debug().GREEN);
 		Core::debug.print("}\n");

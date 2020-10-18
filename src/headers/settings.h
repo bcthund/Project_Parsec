@@ -222,8 +222,8 @@ namespace Core {
 	//	gameVars->screen.h					=	1024;				//Display height
 
 		// HD720
-		gameVars->screen.res.x				=	1280;				//Display width
-		gameVars->screen.res.y				=	720;				//Display height
+//		gameVars->screen.res.x				=	1280;				//Display width
+//		gameVars->screen.res.y				=	720;				//Display height
 
 	//	gameVars->screen.w					=	1152;				//Display width
 	//	gameVars->screen.h					=	864;				//Display heigh
@@ -241,27 +241,27 @@ namespace Core {
 	//	gameVars->screen.w					=	320;				//Display width
 	//	gameVars->screen.h					=	240;				//Display height
 
-		gameVars->screen.half.x						=	gameVars->screen.res.x/2;	//To speed up calculations
-		gameVars->screen.half.y						=	gameVars->screen.res.y/2;	//To speed up calculations
-		gameVars->screen.bpp							=	16; 					//Display color depth
+//		gameVars->screen.half.x						=	gameVars->screen.res.x/2;	//To speed up calculations
+//		gameVars->screen.half.y						=	gameVars->screen.res.y/2;	//To speed up calculations
+		gameVars->screen.bpp						=	16; 					//Display color depth
 		gameVars->screen.frameRate					=	120; 					//Set the desired frame rate (fps) (Needs improvement, does not reach value properly)
 		//gameVars->screen.iTerrainGrid				=	1;						//Size of the terrain grid to load
 		//if (argc>0)	gameVars->screen.iTerrainGrid	=	strtol(argv[1], NULL, 10);				//Size of the terrain grid to load
 		//else		gameVars->screen.iTerrainGrid	=	9;						//Size of the terrain grid to load
 		//gameVars->screen.iGridOffset				=	gameVars->screen.iTerrainGrid/2;		//Used for loading map files
 		gameVars->screen.fScale						=	1.00f;						// TODO: Move to state class (Size of the terrain grid to load)
-		gameVars->controls.moveSpeed					=	0.25f * gameVars->screen.fScale;			//Character movement adjustment, reset by framerate later
-		gameVars->screen.fNear						=	1.0f;					//The near clipping plane
-		gameVars->screen.fFar						=	250000.0f;				//The far clipping plane
+		gameVars->controls.moveSpeed				=	1.0f * gameVars->screen.fScale;			//Character movement adjustment, reset by framerate later
+//		gameVars->screen.fNear						=	1.0f;					//The near clipping plane
+//		gameVars->screen.fFar						=	500000.0f;				//The far clipping plane
 //		gameVars->screen.fNear						=	250000.0f;					//The near clipping plane
 //		gameVars->screen.fFar						=	1.0f;				//The far clipping plane
-		gameVars->screen.fScreenAspect				= 	gameVars->screen.res.x/gameVars->screen.res.y;
-		gameVars->screen.fDistanceAspect			=	gameVars->screen.fNear/gameVars->screen.fFar;
+//		gameVars->screen.fScreenAspect				= 	gameVars->screen.res.x/gameVars->screen.res.y;
+//		gameVars->screen.fDistanceAspect			=	gameVars->screen.fNear/gameVars->screen.fFar;
 
 		//float vFov = 90.0f;
-		float hFov = 110.0f;
-		float fX = (float)gameVars->screen.res.x;
-		float fY = (float)gameVars->screen.res.y;
+//		float hFov = 110.0f;
+//		float fX = (float)gameVars->screen.res.x;
+//		float fY = (float)gameVars->screen.res.y;
 		//float	hFov = M_RadToDeg(2*atan((fX/fY)*tan(vFov/2)))/2;
 		//float	vFov = M_RadToDeg(2*atan((fY/fX)*tan(hFov/2)));
 		//float	hFov = M_RadToDeg(2*atan((fX/fY)*tan(M_DegToRad(vFov/2))));
@@ -272,7 +272,51 @@ namespace Core {
 
 		//gameVars->screen.fFov						=	vFov;					//The field of view
 		//gameVars->screen.degFov						=	vFov.toDegrees();						//The field of view
-		gameVars->screen.degFov						=	80;						//The field of view
+//		gameVars->screen.degFov						=	80;						//The field of view
+
+
+
+
+		gameVars->screen.projectionData.add("standard", new Core::t_ProjectionData());
+		gameVars->screen.projectionData["standard"]->res.x				= 1280;
+		gameVars->screen.projectionData["standard"]->res.y				= 720;
+		gameVars->screen.projectionData["standard"]->fNear				= 50.0f;
+		gameVars->screen.projectionData["standard"]->fFar				= 500000.0f;
+		gameVars->screen.projectionData["standard"]->degFov				= 80;
+		gameVars->screen.setActiveProjection("standard").init();
+
+		gameVars->screen.projectionData.add("close", new Core::t_ProjectionData());
+		gameVars->screen.projectionData["close"]->res.x					= 1280;
+		gameVars->screen.projectionData["close"]->res.y					= 720;
+		gameVars->screen.projectionData["close"]->fNear					= 1.0f;
+		gameVars->screen.projectionData["close"]->fFar					= 10000.0f;
+		gameVars->screen.projectionData["close"]->degFov				= 80;
+		gameVars->screen.projectionData["close"]->init();
+
+		gameVars->screen.projectionData.add("mid", new Core::t_ProjectionData());
+		gameVars->screen.projectionData["mid"]->res.x					= 1280;
+		gameVars->screen.projectionData["mid"]->res.y					= 720;
+		gameVars->screen.projectionData["mid"]->fNear					= 1.0f;
+		gameVars->screen.projectionData["mid"]->fFar					= 10000.0f;
+		gameVars->screen.projectionData["mid"]->degFov					= 100000;
+		gameVars->screen.projectionData["mid"]->init();
+
+		gameVars->screen.projectionData.add("far", new Core::t_ProjectionData());
+		gameVars->screen.projectionData["far"]->res.x					= 1280;
+		gameVars->screen.projectionData["far"]->res.y					= 720;
+		gameVars->screen.projectionData["far"]->fNear					= 1.0f;
+		gameVars->screen.projectionData["far"]->fFar					= 100000.0f;
+		gameVars->screen.projectionData["far"]->degFov					= 250000;
+		gameVars->screen.projectionData["far"]->init();
+
+		gameVars->screen.projectionData.add("atmosphere", new Core::t_ProjectionData());
+		gameVars->screen.projectionData["atmosphere"]->res.x			= 1280;
+		gameVars->screen.projectionData["atmosphere"]->res.y			= 720;
+		gameVars->screen.projectionData["atmosphere"]->fNear			= 1000.0f;
+		gameVars->screen.projectionData["atmosphere"]->fFar				= 1000000.0f;
+		gameVars->screen.projectionData["atmosphere"]->degFov			= 70;
+		gameVars->screen.projectionData["atmosphere"]->init();
+
 		//gameVars->screen.bInstance					=	true;					//Enable object instancing, SLOW!!!
 		gameVars->screen.MultiSample					=	true;					//Toggle Multisampling
 		gameVars->screen.uiMultiSamples				=	16;
@@ -281,8 +325,6 @@ namespace Core {
 		//gameVars->screen.AutoFinish				=	false;					//Execute glFinish throughout execution
 		//gameVars->screen.fLineWidth				=	1.0;
 		//gameVars->screen.ePolyMode					=	PM_FILL;
-		gameVars->screen.origin[0]					=	-gameVars->screen.half.x;
-		gameVars->screen.origin[1]					=	gameVars->screen.half.y;
 		//gameVars->screen.origin[0]					=	0;
 		//gameVars->screen.origin[1]					=	0;
 
@@ -344,8 +386,8 @@ namespace Core {
 //		gameVars->font.vSize[0]						= 32;
 //		gameVars->font.vSize[1]						= 40;
 
-		gameVars->font.vMax[0]						= gameVars->screen.res.x/gameVars->font.vSize[0];
-		gameVars->font.vMax[1]						= gameVars->screen.res.y/gameVars->font.vSize[1];
+		gameVars->font.vMax[0]						= gameVars->screen.activeProjection->res.x/gameVars->font.vSize[0];
+		gameVars->font.vMax[1]						= gameVars->screen.activeProjection->res.y/gameVars->font.vSize[1];
 
 		//gameVars->font.vSize[0]		=	gameVars->screen.w/gameVars->font.vMax[0];		// Default font WIDTH based on screen HEIGHT
 		//gameVars->font.vSize[1]		=	gameVars->screen.h/gameVars->font.vMax[1];		// Default font HEIGHT based on screen WIDTH
@@ -461,8 +503,8 @@ namespace Core {
 			//gameVars->font.screenCoords[1] 		= gameVars->screen.halfH-(gameVars->font.vSize[1]/2);
 
 			// This causes scaling/position issues for certain things
-			gameVars->font.screenCoords[0] 			= -gameVars->screen.half.x+gameVars->font.vHalfSize[0];
-			gameVars->font.screenCoords[1] 			= gameVars->screen.half.y-gameVars->font.vHalfSize[1];
+			gameVars->font.screenCoords[0] 			= -gameVars->screen.activeProjection->half.x+gameVars->font.vHalfSize[0];
+			gameVars->font.screenCoords[1] 			= gameVars->screen.activeProjection->half.y-gameVars->font.vHalfSize[1];
 			//gameVars->font.screenCoords[0] 		= -gameVars->screen.halfW+(gameVars->font.vSize[0]/2);
 			//gameVars->font.screenCoords[1] 		= gameVars->screen.halfH-(gameVars->font.vSize[1]/2);
 

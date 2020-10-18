@@ -12,6 +12,7 @@
 #include <iomanip>
 #include <algorithm>
 #include "./core/types.h"
+#include "core/Debug.h"
 
 // A generic smart pointer class
 template <class T>

@@ -29,16 +29,42 @@ namespace Core {
 		 */
 		struct Screen {
 			int bpp, frameRate;
-			Vector2f res, half;
 			int clear; // Should the screen get cleared every frame
 			//int iTerrainGrid;  //Basically the loaded view distance, should be an odd number (1,3,5,7,9 Max)
 			float fScale;				// Scale of the world, this effects calculations of EVERYTHING in the world. This makes the terrain cover a larger area.
-			float fNear, fFar, /*fHalfW, fHalfH,*/ fScreenAspect, fDistanceAspect;
 
-			Degrees degFov;
+			// Projection Matrix Data and related dependant data
+//			struct t_ProjectionData {
+//				Vector2f res;
+//				Degrees degFov;
+//				float fNear, fFar;
+//				float fScreenAspect, fDistanceAspect;
+//				Vector2f half;
+//				Vector2i origin;
+//
+//				void init() {
+//					fScreenAspect	= res.x/res.y;
+//					fDistanceAspect	= fNear/fFar;
+//					half.x			= res.x/2;
+//					half.y			= res.y/2;
+//					origin[0]		= -half.x;
+//					origin[1]		= half.y;
+//				}
+//			};
+			t_UMap<std::string, t_ProjectionData*> projectionData;
+			t_ProjectionData *activeProjection;
+
+			t_ProjectionData& setActiveProjection(std::string name) {
+				activeProjection = projectionData[name];
+				return *activeProjection;
+			}
+
+			t_ProjectionData& getActiveProjection() {
+				return *activeProjection;
+			}
+
 			bool MultiSample, bInterlaced;
 			uint uiMultiSamples;
-			Vector2i origin;
 			SDL_Surface * surface;
 			Vector4f vClearColorBase;
 			Vector4f vClearColorCurrent;
@@ -47,22 +73,23 @@ namespace Core {
 					   frameRate(0),
 					   //fHalfW(0),
 					   //fHalfH(0),
-					   fScreenAspect(0),
-					   fDistanceAspect(0),
+//					   fScreenAspect(0),
+//					   fDistanceAspect(0),
 					   clear(1),
 					   //iTerrainGrid(0),
 					   fScale(1.0f),
-					   fNear(0),
-					   fFar(0),
-					   degFov(0),
+//					   fNear(0),
+//					   fFar(0),
+//					   degFov(0),
 					   MultiSample(false),
 					   bInterlaced(false),
 					   uiMultiSamples(4) {
+				activeProjection = nullptr;
 				surface = new SDL_Surface;
-				res[0] = 0;
-				res[1] = 0;
-				half[0] = 0;
-				half[1] = 0;
+//				res[0] = 0;
+//				res[1] = 0;
+//				half[0] = 0;
+//				half[1] = 0;
 				vClearColorBase[0] = 0;
 				vClearColorBase[1] = 0;
 				vClearColorBase[2] = 0;
@@ -71,12 +98,13 @@ namespace Core {
 				vClearColorCurrent[1] = 0;
 				vClearColorCurrent[2] = 0;
 				vClearColorCurrent[3] = 0;
-				origin[0] = 0;
-				origin[1] = 0;
+//				origin[0] = 0;
+//				origin[1] = 0;
 			}
 
 			~Screen() {
 				delete surface;
+				for ( auto item : projectionData ) delete item.second;
 			}
 		} screen;
 
@@ -143,37 +171,37 @@ namespace Core {
 					}
 				} perlin;
 
-				struct _Simplex {
-					bool bEnable;	// Enable these debug variables
-					int res;
-					float tex_scale;
-					int terrain_size;
-					float terrain_height_offset;
-
-					Vector2f offset;
-					float frequency, amplitude, lacunarity, persistance;
-					int octaves;
-					float power;
-					float scale;
-					float delta;
-					_Simplex() {
-						bEnable		= true;
-
-						res = 256;
-						tex_scale = 128.0f;
-						terrain_size = 16384;
-						terrain_height_offset = 0.0f;
-
-						delta		= 32.0f;
-						frequency	= 0.00025f; //0.0006; //0.000076; //0.00025f;
-						amplitude	= 1.0f;
-						lacunarity	= 2.9f; //6.553f; //6.004; //6.75325; //8.0f;
-						persistance	= 0.33f; //0.139f; //0.150; //0.175; //0.175f;
-						power		= 1.0f;
-						scale		= 875.0f; //500.0f; //275.0f; //1750; //2500;
-						octaves		= 3;
-					}
-				} simplex[3];
+//				struct _Simplex {
+//					bool bEnable;	// Enable these debug variables
+//					int res;
+//					float tex_scale;
+//					int terrain_size;
+//					float terrain_height_offset;
+//
+//					Vector2f offset;
+//					float frequency, amplitude, lacunarity, persistance;
+//					int octaves;
+//					float power;
+//					float scale;
+//					float delta;
+//					_Simplex() {
+//						bEnable		= true;
+//
+//						res = 256;
+//						tex_scale = 128.0f;
+//						terrain_size = 16384;
+//						terrain_height_offset = 0.0f;
+//
+//						delta		= 32.0f;
+//						frequency	= 0.00025f; //0.0006; //0.000076; //0.00025f;
+//						amplitude	= 1.0f;
+//						lacunarity	= 2.9f; //6.553f; //6.004; //6.75325; //8.0f;
+//						persistance	= 0.33f; //0.139f; //0.150; //0.175; //0.175f;
+//						power		= 1.0f;
+//						scale		= 875.0f; //500.0f; //275.0f; //1750; //2500;
+//						octaves		= 3;
+//					}
+//				} simplex[3];
 
 				struct _Fractal {
 					bool bEnable;	// Enable these debug variables
@@ -213,31 +241,31 @@ namespace Core {
 					iCurrentSimplex = 0;
 					iCurrentFractal = 0;
 					// Base layer
-					simplex[0].res			= 64;
-					simplex[0].terrain_size = 8192.0f;
-					simplex[0].frequency	= 0.00013f; //0.00025f;
-					simplex[0].lacunarity	= 2.6f; //3.3f; //2.9f;
-					simplex[0].persistance	= -0.37f; //0.28f; //0.33f;
-					simplex[0].scale		= 875.0f;
-					simplex[0].octaves		= 3;
-
-					// Mountain layer
-					simplex[1].res			= 64;
-					simplex[1].terrain_size = 8192.0f;
-					simplex[1].frequency	= 0.00002f;
-					simplex[1].lacunarity	= 0.7f;
-					simplex[1].persistance	= 0.11f;
-					simplex[1].scale		= 5000.0f;
-					simplex[1].octaves		= 1;
-
-					// Persistance layer
-					simplex[2].res			= 64;
-					simplex[2].terrain_size = 8192.0f;
-					simplex[2].frequency	= 0.00001f;
-					simplex[2].lacunarity	= 0.7f;
-					simplex[2].persistance	= 0.11f;
-					simplex[2].scale		= 5000.0f;
-					simplex[2].octaves		= 1;
+//					simplex[0].res			= 64;
+//					simplex[0].terrain_size = 8192.0f;
+//					simplex[0].frequency	= 0.00013f; //0.00025f;
+//					simplex[0].lacunarity	= 2.6f; //3.3f; //2.9f;
+//					simplex[0].persistance	= -0.37f; //0.28f; //0.33f;
+//					simplex[0].scale		= 875.0f;
+//					simplex[0].octaves		= 3;
+//
+//					// Mountain layer
+//					simplex[1].res			= 64;
+//					simplex[1].terrain_size = 8192.0f;
+//					simplex[1].frequency	= 0.00002f;
+//					simplex[1].lacunarity	= 0.7f;
+//					simplex[1].persistance	= 0.11f;
+//					simplex[1].scale		= 5000.0f;
+//					simplex[1].octaves		= 1;
+//
+//					// Persistance layer
+//					simplex[2].res			= 64;
+//					simplex[2].terrain_size = 8192.0f;
+//					simplex[2].frequency	= 0.00001f;
+//					simplex[2].lacunarity	= 0.7f;
+//					simplex[2].persistance	= 0.11f;
+//					simplex[2].scale		= 5000.0f;
+//					simplex[2].octaves		= 1;
 				}
 
 			} noise;

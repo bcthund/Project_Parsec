@@ -54,7 +54,9 @@ namespace Core {
 								GLA_TEXTURE2,		//
 								GLA_TEXTURE3,		//
 								GLA_POSITION,		// Position data for instanced arrays
-								GLA_EXTRA,			// Extra data for instaced arrays
+								GLA_DATA1,			// Extra data for instaced arrays
+								GLA_DATA2,			// Extra data for instaced arrays
+								GLA_DATA3,			// Extra data for instaced arrays
 								GLA_LAST};
 
 
@@ -1635,7 +1637,7 @@ namespace Core {
 						// FIXME: Create a throwRuntimeError() function that accepts '<<'
 
 						std::ostringstream sMessage;
-						sMessage << "Invalid Key in t_Map: '" << key << "'";
+						sMessage << "Key '" << key << "' doesn't exist.";
 						throw std::runtime_error(sMessage.str());
 					}
 					else return false;
@@ -1670,7 +1672,7 @@ namespace Core {
 				}
 				else if(bThrow) {
 					std::ostringstream sMessage;
-					sMessage << "Name in t_Map doesn't exist: '" << key << "'";
+					sMessage << "Key '" << key << "' doesn't exist.";
 					throw std::runtime_error(sMessage.str());
 				}
 
@@ -1720,7 +1722,7 @@ namespace Core {
 			bool checkID(int id, bool bThrow=true) {
 				if(id >= 0 && id < typeList.size()) return true;
 				else {
-					if (bThrow) throw std::runtime_error("Invalid ID: '"+std::to_string(id)+"'");
+					if (bThrow) throw std::runtime_error("ID '"+std::to_string(id)+"' doesn't exist.");
 					else return false;
 				}
 			}
@@ -1749,7 +1751,7 @@ namespace Core {
 					typeList.erase(typeList.begin() + id);
 				}
 				else {
-					if(bThrow) throw std::runtime_error("ID in t_Vector doesn't exist: '"+std::to_string(id)+"'");
+					if(bThrow) throw std::runtime_error("ID '"+std::to_string(id)+"' doesn't exist;");
 				}
 
 			}
@@ -1831,7 +1833,7 @@ namespace Core {
 			bool checkName(std::string name, bool bThrow=true) {
 				if(map.count(name)>0) return true;
 				else {
-					if (bThrow) throw std::runtime_error("t_VectorMap: ["+std::string(sErrorSource)+"] Invalid Item Name: '"+name+"'");
+					if (bThrow) throw std::runtime_error("t_VectorMap: ["+std::string(sErrorSource)+"] Name '"+name+"' doesn't exist.");
 					else return false;
 				}
 			}
@@ -1839,7 +1841,7 @@ namespace Core {
 			bool checkID(int id, bool bThrow=true) {
 				if(id >= 0 && id < typeList.size()) return true;
 				else {
-					if (bThrow) throw std::runtime_error("t_VectorMap: ["+std::string(sErrorSource)+"] Invalid ID: '"+std::to_string(id)+"'");
+					if (bThrow) throw std::runtime_error("t_VectorMap: ["+std::string(sErrorSource)+"] ID: '"+std::to_string(id)+"' doesn't exist.");
 					else return false;
 				}
 			}
@@ -1923,7 +1925,7 @@ namespace Core {
 					map.erase(name);
 				}
 				else {
-					if(bThrow) throw std::runtime_error("Name in t_VectorMap doesn't exist: '"+name+"'");
+					if(bThrow) throw std::runtime_error("Name '"+name+"' doesn't exist.");
 				}
 
 			}
@@ -1960,17 +1962,17 @@ namespace Core {
 			 * 	t_Vector<T> items;
 			 * 	for(auto item : items) {}
 			 */
-//			typedef T* iterator;
-//			typedef const T* const_iterator;
-//			iterator begin() 					{ return &typeList[0]; }
-//			iterator end() 						{ return &typeList[typeList.size()]; }
-//			const_iterator cbegin() 	const	{ return &typeList[0]; }
-//			const_iterator cend() 		const	{ return &typeList[typeList.size()]; }
+			typedef VALUE* iterator;
+			typedef const VALUE* const_iterator;
+			iterator begin() 					{ return &typeList[0]; }
+			iterator end() 						{ return &typeList[typeList.size()]; }
+			const_iterator cbegin() 	const	{ return &typeList[0]; }
+			const_iterator cend() 		const	{ return &typeList[typeList.size()]; }
 
-			auto begin() 			{ return typeList.begin(); }
-			auto end() 				{ return typeList.end(); }
-			auto begin() 	const	{ return typeList.cbegin(); }
-			auto end() 		const	{ return typeList.cend(); }
+//			auto begin() 			{ return typeList.begin(); }
+//			auto end() 				{ return typeList.end(); }
+//			auto begin() 	const	{ return typeList.cbegin(); }
+//			auto end() 		const	{ return typeList.cend(); }
 
 	};
 
@@ -1978,6 +1980,7 @@ namespace Core {
 	class t_UMap {
 		private:
 			std::string sErrorSource;
+			//std::unordered_map< KEY, VALUE > typeList;
 			std::unordered_map< KEY, VALUE > typeList;
 
 		public:
@@ -1994,7 +1997,7 @@ namespace Core {
 				else {
 					if (bThrow) {
 						std::ostringstream sMessage;
-						sMessage << "UMap: [" << sErrorSource << "] Invalid Item Name: '" << key << "'";
+						sMessage << "UMap: [" << sErrorSource << "] Name '" << key << "' doesn't exist.";
 						throw std::runtime_error(sMessage.str());
 					}
 					else return false;
@@ -2003,7 +2006,8 @@ namespace Core {
 
 			virtual VALUE & operator[](KEY key)	{
 				checkKey(key);
-				return typeList[key];
+				//return typeList[key];
+				return typeList.at(key);
 			}
 
 			virtual void setSource(std::string source) {
@@ -2017,7 +2021,7 @@ namespace Core {
 
 //			virtual T & add(std::string name, const T t, bool bThrow=true) {
 //			void add(std::string name, const T t, bool bThrow=true) {
-			virtual VALUE & add(KEY key, VALUE value, bool bThrow=true) {
+			VALUE & add(KEY key, VALUE value, bool bThrow=true) {
 				if(!checkKey(key, false)) {
 					typeList.insert(std::make_pair(key, value));
 					return typeList[key];
@@ -2072,6 +2076,26 @@ namespace Core {
 			auto end() 				{ return typeList.end(); }
 			auto begin() 	const	{ return typeList.cbegin(); }
 			auto end() 		const	{ return typeList.cend(); }
+	};
+
+	// Data used for Projection Matrix
+	struct t_ProjectionData {
+		std::string name;
+		Vector2f res;
+		Degrees degFov;
+		float fNear, fFar;
+		float fScreenAspect, fDistanceAspect;
+		Vector2f half;
+		Vector2i origin;
+
+		void init() {
+			fScreenAspect	= res.x/res.y;
+			fDistanceAspect	= fNear/fFar;
+			half.x			= res.x/2;
+			half.y			= res.y/2;
+			origin[0]		= -half.x;
+			origin[1]		= half.y;
+		}
 	};
 
 //	struct CompPair
