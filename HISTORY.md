@@ -57,15 +57,6 @@ The world map is no longer based on a heightmap but on layers of simplex noise. 
 <br>
 There is still a lot work left to be done but the new engine is showing a lot of promise. There are a few things I want to finish in the GUI system and then I want to work on the world map, atmosphere, and particle system classes.
 <br>
-# Project State (2020-10-16)
-The focus since the last update has been finishing the new GUI system and fixing the terrain. The GUI was mostly complete but a few items were added such as 2D Sliders, Pie Charts, Textured Windows, and Animations. Then the focus became reworking the the map system to load chunks of data which contained everything for that chunk. Previously maps were loaded using a set of binary files with data as to what objects needed to be loaded and each terrain chunk was a separate PLY file. Now the terrain is using a system of noise layers including Brownian Fractal Motion (Simplex), Perlin, and Ridged Perin. Layers can be added and a combine method can be set such as Add or Multiply. Each layer can also have functions added such as Power, Scaling, Remapping, and fading. The functions get executed on the noise result in the order that they were added.<br>
-<br>
-IN-PROGRESS<br>
-<br>
-<br>
-<br>
-<br>
-
 
 
 
