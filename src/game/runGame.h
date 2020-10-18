@@ -1294,7 +1294,7 @@ void _Game::ProcessInput() {
 	//if (Core::gameVars->timer.frameRate.get_splitdiff() > 10) {
 	{
 
-		if (keyboard.keys[Core::gameVars->controls.key.run].bActive) Core::gameVars->controls.modSpeed = 50;
+		if (keyboard.keys[Core::gameVars->controls.key.run].bActive) Core::gameVars->controls.modSpeed = 10;
 		else if (keyboard.keys[Core::gameVars->controls.key.sneak].bActive) Core::gameVars->controls.modSpeed = 0.1;
 		else Core::gameVars->controls.modSpeed = 1;
 

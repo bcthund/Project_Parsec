@@ -41,7 +41,7 @@ namespace Core {
 //				int   id;    		// ID number, unique to this object (not used for tiles)
 //				float imgW;			// Image width for the image this object uses
 //				float imgH;			// Image height for the image this object uses
-//				float distance;  		// The most current distance from this object
+				float distance;  		// The most current distance from this object
 //				std::string image;	// Image name this object requests (texture)
 //				int idcount;   			// Actual objects loaded
 				VAO vao;
@@ -53,6 +53,7 @@ namespace Core {
 					z	= 0.0f;
 					w	= 0.0f;
 					h	= 0.0f;
+					distance = 0.0f;
 //					blend 		= new int[1024];
 //					r 			= new float[1024];
 //					x 			= new float[1024];

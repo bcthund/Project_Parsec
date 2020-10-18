@@ -1980,6 +1980,7 @@ namespace Core {
 	class t_UMap {
 		private:
 			std::string sErrorSource;
+			//std::unordered_map< KEY, VALUE > typeList;
 			std::unordered_map< KEY, VALUE > typeList;
 
 		public:

@@ -125,7 +125,9 @@ namespace Core {
 //				void load(int x, int z, Map::Data &chunk, O2D::Data &o2d, Core::Noise::t_Noise *noise);
 //				void load(int x, int z, O2D::Data &o2d, Core::Noise::t_Noise *noise, Core::Noise::t_Noise *heightNoise);
 				void load(int x, int z, O2D::Data &o2d, Core::Noise::t_Noise *noise, Core::Noise::t_Noise *heightNoise, Core::Noise::t_Noise *moistureNoise);
-				void calc(O2D::Data &o2d);
+
+//				bool compare_O2D_Distance(const O2D::t_O2D_Item &a, const O2D::t_O2D_Item &b);
+				void calc(O2D::Data &o2d, Vector3f pos, int terrain_size);
 				//void draw(SHADER_PROGRAMS iShader, Core::_Lights &lights, bool bBB, bool bSort);
 				void draw(Core::_Lights &lights, bool bBB, bool bSort);
 				//O2D_BASE(Atmosphere &a): atmosphere(a) {}
@@ -223,7 +225,7 @@ namespace Core {
 					float fZ = ((float)i/((float)VERTEX_COUNT - 1) * SIZE) + z;
 
 					float fHeight = Core::Noise::getNoise(fX, fZ, heightNoise) + noise->parent->chunk_height_offset;
-					if(fHeight>500.0f) {
+					if(fHeight>100.0f) {
 						float fNoise = Core::Noise::getNoise(fX, fZ, noise);
 						float fMoisture = Core::Noise::getNoise(fX, fZ, moistureNoise);
 
@@ -385,9 +387,52 @@ namespace Core {
 //			Core::debug.log("}\n");
 		}
 
-		void O2DSys::calc(O2D::Data &o2d) {
+//		bool O2DSys::compare_O2D_Distance(const O2D::t_O2D_Item &a, const O2D::t_O2D_Item &b)
+//		{
+//			return a.distance < b.distance;
+//		}
+
+		bool compare_O2D_Distance(const O2D::t_O2D_Item *a, const O2D::t_O2D_Item *b)
+		{
+			return a->distance < b->distance;
+		}
+
+		void O2DSys::calc(O2D::Data &o2d, Vector3f pos, int terrain_size) {
 //			Core::debug.log("Calc O2D {\n");
 //			Core::debug.logIncreaseIndent();
+
+			// Distance Sorting
+			// TODO: Need to sort chunks as well
+			for(auto &item : o2d ) {
+//				// Convert player coords to grid chunks
+//				Vector2f vA;
+//				vA.x = -pos.x/terrain_size;
+//				vA.y = -pos.z/terrain_size;
+//
+//				// Rounding
+//				if(vA.x<0) vA.x-=1.0f; else vA.x+=1.0f;
+//				if(vA.y<0) vA.y-=1.0f; else vA.y+=1.0f;
+//
+//				// Calculate distance in grid chunks
+//				Vector2f vB;
+//				vB.x = int(x-32768);
+//				vB.y = int(z-32768);
+//
+//				distance = (vB-vA).length();
+
+				Vector2f vA;
+				vA.x = pos.x;
+				vA.y = pos.z;
+
+				Vector2f vB;
+				vB.x = item->x;
+				vB.y = item->z;
+
+				item->distance = (vB-vA).length();
+//				debug.log("Tree@("+std::to_string(item->x)+", "+std::to_string(item->z)+"); Distance = "+std::to_string(item->distance)+"\n");
+			}
+
+//			std::sort(o2d.begin(), o2d.end(), compare_O2D_Distance);
 
 			Data2f vCoords[] = { {0.0, 0.0},
 								 {0.0, 1.0},

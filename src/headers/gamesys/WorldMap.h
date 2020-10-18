@@ -125,7 +125,7 @@ namespace Core {
 			} WATER;
 
 			struct : public s_TERRAIN {
-				const int CHUNK_RESOLUTION	= 16 * SCALE_POWER;
+				const int CHUNK_RESOLUTION	= 32 * SCALE_POWER;		// Tree Density
 			} TREES;
 		} CONST_SIMPLEX;
 
@@ -441,10 +441,11 @@ namespace Core {
 					}
 				}
 			}
+		}
 
-			// TESTING: Change view distance for distance calculation visualization (grass/dirt texture)
-//			simplex["Terrain"]->iViewDistance = 1024*8;
-
+		bool compare_Chunk_Distance(const t_MapInstance *a, const t_MapInstance *b)
+		{
+			return a->distance < b->distance;
 		}
 
 		void _World::update() {
@@ -456,10 +457,21 @@ namespace Core {
 
 			// Update distance for all chunks according to players current position
 			// Keep track of maps that are outside range and will be removed
+
+			Vector2f vPlayerPos;
+//			vPlayerPos.x = ((gameVars->player.active->transform.pos.x - (data["Terrain"]->chunkSettings->chunk_size/2.0f))/data["Terrain"]->chunkSettings->chunk_size);
+//			vPlayerPos.z = ((gameVars->player.active->transform.pos.z - (data["Terrain"]->chunkSettings->chunk_size/2.0f))/data["Terrain"]->chunkSettings->chunk_size);
+//			vPlayerPos.x = -(gameVars->player.active->transform.pos.x - (data["Terrain"]->chunkSettings->chunk_size/2.0f))/data["Terrain"]->chunkSettings->chunk_size;
+//			vPlayerPos.y = -(gameVars->player.active->transform.pos.z - (data["Terrain"]->chunkSettings->chunk_size/2.0f))/data["Terrain"]->chunkSettings->chunk_size;
+			vPlayerPos.x = -(gameVars->player.active->transform.pos.x)/data["Terrain"]->chunkSettings->chunk_size;
+			vPlayerPos.y = -(gameVars->player.active->transform.pos.z)/data["Terrain"]->chunkSettings->chunk_size;
+
 			t_Vector1T<std::string> removeMaps;
 			for ( auto chunk : map ) {
-				chunk.second->update(gameVars->player.active->transform.pos, data["Terrain"]->chunkSettings->chunk_size);
-				chunk.second->bDraw = chunk.second->distance<data["Terrain"]->chunkSettings->iMax;
+				//chunk.second->update(gameVars->player.active->transform.pos, data["Terrain"]->chunkSettings->chunk_size);
+				chunk.second->update(vPlayerPos, data["Terrain"]->chunkSettings->chunk_size);
+//				chunk.second->bDraw = chunk.second->distance<data["Terrain"]->chunkSettings->iMax;
+//				debug.log(std::to_string(chunk.second->distance)+"\n");
 
 				// TODO: Remove chunks beyond visibility
 				//	- Start a timer when bDraw active
@@ -469,10 +481,14 @@ namespace Core {
 					removeMaps.add(chunk.first);
 				}
 			}
+//			debug.print("\n");
+
+			//std::sort(map.begin(), map.end(), compare_O2D_Distance);
 
 			// Drop maps outside view range
 			if(removeMaps.size()>0) {
 				for (auto removeMap : removeMaps ) {
+					debug.log("Removing Map '"+removeMap+"': "+std::to_string(map[removeMap]->distance)+"\n");
 					delete map[removeMap];
 					map.remove(removeMap);
 				}
@@ -482,18 +498,18 @@ namespace Core {
 			for(int x=-data["Terrain"]->chunkSettings->iMax; x<data["Terrain"]->chunkSettings->iMax; x++) {
 				for(int z=-data["Terrain"]->chunkSettings->iMax; z<data["Terrain"]->chunkSettings->iMax; z++) {
 					// Get players current chunk
-					Vector2f vA;
-					vA.x = -gameVars->player.active->transform.pos.x/data["Terrain"]->chunkSettings->chunk_size;
-					vA.y = -gameVars->player.active->transform.pos.z/data["Terrain"]->chunkSettings->chunk_size;
+//					Vector2f vA;
+//					vA.x = -gameVars->player.active->transform.pos.x/data["Terrain"]->chunkSettings->chunk_size;
+//					vA.y = -gameVars->player.active->transform.pos.z/data["Terrain"]->chunkSettings->chunk_size;
 
 					// Rounding
-					if(vA.x<0) vA.x-=1.0f; else vA.x+=1.0f;
-					if(vA.y<0) vA.y-=1.0f; else vA.y+=1.0f;
+//					if(vA.x<0) vA.x-=1.0f; else vA.x+=1.0f;
+//					if(vA.y<0) vA.y-=1.0f; else vA.y+=1.0f;
 
 					// Get offset chunk
 					Vector2f vB;
-					vB.x = x+int(vA.x);
-					vB.y = z+int(vA.y);
+					vB.x = x+int(vPlayerPos.x);
+					vB.y = z+int(vPlayerPos.y);
 
 					// Get mapName, needed to check if loaded or load new
 					std::stringstream ssx, ssz;
@@ -506,7 +522,7 @@ namespace Core {
 					// Check if chunk is already loaded
 					if(!map.checkKey(mapName, false)) {
 						// Calculate distance from current chunk to new chunk
-						float distance = (vB-vA).length();
+						float distance = (vB-vPlayerPos).length();
 
 						// Check if new chunk is in valid range
 						if(distance < data["Terrain"]->chunkSettings->iMax) {
