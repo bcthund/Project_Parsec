@@ -666,6 +666,7 @@ namespace Core {
 		bFinished = true;
 	}
 
+	// TODO: Check if eMode compatible (Index must exist for GLM_DRAW_ELEMENTS)
 	void VAO::Draw(GLenum eMode, GLint iStart, GLint iEnd) {
 		if(!bFinished) return;
 		glBindVertexArray(vaoPrime[bPrime]);

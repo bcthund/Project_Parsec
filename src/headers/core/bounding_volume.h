@@ -25,7 +25,7 @@ namespace Core {
 			Matrix44f		mSphere;
 			Matrix44f		mCylinder;
 
-			void DrawIntersection		(Matrix_System &matrix, Shader_System &shader, _Helper &helper);
+			void DrawIntersection		(Color &color, Matrix_System &matrix, Shader_System &shader, _Helper &helper);
 			void DrawOBB				(Matrix_System &matrix, Shader_System &shader, _Helper &helper, Vector3f translate = Vector3f());
 			void DrawAABB				(Matrix_System &matrix, Shader_System &shader, _Helper &helper, Vector3f translate = Vector3f());
 			void DrawSphere				(Matrix_System &matrix, Shader_System &shader, _Helper &helper, Vector3f translate = Vector3f());
@@ -104,7 +104,7 @@ namespace Core {
 			void SetPosition			(Vector3f p) { vPosition = p; }
 			void SetRotation			(Vector3f r) { vRotation = r; }
 			Vector3f GetCenterPosition	() { return vCP; };
-			void Draw					(Matrix_System &matrix, Shader_System &shader, _Helper &helper, Vector3f translate = Vector3f(), bool bDrawIntersection=false);
+			void Draw					(Matrix_System &matrix, Shader_System &shader, _Helper &helper, Vector3f translate = Vector3f(), bool bDrawIntersection=false, Color *color=nullptr);
 	};
 
 	_BOUNDING_VOLUME::_BOUNDING_VOLUME(Vector3f &t) {
@@ -266,14 +266,17 @@ namespace Core {
 		bFinished = true;
 	}
 
-	void _BOUNDING_VOLUME::Draw(Matrix_System &matrix, Shader_System &shader, _Helper &helper, Vector3f translate, bool bDrawIntersection) {
+	void _BOUNDING_VOLUME::Draw(Matrix_System &matrix, Shader_System &shader, _Helper &helper, Vector3f translate, bool bDrawIntersection, Color *color) {
 		if(iType == BOUNDING_VOLUME_OBB) 			DrawOBB(matrix, shader, helper, translate);
 		else if(iType == BOUNDING_VOLUME_AABB) 		DrawAABB(matrix, shader, helper, translate);
 		else if(iType == BOUNDING_VOLUME_SPHERE) 	DrawSphere(matrix, shader, helper, translate);
 		else if(iType == BOUNDING_VOLUME_CYLINDER) 	DrawCylinder(matrix, shader, helper, translate);
 
 		if(iType != BOUNDING_VOLUME_NONE && bDrawIntersection) {
-			DrawIntersection(matrix, shader, helper);
+			if(color==nullptr)
+				DrawIntersection(Core::colors[Core::colors().Yellow], matrix, shader, helper);
+			else
+				DrawIntersection(*color, matrix, shader, helper);
 		}
 	}
 
@@ -337,22 +340,23 @@ namespace Core {
 		}
 	}
 
-	void _BOUNDING_VOLUME::DrawIntersection(Matrix_System &matrix, Shader_System &shader, _Helper &helper) {
+	void _BOUNDING_VOLUME::DrawIntersection(Color &color, Matrix_System &matrix, Shader_System &shader, _Helper &helper) {
 		if(cdata.result) {
 			matrix.Push();
+
 				matrix.Translate(cdata.d);
 				matrix.SetTransform();
-				//shader.use(GLS_POINTS);
-				//shader.getUniform(GLS_POINTS);
-				//glPointSize(10.0f);
 
-				//helper.drawPoint(50.0f, helper.GLPOINT_RING, colors->yellow, 5, 0.5);
-				//helper.drawPoint(200.0f, helper.GLPOINT_SPIRAL_CLIPPED, colors->yellow, 5);
+				shader.vars.GLS_POINTS.fThickness = 2.0f;
+				shader.vars.GLS_POINTS.iSpikes = 6;
+				shader.vars.GLS_POINTS.iStyle = helper.GLPOINT_CIRCLE;
+				shader.vars.GLS_POINTS.vColor = &color;
+				helper.drawPoint(20.0f);
 
-				helper.drawPoint(50.0f, 0.0, colors[colors().Yellow], helper.GLPOINT_ROSE, 6);			// TODO: Add to color pallette
-				helper.drawPoint(50.0f, 0.0, colors[colors().Red], helper.GLPOINT_ROSE_OUTLINE, 6);		// TODO: Add to color pallette
+				shader.vars.GLS_POINTS.iStyle = helper.GLPOINT_RING;
+				shader.vars.GLS_POINTS.vColor = &Core::colors[Core::colors().Red];
+				helper.drawPoint(10.0f);
 
-				//glPointSize(1.0f);
 			matrix.Pop();
 
 

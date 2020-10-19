@@ -316,12 +316,13 @@ namespace Core {
 		Core::debug.log("}\n");
 	}
 
-	void _Helper::drawPoint(float fSize, float fRotation, Color vColor, _PointStyle eStyle, int iSpikes, float fThickness) {
+	void _Helper::drawPoint(float fSize) {
+		shader->getUniform(GLS_POINTS, uniforms.points);
 		glPointSize(fSize);
 		matrix->Push();
 			matrix->SetTransform();
 			shader->use(GLS_POINTS);
-			shader->getUniformVar(GLS_POINTS, eStyle, vColor, fRotation, iSpikes, fThickness);
+			shader->setUniform(GLS_POINTS, uniforms.points);
 			vaoPoint.Draw();
 		matrix->Pop();
 	}
@@ -440,15 +441,21 @@ namespace Core {
 	void _Helper::drawPosition(float fWidth, float fScale) {
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		glLineWidth(fWidth);
+		Core::debug.glErrorCheck("helper", 443);
 		matrix->Push();
 		matrix->Scale(fScale);
 		matrix->SetTransform();
+		Core::debug.glErrorCheck("helper", 447);
 		shader->use(Core::GLS_LINES);
+		Core::debug.glErrorCheck("helper", 449);
 		shader->getUniform(Core::GLS_LINES);
+		Core::debug.glErrorCheck("helper", 451);
 		vaoPosition.Draw();
+		Core::debug.glErrorCheck("helper", 453);
 		matrix->Pop();
 //		glLineWidth(1.0f);
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		Core::debug.glErrorCheck("helper", 457);
 	}
 
 	void _Helper::drawPosition(float fWidth, float fScale, Vector3f pos, Vector3f rot) {

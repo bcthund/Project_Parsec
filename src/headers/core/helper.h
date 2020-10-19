@@ -55,7 +55,13 @@ namespace Core {
 								GLPOINT_LAST
 			};
 
-			void drawPoint(float fSize=2.0f, float fRotation=0.0, Color vColor=Color(1.0f), _PointStyle eStyle=GLPOINT_SQUARE_ALPHA, int iSpikes=5, float fThickness=0.25);
+			struct t_Uniforms {
+				t_UniformLocations points;
+			} uniforms;
+
+			void drawPoint(float fSize);
+//			void drawPoint(float fSize, float fRotation, Color &vColor, _PointStyle eStyle=GLPOINT_SQUARE_ALPHA, int iSpikes=5, float fThickness=0.25);
+
 			void drawPointSprite(float fSize=2.0f, float fRotation=0.0, Color vColor=Color(1.0f), _PointStyle eStyle=GLPOINT_SQUARE_ALPHA, int iSpikes=5, float fThickness=0.25);
 			//void drawLine();
 			void drawPosition(float fWidth, float fScale);
@@ -64,7 +70,7 @@ namespace Core {
 			void drawRotation();
 			//void drawRotation(Vector3f position, Vector3f rotation, float fScale, float fWidth);
 
-			void drawPoint(Vector3f position, float fWidth);
+//			void drawPoint(Vector3f position, float fWidth);
 			//void drawLine(_Joint &joint, Matrix_System &matrix, Shader_System &shader);
 			void drawLine(Vector2f a, Vector2f b, float fWidth=1.0f, float fScale=1.0f, Color vColorA=Color(1.0f, 0.0f, 0.0f, 1.0f), Color vColorB=Color(0.0f, 0.0f, 1.0f, 1.0f));
 			void drawLine(Vector2i a, Vector2i b, float fWidth=1.0f, float fScale=1.0f, Color vColorA=Color(1.0f, 0.0f, 0.0f, 1.0f), Color vColorB=Color(0.0f, 0.0f, 1.0f, 1.0f));

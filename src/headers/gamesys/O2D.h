@@ -121,7 +121,8 @@ namespace Core {
 //				O2DSys(Matrix_System &m, Shader_System &s);
 				O2DSys();
 				~O2DSys();
-				bool init(Core::_Lights &lights);
+//				bool init(Core::_Lights &lights);
+				bool init();
 //				void load(int x, int z, Map::Data &chunk, O2D::Data &o2d, Core::Noise::t_Noise *noise);
 //				void load(int x, int z, O2D::Data &o2d, Core::Noise::t_Noise *noise, Core::Noise::t_Noise *heightNoise);
 				void load(int x, int z, O2D::Data &o2d, Core::Noise::t_Noise *noise, Core::Noise::t_Noise *heightNoise, Core::Noise::t_Noise *moistureNoise);
@@ -148,7 +149,8 @@ namespace Core {
 			Core::debug.print("}\n");
 		}
 
-		bool O2DSys::init(Core::_Lights &lights) {
+//		bool O2DSys::init(Core::_Lights &lights) {
+		bool O2DSys::init() {
 			Core::debug.log("Init O2DSys {");
 //			if(!uniforms.bInit) shader->getUniform(GLS_PHONGO2DSys, lights, uniforms);
 			Core::debug.print(" Done ", Core::debug().GREEN);
@@ -241,6 +243,8 @@ namespace Core {
 							newItem->w = 1000.0f;
 							newItem->h = 3000.0f;
 							o2d.add(newItem);
+
+							//std::default_random_engine(seed)
 						}
 					}
 					//debug.print("["+std::to_string(noiseVal)+"]");

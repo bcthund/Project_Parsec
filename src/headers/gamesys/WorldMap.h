@@ -19,38 +19,6 @@
 /*
  * TODO: WorldMap Punch List
  *
- *  - Noise Class
- *  	- Generic Items
- *  		- Make the noise items in MapData a global class
- *  		- Finish adding extra noise generators
- *  		- Add Turbulence option
- *  		- Add Terrain Blending?
- *
- * 		- Add a mode for layers
- * 			- Add (currently default)
- * 			- Subtract (Gets rid of need to specift negative scale?)
- * 			- Divide
- * 			- Multiply (Can act as a mask)
- *
- *  	- Functions
- *			- Implement function option ([0-1] or [-1 to 1])
- *			- Implement function option (Height for z parameter)
- *			- Implement function (Power, remove from standard params and make a function option)
- *			- Implement function option (Remap Range - Upper [Replace Upper with rescale])
- *			- Implement function option (Remap Range - Lower [Replace Lower with rescale])
- *			- Implement function option (Replace Upper)
- *			- Implement function option (Replace Lower)
- *			- Implement function option (Clamp Upper)
- *			- Implement function option (Clamp Lower)
- *			- Implement function option (Lower Fade - Based on parent height [Will need to be reworked, as layer style allows this to run before or after scaling])
- *				- Fade Distance
- *			- Implement function option (Upper Fade - Based on parent height [Will need to be reworked, as layer style allows this to run before or after scaling])
- *				- Fade Distance
- *			- Implement function option (Scale, remove from standard params and make a function option)
- *			- Implement function option (Cull Above)
- *			- Implement function option (Cull Below)
- *
- *
  *  - Rivers
  *  	- Option 1: Geometry Based
  *  		- Create rivers noise geometry
@@ -72,6 +40,11 @@
  *  		- Apply river noise to terrain
  *  			- River noise applied to height
  *  			- River override texture applied
+ *
+ *  	- Option 3: Noise Based
+ *  		- Create river noise function
+ *  		- Send river noise data to shader
+ *  		- Texture river data with water
  *
  *	- Fix Shaders getUniform function
  *		- glGetUniformLocation is an expensive function, two options to fix
@@ -97,6 +70,11 @@
 namespace Core {
 	namespace Sys {
 
+		/*
+		 * Eventually, CHUNK_SIZE needs to be static, because chunk based objects such
+		 * as O3D are loaded based on chunk value. If CHUNK_SIZE changes then the
+		 * chunk values point to incorrect locations.
+		 */
 		struct {
 			struct s_COMMON {
 				const int SCALE_POWER		= 5;
@@ -104,7 +82,7 @@ namespace Core {
 				const int CHUNK_SIZE		= 1024 * SCALE; //32768;//65536; //1024 * SCALE;
 //				const int CHUNK_SIZE		= 2048 * SCALE; //32768;//65536; //1024 * SCALE;
 //				const int VIEW_DISTANCE		= CHUNK_SIZE*16;
-				const int VIEW_DISTANCE		= CHUNK_SIZE*16;
+				const int VIEW_DISTANCE		= CHUNK_SIZE*8;
 			} GENERIC;
 
 			struct s_TERRAIN : public s_COMMON {
@@ -139,6 +117,7 @@ namespace Core {
 //				int iViewDistance;
 				Atmosphere					atmosphere;
 				_Lights						lights;
+				t_UniformLocations			uniforms_o3d;
 
 				// Noise needs chunkSettings pointer to implement
 				struct t_LayerData {
@@ -349,7 +328,7 @@ namespace Core {
 ////			layer5["Altitude"]->AddFunction.Remap(0.0f, 1.0f, -1.0f, 1.0f);
 ////			layer5["Altitude"]->AddFunction.Scale(5.0f);
 
-			// TODO: Tree Placement
+			// Tree Placement
 			Noise::t_Fractal *newTreeNoise = new Noise::t_Fractal();
 			Noise::t_Fractal &layer6 = data["Trees"]->noise->add("Layer6", newTreeNoise);
 			layer6.add("Trees", new Noise::t_FractalParams());
@@ -638,6 +617,7 @@ namespace Core {
 			shader->use(Core::GLS_PHONG);
 			shader->getUniform(Core::GLS_PHONG, lights, *data["Terrain"]->uniforms);
 			shader->getUniform(Core::GLS_WATER, lights, *data["Water"]->uniforms);
+			shader->getUniform(Core::GLS_PHONG_O3D, lights, uniforms_o3d);
 
 			glDisable(GL_CULL_FACE);
 
@@ -645,91 +625,107 @@ namespace Core {
 				// Move chunk according to player
 				matrix->Rotate(Core::gameVars->player.active->transform.rot[0], 1.0, 0.0, 0.0);
 				matrix->Rotate(Core::gameVars->player.active->transform.rot[1], 0.0, 1.0, 0.0);
-//				matrix->Translate(Core::gameVars->player.active->transform.pos[0]-(data["Terrain"]->chunkSettings->chunk_size/2),
-//								  Core::gameVars->player.active->transform.pos[1],
-//								  Core::gameVars->player.active->transform.pos[2]-(data["Terrain"]->chunkSettings->chunk_size/2));
 
 				matrix->Translate(	Core::gameVars->player.active->transform.pos[0],
 									Core::gameVars->player.active->transform.pos[1],
 									Core::gameVars->player.active->transform.pos[2]);
 
-				matrix->Translate(	-(data["Terrain"]->chunkSettings->chunk_size/2.0f),
-									0.0f,
-									-(data["Terrain"]->chunkSettings->chunk_size/2.0f)	);
-
-				// Move chunk into place (Do in loader so lighting works easily)
-				Core::matrix->Scale(1*Core::gameVars->screen.fScale, 1*Core::gameVars->screen.fScale, 1*Core::gameVars->screen.fScale);
-
-				float fPreScale = data["Terrain"]->chunkSettings->chunk_size*Core::gameVars->screen.fScale;
-
-//				shader->use(Core::GLS_PHONG);
-//				shader->getUniform(Core::GLS_PHONG, &lights);
-
-				for ( auto const &chunk : map ) {
-//					if(chunk.second->bDraw) {	// Will hide terrain outside view range
-						Core::matrix->Push();
-
-							// TODO: Pass this to shader, translating here causes issues with lights repeating
-							int iX = chunk.second->x-32768;
-							int iZ = chunk.second->z-32768;
-							matrix->Translate(	iX*fPreScale,
-												0.0f,
-												iZ*fPreScale);
-
-
-							matrix->SetTransform();
-//							shader->use(Core::GLS_PHONG);
-//							shader->getUniform(Core::GLS_PHONG, &lights);
-							shader->setUniform(Core::GLS_PHONG, lights, *data["Terrain"]->uniforms);
-							chunk.second->drawTerrain();
-
-							// Draw vertex normals (~6fps drop)
-	//						if(Core::gameVars->debug.gui.b5) {
-	//							glLineWidth(1.0f);
-	//							shader->use(GLS_NORMAL_LINE2);
-	//							shader->getUniform(GLS_NORMAL_LINE2);
-	//							chunk.second->draw(Core::GLS_PHONG);
-	//						}
-
-						Core::matrix->Pop();
-//					}
-				}
-
-//				shader->use(Core::GLS_WATER);
-//				shader->getUniform(Core::GLS_WATER, &lights);
-
-				for ( auto const &chunk : map ) {
-						Core::matrix->Push();
-							int iX = chunk.second->x-32768;
-							int iZ = chunk.second->z-32768;
-							matrix->Translate(	iX*fPreScale,
-												0.0f,
-												iZ*fPreScale);
-
-							matrix->SetTransform();
-//							shader->use(Core::GLS_WATER);
-//							shader->getUniform(Core::GLS_WATER, &lights);
-							shader->setUniform(Core::GLS_WATER, lights, *data["Water"]->uniforms);
-							chunk.second->drawWater();
-						Core::matrix->Pop();
-				}
-
-				shader->use(Core::GLS_PHONG_O2D);
-				shader->getUniform(Core::GLS_PHONG_O2D, lights, *data["Trees"]->uniforms);
 				matrix->SetTransform();
+				Core::matrix->Push();
 
-				Vector3f vCamPos;
-				vCamPos[0] = -Core::gameVars->player.active->transform.pos[0]+(data["Terrain"]->chunkSettings->chunk_size/2.0f);
-				vCamPos[1] = 0.0f;
-				vCamPos[2] = -Core::gameVars->player.active->transform.pos[2]+(data["Terrain"]->chunkSettings->chunk_size/2.0f);
+					matrix->Translate(	-(data["Terrain"]->chunkSettings->chunk_size/2.0f),
+										0.0f,
+										-(data["Terrain"]->chunkSettings->chunk_size/2.0f)	);
 
-				// TODO: Make O2D distance a customization
-				// iMax is a function of view distance and chunk size and is the maximum chunk distance
-				int iMaxTreeDistance = 3;
-				for ( auto const &chunk : map ) {
-					if(chunk.second->distance <= std::min(iMaxTreeDistance, data["Terrain"]->chunkSettings->iMax)) {
-						chunk.second->drawO2D(vCamPos, lights, *data["Trees"]->uniforms);
+					// Move chunk into place (Do in loader so lighting works easily)
+					Core::matrix->Scale(1*Core::gameVars->screen.fScale, 1*Core::gameVars->screen.fScale, 1*Core::gameVars->screen.fScale);
+
+					float fPreScale = data["Terrain"]->chunkSettings->chunk_size*Core::gameVars->screen.fScale;
+
+					for ( auto const &chunk : map ) {
+	//					if(chunk.second->bDraw) {	// Will hide terrain outside view range
+							Core::matrix->Push();
+
+								// TODO: Pass this to shader, translating here causes issues with lights repeating
+								int iX = chunk.second->x-32768;
+								int iZ = chunk.second->z-32768;
+								matrix->Translate(	iX*fPreScale,
+													0.0f,
+													iZ*fPreScale);
+
+
+								matrix->SetTransform();
+								shader->setUniform(Core::GLS_PHONG, lights, *data["Terrain"]->uniforms);
+								chunk.second->drawTerrain();
+
+								// Draw vertex normals (~6fps drop)
+		//						if(Core::gameVars->debug.gui.b5) {
+		//							glLineWidth(1.0f);
+		//							shader->use(GLS_NORMAL_LINE2);
+		//							shader->getUniform(GLS_NORMAL_LINE2);
+		//							chunk.second->draw(Core::GLS_PHONG);
+		//						}
+
+							Core::matrix->Pop();
+	//					}
 					}
+
+					// FIXME: Water should be drawn last for proper alpha
+					for ( auto const &chunk : map ) {
+							Core::matrix->Push();
+								int iX = chunk.second->x-32768;
+								int iZ = chunk.second->z-32768;
+								matrix->Translate(	iX*fPreScale,
+													0.0f,
+													iZ*fPreScale);
+
+								matrix->SetTransform();
+								shader->setUniform(Core::GLS_WATER, lights, *data["Water"]->uniforms);
+								chunk.second->drawWater();
+							Core::matrix->Pop();
+					}
+
+					shader->use(Core::GLS_PHONG_O2D);
+					shader->getUniform(Core::GLS_PHONG_O2D, lights, *data["Trees"]->uniforms);
+					matrix->SetTransform();
+
+					Vector3f vCamPos;
+					vCamPos[0] = -Core::gameVars->player.active->transform.pos[0]+(data["Terrain"]->chunkSettings->chunk_size/2.0f);
+					vCamPos[1] = 0.0f;
+					vCamPos[2] = -Core::gameVars->player.active->transform.pos[2]+(data["Terrain"]->chunkSettings->chunk_size/2.0f);
+
+					// TODO: Make O2D distance a customization
+					// iMax is a function of view distance and chunk size and is the maximum chunk distance
+					int iMaxTreeDistance = 3;
+					for ( auto const &chunk : map ) {
+						if(chunk.second->distance <= std::min(iMaxTreeDistance, data["Terrain"]->chunkSettings->iMax)) {
+							chunk.second->drawO2D(vCamPos, lights, *data["Trees"]->uniforms);
+						}
+					}
+
+					Core::debug.glErrorCheck("WorldMap", 712);
+					glActiveTexture(GL_TEXTURE29);
+					shader->use(Core::GLS_PHONG);
+					Core::debug.glErrorCheck("WorldMap", 715);
+	//				shader->getUniform(Core::GLS_PHONG, lights, uniforms_o3d);
+	//				Core::debug.glErrorCheck("WorldMap", 717);
+
+				Core::matrix->Pop();
+
+				// Draw without 1/2 chunk offset (debugging)
+				for ( auto const &chunk : map) {
+					Core::matrix->Push();
+//						int iX = chunk.second->x-32768;
+//						int iZ = chunk.second->z-32768;
+//						matrix->Translate(	iX*fPreScale,
+//											0.0f,
+//											iZ*fPreScale);
+
+						matrix->SetTransform();
+						//shader->setUniform(Core::GLS_PHONG, lights, uniforms_o3d);
+						chunk.second->drawO3D(lights, uniforms_o3d);
+					Core::matrix->Pop();
+
 				}
 
 

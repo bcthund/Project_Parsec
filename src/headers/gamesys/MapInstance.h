@@ -60,6 +60,7 @@ namespace Core {
 				void drawTerrain();
 				void drawWater();
 				void drawO2D(Vector3f &vCamPos, _Lights &lights, t_UniformLocations &uniforms);
+				void drawO3D(_Lights &lights, t_UniformLocations &uniforms);
 
 				struct t_TerrainInterface {
 					t_MapInstance * parent;
@@ -86,7 +87,7 @@ namespace Core {
 
 				struct t_O3DInterface {
 					t_MapInstance * parent;
-					_O3DData data;
+					O3D::Data data;
 					t_O3DInterface(t_MapInstance * p) { parent = p; }
 				};
 				t_O3DInterface O3D = t_O3DInterface(this);
@@ -217,6 +218,9 @@ namespace Core {
 			//Sys::o2dSys.calc(O2D.data, gameVars->player.active->transform.pos, terrainNoise->parent->chunk_size);
 			Sys::o2dSys.calc(O2D.data, gameVars->player.active->transform.pos, treeNoise->parent->chunk_size);
 
+			Sys::o3dSys.load(x, z, O3D.data);
+			Sys::o3dSys.calc(O3D.data);
+
 			if(Terrain.data.lowestHeight <= waterNoise->parent->chunk_height_offset) {
 				Sys::mapSys.load(x, z, Water.data, waterNoise);
 				Sys::mapSys.calc(Water.data);
@@ -246,61 +250,101 @@ namespace Core {
 		}
 
 		void t_MapInstance::drawO2D(Vector3f &vCamPos, _Lights &lights, t_UniformLocations &uniforms) {
-//			Vector3f	vCamPos;
-//			vCamPos[0] = -Core::gameVars->player.active->transform.pos[0];
-//			vCamPos[1] = 0.0f;
-//			vCamPos[2] = -Core::gameVars->player.active->transform.pos[2];
-//			vCamPos[0] = 0.0f;
-//			vCamPos[1] = 0.0f;
-//			vCamPos[2] = 0.0f;
+			Vector3f	vObjPos;
+			Core::shader->vars.GLS_PHONG_O2D.vCamPos = vCamPos;
 
 			for ( auto const &item : O2D.data ) {
-//				debug.log("DRAW: Tree at ("+std::to_string(item->x)+", "+std::to_string(item->y)+", "+std::to_string(item->z)+") with dimensions ("+std::to_string(item->w)+", "+std::to_string(item->h)+")\n", debug().purple);
-				// TODO: Translate
-				Core::matrix->Push();
+//				Vector3f	vObjPos = { float(item->x)*Core::gameVars->screen.fScale,
+//										float(item->y)*Core::gameVars->screen.fScale,
+//										float(item->z)*Core::gameVars->screen.fScale
+//									  };
+				vObjPos = { float(item->x)*Core::gameVars->screen.fScale,
+							float(item->y)*Core::gameVars->screen.fScale,
+							float(item->z)*Core::gameVars->screen.fScale	};
 
-//					matrix->Translate(	item->x,
-//										item->y,
-//										item->z	);
+				Core::shader->vars.GLS_PHONG_O2D.vObjPos = vObjPos;
+				Core::shader->setUniform(GLS_PHONG_O2D, lights, uniforms);
 
-//					matrix->Rotate(Core::gameVars->player.active->transform.rot[0], 1.0, 0.0, 0.0);
-//					matrix->Rotate(Core::gameVars->player.active->transform.rot[1], 0.0, 1.0, 0.0);
-//					matrix->Translate(Core::gameVars->player.active->transform.pos[0], Core::gameVars->player.active->transform.pos[1], Core::gameVars->player.active->transform.pos[2]);
-//
-//					matrix->SetTransform();
-
-//					Data2f vCoords[] = { {0.0, 0.0},
-//										 {0.0, 1.0},
-//										 {1.0, 0.0},
-//										 {1.0, 1.0} };
-//
-//					float fW = item->w/2.0f;
-//					float fH = item->h/2.0f;
-//
-//					Data4f vVerts[]	=	{	{	-fW,	fH,		0.0,	0.0f	},
-//											{	-fW,	0.0f,	0.0,	0.0f	},
-//											{	 fW,	fH,		0.0,	0.0f	},
-//											{	 fW,	0.0f,	0.0,	0.0f	}	};
-//
-//					item->vao.Begin(GL_TRIANGLE_STRIP, 4, 4, 1);
-//					item->vao.CopyData(GLA_VERTEX, vVerts);
-//					item->vao.CopyData(GLA_TEXTURE, vCoords, 0);
-//					item->vao.End();
-
-					Vector3f	vObjPos = { float(item->x)*Core::gameVars->screen.fScale,
-											float(item->y)*Core::gameVars->screen.fScale,
-											float(item->z)*Core::gameVars->screen.fScale
-										  };
-
-					Core::shader->vars.GLS_PHONG_O2D.vObjPos = vObjPos;
-					Core::shader->vars.GLS_PHONG_O2D.vCamPos = vCamPos;
-					Core::shader->setUniform(GLS_PHONG_O2D, lights, uniforms);
-//					data.texture[count].Set(data.image[count]);
-
-//					item->vao.Draw(GLM_DRAW_ELEMENTS);
-					item->vao.Draw();
-				Core::matrix->Pop();
+				item->vao.Draw();
 			}
+		}
+
+		void t_MapInstance::drawO3D(_Lights &lights, t_UniformLocations &uniforms) {
+			glDisable(GL_CULL_FACE);
+
+			for(auto &item : O3D.data) {
+//				matrix->Push();
+					glActiveTexture(GL_TEXTURE29);
+					item->texture.Set(item->image);
+//					//gameVars->texture.sprite.Set(_O3Ddata.image[count]);
+//
+//					//glActiveTexture(GL_TEXTURE1);
+//					//data.texture.sprite.Set("bump.png");
+//
+//					//glActiveTexture(GL_TEXTURE2);
+//					//data.texture.sprite.Set("spec.png");
+//
+//					//glActiveTexture(GL_TEXTURE3);
+//					//data.texture.sprite.Set("ambo.png");
+
+					matrix->Push();
+						matrix->Translate(item->posMod);
+						matrix->Scale(Core::gameVars->screen.fScale);
+						matrix->SetTransform();
+						shader->use(GLS_PHONG);
+						shader->setUniform(GLS_PHONG_O3D, lights, uniforms);
+						item->vao.Draw(GLM_DRAW_ELEMENTS);
+
+//						helper->drawLine(Vector3f(0.0f), item->rotMod, 2.5f, 100.0f, Core::colors[colors().Yellow], Core::colors[colors().Black]);
+
+						// Draw bounding volume if mouse ray intersects
+						if(collision->bUpdateRequest[0]) collision->Ray(Core::mouse->rays[1].pos, Core::mouse->rays[1].dir, *item->bV, true);
+
+						// Must be separate to draw complete tests
+						if(item->bV->cdata.result == true) {
+							item->bV->Draw(*matrix, *shader, *helper, item->posMod, true, &Core::colors[colors().Yellow]);
+						}
+					matrix->Pop();
+
+					matrix->Push();
+						// Move to object position for origin drawing
+						matrix->Translate(item->pos);
+						matrix->Rotate(Degrees(item->rot.x).toRadians(), -1.0, 0.0, 0.0);
+						matrix->Rotate(Degrees(item->rot.y).toRadians(), 0.0, -1.0, 0.0);
+						matrix->Rotate(Degrees(item->rot.z).toRadians(), 0.0, 0.0, -1.0);
+						matrix->Scale(Core::gameVars->screen.fScale);
+						matrix->SetTransform();
+						shader->use(GLS_LINES);
+						shader->getUniform(GLS_LINES);
+						glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+						helper->drawPosition(2.0f, 25.0f);
+						glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+					matrix->Pop();
+
+//					matrix->Push();
+//						matrix->Translate(item->posMod);
+//						matrix->Scale(Core::gameVars->screen.fScale);
+//						matrix->SetTransform();
+//						shader->use(GLS_PHONG);
+//						shader->setUniform(GLS_PHONG_O3D, lights, uniforms);
+////						item->vao.Draw(GLM_DRAW_ELEMENTS);
+//
+////						helper->drawLine(Vector3f(0.0f), item->rotMod, 2.5f, 100.0f, Core::colors[colors().Yellow], Core::colors[colors().Black]);
+////						Core::debug.glErrorCheck("MapInstance", 299);
+//
+//						// Draw bounding volume if mouse ray intersects
+//						if(collision->bUpdateRequest[0]) collision->Ray(Core::mouse->rays[1].pos, Core::mouse->rays[1].dir, *item->bV, true);
+////
+//						// Must be separate to draw complete tests
+//						if(item->bV->cdata.result == true) {
+//							item->bV->Draw(*matrix, *shader, *helper, item->posMod, true);
+//						}
+//					matrix->Pop();
+
+//				matrix->Pop();
+			}
+			glEnable(GL_CULL_FACE);
+//			if(collision->bUpdateRequest[0]) collision->bUpdateRequest[0] = false;
 		}
 
 //		void t_MapInstance::t_TerrainInterface::draw(Core::SHADER_PROGRAMS iShader) {
