@@ -120,7 +120,7 @@ namespace Core {
 			std::string mapName = ssx.str() + "-" + ssz.str();
 
 
-			Core::debug.log("Load O3D: "+mapName+": ");
+//			Core::debug.log("Load O3D: "+mapName+": ");
 //			Core::debug.log("Load O3D: "+mapName+" {\n");
 //			Core::debug.logIncreaseIndent();
 
@@ -140,7 +140,8 @@ namespace Core {
 //			if (memBlock.size <= 0) data.idcount = -1;
 //			else {
 			if(bReadResult) {
-				Core::debug.print("File Found!\n");
+				Core::debug.log("Load O3D: '"+mapName+"'");
+//				Core::debug.print("File Found!\n");
 
 				for (int d=0; d<memBlock.size; d+=uiRecordSize) {
 					O3D::t_O3D_Item *newItem = new O3D::t_O3D_Item();
@@ -207,8 +208,9 @@ namespace Core {
 
 					o3d.add(newItem);
 				}
+				Core::debug.print("\n");
 			}
-			else Core::debug.print("\n");
+//			else Core::debug.print("\n");
 
 //			Core::debug.logDecreaseIndent();
 //			Core::debug.log("}\n");

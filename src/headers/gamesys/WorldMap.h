@@ -103,7 +103,7 @@ namespace Core {
 			} WATER;
 
 			struct : public s_TERRAIN {
-				const int CHUNK_RESOLUTION	= 32 * SCALE_POWER;		// Tree Density
+				const int CHUNK_RESOLUTION	= 16 * SCALE_POWER;		// Tree Density
 			} TREES;
 		} CONST_SIMPLEX;
 
@@ -173,7 +173,7 @@ namespace Core {
 
 				data.add("Moisture", new t_LayerData(data["Terrain"]->chunkSettings));
 				data.add("Altitude", new t_LayerData(data["Terrain"]->chunkSettings));
-				data.add("Trees", new t_LayerData(data["Terrain"]->chunkSettings));
+//				data.add("Trees", new t_LayerData(data["Terrain"]->chunkSettings));
 			}
 //			{
 //				t_LayerData *newData = new t_LayerData(data["Terrain"]->chunkSettings);
@@ -187,17 +187,17 @@ namespace Core {
 //				t_LayerData *newData = new t_LayerData(data["Terrain"]->chunkSettings);
 //				data.add("Trees", newData);
 //			}
-//			{
-//				t_LayerData *newData = new t_LayerData();
-//				data.add("Trees", newData);
-//				data["Trees"]->chunkSettings->iViewDistance = CONST_SIMPLEX.TREES.VIEW_DISTANCE;
-//				data["Trees"]->chunkSettings->chunk_resolution = CONST_SIMPLEX.TREES.CHUNK_RESOLUTION;
-//				data["Trees"]->chunkSettings->chunk_size = CONST_SIMPLEX.TREES.CHUNK_SIZE;
-//				data["Trees"]->chunkSettings->tex_scale = CONST_SIMPLEX.TREES.TEXTURE_SCALE;
-//				data["Trees"]->chunkSettings->delta = CONST_SIMPLEX.TREES.DELTA;
-//				data["Trees"]->chunkSettings->chunk_height_offset = CONST_SIMPLEX.TREES.HEIGHT_OFFSET;
-//				data["Trees"]->chunkSettings->set_iMax();
-//			}
+			{
+				t_LayerData *newData = new t_LayerData();
+				data.add("Trees", newData);
+				data["Trees"]->chunkSettings->iViewDistance = CONST_SIMPLEX.TREES.VIEW_DISTANCE;
+				data["Trees"]->chunkSettings->chunk_resolution = CONST_SIMPLEX.TREES.CHUNK_RESOLUTION;
+				data["Trees"]->chunkSettings->chunk_size = CONST_SIMPLEX.TREES.CHUNK_SIZE;
+				data["Trees"]->chunkSettings->tex_scale = CONST_SIMPLEX.TREES.TEXTURE_SCALE;
+				data["Trees"]->chunkSettings->delta = CONST_SIMPLEX.TREES.DELTA;
+				data["Trees"]->chunkSettings->chunk_height_offset = CONST_SIMPLEX.TREES.HEIGHT_OFFSET;
+				data["Trees"]->chunkSettings->set_iMax();
+			}
 			{
 				t_LayerData *newData = new t_LayerData();
 				data.add("Water", newData);
