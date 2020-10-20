@@ -206,10 +206,10 @@ bool _Game::load() {
 		data->vVelocitySpread.x			= Core::Vector2f(-0.25f, 0.25f);
 		data->vVelocitySpread.y			= Core::Vector2f(-0.0f, 0.0f);
 		data->vVelocitySpread.z			= Core::Vector2f(-0.25f, 0.25f);
-		data->fStartingSize				= 128;		// pixels
-		data->vSpawnSpread.x			= Core::Vector2f(-25.0f, 25.0f);
+		data->fStartingSize				= 256;		// pixels
+		data->vSpawnSpread.x			= Core::Vector2f(-50.0f, 50.0f);
 		data->vSpawnSpread.y			= Core::Vector2f(-0.0f, 0.0f);
-		data->vSpawnSpread.z			= Core::Vector2f(-25.0f, 25.0f);
+		data->vSpawnSpread.z			= Core::Vector2f(-50.0f, 50.0f);
 		data->vLifeVariation			= Core::Vector2f(-0.0f, 0.0f);
 		data->vGravityVariation			= Core::Vector2f(-10.25f, 10.25f);
 		data->vSizeVariation			= Core::Vector2f(-0.5f, 1.0f);
@@ -220,8 +220,10 @@ bool _Game::load() {
 		data->iNum						= 250;				// maxmimum particles
 		data->iPPS						= 150;					// particles per second
 		data->iRate						= 10;				// update rate
-		data->vSource					= new Core::Vector3f(500.0f, 150.0f, -75.0f);
-		data->vTarget					= new Core::Vector3f(500.0f, 200.0f, -75.0f);
+//		data->vSource					= new Core::Vector3f(500.0f, 150.0f, -75.0f);
+		data->vSource					= new Core::Vector3f(-1908.0f, 3150.0f, -16269.0f);
+//		data->vTarget					= new Core::Vector3f(500.0f, 200.0f, -75.0f);
+		data->vTarget					= new Core::Vector3f(-1908.0f, 3200.0f, -16269.0f);
 		data->atlas.SetSize(4);		// Create a texture atlas for this particle emitter (texture grid/fading)
 		Core::particles->create(data);
 		Core::particles->calc("Fire");
@@ -237,15 +239,15 @@ bool _Game::load() {
 		data->fEmitterStartFade			= 0.0f;
 		data->fGravityEffect			= -0.0000125f;	// multiplier	(object mass)
 		data->fParticleLifeTime			= 0;		// seconds (0=until floor value)
-		data->fClip						= 700.0f;
+		data->fClip						= 4500.0f;
 		data->fSpeed					= 1.0f;				// multiplier
 		data->vVelocitySpread.x			= Core::Vector2f(-0.25f, 0.25f);
 		data->vVelocitySpread.y			= Core::Vector2f(-0.0f, 0.0f);
 		data->vVelocitySpread.z			= Core::Vector2f(-0.25f, 0.25f);
-		data->fStartingSize				= 128;		// pixels
-		data->vSpawnSpread.x			= Core::Vector2f(-25.0f, 25.0f);
+		data->fStartingSize				= 256;		// pixels
+		data->vSpawnSpread.x			= Core::Vector2f(-50.0f, 50.0f);
 		data->vSpawnSpread.y			= Core::Vector2f(-0.0f, 0.0f);
-		data->vSpawnSpread.z			= Core::Vector2f(-25.0f, 25.0f);
+		data->vSpawnSpread.z			= Core::Vector2f(-50.0f, 50.0f);
 		data->vLifeVariation			= Core::Vector2f(-0.0f, 0.0f);
 		data->vGravityVariation			= Core::Vector2f(-10.25f, 10.25f);
 		data->vSizeVariation			= Core::Vector2f(-0.5f, 1.0f);
@@ -256,8 +258,12 @@ bool _Game::load() {
 		data->iNum						= 1000;				// maxmimum particles
 		data->iPPS						= 150;					// particles per second
 		data->iRate						= 10;				// update rate
-		data->vSource					= new Core::Vector3f(500.0f, 250.0f, -75.0f);
-		data->vTarget					= new Core::Vector3f(500.0f, 300.0f, -75.0f);
+//		data->vSource					= new Core::Vector3f(500.0f, 250.0f, -75.0f);
+//		data->vSource					= new Core::Vector3f(-1908.0f, 3150.0f, -75.0f);
+		data->vSource					= new Core::Vector3f(-1908.0f, 3250.0f, -16269.0f);
+//		data->vTarget					= new Core::Vector3f(500.0f, 300.0f, -75.0f);
+//		data->vTarget					= new Core::Vector3f(-1908.0f, 3200.0f, -75.0f);
+		data->vTarget					= new Core::Vector3f(-1908.0f, 3300.0f, -16269.0f);
 		Core::particles->create(data);
 		Core::particles->calc("Smoke");
 	}

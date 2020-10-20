@@ -82,11 +82,11 @@ namespace Core {
 				const int CHUNK_SIZE		= 1024 * SCALE; //32768;//65536; //1024 * SCALE;
 //				const int CHUNK_SIZE		= 2048 * SCALE; //32768;//65536; //1024 * SCALE;
 //				const int VIEW_DISTANCE		= CHUNK_SIZE*16;
-				const int VIEW_DISTANCE		= CHUNK_SIZE*8;
+				const int VIEW_DISTANCE		= CHUNK_SIZE*4;
 			} GENERIC;
 
 			struct s_TERRAIN : public s_COMMON {
-				const int CHUNK_RESOLUTION	= 8 * SCALE_POWER;
+				const int CHUNK_RESOLUTION	= 32 * SCALE_POWER;
 				const float TEXTURE_SCALE	= 20.0f * SCALE_POWER;
 				//const float HEIGHT_OFFSET	= -2500.0f;
 				const float HEIGHT_OFFSET	= -500.0f;
@@ -103,7 +103,7 @@ namespace Core {
 			} WATER;
 
 			struct : public s_TERRAIN {
-				const int CHUNK_RESOLUTION	= 16 * SCALE_POWER;		// Tree Density
+				const int CHUNK_RESOLUTION	= 8 * SCALE_POWER;		// Tree Density
 			} TREES;
 		} CONST_SIMPLEX;
 
@@ -703,12 +703,24 @@ namespace Core {
 						}
 					}
 
-					Core::debug.glErrorCheck("WorldMap", 712);
-					glActiveTexture(GL_TEXTURE29);
-					shader->use(Core::GLS_PHONG);
-					Core::debug.glErrorCheck("WorldMap", 715);
-	//				shader->getUniform(Core::GLS_PHONG, lights, uniforms_o3d);
-	//				Core::debug.glErrorCheck("WorldMap", 717);
+//					Core::debug.glErrorCheck("WorldMap", 712);
+//					glActiveTexture(GL_TEXTURE29);
+//					shader->use(Core::GLS_PHONG);
+//					Core::debug.glErrorCheck("WorldMap", 715);
+//	//				shader->getUniform(Core::GLS_PHONG, lights, uniforms_o3d);
+//	//				Core::debug.glErrorCheck("WorldMap", 717);
+//
+//					for ( auto const &chunk : map) {
+//						Core::matrix->Push();
+////							int iX = chunk.second->x-32768;
+////							int iZ = chunk.second->z-32768;
+////							matrix->Translate(	iX*fPreScale,
+////												0.0f,
+////												iZ*fPreScale);
+////							matrix->SetTransform();
+//							chunk.second->drawO3D(lights, uniforms_o3d);
+//						Core::matrix->Pop();
+//					}
 
 				Core::matrix->Pop();
 
@@ -722,10 +734,8 @@ namespace Core {
 //											iZ*fPreScale);
 
 						matrix->SetTransform();
-						//shader->setUniform(Core::GLS_PHONG, lights, uniforms_o3d);
 						chunk.second->drawO3D(lights, uniforms_o3d);
 					Core::matrix->Pop();
-
 				}
 
 

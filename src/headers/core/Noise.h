@@ -521,6 +521,7 @@ namespace Core {
 			friend class Core::Sys::MapSys;
 			friend class Core::Sys::t_MapInstance;
 			friend class Core::Sys::O2DSys;
+			friend class Core::Sys::O3DSys;
 			friend double getNoise(float x, float z, Core::Noise::t_Noise *noise);
 			protected:
 				Sys::Map::t_ChunkData *parent;

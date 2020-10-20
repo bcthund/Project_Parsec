@@ -218,8 +218,8 @@ namespace Core {
 			//Sys::o2dSys.calc(O2D.data, gameVars->player.active->transform.pos, terrainNoise->parent->chunk_size);
 			Sys::o2dSys.calc(O2D.data, gameVars->player.active->transform.pos, treeNoise->parent->chunk_size);
 
-			Sys::o3dSys.load(x, z, O3D.data);
-			Sys::o3dSys.calc(O3D.data);
+			Sys::o3dSys.load(x, z, O3D.data, terrainNoise);
+			Sys::o3dSys.calc(O3D.data, *terrainNoise->parent);
 
 			if(Terrain.data.lowestHeight <= waterNoise->parent->chunk_height_offset) {
 				Sys::mapSys.load(x, z, Water.data, waterNoise);
@@ -298,7 +298,9 @@ namespace Core {
 //						helper->drawLine(Vector3f(0.0f), item->rotMod, 2.5f, 100.0f, Core::colors[colors().Yellow], Core::colors[colors().Black]);
 
 						// Draw bounding volume if mouse ray intersects
-						if(collision->bUpdateRequest[0]) collision->Ray(Core::mouse->rays[1].pos, Core::mouse->rays[1].dir, *item->bV, true);
+						if(collision->bUpdateRequest[0]) {
+							collision->Ray(Core::mouse->rays[1].pos, Core::mouse->rays[1].dir, *item->bV, true);
+						}
 
 						// Must be separate to draw complete tests
 						if(item->bV->cdata.result == true) {

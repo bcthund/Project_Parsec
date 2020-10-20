@@ -237,13 +237,14 @@ namespace Core {
 					float fX = ((float)j/((float)VERTEX_COUNT - 1) * SIZE) + x;
 					float fZ = ((float)i/((float)VERTEX_COUNT - 1) * SIZE) + z;
 
-					float fHeight = Core::Noise::getNoise(fX, fZ, heightNoise) + noise->parent->chunk_height_offset;
+					float fHeight = Core::Noise::getNoise(fX, fZ, heightNoise) + heightNoise->parent->chunk_height_offset;
 					if(fHeight>100.0f) {
 						float fNoise = Core::Noise::getNoise(fX, fZ, noise);
 						float fMoisture = Core::Noise::getNoise(fX, fZ, moistureNoise);
 
 						// (vVertex.y+2500)/50000
-						float fHeightNorm = 1.0f-(fHeight+0.0f)/50000.0f;
+						//float fHeightNorm = 1.0f-(fHeight+0.0f)/50000.0f;
+						float fHeightNorm = 1.0f-(fHeight/50000.0f);
 //						if(fNoise>((1.0f-(fMoisture/10.0f)*fHeightNorm) )) {
 						if(fNoise>((1.0f-((fMoisture/5.0f)-0.2f)*fHeightNorm) )) {
 

@@ -63,8 +63,8 @@ namespace Core {
 				void init(Core::_Lights &lights);
 //				void load();
 //				Sample from O2D: void load(int x, int z, O2D::Data &o2d, Core::Noise::t_Noise *noise, Core::Noise::t_Noise *heightNoise, Core::Noise::t_Noise *moistureNoise);
-				void load(int x, int z, O3D::Data &o3d /*, Core::Noise::t_Noise *noise*/);
-				void calc(O3D::Data &o3d);
+				void load(int x, int z, O3D::Data &o3d, Core::Noise::t_Noise *heightNoise);
+				void calc(O3D::Data &o3d, Core::Sys::Map::t_ChunkData &chunkData);
 				void draw(Core::_Lights &lights);
 //				O3DSys(Matrix_System &m, Shader_System &s, _Collision &c, _Helper &h) {
 //					Core::debug.log("Construct O3D {");
@@ -110,7 +110,11 @@ namespace Core {
 		}
 
 //		void O3DSys::load() {
-		void O3DSys::load(int x, int z, O3D::Data &o3d /*, Core::Noise::t_Noise *noise*/) {
+		void O3DSys::load(int x, int z, O3D::Data &o3d, Core::Noise::t_Noise *heightNoise) {
+
+			float fX = (x-32768) * heightNoise->parent->chunk_size;
+			float fZ = (z-32768) * heightNoise->parent->chunk_size;
+			float chunkScale = heightNoise->parent->chunk_size/1024.0f;
 
 			std::stringstream ssx, ssz;
 			ssx << std::setfill ('0') << std::setw(4);
@@ -151,9 +155,11 @@ namespace Core {
 
 					newItem->pos.x		=	(	(unsigned int)(memBlock.buffer[2+d]&0xF0)*256 	+ (unsigned int)(memBlock.buffer[2+d]&0x0F)*256 +
 												(unsigned int)(memBlock.buffer[3+d]&0xF0)		+ (unsigned int)(memBlock.buffer[3+d]&0x0F) );
+					newItem->pos.x		= (newItem->pos.x * chunkScale) + fX;
 
 					newItem->pos.z		=	(	(unsigned int)(memBlock.buffer[4+d]&0xF0)*256 	+ (unsigned int)(memBlock.buffer[4+d]&0x0F)*256 +
 												(unsigned int)(memBlock.buffer[5+d]&0xF0)		+ (unsigned int)(memBlock.buffer[5+d]&0x0F) );
+					newItem->pos.z		= (newItem->pos.z * chunkScale) + fZ;
 
 					newItem->bvType		=	_BOUNDING_VOLUME::_BOUNDING_VOLUME_TYPE(	(unsigned int)(memBlock.buffer[6+d]&0xF0) 	+ (unsigned int)(memBlock.buffer[6+d]&0x0F) );
 					newItem->bV->iType	= newItem->bvType;
@@ -161,8 +167,11 @@ namespace Core {
 
 					// memBlock.buffer[7] unused
 
-					newItem->pos.y		=	(__int16_t)(	(unsigned int)(memBlock.buffer[8+d]&0xF0)*256 	+ (unsigned int)(memBlock.buffer[8+d]&0x0F)*256 +
-															(unsigned int)(memBlock.buffer[9+d]&0xF0)		+ (unsigned int)(memBlock.buffer[9+d]&0x0F) );
+					newItem->pos.y		=	0.0f;
+					newItem->pos.y		-=	(__int16_t)((unsigned int)(memBlock.buffer[8+d]&0xF0) 	+ (unsigned int)(memBlock.buffer[8+d]&0x0F));
+					newItem->pos.y		+=	(__int16_t)((unsigned int)(memBlock.buffer[9+d]&0xF0) 	+ (unsigned int)(memBlock.buffer[9+d]&0x0F));
+					newItem->pos.y		*=	chunkScale;
+					newItem->pos.y		+=	Core::Noise::getNoise(newItem->pos.x, newItem->pos.z, heightNoise) + heightNoise->parent->chunk_height_offset;
 
 					//float fT = map.getHeight(abs(data[idcount].x[idcount]), abs(data[idcount].z[idcount]), x, z);
 					//data[idcount].blend[idcount] += fT;
@@ -305,7 +314,7 @@ namespace Core {
 //			Core::debug.log("}\n");
 		}
 
-		void O3DSys::calc(O3D::Data &o3d) {
+		void O3DSys::calc(O3D::Data &o3d, Core::Sys::Map::t_ChunkData &chunkData) {
 //			Core::debug.log("Calc O3D: ");
 
 			std::string loadFile;
@@ -344,7 +353,14 @@ namespace Core {
 				//	item->bV->CheckXYZ(Vector3f(pLoad.vVerts[i][0]*Core::gameVars->screen.fScale, pLoad.vVerts[i][1]*Core::gameVars->screen.fScale, pLoad.vVerts[i][2]*Core::gameVars->screen.fScale));
 				//}
 				item->bV->SetRotation(item->rot);
-				item->bV->SetPosition(item->pos*Core::gameVars->screen.fScale);
+				//Vector3f offsetPos = item->pos*Core::gameVars->screen.fScale;
+				Vector3f offsetPos = item->pos;
+				offsetPos.x -= chunkData.chunk_size/2.0f;
+				offsetPos.z -= chunkData.chunk_size/2.0f;
+				item->pos = offsetPos;
+				item->bV->SetPosition(offsetPos);
+//				item->bV->SetPosition(item->pos*Core::gameVars->screen.fScale);
+				debug.log("  - bV Position = ("+std::to_string(offsetPos.x)+", "+std::to_string(offsetPos.y)+", "+std::to_string(offsetPos.z)+")\n");
 				//item->bV->Finish();
 
 				// ##############################
