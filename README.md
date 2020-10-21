@@ -55,28 +55,27 @@ There are some current flaws in the code however and some incomplete classes tie
 The GUI uses a special array of enable pointers that can be set to point to internal states or external objects. This is how the example skill tree works, however the system currently results in a massive amount of memory leaks from the pointers not being handled properly. The system needs to be redesigned but is fairly complex to do so and keep the same functionality and therefore might be abandoned. This currently causes a segfault or invalid free every time the game is exited but that is all.<br>
 Currently the world is being stored in an unordered map which became an issue when trying to use distance sorting. This was an early mistake and one solution may be to create a separate ordered array of pointers to the maps.<br>
 <br>
-3D objects have been added into the loader for the map. These are files labeled by their chunk coordinates which therefore requires the chunk size to remain the same. In the end this shouldn't be an issue as the chunk size shouldn't change anyway. The sample particle system showing the cabin on fire with smoke has been adjusted to be on top of the cabin loaded by the binary file but currently particles are manually placed.
-<img src="./screens/2020-10-19/Screenshot_20201019_231502.png" alt="O3D - " width="500"/><br>
-**<br>
+3D objects have been added into the loader for the map. These are files labeled by their chunk coordinates which therefore requires the chunk size to remain the same. In the end this shouldn't be an issue as the chunk size shouldn't change anyway. Bounding Volumes were fixed so they draw in the correct locations and detect in the correct locations. The sample particle system showing the cabin on fire with smoke has been adjusted to be on top of the cabin loaded by the binary file but currently particles are manually placed.
+<img src="./screens/2020-10-19/Screenshot_20201019_231502.png" alt="O3D - Large Castle" width="500"/><br>
+*Distant Castle on the Shore*<br>
 <br>
-<img src="./screens/2020-10-19/Screenshot_20201019_232151.png" alt="O3D - " width="500"/><br>
-**<br>
+<img src="./screens/2020-10-19/Screenshot_20201019_232151.png" alt="O3D - Cabin Up Close" width="500"/><br>
+*Small Cabin in the Forest*<br>
 <br>
-<img src="./screens/2020-10-19/Screenshot_20201020_000034.png" alt="O3D - " width="500"/><br>
-**<br>
+<img src="./screens/2020-10-19/Screenshot_20201020_000034.png" alt="O3D - Bounding Volume Detection Small" width="500"/><br>
+*Bounding Volume Detection with Ray on Small Object*<br>
 <br>
-<img src="./screens/2020-10-19/Screenshot_20201020_000123.png" alt="O3D - " width="500"/><br>
-**<br>
+<img src="./screens/2020-10-19/Screenshot_20201020_000123.png" alt="O3D - Bounding Volume Detection Large" width="500"/><br>
+*Bounding Volume Detection on Large Object*<br>
 <br>
-<img src="./screens/2020-10-19/Screenshot_20201020_000727.png" alt="O3D - " width="500"/><br>
-**<br>
+<img src="./screens/2020-10-19/Screenshot_20201020_000727.png" alt="O3D - Bounding Volume Cylinder" width="500"/><br>
+*Bounding Volume Detection with Cylinder*<br>
 <br>
-<img src="./screens/2020-10-19/Screenshot_20201020_000803.png" alt="O3D - " width="500"/><br>
-**<br>
+<img src="./screens/2020-10-19/Screenshot_20201020_000803.png" alt="O3D - Bounding Volume Sphere" width="500"/><br>
+*Bounding Volume Detection with Sphere*<br>
 <br>
-<img src="./screens/2020-10-19/Screenshot_20201020_002829.png" alt="O3D - " width="500"/><br>
-**<br>
-<br>
+<img src="./screens/2020-10-19/Screenshot_20201020_002829.png" alt="O3D - Particle Example" width="500"/><br>
+*Example Particle System showing Fire and Smoke*<br>
 
 
 
