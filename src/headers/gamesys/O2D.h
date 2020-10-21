@@ -10,6 +10,7 @@
 
 //#include <iostream>
 //#include <sstream>
+#include <random>
 //#include "../core/matrix.h"
 //#include "../core/shader.h"
 #include "../core/core_functions.h"
@@ -121,7 +122,8 @@ namespace Core {
 //				O2DSys(Matrix_System &m, Shader_System &s);
 				O2DSys();
 				~O2DSys();
-				bool init(Core::_Lights &lights);
+//				bool init(Core::_Lights &lights);
+				bool init();
 //				void load(int x, int z, Map::Data &chunk, O2D::Data &o2d, Core::Noise::t_Noise *noise);
 //				void load(int x, int z, O2D::Data &o2d, Core::Noise::t_Noise *noise, Core::Noise::t_Noise *heightNoise);
 				void load(int x, int z, O2D::Data &o2d, Core::Noise::t_Noise *noise, Core::Noise::t_Noise *heightNoise, Core::Noise::t_Noise *moistureNoise);
@@ -148,7 +150,8 @@ namespace Core {
 			Core::debug.print("}\n");
 		}
 
-		bool O2DSys::init(Core::_Lights &lights) {
+//		bool O2DSys::init(Core::_Lights &lights) {
+		bool O2DSys::init() {
 			Core::debug.log("Init O2DSys {");
 //			if(!uniforms.bInit) shader->getUniform(GLS_PHONGO2DSys, lights, uniforms);
 			Core::debug.print(" Done ", Core::debug().GREEN);
@@ -175,6 +178,7 @@ namespace Core {
 
 			float SIZE			= noise->parent->chunk_size;
 			int VERTEX_COUNT	= noise->parent->chunk_resolution+1;
+			int QUAD_SIZE		= (SIZE/VERTEX_COUNT)/2;
 //				int iTexScale		= noise->parent->tex_scale;
 //				float fHeightOffset	= noise->parent->chunk_height_offset;
 //				float DELTA			= noise->parent->delta;
@@ -217,6 +221,15 @@ namespace Core {
 			 * 			[ ] sort adacent chunks
 			 */
 
+			//std::default_random_engine randVal = std::default_random_engine(seed);
+			std::default_random_engine randEngine(x+z);	// Seed is based on chunk position
+			std::uniform_real_distribution<float> randVal1(-0.5f, 0.5f);
+			std::uniform_real_distribution<float> randVal2(0.75f, 1.25f);
+			std::uniform_real_distribution<float> randVal3(0.5f, 1.5f);
+
+			// Random seed tied to object position
+//			randEngine.seed(fX+fZ+fHeight);
+
 			long vertexPointer = 0;
 			for(int i=0;i<VERTEX_COUNT;i++){
 				for(int j=0;j<VERTEX_COUNT;j++){
@@ -224,23 +237,31 @@ namespace Core {
 					float fX = ((float)j/((float)VERTEX_COUNT - 1) * SIZE) + x;
 					float fZ = ((float)i/((float)VERTEX_COUNT - 1) * SIZE) + z;
 
-					float fHeight = Core::Noise::getNoise(fX, fZ, heightNoise) + noise->parent->chunk_height_offset;
+					float fHeight = Core::Noise::getNoise(fX, fZ, heightNoise) + heightNoise->parent->chunk_height_offset;
 					if(fHeight>100.0f) {
 						float fNoise = Core::Noise::getNoise(fX, fZ, noise);
 						float fMoisture = Core::Noise::getNoise(fX, fZ, moistureNoise);
 
 						// (vVertex.y+2500)/50000
-						float fHeightNorm = 1.0f-(fHeight+0.0f)/50000.0f;
+						//float fHeightNorm = 1.0f-(fHeight+0.0f)/50000.0f;
+						float fHeightNorm = 1.0f-(fHeight/50000.0f);
 //						if(fNoise>((1.0f-(fMoisture/10.0f)*fHeightNorm) )) {
 						if(fNoise>((1.0f-((fMoisture/5.0f)-0.2f)*fHeightNorm) )) {
+
 //							debug.log("HeightNorm = "+std::to_string(fHeightNorm)+"\n");
 							O2D::t_O2D_Item *newItem = new O2D::t_O2D_Item();
-							newItem->x = fX;
-							newItem->z = fZ;
+							newItem->x = fX + (QUAD_SIZE * randVal1(randEngine));
+							newItem->z = fZ + (QUAD_SIZE * randVal1(randEngine));
 							newItem->y = fHeight;
-							newItem->w = 1000.0f;
-							newItem->h = 3000.0f;
+//							newItem->w = 1000.0f;
+//							newItem->h = 3000.0f;
+							newItem->w = 1000.0f * randVal2(randEngine);
+							newItem->h = 3000.0f * randVal3(randEngine);
 							o2d.add(newItem);
+
+							//std::default_random_engine(seed)
+
+//							std::default_random_engine(seed)
 						}
 					}
 					//debug.print("["+std::to_string(noiseVal)+"]");

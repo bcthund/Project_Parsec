@@ -990,32 +990,32 @@ namespace Core {
 //				va_end(attributeList);
 //			}
 
-			if( eShader == Core::GLS_POINTS ) {
-				locMVP =		glGetUniformLocation(uiShaders[eShader], "mvpMatrix");
-
-				glUniformMatrix4fv(locMVP,	1,	GL_FALSE,	matrix->GetModelViewProjection().data);
-
-				va_list attributeList;
-				va_start(attributeList, eShader);
-					int iStyle = va_arg(attributeList, int);
-					GLint locStyle = glGetUniformLocation(uiShaders[eShader], "iStyle");
-					glUniform1i(locStyle, iStyle);
-
-					Vector4f vColor = va_arg(attributeList, Vector4f);
-					locColor = glGetUniformLocation(uiShaders[eShader], "vColor");
-					glUniform4fv(locColor, 1, vColor.data);
-
-					int iSpikes = va_arg(attributeList, int);
-					GLint locSpikes = glGetUniformLocation(uiShaders[eShader], "iSpikes");
-					glUniform1i(locSpikes, iSpikes);
-
-					float fThickness = va_arg(attributeList, double);
-					GLint locThickness = glGetUniformLocation(uiShaders[eShader], "fThickness");
-					glUniform1f(locThickness, fThickness);
-				va_end(attributeList);
-
-				return;
-			}
+//			if( eShader == Core::GLS_POINTS ) {
+//				locMVP =		glGetUniformLocation(uiShaders[eShader], "mvpMatrix");
+//
+//				glUniformMatrix4fv(locMVP,	1,	GL_FALSE,	matrix->GetModelViewProjection().data);
+//
+//				va_list attributeList;
+//				va_start(attributeList, eShader);
+//					int iStyle = va_arg(attributeList, int);
+//					GLint locStyle = glGetUniformLocation(uiShaders[eShader], "iStyle");
+//					glUniform1i(locStyle, iStyle);
+//
+//					Vector4f vColor = va_arg(attributeList, Vector4f);
+//					locColor = glGetUniformLocation(uiShaders[eShader], "vColor");
+//					glUniform4fv(locColor, 1, vColor.data);
+//
+//					int iSpikes = va_arg(attributeList, int);
+//					GLint locSpikes = glGetUniformLocation(uiShaders[eShader], "iSpikes");
+//					glUniform1i(locSpikes, iSpikes);
+//
+//					float fThickness = va_arg(attributeList, double);
+//					GLint locThickness = glGetUniformLocation(uiShaders[eShader], "fThickness");
+//					glUniform1f(locThickness, fThickness);
+//				va_end(attributeList);
+//
+//				return;
+//			}
 
 			if( eShader==Core::GLS_PP_CONTRAST) {
 				locTexture0				= glGetUniformLocation(uiShaders[eShader], "colorMap");
@@ -1625,6 +1625,48 @@ namespace Core {
 //
 //	}
 
+	void Shader_System::getUniform(SHADER_PROGRAMS eShader, t_UniformLocations &uniforms ) {
+		if(!uniforms.bInit) {
+			if( eShader == Core::GLS_POINTS ) {
+				t_UniformLocations::u_Type::t_POINTS &data = uniforms.shaders.points;
+
+				data.locMVP			= glGetUniformLocation(uiShaders[eShader], "mvpMatrix");
+				data.locStyle		= glGetUniformLocation(uiShaders[eShader], "iStyle");
+				data.locColor		= glGetUniformLocation(uiShaders[eShader], "vColor");
+				data.locSpikes		= glGetUniformLocation(uiShaders[eShader], "iSpikes");
+				data.locThickness	= glGetUniformLocation(uiShaders[eShader], "fThickness");
+
+	//			glUniformMatrix4fv(locMVP,	1,	GL_FALSE,	matrix->GetModelViewProjection().data);
+	//			glUniform1i(locStyle, iStyle);
+	//			glUniform4fv(locColor, 1, vColor.data);
+	//			glUniform1i(locSpikes, iSpikes);
+	//			glUniform1f(locThickness, fThickness);
+
+				uniforms.bInit = true;
+				return;
+			}
+		}
+	}
+
+	void Shader_System::setUniform(SHADER_PROGRAMS eShader, t_UniformLocations &uniforms ) {
+		if(uniforms.bInit) {
+			if( eShader == Core::GLS_POINTS ) {
+				t_UniformLocations::u_Type::t_POINTS &data = uniforms.shaders.points;
+
+				glUniformMatrix4fv(data.locMVP,	1,	GL_FALSE,	matrix->GetModelViewProjection().data);
+
+				glUniform1i(data.locStyle,		vars.GLS_POINTS.iStyle);
+				glUniform4fv(data.locColor, 1,	vars.GLS_POINTS.vColor->data);
+				glUniform1i(data.locSpikes,		vars.GLS_POINTS.iSpikes);
+				glUniform1f(data.locThickness,	vars.GLS_POINTS.fThickness);
+
+				return;
+			}
+		} /* bInit */
+
+	}
+
+
 	/*
 	 * Shaders with lighting
 	 *
@@ -1684,7 +1726,8 @@ namespace Core {
 				goto ExitFunc;
 			}
 
-			if(eShader==Core::GLS_PHONG || eShader==Core::GLS_WATER) {
+			if(eShader==Core::GLS_PHONG || eShader==Core::GLS_WATER || eShader==GLS_PHONG_O3D) {
+				SHADER_PROGRAMS eRealShader = GLS_PHONG;
 				t_UniformLocations::u_Type::t_PHONG &data = uniforms.shaders.phong;
 
 				// Get location pointers for lights ready
@@ -1708,83 +1751,49 @@ namespace Core {
 					data.locLightType			= nullptr;
 				}
 
-				Core::debug.glErrorCheck("Shader", 1687);
-//				data.locTexture[0]	= glGetUniformLocation(uiShaders[eShader], "texDirt1");
-//				while((err = glGetError()) != GL_NO_ERROR) Core::debug.log("[glGetUniformLocation - Texture[0]: "+std::to_string(err)+"]\n");
-//				data.locTexture[1]	= glGetUniformLocation(uiShaders[eShader], "texDirt2");
-//				while((err = glGetError()) != GL_NO_ERROR) Core::debug.log("[glGetUniformLocation - Texture[1]: "+std::to_string(err)+"]\n");
-//				data.locTexture[2]	= glGetUniformLocation(uiShaders[eShader], "texGrass1");
-//				while((err = glGetError()) != GL_NO_ERROR) Core::debug.log("[glGetUniformLocation - Texture[2]: "+std::to_string(err)+"]\n");
-//				data.locTexture[3]	= glGetUniformLocation(uiShaders[eShader], "texGrass2");
-//				while((err = glGetError()) != GL_NO_ERROR) Core::debug.log("[glGetUniformLocation - Texture[3]: "+std::to_string(err)+"]\n");
-//				data.locTexture[4]	= glGetUniformLocation(uiShaders[eShader], "texRocky1");
-//				while((err = glGetError()) != GL_NO_ERROR) Core::debug.log("[glGetUniformLocation - Texture[4]: "+std::to_string(err)+"]\n");
-//				data.locTexture[5]	= glGetUniformLocation(uiShaders[eShader], "texRocky2");
-//				while((err = glGetError()) != GL_NO_ERROR) Core::debug.log("[glGetUniformLocation - Texture[5]: "+std::to_string(err)+"]\n");
-//				data.locTexture[6]	= glGetUniformLocation(uiShaders[eShader], "texCliff1");
-//				while((err = glGetError()) != GL_NO_ERROR) Core::debug.log("[glGetUniformLocation - Texture[6]: "+std::to_string(err)+"]\n");
-//				data.locTexture[7]	= glGetUniformLocation(uiShaders[eShader], "texCliff2");
-//				while((err = glGetError()) != GL_NO_ERROR) Core::debug.log("[glGetUniformLocation - Texture[7]: "+std::to_string(err)+"]\n");
-//				data.locTexture[8]	= glGetUniformLocation(uiShaders[eShader], "texMud1");
-//				while((err = glGetError()) != GL_NO_ERROR) Core::debug.log("[glGetUniformLocation - Texture[8]: "+std::to_string(err)+"]\n");
-//				data.locTexture[9]	= glGetUniformLocation(uiShaders[eShader], "texMud2");
-//				while((err = glGetError()) != GL_NO_ERROR) Core::debug.log("[glGetUniformLocation - Texture[9]: "+std::to_string(err)+"]\n");
-//				data.locTexture[10]	= glGetUniformLocation(uiShaders[eShader], "texSnow1");
-//				while((err = glGetError()) != GL_NO_ERROR) Core::debug.log("[glGetUniformLocation - Texture[10]: "+std::to_string(err)+"]\n");
-//				data.locTexture[11]	= glGetUniformLocation(uiShaders[eShader], "texSnow2");
-//				while((err = glGetError()) != GL_NO_ERROR) Core::debug.log("[glGetUniformLocation - Texture[11]: "+std::to_string(err)+"]\n");
-//				data.locTexture[12]	= glGetUniformLocation(uiShaders[eShader], "texBeach1");
-//				while((err = glGetError()) != GL_NO_ERROR) Core::debug.log("[glGetUniformLocation - Texture[12]: "+std::to_string(err)+"]\n");
-//				data.locTexture[13]	= glGetUniformLocation(uiShaders[eShader], "texBeach2");
-//				while((err = glGetError()) != GL_NO_ERROR) Core::debug.log("[glGetUniformLocation - Texture[13]: "+std::to_string(err)+"]\n");
-//				data.locTexture[14]	= glGetUniformLocation(uiShaders[eShader], "texSand1");
-//				while((err = glGetError()) != GL_NO_ERROR) Core::debug.log("[glGetUniformLocation - Texture[14]: "+std::to_string(err)+"]\n");
-//				data.locTexture[15]	= glGetUniformLocation(uiShaders[eShader], "texSand2");
-//				while((err = glGetError()) != GL_NO_ERROR) Core::debug.log("[glGetUniformLocation - Texture[15]: "+std::to_string(err)+"]\n");
-//				data.locTexture[20]	= glGetUniformLocation(uiShaders[eShader], "tex3D");
-//				while((err = glGetError()) != GL_NO_ERROR) Core::debug.log("[glGetUniformLocation - Texture[20]: "+std::to_string(err)+"]\n");
-//				data.locTexture[29]	= glGetUniformLocation(uiShaders[eShader], "texAtlas");
-//				while((err = glGetError()) != GL_NO_ERROR) Core::debug.log("[glGetUniformLocation - Texture[29]: "+std::to_string(err)+"]\n");
-//				data.locTexture[30]	= glGetUniformLocation(uiShaders[eShader], "texMoisture");
-//				while((err = glGetError()) != GL_NO_ERROR) Core::debug.log("[glGetUniformLocation - Texture[30]: "+std::to_string(err)+"]\n");
-				data.locTexture[31]	= glGetUniformLocation(uiShaders[eShader], "texWater");
-//				while((err = glGetError()) != GL_NO_ERROR) Core::debug.log("[glGetUniformLocation - Texture[31]: "+std::to_string(err)+"]\n");
+				Core::debug.glErrorCheck("Shader", 1611);
 
-				data.locTexture[0]	= glGetUniformLocation(uiShaders[eShader], "tex3D_0");
-				Core::debug.glErrorCheck("Shader", 1730);
+				data.locTexture[0]	= glGetUniformLocation(uiShaders[eRealShader], "tex3D_0");
+				Core::debug.glErrorCheck("Shader", 1714);
 
-				data.locTexture[1]	= glGetUniformLocation(uiShaders[eShader], "tex3D_1");
-				Core::debug.glErrorCheck("Shader", 1733);
+				data.locTexture[1]	= glGetUniformLocation(uiShaders[eRealShader], "tex3D_1");
+				Core::debug.glErrorCheck("Shader", 1717);
 
-				data.locTexture[2]	= glGetUniformLocation(uiShaders[eShader], "tex3D_2");
-				Core::debug.glErrorCheck("Shader", 1736);
+				data.locTexture[2]	= glGetUniformLocation(uiShaders[eRealShader], "tex3D_2");
+				Core::debug.glErrorCheck("Shader", 1720);
 
-				data.locTexture[3]	= glGetUniformLocation(uiShaders[eShader], "tex3D_3");
-				Core::debug.glErrorCheck("Shader", 1739);
+				data.locTexture[3]	= glGetUniformLocation(uiShaders[eRealShader], "tex3D_3");
+				Core::debug.glErrorCheck("Shader", 1723);
 
-				data.locTexture[4]	= glGetUniformLocation(uiShaders[eShader], "tex3D_4");
-				Core::debug.glErrorCheck("Shader", 1742);
+				data.locTexture[4]	= glGetUniformLocation(uiShaders[eRealShader], "tex3D_4");
+				Core::debug.glErrorCheck("Shader", 1726);
+
+				data.locTexture[29]	= glGetUniformLocation(uiShaders[eRealShader], "texO3D");
+				Core::debug.glErrorCheck("Shader", 1729);
+				data.locTexture[31]	= glGetUniformLocation(uiShaders[eRealShader], "texWater");
+				Core::debug.glErrorCheck("Shader", 1731);
 
 				GLenum err;
-				data.locMVP			= glGetUniformLocation(uiShaders[eShader], "mvpMatrix");
+				data.locMVP			= glGetUniformLocation(uiShaders[eRealShader], "mvpMatrix");
 				while((err = glGetError()) != GL_NO_ERROR) Core::debug.log("[glGetUniformLocation - mvpMatrix: "+std::to_string(err)+"]\n");
-				data.locMV			= glGetUniformLocation(uiShaders[eShader], "mvMatrix");
+				data.locMV			= glGetUniformLocation(uiShaders[eRealShader], "mvMatrix");
 				while((err = glGetError()) != GL_NO_ERROR) Core::debug.log("[glGetUniformLocation - mvMatrix: "+std::to_string(err)+"]\n");
-				data.locMP			= glGetUniformLocation(uiShaders[eShader], "mpMatrix");
+				data.locMP			= glGetUniformLocation(uiShaders[eRealShader], "mpMatrix");
 				while((err = glGetError()) != GL_NO_ERROR) Core::debug.log("[glGetUniformLocation - mpMatrix: "+std::to_string(err)+"]\n");
-				data.locWater		= glGetUniformLocation(uiShaders[eShader], "bWater");
+				data.locWater		= glGetUniformLocation(uiShaders[eRealShader], "bWater");
 				while((err = glGetError()) != GL_NO_ERROR) Core::debug.log("[glGetUniformLocation - bWater: "+std::to_string(err)+"]\n");
+				data.locO3D			= glGetUniformLocation(uiShaders[eRealShader], "bO3D");
 
-				data.locNumLights			= glGetUniformLocation(uiShaders[eShader], "iNumLights");
+				data.locNumLights			= glGetUniformLocation(uiShaders[eRealShader], "iNumLights");
 				for(int light=0; light<lights.GetNumLights(); light++) {
 					std::string sLight = std::to_string(light);
-					data.locLightPos[light]			= glGetUniformLocation(uiShaders[eShader], std::string("vLightPos["+sLight+"]").c_str());
-					data.locLightDir[light]			= glGetUniformLocation(uiShaders[eShader], std::string("vLightDir["+sLight+"]").c_str());
-					data.locLightDiffuse[light]		= glGetUniformLocation(uiShaders[eShader], std::string("vDiffuseColor["+sLight+"]").c_str());
-					data.locLightAmbient[light]		= glGetUniformLocation(uiShaders[eShader], std::string("vAmbientColor["+sLight+"]").c_str());
-					data.locLightSpecular[light]	= glGetUniformLocation(uiShaders[eShader], std::string("vSpecularColor["+sLight+"]").c_str());
-					data.locLightAttenuation[light]	= glGetUniformLocation(uiShaders[eShader], std::string("vAttenuation["+sLight+"]").c_str());
-					data.locLightType[light]		= glGetUniformLocation(uiShaders[eShader], std::string("iType["+sLight+"]").c_str());
+					data.locLightPos[light]			= glGetUniformLocation(uiShaders[eRealShader], std::string("vLightPos["+sLight+"]").c_str());
+					data.locLightDir[light]			= glGetUniformLocation(uiShaders[eRealShader], std::string("vLightDir["+sLight+"]").c_str());
+					data.locLightDiffuse[light]		= glGetUniformLocation(uiShaders[eRealShader], std::string("vDiffuseColor["+sLight+"]").c_str());
+					data.locLightAmbient[light]		= glGetUniformLocation(uiShaders[eRealShader], std::string("vAmbientColor["+sLight+"]").c_str());
+					data.locLightSpecular[light]	= glGetUniformLocation(uiShaders[eRealShader], std::string("vSpecularColor["+sLight+"]").c_str());
+					data.locLightAttenuation[light]	= glGetUniformLocation(uiShaders[eRealShader], std::string("vAttenuation["+sLight+"]").c_str());
+					data.locLightType[light]		= glGetUniformLocation(uiShaders[eRealShader], std::string("iType["+sLight+"]").c_str());
 				}
 
 				uniforms.bInit = true;
@@ -1832,15 +1841,22 @@ namespace Core {
 				goto ExitFunc;
 			}
 
-			if(eShader==Core::GLS_PHONG || eShader==Core::GLS_WATER) {
+			if(eShader==Core::GLS_PHONG || eShader==Core::GLS_WATER || eShader==GLS_PHONG_O3D) {
+//				SHADER_PROGRAMS eRealShader = GLS_PHONG;
 				t_UniformLocations::u_Type::t_PHONG &data = uniforms.shaders.phong;
+				Core::debug.glErrorCheck("Shader", 1802);
 
 				// Textures
 				glUniform1i(data.locTexture[0],		0);
+				Core::debug.glErrorCheck("Shader", 1806);
 				glUniform1i(data.locTexture[1],		1);
+				Core::debug.glErrorCheck("Shader", 1808);
 				glUniform1i(data.locTexture[2],		2);
+				Core::debug.glErrorCheck("Shader", 1810);
 				glUniform1i(data.locTexture[3],		3);
+				Core::debug.glErrorCheck("Shader", 1812);
 				glUniform1i(data.locTexture[4],		4);
+				Core::debug.glErrorCheck("Shader", 1814);
 //				glUniform1i(data.locTexture[5],		5);
 //				glUniform1i(data.locTexture[6],		6);
 //				glUniform1i(data.locTexture[7],		7);
@@ -1853,20 +1869,25 @@ namespace Core {
 //				glUniform1i(data.locTexture[14],	14);
 //				glUniform1i(data.locTexture[15],	15);
 //				glUniform1i(data.locTexture[20],	20);
-//				glUniform1i(data.locTexture[29],	29);
+				glUniform1i(data.locTexture[29],	29);
+				Core::debug.glErrorCheck("Shader", 1828);
 //				glUniform1i(data.locTexture[30],	30);
 				glUniform1i(data.locTexture[31],	31);
-				GLenum err;
-				while((err = glGetError()) != GL_NO_ERROR) Core::debug.log("[glUniform1i - GL Error: "+std::to_string(err)+"]\n");
+				Core::debug.glErrorCheck("Shader", 1831);
 
 				// Matrix
 				glUniformMatrix4fv(data.locMVP,	1,	GL_FALSE,	matrix->GetModelViewProjection().data);
 				glUniformMatrix4fv(data.locMV,	1,	GL_FALSE,	matrix->GetModelView().data);
 				glUniformMatrix4fv(data.locMP,	1,	GL_FALSE,	matrix->GetProjectionMatrix().data);
+				Core::debug.glErrorCheck("Shader", 1837);
 
 				// Custom Data
+				if(eShader==Core::GLS_PHONG_O3D) glUniform1i(data.locO3D, true);
+				else glUniform1i(data.locO3D, false);
+
 				if(eShader==Core::GLS_WATER) glUniform1i(data.locWater, true);
 				else glUniform1i(data.locWater, false);
+				Core::debug.glErrorCheck("Shader", 1842);
 
 				// Lights
 				glUniform1i(data.locNumLights,				lights.GetNumLights());
@@ -1879,6 +1900,7 @@ namespace Core {
 					glUniform3fv(data.locLightAttenuation[light],	1,	lights.GetAttenuation(light).data);
 					glUniform1i(data.locLightType[light],				lights.GetType(light));
 				}
+				Core::debug.glErrorCheck("Shader", 1855);
 				goto ExitFunc;
 			} /* GLS_PHONG, GLS_WATER */
 		} /* bInit */

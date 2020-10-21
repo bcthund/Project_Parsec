@@ -700,6 +700,7 @@
 		namespace Sys {
 			MapSys				mapSys;
 			O2DSys				o2dSys;
+			O3DSys				o3dSys;
 		}
 		_IconSys			*	iconSys		= new _IconSys();
 		_SpriteSys			*	spriteSys	= new _SpriteSys();
@@ -843,14 +844,12 @@
 			Core::debug.glErrorCheck("Core", 842);
 
 			textSys->init();
-			Core::debug.glErrorCheck("Core", 845);
 			textSys->load();
 			Core::debug.glErrorCheck("Core", 847);
 			//Core::textSys.calc();
 
-			//Core::GameSys::winSys.init();
-//			winSys->load();
-//			winSys->calc();
+			Core::Sys::o2dSys.init();
+			Core::debug.glErrorCheck("Core", 852);
 
 			Core::Sys::mapSys.init();
 			Core::debug.glErrorCheck("Core", 855);

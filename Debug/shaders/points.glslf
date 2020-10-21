@@ -24,8 +24,6 @@ void main(void) {
 	else if(iStyle==2) {			// Circle
 		if(dot(gl_PointCoord-0.5, gl_PointCoord-0.5) > 0.25) discard;
 	}
-	//else if(iStyle==3) {	// Ellipse
-	//}
 	else if(iStyle==4) {	// Rose
 		if (dotpp > cos(theta*iSpikes)) discard;
 	}
@@ -40,13 +38,13 @@ void main(void) {
 		if (dotpp > 5.0/cos(theta-(6*iSpikes)*r)) discard;
 	}
 	else if(iStyle==8) {	// Spiral
-		//if (dotpp > 5.0/cos(theta-(20*(1.0-fThickness))*r)) discard;
 		if (dotpp > 5.0/cos(theta-(6*iSpikes)*r)) discard;
 	}
 	else if(iStyle==9) {	// Star (Rounded)
 		if (dotpp > 0.5*(exp(cos(theta*iSpikes)*(1.0-fThickness)))) discard;
-		//if (dotpp > cos(theta*iSpikes)) discard;
 	}
 
-	vFragColor = vColor;
+ 	vFragColor = vColor;
+// 	vFragColor = vec4(vColor.xyz, 1.0f);
+// 	vFragColor = vec4(1.0f, 0.0f, 0.0f, 1.0f);
 }

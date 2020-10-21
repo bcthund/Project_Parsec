@@ -11,6 +11,7 @@ uniform vec3 vSpecularColor[32];
 uniform vec3 vAttenuation[32];
 
 uniform bool bWater = false;
+uniform bool bO3D = false;
 
 // Single Texture
 //uniform sampler2D colorMap;
@@ -40,7 +41,7 @@ layout (binding=2) uniform sampler3D tex3D_2;
 layout (binding=3) uniform sampler3D tex3D_3;
 layout (binding=4) uniform sampler3D tex3D_4;
 // uniform sampler2D texAtlas;
-// uniform sampler2D texMoisture;
+uniform sampler2D texO3D;
 uniform sampler2D texWater;
 
 layout (location = 0) out vec4 fragmentColor;
@@ -113,6 +114,11 @@ void main(void) {
         texColor = texture2D(texWater, data.vTexCoords);
         finalColor = texColor.rgb * (ambient.rgb + diffuse.rgb);
         fAlpha = 0.65f;
+	}
+	else if(bO3D) {
+        texColor = texture2D(texO3D, data.vTexCoords);
+        finalColor = texColor.rgb * (ambient.rgb + diffuse.rgb);
+        fAlpha = 1.0f;
 	}
 	else {
         // Testing of 3D Layers

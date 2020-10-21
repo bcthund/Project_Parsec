@@ -57,7 +57,7 @@ namespace Core {
 //					LIGHT_OMNI);
 
 		AddLight(	Core::Vector3f(0.0f),			// Position
-					Core::Vector3f(1, -1, -1),		// Direction
+					Core::Vector3f(1, -0.5, -0.5),		// Direction
 //					Core::Vector3f(0.5, 0.5, 0.1),	// Color
 					Core::Vector3f(1.0, 1.0, 1.0),	// Color
 					1/fScale,	// attentuation scaling
