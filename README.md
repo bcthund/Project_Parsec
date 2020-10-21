@@ -52,9 +52,11 @@ The GUI has also been completely rewritten using a much more complex parent-chil
 <br>
 <br>
 There are some current flaws in the code however and some incomplete classes tied to the current world. Texturing with 3D textures is using a modified binary file that is incomplete and 3D textures can currently only be used with terrain. The terrain textures are alos all loaded through the system textures, there is no 'tileset' loader yet. Trees are drawn by loading a single tree texture int o the system as well as the old sprite system no longer loads textures since trees are added dynamically through noise. A tree tileset needs to be created as well as a flora tileset which will likely be loaded through the same system instead of the old incomplete particle system.<br>
+<br>
 The GUI uses a special array of enable pointers that can be set to point to internal states or external objects. This is how the example skill tree works, however the system currently results in a massive amount of memory leaks from the pointers not being handled properly. The system needs to be redesigned but is fairly complex to do so and keep the same functionality and therefore might be abandoned. This currently causes a segfault or invalid free every time the game is exited but that is all.<br>
 Currently the world is being stored in an unordered map which became an issue when trying to use distance sorting. This was an early mistake and one solution may be to create a separate ordered array of pointers to the maps.<br>
 <br>
+# Update (2020-10-19)
 3D objects have been added into the loader for the map. These are files labeled by their chunk coordinates which therefore requires the chunk size to remain the same. In the end this shouldn't be an issue as the chunk size shouldn't change anyway. Bounding Volumes were fixed so they draw in the correct locations and detect in the correct locations. The sample particle system showing the cabin on fire with smoke has been adjusted to be on top of the cabin loaded by the binary file but currently particles are manually placed.<br>
 <img src="./screens/2020-10-19/Screenshot_20201019_231502.png" alt="O3D - Large Castle" width="500"/><br>
 *Distant Castle on the Shore*<br>
@@ -76,10 +78,10 @@ Currently the world is being stored in an unordered map which became an issue wh
 <br>
 <img src="./screens/2020-10-19/Screenshot_20201020_002829.png" alt="O3D - Particle Example" width="500"/><br>
 *Example Particle System showing Fire and Smoke*<br>
-
-
-
-
+# Update (2020-10-21)
+Trees have randomization applied to their size and position although some trees seem to be far too close together still. However the following screenshot shows a very high density forest and looks pretty good considering all trees use the same texture at the moment.<br>
+<img src="./screens/2020-10-21/Screenshot_20201021_003458.png" alt="Tree Randomization" width="500"/><br>
+*High Density Forest with Random Size and Position*<br>
 
 
 

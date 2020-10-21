@@ -82,7 +82,7 @@ namespace Core {
 				const int CHUNK_SIZE		= 1024 * SCALE; //32768;//65536; //1024 * SCALE;
 //				const int CHUNK_SIZE		= 2048 * SCALE; //32768;//65536; //1024 * SCALE;
 //				const int VIEW_DISTANCE		= CHUNK_SIZE*16;
-				const int VIEW_DISTANCE		= CHUNK_SIZE*4;
+				const int VIEW_DISTANCE		= CHUNK_SIZE*8;
 			} GENERIC;
 
 			struct s_TERRAIN : public s_COMMON {
@@ -103,7 +103,7 @@ namespace Core {
 			} WATER;
 
 			struct : public s_TERRAIN {
-				const int CHUNK_RESOLUTION	= 8 * SCALE_POWER;		// Tree Density
+				const int CHUNK_RESOLUTION	= 16 * SCALE_POWER;		// Tree Density
 			} TREES;
 		} CONST_SIMPLEX;
 
