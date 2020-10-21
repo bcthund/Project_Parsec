@@ -436,21 +436,13 @@ namespace Core {
 
 			// Update distance for all chunks according to players current position
 			// Keep track of maps that are outside range and will be removed
-
 			Vector2f vPlayerPos;
-//			vPlayerPos.x = ((gameVars->player.active->transform.pos.x - (data["Terrain"]->chunkSettings->chunk_size/2.0f))/data["Terrain"]->chunkSettings->chunk_size);
-//			vPlayerPos.z = ((gameVars->player.active->transform.pos.z - (data["Terrain"]->chunkSettings->chunk_size/2.0f))/data["Terrain"]->chunkSettings->chunk_size);
-//			vPlayerPos.x = -(gameVars->player.active->transform.pos.x - (data["Terrain"]->chunkSettings->chunk_size/2.0f))/data["Terrain"]->chunkSettings->chunk_size;
-//			vPlayerPos.y = -(gameVars->player.active->transform.pos.z - (data["Terrain"]->chunkSettings->chunk_size/2.0f))/data["Terrain"]->chunkSettings->chunk_size;
 			vPlayerPos.x = -(gameVars->player.active->transform.pos.x)/data["Terrain"]->chunkSettings->chunk_size;
 			vPlayerPos.y = -(gameVars->player.active->transform.pos.z)/data["Terrain"]->chunkSettings->chunk_size;
 
 			t_Vector1T<std::string> removeMaps;
 			for ( auto chunk : map ) {
-				//chunk.second->update(gameVars->player.active->transform.pos, data["Terrain"]->chunkSettings->chunk_size);
-				chunk.second->update(vPlayerPos, data["Terrain"]->chunkSettings->chunk_size);
-//				chunk.second->bDraw = chunk.second->distance<data["Terrain"]->chunkSettings->iMax;
-//				debug.log(std::to_string(chunk.second->distance)+"\n");
+				chunk.second->update(vPlayerPos);
 
 				// TODO: Remove chunks beyond visibility
 				//	- Start a timer when bDraw active
@@ -460,7 +452,6 @@ namespace Core {
 					removeMaps.add(chunk.first);
 				}
 			}
-//			debug.print("\n");
 
 			//std::sort(map.begin(), map.end(), compare_O2D_Distance);
 

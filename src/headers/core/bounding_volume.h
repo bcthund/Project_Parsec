@@ -25,11 +25,11 @@ namespace Core {
 			Matrix44f		mSphere;
 			Matrix44f		mCylinder;
 
-			void DrawIntersection		(Color &color, Matrix_System &matrix, Shader_System &shader, _Helper &helper);
-			void DrawOBB				(Matrix_System &matrix, Shader_System &shader, _Helper &helper, Vector3f translate = Vector3f());
-			void DrawAABB				(Matrix_System &matrix, Shader_System &shader, _Helper &helper, Vector3f translate = Vector3f());
-			void DrawSphere				(Matrix_System &matrix, Shader_System &shader, _Helper &helper, Vector3f translate = Vector3f());
-			void DrawCylinder			(Matrix_System &matrix, Shader_System &shader, _Helper &helper, Vector3f translate = Vector3f());
+			void DrawIntersection		(Color &color);
+			void DrawOBB				(Vector3f translate = Vector3f());
+			void DrawAABB				(Vector3f translate = Vector3f());
+			void DrawSphere				(Vector3f translate = Vector3f());
+			void DrawCylinder			(Vector3f translate = Vector3f());
 
 		public:
 			Vector3f		vPosition;						///< Translation of O3D
@@ -100,11 +100,12 @@ namespace Core {
 			void CalcOBB				();
 			void CalcAABB				();
 			void CheckXYZ				(Vector3f v);									// Check w, h, and l with a single vector
-			void Finish					(Matrix_System &matrix);	// Finish bounding volume, perform calculations, bOffset is true if bounding volume should have an origin at the bottom
+			//void Finish					(Matrix_System &matrix);	// Finish bounding volume, perform calculations, bOffset is true if bounding volume should have an origin at the bottom
+			void Finish					();
 			void SetPosition			(Vector3f p) { vPosition = p; }
 			void SetRotation			(Vector3f r) { vRotation = r; }
 			Vector3f GetCenterPosition	() { return vCP; };
-			void Draw					(Matrix_System &matrix, Shader_System &shader, _Helper &helper, Vector3f translate = Vector3f(), bool bDrawIntersection=false, Color *color=nullptr);
+			void Draw					(Vector3f translate = Vector3f(), bool bDrawIntersection=false, Color *color=nullptr);
 	};
 
 	_BOUNDING_VOLUME::_BOUNDING_VOLUME(Vector3f &t) {
@@ -221,7 +222,7 @@ namespace Core {
 		}
 	}
 
-	void _BOUNDING_VOLUME::Finish(Matrix_System &matrix) {
+	void _BOUNDING_VOLUME::Finish() {
 		Cylinder.radius = sqrtf(Cylinder.radius) + (fPadding/2);
 		Sphere.radius = sqrtf(Sphere.radius) + (fPadding/2);
 
@@ -232,132 +233,132 @@ namespace Core {
 		Cylinder.p = Vector3f(vCP.x, vCP.y + fPQ, vCP.z);
 		Cylinder.q = Vector3f(vCP.x, vCP.y - fPQ, vCP.z);
 
-		matrix.Push();
-			matrix.SetIdentity();
-			//matrix.Translate( vPosition.x+OBB.vCenter[0], vPosition.y+OBB.vCenter[1], vPosition.z+OBB.vCenter[2] );
-			matrix.Translate( vCP );
-			matrix.Rotate(Degrees(vRotation.x).toRadians(), 1.0, 0.0, 0.0);
-			matrix.Rotate(Degrees(vRotation.y).toRadians(), 0.0, 1.0, 0.0);
-			matrix.Rotate(Degrees(vRotation.z).toRadians(), 0.0, 0.0, 1.0);
+		matrix->Push();
+			matrix->SetIdentity();
+			//matrix->Translate( vPosition.x+OBB.vCenter[0], vPosition.y+OBB.vCenter[1], vPosition.z+OBB.vCenter[2] );
+			matrix->Translate( vCP );
+			matrix->Rotate(Degrees(vRotation.x).toRadians(), 1.0, 0.0, 0.0);
+			matrix->Rotate(Degrees(vRotation.y).toRadians(), 0.0, 1.0, 0.0);
+			matrix->Rotate(Degrees(vRotation.z).toRadians(), 0.0, 0.0, 1.0);
 
-			matrix.Push();
-				matrix.Scale( OBB.fWidth, OBB.fHeight, OBB.fLength);
-				mOBB = matrix.GetModelView();
-			matrix.Pop();
+			matrix->Push();
+				matrix->Scale( OBB.fWidth, OBB.fHeight, OBB.fLength);
+				mOBB = matrix->GetModelView();
+			matrix->Pop();
 
-			matrix.Push();
-				matrix.Scale(Sphere.radius);
-				mSphere = matrix.GetModelView();
-			matrix.Pop();
+			matrix->Push();
+				matrix->Scale(Sphere.radius);
+				mSphere = matrix->GetModelView();
+			matrix->Pop();
 
-			matrix.Push();
-				matrix.Scale(Cylinder.radius, OBB.fHeight-(fPadding/2), Cylinder.radius);
-				mCylinder = matrix.GetModelView();
-			matrix.Pop();
-		matrix.Pop();
+			matrix->Push();
+				matrix->Scale(Cylinder.radius, OBB.fHeight-(fPadding/2), Cylinder.radius);
+				mCylinder = matrix->GetModelView();
+			matrix->Pop();
+		matrix->Pop();
 
-		matrix.Push();
-			matrix.SetIdentity();
-			matrix.Translate( vPosition.x+AABB.vCenter[0], vPosition.y+AABB.vCenter[1], vPosition.z+AABB.vCenter[2] );
-			matrix.Scale( AABB.fWidth, AABB.fHeight, AABB.fLength);
-			mAABB = matrix.GetModelView();
-		matrix.Pop();
+		matrix->Push();
+			matrix->SetIdentity();
+			matrix->Translate( vPosition.x+AABB.vCenter[0], vPosition.y+AABB.vCenter[1], vPosition.z+AABB.vCenter[2] );
+			matrix->Scale( AABB.fWidth, AABB.fHeight, AABB.fLength);
+			mAABB = matrix->GetModelView();
+		matrix->Pop();
 
 		bFinished = true;
 	}
 
-	void _BOUNDING_VOLUME::Draw(Matrix_System &matrix, Shader_System &shader, _Helper &helper, Vector3f translate, bool bDrawIntersection, Color *color) {
-		if(iType == BOUNDING_VOLUME_OBB) 			DrawOBB(matrix, shader, helper, translate);
-		else if(iType == BOUNDING_VOLUME_AABB) 		DrawAABB(matrix, shader, helper, translate);
-		else if(iType == BOUNDING_VOLUME_SPHERE) 	DrawSphere(matrix, shader, helper, translate);
-		else if(iType == BOUNDING_VOLUME_CYLINDER) 	DrawCylinder(matrix, shader, helper, translate);
+	void _BOUNDING_VOLUME::Draw(Vector3f translate, bool bDrawIntersection, Color *color) {
+		if(iType == BOUNDING_VOLUME_OBB) 			DrawOBB(translate);
+		else if(iType == BOUNDING_VOLUME_AABB) 		DrawAABB(translate);
+		else if(iType == BOUNDING_VOLUME_SPHERE) 	DrawSphere(translate);
+		else if(iType == BOUNDING_VOLUME_CYLINDER) 	DrawCylinder(translate);
 
 		if(iType != BOUNDING_VOLUME_NONE && bDrawIntersection) {
 			if(color==nullptr)
-				DrawIntersection(Core::colors[Core::colors().Yellow], matrix, shader, helper);
+				DrawIntersection(Core::colors[Core::colors().Yellow]);
 			else
-				DrawIntersection(*color, matrix, shader, helper);
+				DrawIntersection(*color);
 		}
 	}
 
-	void _BOUNDING_VOLUME::DrawOBB(Matrix_System &matrix, Shader_System &shader, _Helper &helper, Vector3f translate) {
+	void _BOUNDING_VOLUME::DrawOBB(Vector3f translate) {
 		if(bFinished) {
-			matrix.Push();
-				matrix.Translate(translate);
-				matrix.Apply(mOBB);
-				matrix.SetTransform();
-				shader.use(GLS_BOUNDINGVOLUME_OBB);
-				shader.getUniform(GLS_BOUNDINGVOLUME_OBB);
+			matrix->Push();
+				matrix->Translate(translate);
+				matrix->Apply(mOBB);
+				matrix->SetTransform();
+				shader->use(GLS_BOUNDINGVOLUME_OBB);
+				shader->getUniform(GLS_BOUNDINGVOLUME_OBB);
 				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-				helper.drawBox();
+				helper->drawBox();
 				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-			matrix.Pop();
+			matrix->Pop();
 		}
 	}
 
-	void _BOUNDING_VOLUME::DrawAABB(Matrix_System &matrix, Shader_System &shader, _Helper &helper, Vector3f translate) {
+	void _BOUNDING_VOLUME::DrawAABB(Vector3f translate) {
 		if(bFinished) {
-			matrix.Push();
-				matrix.Translate(translate);
-				matrix.Apply(mAABB);
-				matrix.SetTransform();
-				shader.use(GLS_BOUNDINGVOLUME_AABB);
-				shader.getUniform(GLS_BOUNDINGVOLUME_AABB);
+			matrix->Push();
+				matrix->Translate(translate);
+				matrix->Apply(mAABB);
+				matrix->SetTransform();
+				shader->use(GLS_BOUNDINGVOLUME_AABB);
+				shader->getUniform(GLS_BOUNDINGVOLUME_AABB);
 				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-				helper.drawBox();
+				helper->drawBox();
 				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-			matrix.Pop();
+			matrix->Pop();
 		}
 	}
 
-	void _BOUNDING_VOLUME::DrawSphere(Matrix_System &matrix, Shader_System &shader, _Helper &helper, Vector3f translate) {
+	void _BOUNDING_VOLUME::DrawSphere(Vector3f translate) {
 		if(bFinished) {
-			matrix.Push();
-				matrix.Translate(translate);
-				matrix.Apply(mSphere);
-				matrix.SetTransform();
-				shader.use(GLS_BOUNDINGVOLUME_SPHERE);
-				shader.getUniform(GLS_BOUNDINGVOLUME_SPHERE);
+			matrix->Push();
+				matrix->Translate(translate);
+				matrix->Apply(mSphere);
+				matrix->SetTransform();
+				shader->use(GLS_BOUNDINGVOLUME_SPHERE);
+				shader->getUniform(GLS_BOUNDINGVOLUME_SPHERE);
 				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-				helper.drawSphere();
+				helper->drawSphere();
 				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-			matrix.Pop();
+			matrix->Pop();
 		}
 	}
 
-	void _BOUNDING_VOLUME::DrawCylinder(Matrix_System &matrix, Shader_System &shader, _Helper &helper, Vector3f translate) {
+	void _BOUNDING_VOLUME::DrawCylinder(Vector3f translate) {
 		if(bFinished) {
-			matrix.Push();
-				matrix.Translate(translate);
-				matrix.Apply(mCylinder);
-				matrix.SetTransform();
-				shader.use(GLS_BOUNDINGVOLUME_CYLINDER);
-				shader.getUniform(GLS_BOUNDINGVOLUME_CYLINDER);
+			matrix->Push();
+				matrix->Translate(translate);
+				matrix->Apply(mCylinder);
+				matrix->SetTransform();
+				shader->use(GLS_BOUNDINGVOLUME_CYLINDER);
+				shader->getUniform(GLS_BOUNDINGVOLUME_CYLINDER);
 				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-				helper.drawCylinder();
+				helper->drawCylinder();
 				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-			matrix.Pop();
+			matrix->Pop();
 		}
 	}
 
-	void _BOUNDING_VOLUME::DrawIntersection(Color &color, Matrix_System &matrix, Shader_System &shader, _Helper &helper) {
+	void _BOUNDING_VOLUME::DrawIntersection(Color &color) {
 		if(cdata.result) {
-			matrix.Push();
+			matrix->Push();
 
-				matrix.Translate(cdata.d);
-				matrix.SetTransform();
+				matrix->Translate(cdata.d);
+				matrix->SetTransform();
 
-				shader.vars.GLS_POINTS.fThickness = 2.0f;
-				shader.vars.GLS_POINTS.iSpikes = 6;
-				shader.vars.GLS_POINTS.iStyle = helper.GLPOINT_CIRCLE;
-				shader.vars.GLS_POINTS.vColor = &color;
-				helper.drawPoint(20.0f);
+				shader->vars.GLS_POINTS.fThickness = 2.0f;
+				shader->vars.GLS_POINTS.iSpikes = 6;
+				shader->vars.GLS_POINTS.iStyle = helper->GLPOINT_CIRCLE;
+				shader->vars.GLS_POINTS.vColor = &color;
+				helper->drawPoint(20.0f);
 
-				shader.vars.GLS_POINTS.iStyle = helper.GLPOINT_RING;
-				shader.vars.GLS_POINTS.vColor = &Core::colors[Core::colors().Red];
-				helper.drawPoint(10.0f);
+				shader->vars.GLS_POINTS.iStyle = helper->GLPOINT_RING;
+				shader->vars.GLS_POINTS.vColor = &Core::colors[Core::colors().Red];
+				helper->drawPoint(10.0f);
 
-			matrix.Pop();
+			matrix->Pop();
 
 
 //			// TODO: Particle Test (needs a one-shot system)
