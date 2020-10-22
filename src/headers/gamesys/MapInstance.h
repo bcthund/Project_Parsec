@@ -19,13 +19,21 @@
 namespace Core {
 	namespace Sys {
 
+		enum e_Interface {
+			INTERFACE_TERRAIN,
+			INTERFACE_WATER,
+			INTERFACE_MOISTURE,
+			INTERFACE_ALTITUDE_OFFSET,
+			INTERFACE_O2D_TREE,
+			INTERFACE_O2D_FLORA,
+			INTERFACE_O3D
+		};
+
 		/**
 		 * @brief Defines all the components in a single map Chunk
 		 *
 		 */
-		class t_MapInstance {
-			private:
-//				t_Vector1T<Map::Simplex> *simplex;
+		class t_MapBase {
 
 			public:
 				unsigned int x, z;		///< Used to determine distance and load O2D, O3D, etc.
@@ -51,57 +59,57 @@ namespace Core {
 				void drawO3D(_Lights &lights, t_UniformLocations &uniforms);
 
 				struct t_TerrainInterface {
-					t_MapInstance * parent;
+					t_MapBase * parent;
 					Map::Data	data;
-					t_TerrainInterface(t_MapInstance * p) { parent = p; }
+					t_TerrainInterface(t_MapBase * p) { parent = p; }
 				};
 				t_TerrainInterface Terrain = t_TerrainInterface(this);
 
 				struct t_WaterInterface {
-					t_MapInstance * parent;
+					t_MapBase * parent;
 					Map::Data	data;
-					t_WaterInterface(t_MapInstance * p) { parent = p; }
+					t_WaterInterface(t_MapBase * p) { parent = p; }
 				};
 				t_TerrainInterface Water = t_TerrainInterface(this);
 
 				struct t_O2DInterface {
-					t_MapInstance * parent;
+					t_MapBase * parent;
 					O2D::Data data;
-					t_O2DInterface(t_MapInstance * p) { parent = p; }
+					t_O2DInterface(t_MapBase * p) { parent = p; }
 				};
 				t_O2DInterface O2D = t_O2DInterface(this);
 
 				struct t_O3DInterface {
-					t_MapInstance * parent;
+					t_MapBase * parent;
 					O3D::Data data;
-					t_O3DInterface(t_MapInstance * p) { parent = p; }
+					t_O3DInterface(t_MapBase * p) { parent = p; }
 				};
 				t_O3DInterface O3D = t_O3DInterface(this);
 
-				t_MapInstance();
-				t_MapInstance(std::string offset);
-				~t_MapInstance();
+				t_MapBase();
+				t_MapBase(std::string offset);
+				~t_MapBase();
 		};
 
-		t_MapInstance::t_MapInstance() {
-			x = 0;
-			z = 0;
-			distance = 0;
-			bDraw = true;
+		t_MapBase::t_MapBase() {
+			x				= 0;
+			z				= 0;
+			distance		= 0;
+			bDraw			= true;
 		}
 
-		t_MapInstance::t_MapInstance(std::string offset) {
+		t_MapBase::t_MapBase(std::string offset) {
 			x = 0;
 			z = 0;
 			setOffset(offset);
 		}
 
-		t_MapInstance::~t_MapInstance() {
+		t_MapBase::~t_MapBase() {
 			for(auto item : O2D.data) delete item;
 			for(auto item : O3D.data) delete item;
 		}
 
-		void t_MapInstance::setOffset(std::string offset) {
+		void t_MapBase::setOffset(std::string offset) {
 			std::stringstream ssx;
 			ssx << std::hex << offset.substr(0, 4);
 			ssx >> x;
@@ -118,7 +126,7 @@ namespace Core {
 		 * @param pos Position in terrain chunks
 		 * @return Return the calculated distance
 		 */
-		float t_MapInstance::update(Vector2f pos) {
+		float t_MapBase::update(Vector2f pos) {
 			Vector2f vB;
 			vB.x = int(x-32768);
 			vB.y = int(z-32768);
@@ -127,7 +135,7 @@ namespace Core {
 		}
 
 		// TODO: Make load() function take only 1 noise, and an enum to specify what the noise is for (Terrain, Water, Moisture, Altitude, etc)
-		void t_MapInstance::load(	Core::Noise::t_Noise *terrainNoise,
+		void t_MapBase::load(	Core::Noise::t_Noise *terrainNoise,
 									Core::Noise::t_Noise *waterNoise,
 									Core::Noise::t_Noise *moistureNoise,
 									Core::Noise::t_Noise *altitudeNoise,
@@ -157,7 +165,7 @@ namespace Core {
 			}
 		}
 
-		void t_MapInstance::load(	std::string offset,
+		void t_MapBase::load(	std::string offset,
 									Core::Noise::t_Noise *terrainNoise,
 									Core::Noise::t_Noise *waterNoise,
 									Core::Noise::t_Noise *moistureNoise,
@@ -171,15 +179,15 @@ namespace Core {
 //		void t_MapInstance::update() {
 //		}
 
-		void t_MapInstance::drawTerrain() {
+		void t_MapBase::drawTerrain() {
 			Terrain.data.vao.Draw(GLM_DRAW_ELEMENTS);
 		}
 
-		void t_MapInstance::drawWater() {
+		void t_MapBase::drawWater() {
 			Water.data.vao.Draw(GLM_DRAW_ELEMENTS);
 		}
 
-		void t_MapInstance::drawO2D(Vector3f &vCamPos, _Lights &lights, t_UniformLocations &uniforms) {
+		void t_MapBase::drawO2D(Vector3f &vCamPos, _Lights &lights, t_UniformLocations &uniforms) {
 			Vector3f	vObjPos;
 			Core::shader->vars.GLS_PHONG_O2D.vCamPos = vCamPos;
 
@@ -199,7 +207,7 @@ namespace Core {
 			}
 		}
 
-		void t_MapInstance::drawO3D(_Lights &lights, t_UniformLocations &uniforms) {
+		void t_MapBase::drawO3D(_Lights &lights, t_UniformLocations &uniforms) {
 			glDisable(GL_CULL_FACE);
 
 			for(auto &item : O3D.data) {
@@ -295,7 +303,64 @@ namespace Core {
 
 
 
+		class t_MapInstance {
+			private:
+				Core::Noise::t_Noise *terrainNoise;
+				Core::Noise::t_Noise *waterNoise;
+				Core::Noise::t_Noise *moistureNoise;
+				Core::Noise::t_Noise *altitudeNoise;
+				Core::Noise::t_Noise *treeNoise;
 
+			public:
+				t_UMap<std::string, t_MapBase*> chunks;
+				void setNoise(e_Interface interface, Core::Noise::t_Noise *noise);
+				t_MapInstance();
+				~t_MapInstance();
+		};
+
+		t_MapInstance::t_MapInstance() {
+			terrainNoise	= nullptr;
+			waterNoise		= nullptr;
+			moistureNoise	= nullptr;
+			altitudeNoise	= nullptr;
+			treeNoise		= nullptr;
+		}
+
+//		t_MapInstance::t_MapInstance(std::string offset) {
+//			x = 0;
+//			z = 0;
+//			setOffset(offset);
+//		}
+
+		t_MapInstance::~t_MapInstance() {
+			for (auto chunk : chunks) delete chunk.second;
+//			for(auto item : O2D.data) delete item;
+//			for(auto item : O3D.data) delete item;
+		}
+
+		void t_MapInstance::setNoise(e_Interface interface, Core::Noise::t_Noise *noise) {
+			switch(interface) {
+				case INTERFACE_TERRAIN:
+					terrainNoise = noise;
+					break;
+				case INTERFACE_WATER:
+					waterNoise = noise;
+					break;
+				case INTERFACE_MOISTURE:
+					moistureNoise = noise;
+					break;
+				case INTERFACE_ALTITUDE_OFFSET:
+					altitudeNoise = noise;
+					break;
+				case INTERFACE_O2D_TREE:
+					treeNoise = noise;
+					break;
+				case INTERFACE_O2D_FLORA:
+					break;
+				case INTERFACE_O3D:
+					break;
+			}
+		}
 
 
 

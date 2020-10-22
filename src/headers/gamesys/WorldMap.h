@@ -82,7 +82,7 @@ namespace Core {
 				const int CHUNK_SIZE		= 1024 * SCALE; //32768;//65536; //1024 * SCALE;
 //				const int CHUNK_SIZE		= 2048 * SCALE; //32768;//65536; //1024 * SCALE;
 //				const int VIEW_DISTANCE		= CHUNK_SIZE*16;
-				const int VIEW_DISTANCE		= CHUNK_SIZE*8;
+				const int VIEW_DISTANCE		= CHUNK_SIZE*6;
 			} GENERIC;
 
 			struct s_TERRAIN : public s_COMMON {
@@ -103,7 +103,7 @@ namespace Core {
 			} WATER;
 
 			struct : public s_TERRAIN {
-				const int CHUNK_RESOLUTION	= 16 * SCALE_POWER;		// Tree Density
+				const int CHUNK_RESOLUTION	= 8 * SCALE_POWER;		// Tree Density
 			} TREES;
 		} CONST_SIMPLEX;
 
@@ -147,7 +147,8 @@ namespace Core {
 //				t_UMap<std::string, Map::t_ChunkData*> chunkSettingsWater;
 //				t_UMap<std::string, Map::t_Noise*> waterNoise;
 
-				t_UMap<std::string, t_MapInstance*>	map;		///< Index = 0xFFFFFFFF where the first 0xFFFF is the X-grid and the second 0xFFFF is the Y grid
+//				t_UMap<std::string, t_MapInstance*>	map;		///< Index = 0xFFFFFFFF where the first 0xFFFF is the X-grid and the second 0xFFFF is the Y grid
+				t_MapInstance	map;
 				_World();
 				~_World();
 
@@ -209,10 +210,12 @@ namespace Core {
 				data["Water"]->chunkSettings->chunk_height_offset = CONST_SIMPLEX.WATER.HEIGHT_OFFSET;
 				data["Water"]->chunkSettings->set_iMax();
 			}
+
+			// TODO: Set nosie functions
 		}
 
 		_World::~_World() {
-			for (auto item : map) delete item.second;
+//			for (auto item : map) delete item.second;
 		}
 
 		void _World::init() {
@@ -413,16 +416,16 @@ namespace Core {
 
 						std::string mapName = ssx.str() + "_" + ssz.str();
 
-						t_MapInstance *newMap = new t_MapInstance(mapName);		// NOTE: mapName translates into the map offset here
-						map.add(mapName, newMap);
-						map[mapName]->load(data["Terrain"]->noise, data["Water"]->noise, data["Moisture"]->noise, data["Altitude"]->noise, data["Trees"]->noise);
+						t_MapBase *newMap = new t_MapBase(mapName);		// NOTE: mapName translates into the map offset here
+						map.chunks.add(mapName, newMap);
+						map.chunks[mapName]->load(data["Terrain"]->noise, data["Water"]->noise, data["Moisture"]->noise, data["Altitude"]->noise, data["Trees"]->noise);
 //						map[mapName]->load(data["Terrain"]->noise, data["Water"]->noise, data["Moisture"]->noise, data["Altitude"]->noise, nullptr);
 					}
 				}
 			}
 		}
 
-		bool compare_Chunk_Distance(const t_MapInstance *a, const t_MapInstance *b)
+		bool compare_Chunk_Distance(const t_MapBase *a, const t_MapBase *b)
 		{
 			return a->distance < b->distance;
 		}
@@ -441,7 +444,7 @@ namespace Core {
 			vPlayerPos.y = -(gameVars->player.active->transform.pos.z)/data["Terrain"]->chunkSettings->chunk_size;
 
 			t_Vector1T<std::string> removeMaps;
-			for ( auto chunk : map ) {
+			for ( auto chunk : map.chunks ) {
 				chunk.second->update(vPlayerPos);
 
 				// TODO: Remove chunks beyond visibility
@@ -458,9 +461,9 @@ namespace Core {
 			// Drop maps outside view range
 			if(removeMaps.size()>0) {
 				for (auto removeMap : removeMaps ) {
-					debug.log("Removing Map '"+removeMap+"': "+std::to_string(map[removeMap]->distance)+"\n");
-					delete map[removeMap];
-					map.remove(removeMap);
+					debug.log("Removing Map '"+removeMap+"': "+std::to_string(map.chunks[removeMap]->distance)+"\n");
+					delete map.chunks[removeMap];
+					map.chunks.remove(removeMap);
 				}
 			}
 
@@ -490,16 +493,16 @@ namespace Core {
 					std::string mapName = ssx.str() + "_" + ssz.str();
 
 					// Check if chunk is already loaded
-					if(!map.checkKey(mapName, false)) {
+					if(!map.chunks.checkKey(mapName, false)) {
 						// Calculate distance from current chunk to new chunk
 						float distance = (vB-vPlayerPos).length();
 
 						// Check if new chunk is in valid range
 						if(distance < data["Terrain"]->chunkSettings->iMax) {
 							// Load new chunk
-							t_MapInstance *newMap = new t_MapInstance(mapName);		// NOTE: mapName translates into the map offset here
-							map.add(mapName, newMap);
-							map[mapName]->load(data["Terrain"]->noise, data["Water"]->noise, data["Moisture"]->noise, data["Altitude"]->noise, data["Trees"]->noise);
+							t_MapBase *newMap = new t_MapBase(mapName);		// NOTE: mapName translates into the map offset here
+							map.chunks.add(mapName, newMap);
+							map.chunks[mapName]->load(data["Terrain"]->noise, data["Water"]->noise, data["Moisture"]->noise, data["Altitude"]->noise, data["Trees"]->noise);
 //							map[mapName]->load(data["Terrain"]->noise, data["Water"]->noise, data["Moisture"]->noise, data["Altitude"]->noise, nullptr);
 						}
 					}
@@ -633,7 +636,7 @@ namespace Core {
 
 					float fPreScale = data["Terrain"]->chunkSettings->chunk_size*Core::gameVars->screen.fScale;
 
-					for ( auto const &chunk : map ) {
+					for ( auto const &chunk : map.chunks ) {
 	//					if(chunk.second->bDraw) {	// Will hide terrain outside view range
 							Core::matrix->Push();
 
@@ -662,7 +665,7 @@ namespace Core {
 					}
 
 					// FIXME: Water should be drawn last for proper alpha
-					for ( auto const &chunk : map ) {
+					for ( auto const &chunk : map.chunks ) {
 							Core::matrix->Push();
 								int iX = chunk.second->x-32768;
 								int iZ = chunk.second->z-32768;
@@ -688,7 +691,7 @@ namespace Core {
 					// TODO: Make O2D distance a customization
 					// iMax is a function of view distance and chunk size and is the maximum chunk distance
 					int iMaxTreeDistance = 3;
-					for ( auto const &chunk : map ) {
+					for ( auto const &chunk : map.chunks ) {
 						if(chunk.second->distance <= std::min(iMaxTreeDistance, data["Terrain"]->chunkSettings->iMax)) {
 							chunk.second->drawO2D(vCamPos, lights, *data["Trees"]->uniforms);
 						}
@@ -716,7 +719,7 @@ namespace Core {
 				Core::matrix->Pop();
 
 				// Draw without 1/2 chunk offset (debugging)
-				for ( auto const &chunk : map) {
+				for ( auto const &chunk : map.chunks ) {
 					Core::matrix->Push();
 //						int iX = chunk.second->x-32768;
 //						int iZ = chunk.second->z-32768;

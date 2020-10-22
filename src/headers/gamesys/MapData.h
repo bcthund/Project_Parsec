@@ -16,6 +16,7 @@ namespace Core {
 	namespace Sys {
 
 		// Forward declare
+		class t_MapBase;
 		class t_MapInstance;
 
 		namespace Map {
