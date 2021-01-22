@@ -20,13 +20,31 @@ namespace Core {
 	namespace Sys {
 
 		enum e_Interface {
-			INTERFACE_TERRAIN,
-			INTERFACE_WATER,
-			INTERFACE_MOISTURE,
-			INTERFACE_ALTITUDE_OFFSET,
-			INTERFACE_O2D_TREE,
-			INTERFACE_O2D_FLORA,
-			INTERFACE_O3D
+			INTERFACE_TERRAIN			= 1,
+			INTERFACE_WATER				= 2,
+			INTERFACE_MOISTURE			= 4,
+			INTERFACE_ALTITUDE_OFFSET	= 8,
+			INTERFACE_O2D_TREE			= 16,
+			INTERFACE_O2D_FLORA			= 32,
+			INTERFACE_O3D				= 64
+		};
+		using i_Interface = int;
+
+//		class t_MapBase;
+		class t_MapInstance {
+			friend class t_MapBase;
+			private:
+				Core::Noise::t_Noise *terrainNoise;
+				Core::Noise::t_Noise *waterNoise;
+				Core::Noise::t_Noise *moistureNoise;
+				Core::Noise::t_Noise *altitudeNoise;
+				Core::Noise::t_Noise *treeNoise;
+
+			public:
+				t_UMap<std::string, t_MapBase*> chunks;
+				void setNoise(e_Interface interface, Core::Noise::t_Noise *noise);
+				t_MapInstance();
+				~t_MapInstance();
 		};
 
 		/**
@@ -34,25 +52,29 @@ namespace Core {
 		 *
 		 */
 		class t_MapBase {
-
 			public:
+				t_MapInstance *parent;
 				unsigned int x, z;		///< Used to determine distance and load O2D, O3D, etc.
 				float		 distance;
 				bool		 bDraw;		///< Controls drawing according to distance value
 
-				void load(Core::Noise::t_Noise *terrainNoise,
-						  Core::Noise::t_Noise *waterNoise,
-						  Core::Noise::t_Noise *moistureNoise,
-						  Core::Noise::t_Noise *altitudeNoise,
-						  Core::Noise::t_Noise *treeNoise);
+//				void load(Core::Noise::t_Noise *terrainNoise,
+//						  Core::Noise::t_Noise *waterNoise,
+//						  Core::Noise::t_Noise *moistureNoise,
+//						  Core::Noise::t_Noise *altitudeNoise,
+//						  Core::Noise::t_Noise *treeNoise);
 				void setOffset(std::string offset);
 				float update(Vector2f a=Vector2f(0.0f));	///< Perform updates to chunk data and return current chunk distance
-				void load(	std::string offset,
-							Core::Noise::t_Noise *terrainNoise,
-							Core::Noise::t_Noise *waterNoise,
-							Core::Noise::t_Noise *moistureNoise,
-							Core::Noise::t_Noise *altitudeNoise,
-							Core::Noise::t_Noise *treeNoise);
+				void load(i_Interface e);
+				void load(i_Interface e, std::string offset);
+//				void load(	std::string offset,
+//							Core::Noise::t_Noise *terrainNoise,
+//							Core::Noise::t_Noise *waterNoise,
+//							Core::Noise::t_Noise *moistureNoise,
+//							Core::Noise::t_Noise *altitudeNoise,
+//							Core::Noise::t_Noise *treeNoise);
+				void calc();
+				void calc(i_Interface e);
 				void drawTerrain();
 				void drawWater();
 				void drawO2D(Vector3f &vCamPos, _Lights &lights, t_UniformLocations &uniforms);
@@ -86,19 +108,21 @@ namespace Core {
 				};
 				t_O3DInterface O3D = t_O3DInterface(this);
 
-				t_MapBase();
-				t_MapBase(std::string offset);
+				t_MapBase(t_MapInstance *p);
+				t_MapBase(std::string offset, t_MapInstance *p);
 				~t_MapBase();
 		};
 
-		t_MapBase::t_MapBase() {
+		t_MapBase::t_MapBase(t_MapInstance *p) {
+			parent			= p;
 			x				= 0;
 			z				= 0;
 			distance		= 0;
 			bDraw			= true;
 		}
 
-		t_MapBase::t_MapBase(std::string offset) {
+		t_MapBase::t_MapBase(std::string offset, t_MapInstance *p) {
+			parent = p;
 			x = 0;
 			z = 0;
 			setOffset(offset);
@@ -135,49 +159,78 @@ namespace Core {
 		}
 
 		// TODO: Make load() function take only 1 noise, and an enum to specify what the noise is for (Terrain, Water, Moisture, Altitude, etc)
-		void t_MapBase::load(	Core::Noise::t_Noise *terrainNoise,
-									Core::Noise::t_Noise *waterNoise,
-									Core::Noise::t_Noise *moistureNoise,
-									Core::Noise::t_Noise *altitudeNoise,
-									Core::Noise::t_Noise *treeNoise)
-		{
-//			x = (x-32768) * noise->parent->chunk_size;
-//			z = (z-32768) * noise->parent->chunk_size;
+		void t_MapBase::load(i_Interface e) {
 
-			Sys::mapSys.load(x, z, Terrain.data, terrainNoise);
-			Sys::mapSys.load(x, z, Terrain.data, 0, moistureNoise);
-			Sys::mapSys.load(x, z, Terrain.data, 1, altitudeNoise);
-//			Sys::mapSys.load(x, z, Terrain.data, 2, undefinedNoise);
-			Sys::mapSys.calc(Terrain.data);
+			if(e&INTERFACE_TERRAIN) {
+				Sys::mapSys.load(x, z, Terrain.data, parent->terrainNoise);
+			}
 
-			// TODO: Load O2D Objects (Trees/Flora)
-			//treeNoise
-			//Sys::o2dSys.load(x, z, Terrain.data, O2D.data, treeNoise);
-			Sys::o2dSys.load(x, z, O2D.data, treeNoise, terrainNoise, moistureNoise);
-			Sys::o2dSys.calc(O2D.data, gameVars->player.active->transform.pos, treeNoise->parent->chunk_size);
+			if(e&INTERFACE_MOISTURE) {
+				Sys::mapSys.load(x, z, Terrain.data, 0, parent->moistureNoise);
+			}
 
-			Sys::o3dSys.load(x, z, O3D.data, terrainNoise);
-			Sys::o3dSys.calc(O3D.data, *terrainNoise->parent);
+			if(e&INTERFACE_ALTITUDE_OFFSET) {
+				Sys::mapSys.load(x, z, Terrain.data, 1, parent->altitudeNoise);
+			}
 
-			if(Terrain.data.lowestHeight <= waterNoise->parent->chunk_height_offset) {
-				Sys::mapSys.load(x, z, Water.data, waterNoise);
+			if(e&INTERFACE_WATER) {
+				if(Terrain.data.lowestHeight <= parent->waterNoise->parent->chunk_height_offset) {
+					Sys::mapSys.load(x, z, Water.data, parent->waterNoise);
+//					Sys::mapSys.calc(Water.data);
+				}
+			}
+
+			if(e&INTERFACE_O2D_TREE) {
+				Sys::o2dSys.load(x, z, O2D.data, parent->treeNoise, parent->terrainNoise, parent->moistureNoise);
+				Sys::o2dSys.calc(O2D.data, gameVars->player.active->transform.pos, parent->treeNoise->parent->chunk_size);
+				//Sys::o2dSys.calc(O2D.data, gameVars->player.active->transform.pos, treeNoise->parent->chunk_size);
+			}
+//			if(e&INTERFACE_O2D_FLORA) {
+//
+//			}
+			if(e&INTERFACE_O3D) {
+				Sys::o3dSys.load(x, z, O3D.data, parent->terrainNoise);
+				Sys::o3dSys.calc(O3D.data, *parent->terrainNoise->parent);
+			}
+
+//			Sys::mapSys.calc(Terrain.data);
+
+		}
+
+		void t_MapBase::load(i_Interface e, std::string offset) {
+			setOffset(offset);
+			load(e);
+		}
+
+		void t_MapBase::calc() {
+			calc(	INTERFACE_TERRAIN|
+					INTERFACE_MOISTURE|
+					INTERFACE_ALTITUDE_OFFSET|
+					INTERFACE_WATER|
+					INTERFACE_O2D_TREE|
+					INTERFACE_O2D_FLORA|
+					INTERFACE_O3D	);
+		}
+
+		void t_MapBase::calc(i_Interface e) {
+			if(e&INTERFACE_TERRAIN || e&INTERFACE_MOISTURE || e&INTERFACE_ALTITUDE_OFFSET) {
+				Sys::mapSys.calc(Terrain.data);
+			}
+
+			if(e&INTERFACE_WATER) {
 				Sys::mapSys.calc(Water.data);
 			}
-		}
 
-		void t_MapBase::load(	std::string offset,
-									Core::Noise::t_Noise *terrainNoise,
-									Core::Noise::t_Noise *waterNoise,
-									Core::Noise::t_Noise *moistureNoise,
-									Core::Noise::t_Noise *altitudeNoise,
-									Core::Noise::t_Noise *treeNoise)
-		{
-			setOffset(offset);
-			load(terrainNoise, waterNoise, moistureNoise, altitudeNoise, treeNoise);
+//			if(e&INTERFACE_O2D_TREE) {
+//				Sys::o2dSys.calc(O2D.data, gameVars->player.active->transform.pos, treeNoise->parent->chunk_size);
+//			}
+//			if(e&INTERFACE_O2D_FLORA) {
+//
+//			}
+//			if(e&INTERFACE_O3D) {
+//				Sys::o3dSys.calc(O3D.data, *terrainNoise->parent);
+//			}
 		}
-
-//		void t_MapInstance::update() {
-//		}
 
 		void t_MapBase::drawTerrain() {
 			Terrain.data.vao.Draw(GLM_DRAW_ELEMENTS);
@@ -192,10 +245,6 @@ namespace Core {
 			Core::shader->vars.GLS_PHONG_O2D.vCamPos = vCamPos;
 
 			for ( auto const &item : O2D.data ) {
-//				Vector3f	vObjPos = { float(item->x)*Core::gameVars->screen.fScale,
-//										float(item->y)*Core::gameVars->screen.fScale,
-//										float(item->z)*Core::gameVars->screen.fScale
-//									  };
 				vObjPos = { float(item->x)*Core::gameVars->screen.fScale,
 							float(item->y)*Core::gameVars->screen.fScale,
 							float(item->z)*Core::gameVars->screen.fScale	};
@@ -260,63 +309,16 @@ namespace Core {
 						helper->drawPosition(2.0f, 25.0f);
 						glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 					matrix->Pop();
-
-//					matrix->Push();
-//						matrix->Translate(item->posMod);
-//						matrix->Scale(Core::gameVars->screen.fScale);
-//						matrix->SetTransform();
-//						shader->use(GLS_PHONG);
-//						shader->setUniform(GLS_PHONG_O3D, lights, uniforms);
-////						item->vao.Draw(GLM_DRAW_ELEMENTS);
-//
-////						helper->drawLine(Vector3f(0.0f), item->rotMod, 2.5f, 100.0f, Core::colors[colors().Yellow], Core::colors[colors().Black]);
-////						Core::debug.glErrorCheck("MapInstance", 299);
-//
-//						// Draw bounding volume if mouse ray intersects
-//						if(collision->bUpdateRequest[0]) collision->Ray(Core::mouse->rays[1].pos, Core::mouse->rays[1].dir, *item->bV, true);
-////
-//						// Must be separate to draw complete tests
-//						if(item->bV->cdata.result == true) {
-//							item->bV->Draw(*matrix, *shader, *helper, item->posMod, true);
-//						}
-//					matrix->Pop();
-
-//				matrix->Pop();
 			}
 			glEnable(GL_CULL_FACE);
-//			if(collision->bUpdateRequest[0]) collision->bUpdateRequest[0] = false;
 		}
 
-//		void t_MapInstance::t_TerrainInterface::draw(Core::SHADER_PROGRAMS iShader) {
-//		}
-//
-//		void t_MapInstance::t_WaterInterface::draw(Core::SHADER_PROGRAMS iShader) {
-//		}
 
 
+		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-
-
-
-
-
-
-
-
-		class t_MapInstance {
-			private:
-				Core::Noise::t_Noise *terrainNoise;
-				Core::Noise::t_Noise *waterNoise;
-				Core::Noise::t_Noise *moistureNoise;
-				Core::Noise::t_Noise *altitudeNoise;
-				Core::Noise::t_Noise *treeNoise;
-
-			public:
-				t_UMap<std::string, t_MapBase*> chunks;
-				void setNoise(e_Interface interface, Core::Noise::t_Noise *noise);
-				t_MapInstance();
-				~t_MapInstance();
-		};
 
 		t_MapInstance::t_MapInstance() {
 			terrainNoise	= nullptr;
@@ -333,9 +335,7 @@ namespace Core {
 //		}
 
 		t_MapInstance::~t_MapInstance() {
-			for (auto chunk : chunks) delete chunk.second;
-//			for(auto item : O2D.data) delete item;
-//			for(auto item : O3D.data) delete item;
+			//for (auto chunk : chunks) delete chunk.second;
 		}
 
 		void t_MapInstance::setNoise(e_Interface interface, Core::Noise::t_Noise *noise) {
@@ -361,6 +361,13 @@ namespace Core {
 					break;
 			}
 		}
+
+
+
+
+
+
+
 
 
 

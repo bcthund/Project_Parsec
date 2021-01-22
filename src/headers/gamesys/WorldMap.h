@@ -174,31 +174,8 @@ namespace Core {
 
 				data.add("Moisture", new t_LayerData(data["Terrain"]->chunkSettings));
 				data.add("Altitude", new t_LayerData(data["Terrain"]->chunkSettings));
-//				data.add("Trees", new t_LayerData(data["Terrain"]->chunkSettings));
 			}
-//			{
-//				t_LayerData *newData = new t_LayerData(data["Terrain"]->chunkSettings);
-//				data.add("Moisture", newData);
-//			}
-//			{
-//				t_LayerData *newData = new t_LayerData(data["Terrain"]->chunkSettings);
-//				data.add("Altitude", newData);
-//			}
-//			{
-//				t_LayerData *newData = new t_LayerData(data["Terrain"]->chunkSettings);
-//				data.add("Trees", newData);
-//			}
-			{
-				t_LayerData *newData = new t_LayerData();
-				data.add("Trees", newData);
-				data["Trees"]->chunkSettings->iViewDistance = CONST_SIMPLEX.TREES.VIEW_DISTANCE;
-				data["Trees"]->chunkSettings->chunk_resolution = CONST_SIMPLEX.TREES.CHUNK_RESOLUTION;
-				data["Trees"]->chunkSettings->chunk_size = CONST_SIMPLEX.TREES.CHUNK_SIZE;
-				data["Trees"]->chunkSettings->tex_scale = CONST_SIMPLEX.TREES.TEXTURE_SCALE;
-				data["Trees"]->chunkSettings->delta = CONST_SIMPLEX.TREES.DELTA;
-				data["Trees"]->chunkSettings->chunk_height_offset = CONST_SIMPLEX.TREES.HEIGHT_OFFSET;
-				data["Trees"]->chunkSettings->set_iMax();
-			}
+
 			{
 				t_LayerData *newData = new t_LayerData();
 				data.add("Water", newData);
@@ -211,7 +188,24 @@ namespace Core {
 				data["Water"]->chunkSettings->set_iMax();
 			}
 
+			{
+				t_LayerData *newData = new t_LayerData();
+				data.add("Trees", newData);
+				data["Trees"]->chunkSettings->iViewDistance = CONST_SIMPLEX.TREES.VIEW_DISTANCE;
+				data["Trees"]->chunkSettings->chunk_resolution = CONST_SIMPLEX.TREES.CHUNK_RESOLUTION;
+				data["Trees"]->chunkSettings->chunk_size = CONST_SIMPLEX.TREES.CHUNK_SIZE;
+				data["Trees"]->chunkSettings->tex_scale = CONST_SIMPLEX.TREES.TEXTURE_SCALE;
+				data["Trees"]->chunkSettings->delta = CONST_SIMPLEX.TREES.DELTA;
+				data["Trees"]->chunkSettings->chunk_height_offset = CONST_SIMPLEX.TREES.HEIGHT_OFFSET;
+				data["Trees"]->chunkSettings->set_iMax();
+			}
+
 			// TODO: Set nosie functions
+			map.setNoise(INTERFACE_TERRAIN,			data["Terrain"]->noise);
+			map.setNoise(INTERFACE_WATER,			data["Water"]->noise);
+			map.setNoise(INTERFACE_MOISTURE,		data["Moisture"]->noise);
+			map.setNoise(INTERFACE_ALTITUDE_OFFSET,	data["Altitude"]->noise);
+			map.setNoise(INTERFACE_O2D_TREE,		data["Trees"]->noise);
 		}
 
 		_World::~_World() {
@@ -416,9 +410,16 @@ namespace Core {
 
 						std::string mapName = ssx.str() + "_" + ssz.str();
 
-						t_MapBase *newMap = new t_MapBase(mapName);		// NOTE: mapName translates into the map offset here
+						t_MapBase *newMap = new t_MapBase(mapName, &map);		// NOTE: mapName translates into the map offset here
 						map.chunks.add(mapName, newMap);
-						map.chunks[mapName]->load(data["Terrain"]->noise, data["Water"]->noise, data["Moisture"]->noise, data["Altitude"]->noise, data["Trees"]->noise);
+//						map.chunks[mapName]->load(data["Terrain"]->noise, data["Water"]->noise, data["Moisture"]->noise, data["Altitude"]->noise, data["Trees"]->noise);
+						map.chunks[mapName]->load(INTERFACE_TERRAIN);
+						map.chunks[mapName]->load(INTERFACE_MOISTURE);
+						map.chunks[mapName]->load(INTERFACE_ALTITUDE_OFFSET);
+						map.chunks[mapName]->load(INTERFACE_WATER);
+						map.chunks[mapName]->load(INTERFACE_O2D_TREE);
+						map.chunks[mapName]->load(INTERFACE_O3D);
+						map.chunks[mapName]->calc();
 //						map[mapName]->load(data["Terrain"]->noise, data["Water"]->noise, data["Moisture"]->noise, data["Altitude"]->noise, nullptr);
 					}
 				}
@@ -500,9 +501,16 @@ namespace Core {
 						// Check if new chunk is in valid range
 						if(distance < data["Terrain"]->chunkSettings->iMax) {
 							// Load new chunk
-							t_MapBase *newMap = new t_MapBase(mapName);		// NOTE: mapName translates into the map offset here
+							t_MapBase *newMap = new t_MapBase(mapName, &map);		// NOTE: mapName translates into the map offset here
 							map.chunks.add(mapName, newMap);
-							map.chunks[mapName]->load(data["Terrain"]->noise, data["Water"]->noise, data["Moisture"]->noise, data["Altitude"]->noise, data["Trees"]->noise);
+//							map.chunks[mapName]->load(data["Terrain"]->noise, data["Water"]->noise, data["Moisture"]->noise, data["Altitude"]->noise, data["Trees"]->noise);
+							map.chunks[mapName]->load(INTERFACE_TERRAIN);
+							map.chunks[mapName]->load(INTERFACE_MOISTURE);
+							map.chunks[mapName]->load(INTERFACE_ALTITUDE_OFFSET);
+							map.chunks[mapName]->load(INTERFACE_WATER);
+							map.chunks[mapName]->load(INTERFACE_O2D_TREE);
+							map.chunks[mapName]->load(INTERFACE_O3D);
+							map.chunks[mapName]->calc();
 //							map[mapName]->load(data["Terrain"]->noise, data["Water"]->noise, data["Moisture"]->noise, data["Altitude"]->noise, nullptr);
 						}
 					}
