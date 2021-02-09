@@ -79,15 +79,19 @@ namespace Core {
 			struct s_COMMON {
 				const int SCALE_POWER		= 5;
 				const int SCALE				= pow(2, SCALE_POWER);
-				const int CHUNK_SIZE		= 1024 * SCALE; //32768;//65536; //1024 * SCALE;
-//				const int CHUNK_SIZE		= 2048 * SCALE; //32768;//65536; //1024 * SCALE;
-//				const int VIEW_DISTANCE		= CHUNK_SIZE*16;
-				const int VIEW_DISTANCE		= CHUNK_SIZE*6;
+//				const int CHUNK_SIZE		= 512 * SCALE; //32768;//65536; //1024 * SCALE;
+//				const int CHUNK_SIZE		= 1024 * SCALE; //32768;//65536; //1024 * SCALE;
+				const int CHUNK_SIZE		= 2048 * SCALE; //32768;//65536; //1024 * SCALE;
+				const int VIEW_DISTANCE		= CHUNK_SIZE*3;		// Minimum view distance
+//				const int VIEW_DISTANCE		= CHUNK_SIZE*6;		// Preferred Minimum, really needs LOD for distant chunks which in turn needs some form of chunk stitching for resolution differences
+//				const int VIEW_DISTANCE		= CHUNK_SIZE*16;	// Arbitrary maximum, depends on resolution and openGL rendering distance (clipping) and atmosphere size (exosphere globe for stars texture)
 			} GENERIC;
 
 			struct s_TERRAIN : public s_COMMON {
-				const int CHUNK_RESOLUTION	= 32 * SCALE_POWER;
-				const float TEXTURE_SCALE	= 20.0f * SCALE_POWER;
+				const int CHUNK_RESOLUTION	= 64 * SCALE_POWER;	// This is the preferred minimum for the local chunk
+//				const int CHUNK_RESOLUTION	= 32 * SCALE_POWER;	// Acceptable minimum for better speed
+//				const int CHUNK_RESOLUTION	= 16 * SCALE_POWER;	// Absolute minimum, for debugging speed mostly
+				const float TEXTURE_SCALE	= 30.0f * SCALE_POWER;
 				//const float HEIGHT_OFFSET	= -2500.0f;
 				const float HEIGHT_OFFSET	= -500.0f;
 //				const float DELTA			= 32.0f * SCALE;
@@ -96,7 +100,7 @@ namespace Core {
 
 			struct s_WATER : public s_COMMON {
 				const int CHUNK_RESOLUTION	= 1;
-				const float TEXTURE_SCALE	= 10.0f * SCALE_POWER;
+				const float TEXTURE_SCALE	= 20.0f * SCALE_POWER;
 				const float HEIGHT_OFFSET	= 0.0f;
 				//const float DELTA			= 32.0f * SCALE;
 				const float DELTA			= CHUNK_SIZE / CHUNK_RESOLUTION;

@@ -58,21 +58,10 @@ namespace Core {
 				float		 distance;
 				bool		 bDraw;		///< Controls drawing according to distance value
 
-//				void load(Core::Noise::t_Noise *terrainNoise,
-//						  Core::Noise::t_Noise *waterNoise,
-//						  Core::Noise::t_Noise *moistureNoise,
-//						  Core::Noise::t_Noise *altitudeNoise,
-//						  Core::Noise::t_Noise *treeNoise);
 				void setOffset(std::string offset);
 				float update(Vector2f a=Vector2f(0.0f));	///< Perform updates to chunk data and return current chunk distance
 				void load(i_Interface e);
 				void load(i_Interface e, std::string offset);
-//				void load(	std::string offset,
-//							Core::Noise::t_Noise *terrainNoise,
-//							Core::Noise::t_Noise *waterNoise,
-//							Core::Noise::t_Noise *moistureNoise,
-//							Core::Noise::t_Noise *altitudeNoise,
-//							Core::Noise::t_Noise *treeNoise);
 				void calc();
 				void calc(i_Interface e);
 				void drawTerrain();
@@ -158,7 +147,7 @@ namespace Core {
 			return distance;
 		}
 
-		// TODO: Make load() function take only 1 noise, and an enum to specify what the noise is for (Terrain, Water, Moisture, Altitude, etc)
+		// TODO: Check that noise pointer exists
 		void t_MapBase::load(i_Interface e) {
 
 			if(e&INTERFACE_TERRAIN) {
@@ -185,6 +174,12 @@ namespace Core {
 				Sys::o2dSys.calc(O2D.data, gameVars->player.active->transform.pos, parent->treeNoise->parent->chunk_size);
 				//Sys::o2dSys.calc(O2D.data, gameVars->player.active->transform.pos, treeNoise->parent->chunk_size);
 			}
+			// TODO: Add flora
+			//	- Maybe use a single noise for other items such as flora
+			//	- Use different range of values for when to draw
+			//		- IE: If trees are drawn at 0.75-1.0, then draw flora at 0.5-0.9, so there is some overlap here but can be completely controlled
+			//	- Use a single pass so the noise function only needs to get called once to save on processing time
+
 //			if(e&INTERFACE_O2D_FLORA) {
 //
 //			}
@@ -221,12 +216,17 @@ namespace Core {
 				Sys::mapSys.calc(Water.data);
 			}
 
+			// Handled by o2dSys
 //			if(e&INTERFACE_O2D_TREE) {
 //				Sys::o2dSys.calc(O2D.data, gameVars->player.active->transform.pos, treeNoise->parent->chunk_size);
 //			}
+
+			// TODO: Doesn't exist yet
 //			if(e&INTERFACE_O2D_FLORA) {
 //
 //			}
+
+			// Handled by o3dSys
 //			if(e&INTERFACE_O3D) {
 //				Sys::o3dSys.calc(O3D.data, *terrainNoise->parent);
 //			}
